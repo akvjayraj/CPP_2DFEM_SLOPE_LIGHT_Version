@@ -1,0 +1,124 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.BoundaryPropertiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}"
+             TextElement.Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Padding" Value="4,3"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style x:Key="SectionHeader" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Margin" Value="0,4,0,8"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,2"/>
+        </Style>
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="MinWidth" Value="88"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+        </Style>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4,0"
+                  Visibility="{Binding IsPropertiesExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel Margin="8">
+            <DockPanel Margin="0,4,0,8">
+                <Button DockPanel.Dock="Right"
+                        Command="{Binding TogglePropertiesCommand}"
+                        ToolTip="Hide Boundary Properties"
+                        Width="22" Height="22" Padding="0"
+                        Background="Transparent" BorderThickness="0">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="12" Text="&#xE70E;"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </Button>
+                <TextBlock Text="BOUNDARY PROPERTIES" FontWeight="SemiBold" FontSize="13"/>
+            </DockPanel>
+
+            <TextBlock Text="APPLY TO OUTER BOUNDARY" Style="{StaticResource SectionHeader}"/>
+            <TextBlock Text="Outer boundary" Style="{StaticResource FieldLabel}"/>
+            <ComboBox ItemsSource="{Binding Boundary.AvailableOuterBoundaries}"
+                      SelectedItem="{Binding Boundary.SelectedOuterBoundary, Mode=TwoWay}"
+                      ToolTip="Select a line segment (L1, L2, …). The corresponding geometry is highlighted on the Boundary Conditions canvas. Use Import Mode → Boundary first, or Vertices/Nodes to fill Nodes.">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding BoundaryTag}" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding NodeCount, StringFormat='({0} nodes)'}"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBlock Text="Connected nodes" Style="{StaticResource FieldLabel}"/>
+            <TextBox Text="{Binding Boundary.ConnectedNodesDisplayText, Mode=OneWay}"
+                     IsReadOnly="True"/>
+            <TextBlock Text="Nodes" Style="{StaticResource FieldLabel}"/>
+            <TextBox Text="{Binding Boundary.NodesText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Node number to apply BC to (e.g. 5). Apply BC adds it to the DataGrid."/>
+
+            <TextBlock Text="BC DEFINITION" Style="{StaticResource SectionHeader}"/>
+            <TextBlock Text="Type" Style="{StaticResource FieldLabel}"/>
+            <ComboBox ItemsSource="{Binding Boundary.AvailableBCTypes}"
+                      SelectedItem="{Binding SelectedType, Mode=TwoWay}"/>
+            <StackPanel Visibility="{Binding ShowRestraintFields, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="UX" Style="{StaticResource FieldLabel}"/>
+                <TextBox Text="{Binding UxValue, Mode=OneWay}" IsReadOnly="True"/>
+                <TextBlock Text="UY" Style="{StaticResource FieldLabel}"/>
+                <TextBox Text="{Binding UyValue, Mode=OneWay}" IsReadOnly="True"/>
+            </StackPanel>
+            <StackPanel Visibility="{Binding ShowDofField, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="DOF" Style="{StaticResource FieldLabel}"/>
+                <ComboBox ItemsSource="{Binding Boundary.AvailableDOFs}"
+                          SelectedItem="{Binding SelectedDofDisplay, Mode=TwoWay}"/>
+            </StackPanel>
+            <StackPanel Visibility="{Binding ShowValueField, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="{Binding ValueFieldLabel}" Style="{StaticResource FieldLabel}"/>
+                <TextBox Text="{Binding Boundary.BcValueForBoundary, UpdateSourceTrigger=PropertyChanged}"
+                         IsReadOnly="{Binding ValueIsReadOnly}"/>
+            </StackPanel>
+            <TextBlock Text="Label" Style="{StaticResource FieldLabel}"/>
+            <TextBox Text="{Binding SelectedLabel, UpdateSourceTrigger=PropertyChanged}"/>
+            <CheckBox IsChecked="{Binding ShowOnModel, Mode=TwoWay}">
+                <TextBlock Text="Show on Model" Foreground="{DynamicResource WindowForegroundBrush}"/>
+            </CheckBox>
+
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Style="{StaticResource ActionButton}"
+                        Content="Apply BC"
+                        Command="{Binding ApplyCommand}"
+                        IsEnabled="{Binding Boundary.HasAvailableBcTypes}"
+                        ToolTip="Apply selected BC to node(s) in Nodes box or to all nodes on selected boundary"/>
+                <Button Style="{StaticResource ActionButton}"
+                        Content="Close"
+                        Command="{Binding ClosePropertiesCommand}"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Boundary.StatusMessage}"
+                       TextWrapping="Wrap"
+                       Margin="0,10,0,0"
+                       FontSize="11"
+                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,57 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.AnalysisWorkspaceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ws="clr-namespace:GeotechSlopeApp.Views.Workspace">
+    <!-- Chrome-only host. The live viewport remains the MainWindow TabControl so existing canvases are not duplicated. -->
+    <Grid Background="{DynamicResource WindowBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ws:AnalysisRibbonView Grid.Row="0"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="240" MinWidth="160"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="280" MinWidth="200"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="280" MinWidth="180"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="160"/>
+                </Grid.RowDefinitions>
+                <ws:ProjectExplorerView Grid.Row="0" DataContext="{Binding Workspace.Explorer}"/>
+                <ws:StageManagerView Grid.Row="1"/>
+            </Grid>
+            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Center"/>
+            <ws:AnalysisTypePanelView Grid.Column="2"/>
+            <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Center"/>
+            <ContentPresenter x:Name="PART_ViewportHost" Grid.Column="4"/>
+            <GridSplitter Grid.Column="5" Width="4" HorizontalAlignment="Center"/>
+            <Grid Grid.Column="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="160"/>
+                </Grid.RowDefinitions>
+                <ws:ResultsCategoryPanelView Grid.Row="0"/>
+                <ws:CheckModelView Grid.Row="1"/>
+            </Grid>
+        </Grid>
+        <StatusBar Grid.Row="2" Background="{DynamicResource PanelBackgroundBrush}"
+                   Foreground="{DynamicResource WindowForegroundBrush}">
+            <StatusBarItem Content="{Binding Workspace.StatusReady}"/>
+            <Separator/>
+            <StatusBarItem Content="{Binding Workspace.StatusUnits}"/>
+            <Separator/>
+            <StatusBarItem Content="{Binding Workspace.StatusStrip}"/>
+            <Separator/>
+            <StatusBarItem Content="{Binding Workspace.StatusDimension}"/>
+            <StatusBarItem Content="XYZ"/>
+        </StatusBar>
+    </Grid>
+</UserControl>

@@ -1,0 +1,68 @@
+{
+  "MeshType": "Q8",
+  "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\griffiths_lane_example1_2h1v_Q8.xfem",
+  "Program": "slope_stability_Q8_SRF",
+  "BrandedProgram": "slope_stability_Q8_SRF",
+  "SolverCore": "CoreB",
+  "DeckFormat": "P64Explicit",
+  "ScriptSyncedFromMesh": true,
+  "EstimatedFoS": 1.3515625,
+  "DeviationFromLiterature": -0.04843749999999991,
+  "DeviationPercent": -3.4598214285714226,
+  "StatusMessage": "Critical FoS \u2248 1.352 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.344, 1.352])",
+  "FosNote": "Critical FoS \u2248 1.352 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.344, 1.352])",
+  "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  3.3815E-002     24\r\n   1.50  2.9486E-001   1000\r\n   1.25  3.9638E-002     48\r\n   1.38  6.6138E-002   1000\r\n   1.31  4.1286E-002    141\r\n   1.34  4.2297E-002    879\r\n   1.36  4.9906E-002   1000\r\n   1.35  4.4345E-002   1000\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.352 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.344, 1.352])",
+  "MeshRowCount": 220,
+  "NodeCount": 725,
+  "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\gui_automation\\q8",
+  "TrialRows": [
+    {
+      "Srf": 1,
+      "MaxDisplacement": 0.033815113869864064,
+      "Iterations": 24,
+      "Converged": true
+    },
+    {
+      "Srf": 1.25,
+      "MaxDisplacement": 0.03963807518448119,
+      "Iterations": 48,
+      "Converged": true
+    },
+    {
+      "Srf": 1.3125,
+      "MaxDisplacement": 0.04128628843789823,
+      "Iterations": 141,
+      "Converged": true
+    },
+    {
+      "Srf": 1.34375,
+      "MaxDisplacement": 0.042297,
+      "Iterations": 879,
+      "Converged": true
+    },
+    {
+      "Srf": 1.3515625,
+      "MaxDisplacement": 0.044345,
+      "Iterations": 1000,
+      "Converged": false
+    },
+    {
+      "Srf": 1.359375,
+      "MaxDisplacement": 0.04990604658435244,
+      "Iterations": 1000,
+      "Converged": false
+    },
+    {
+      "Srf": 1.375,
+      "MaxDisplacement": 0.06613818477308837,
+      "Iterations": 1000,
+      "Converged": false
+    },
+    {
+      "Srf": 1.5,
+      "MaxDisplacement": 0.29486,
+      "Iterations": 1000,
+      "Converged": false
+    }
+  ]
+}

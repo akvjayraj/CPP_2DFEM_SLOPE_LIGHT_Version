@@ -1,0 +1,69 @@
+Running T3 from C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\Griffiths_Lane_Example1_2H1V\griffiths_lane_example1_2h1v_t3.xfem
+[T3] SRF auto-bracket: probing seed F=1
+[T3] SRF auto-bracket: expanding upward, F=1.5
+[T3] SRF trial F=1.5: failed
+[T3] SRF bracket iter 1/20: F=1.25 (converged), bracket=[1.25, 1.5]
+[T3] SRF bracket iter 2/20: F=1.375 (converged), bracket=[1.375, 1.5]
+[T3] SRF bracket iter 3/20: F=1.438 (converged), bracket=[1.438, 1.5]
+[T3] SRF bracket iter 4/20: F=1.469 (converged), bracket=[1.469, 1.5]
+[T3] SRF trial F=1.484: failed
+[T3] SRF bracket iter 5/20: F=1.484 (failed), bracket=[1.469, 1.484]
+Completed T3: FoS=1.481 status=Critical FoS Γëê 1.481 (auto-detected bracket in 2 expansion + 6 bisection trial(s), F Γêê [1.477, 1.484])
+Running T6 from C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\Griffiths_Lane_Example1_2H1V\griffiths_lane_example1_2h1v_t6.xfem
+[T6] SRF auto-bracket: probing seed F=1
+[T6] SRF trial F=1: converged
+[T6] SRF auto-bracket: expanding upward, F=1.5
+[T6] SRF trial F=1.5: failed
+[T6] SRF trial F=1.25: converged
+[T6] SRF bracket iter 1/20: F=1.25 (converged), bracket=[1.25, 1.5]
+[T6] SRF trial F=1.375: converged
+[T6] SRF bracket iter 2/20: F=1.375 (converged), bracket=[1.375, 1.5]
+[T6] SRF trial F=1.438: failed
+[T6] SRF bracket iter 3/20: F=1.438 (failed), bracket=[1.375, 1.438]
+[T6] SRF trial F=1.406: converged
+[T6] SRF bracket iter 4/20: F=1.406 (converged), bracket=[1.406, 1.438]
+[T6] SRF trial F=1.422: converged
+[T6] SRF bracket iter 5/20: F=1.422 (converged), bracket=[1.422, 1.438]
+[T6] SRF bracket iter 6/20: F=1.43 (failed), bracket=[1.422, 1.43]
+Completed T6: FoS=1.428 status=Critical FoS Γëê 1.428 (auto-detected bracket in 2 expansion + 6 bisection trial(s), F Γêê [1.422, 1.43])
+Running Q4 from C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\Griffiths_Lane_Example1_2H1V\griffiths_lane_example1_2h1v_Q4.xfem
+[Q4] SRF auto-bracket: probing seed F=1
+[Q4] SRF auto-bracket: expanding upward, F=2.25
+[Q4] SRF trial F=2.25: failed
+[Q4] SRF bracket iter 1/20: F=1.875 (converged), bracket=[1.875, 2.25]
+[Q4] SRF bracket iter 2/20: F=2.062 (converged), bracket=[2.062, 2.25]
+[Q4] SRF trial F=2.156: converged
+[Q4] SRF bracket iter 3/20: F=2.156 (converged), bracket=[2.156, 2.25]
+[Q4] SRF trial F=2.203: converged
+[Q4] SRF bracket iter 4/20: F=2.203 (converged), bracket=[2.203, 2.25]
+[Q4] SRF bracket iter 5/20: F=2.227 (converged), bracket=[2.227, 2.25]
+[Q4] SRF trial F=2.238: failed
+[Q4] SRF bracket iter 6/20: F=2.238 (failed), bracket=[2.227, 2.238]
+[Q4] SRF trial F=2.232: failed
+Completed Q4: FoS=2.229 status=Error: Cannot set Owner property to a Window that has been closed.
+Running Q8 from C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\Griffiths_Lane_Example1_2H1V\griffiths_lane_example1_2h1v_Q8.xfem
+System.InvalidOperationException: Cannot set Owner property to a Window that has been closed.
+   at System.Windows.Window.set_Owner(Window value)
+   at GeotechSlopeApp.Views.MainWindow.CreateRightPanelWindow(Int32 tabIndex, MainWindowViewModel viewModel) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\Views\MainWindow.xaml.cs:line 484
+   at GeotechSlopeApp.Views.MainWindow.OpenRightPanelWindow(Int32 tabIndex, MainWindowViewModel viewModel) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\Views\MainWindow.xaml.cs:line 162
+   at GeotechSlopeApp.Views.MainWindow.MainTabs_OnSelectionChanged(Object sender, SelectionChangedEventArgs e) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\Views\MainWindow.xaml.cs:line 136
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+   at System.Windows.Controls.Primitives.Selector.OnItemsChanged(NotifyCollectionChangedEventArgs e)
+   at System.Windows.Controls.ItemsControl.OnItemCollectionChanged2(Object sender, NotifyCollectionChangedEventArgs e)
+   at System.Windows.Data.CollectionView.OnCollectionChanged(NotifyCollectionChangedEventArgs args)
+   at System.Windows.WeakEventManager.ListenerList`1.DeliverEvent(Object sender, EventArgs e, Type managerType)
+   at System.Windows.WeakEventManager.DeliverEvent(Object sender, EventArgs args)
+   at System.Windows.Data.ListCollectionView.RefreshOverride()
+   at System.Windows.Data.CollectionView.RefreshOrDefer()
+   at System.Windows.Data.ListCollectionView.ProcessCollectionChanged(NotifyCollectionChangedEventArgs args)
+   at System.Collections.ObjectModel.ObservableCollection`1.OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+   at GeotechSlopeApp.ViewModels.MaterialPropertiesViewModel.UpdateDetailedAnalysisTypes() in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\ViewModels\MaterialPropertiesViewModel.cs:line 322
+   at GeotechSlopeApp.ViewModels.ProjectSettingsViewModel.set_SelectedDimension(ProblemDimension value) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\ViewModels\ProjectSettingsViewModel.cs:line 150
+   at GeotechSlopeApp.Persistence.XfemProjectPersistence.ApplyCore(MainWindowViewModel vm, XfemDocument d) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\Persistence\XfemProjectPersistence.cs:line 1310
+   at GeotechSlopeApp.Persistence.XfemProjectPersistence.Apply(MainWindowViewModel vm, XfemDocument d) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\Persistence\XfemProjectPersistence.cs:line 1293
+   at GeotechSlopeApp.Persistence.XfemProjectPersistence.Load(MainWindowViewModel vm, String path) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\X2D_GUI\Persistence\XfemProjectPersistence.cs:line 63
+   at GriffithsLaneUiAutomation.Program.RunCase(Application app, MainWindowViewModel vm, MeshCase meshCase, String outputDir) in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\scripts\GriffithsLaneUiAutomation\Program.cs:line 106
+   at GriffithsLaneUiAutomation.Program.Main() in C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\scripts\GriffithsLaneUiAutomation\Program.cs:line 55

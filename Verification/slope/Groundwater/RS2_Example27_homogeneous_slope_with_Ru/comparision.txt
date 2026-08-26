@@ -1,0 +1,20 @@
+RS2 Example 27 — Homogeneous Slope with Pore Pressure Defined by Ru
+Source: RS2 Slope Stability Verification Part 1, §27
+(Slide2 verification problem #36; Li & Lumb 1987 / Hassan & Wolff 1999)
+
+Geometry (m): (0,0)-(0,5)-(5,5)-(15,15)-(20,15)-(20,0)
+  Toe bench 5 m @ y=5 from x=0 to x=5; slope 1H:1V (45°) from (5,5) to (15,15); crest bench 5 m @ y=15 from x=15 to x=20
+Groundwater: Ru = 0.2 (hydrostatic not used)
+Material: c'=18 kPa, phi'=30 deg, gamma=18 kN/m3
+
+Literature factors of safety:
+  SSR (RS2)                 T3 1.45;  T6 1.39
+  Bishop (Slide2)           1.339
+  Hassan and Wolff          1.334
+
+App notes (2026-07-27):
+  T3 SRF + Ru=0.2 (1171 els / 652 nodes), gravity turn-on: critical FoS ≈ 1.45
+  (OK @ 1.442, FAIL @ 1.447). Same band with srf_insitu_mode k0.
+  Ru is active (u_max ≈ 53 kPa ≈ Ru·γH). Gap vs SSR is ~+11% (app too stable),
+  opposite of Ex14 Ru=0.5 under-prediction. Likely T3 CST / SRF path stiffness;
+  try T6 + finer mesh. Dry FoS on same mesh is higher still (Ru does lower FoS).

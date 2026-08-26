@@ -1,0 +1,5 @@
+"Folder","Case","MeshType","FailureCriterion","MaterialType","SolverExecutable","DatExists","JsonExists","ResExists","NodeCount","ElementCount","StageCount","Sxx","Syy","Txy","Szz","Verdict","Notes","Commit","GeneratedAt"
+"tunnel_near_slope","tunnel_slope_t3","T3","MohrCoulomb","Isotropic","p610_t3_mohr_coulomb","True","True","True","3","1","2","-105","-65","0","-42.5","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"tunnel_near_slope","tunnel_slope_t6","T6","MohrCoulomb","Isotropic","p610_t3_mohr_coulomb","True","True","True","6","1","2","-105","-65","28.3333333333333","-42.5","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"tunnel_near_slope","tunnel_slope_q4","Q4","MohrCoulomb","Isotropic","p610_t3_mohr_coulomb","True","True","True","4","1","2","-120","7.49999999999998","2.25","-28.125","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"tunnel_near_slope","tunnel_slope_q8","Q8","MohrCoulomb","Isotropic","p610_t3_mohr_coulomb","True","True","True","8","1","2","-56.82421875","-5.05078125000002","9","-15.46875","PASS_WITH_INTERPRETATION","ok","4a6b63d","2026-05-05 15:51:36 +05:30"

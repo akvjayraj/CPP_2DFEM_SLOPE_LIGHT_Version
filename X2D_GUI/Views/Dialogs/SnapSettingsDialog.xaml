@@ -1,0 +1,84 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.SnapSettingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Snap Settings"
+        Width="430"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" TextWrapping="Wrap" Margin="0,0,0,12"
+                   Foreground="#FF475569"
+                   Text="Controls where a click on the slope canvas lands. Object snaps take priority over the grid: a vertex wins over an intersection, which wins over a midpoint, which wins over an arbitrary point along an edge."/>
+
+        <CheckBox Grid.Row="1" Content="Enable snapping"
+                  IsChecked="{Binding SnapEnabled, Mode=TwoWay}"
+                  Margin="0,0,0,12"/>
+
+        <StackPanel Grid.Row="2" IsEnabled="{Binding SnapEnabled}" Margin="0,0,0,12">
+            <TextBlock Text="Object snaps" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <CheckBox Content="Vertex" IsChecked="{Binding VertexSnap, Mode=TwoWay}" Margin="0,0,0,4"/>
+            <CheckBox Content="Intersection" IsChecked="{Binding IntersectionSnap, Mode=TwoWay}" Margin="0,0,0,4"/>
+            <CheckBox Content="Midpoint" IsChecked="{Binding MidpointSnap, Mode=TwoWay}" Margin="0,0,0,4"/>
+            <CheckBox Content="Edge (nearest point on a segment)" IsChecked="{Binding EdgeSnap, Mode=TwoWay}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="3" IsEnabled="{Binding SnapEnabled}" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="110"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <CheckBox Grid.Row="0" Grid.Column="0" Content="Snap to grid"
+                      IsChecked="{Binding GridSnap, Mode=TwoWay}"
+                      VerticalAlignment="Center" Margin="0,0,8,8"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,8"
+                     IsEnabled="{Binding GridSnap}"
+                     Text="{Binding GridSpacingText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Grid spacing in model units"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Snap tolerance (screen pixels)"
+                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Text="{Binding ToleranceText, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <Grid Grid.Row="4" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="110"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0" Content="Ortho constraint while drawing"
+                      IsChecked="{Binding OrthoEnabled, Mode=TwoWay}"
+                      VerticalAlignment="Center" Margin="0,0,8,0"
+                      ToolTip="Constrains each new point to a fixed angle from the previous one"/>
+            <TextBox Grid.Column="1"
+                     IsEnabled="{Binding OrthoEnabled}"
+                     Text="{Binding OrthoStepText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Angle increment in degrees; 90 gives horizontal and vertical only"/>
+        </Grid>
+
+        <TextBlock Grid.Row="5" Text="{Binding ErrorMessage}" Foreground="#FFDC2626"
+                   TextWrapping="Wrap" Margin="0,0,0,8"/>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="80" IsDefault="True" Margin="0,0,8,0" Click="Ok_Click"/>
+            <Button Content="Cancel" Width="80" IsCancel="True" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

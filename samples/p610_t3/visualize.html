@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>p610_t3 — visualize sample.res &amp; sample.json</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, Segoe UI, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; line-height: 1.45;
+    }
+    header {
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+    }
+    h1 { margin: 0; font-size: 1.15rem; font-weight: 600; }
+    .panel {
+      max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem 2rem;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .card h2 { margin: 0 0 0.75rem; font-size: 0.95rem; color: var(--accent); }
+    .hint { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.75rem; }
+    label.btn {
+      display: inline-block; padding: 0.4rem 0.9rem; background: #334155;
+      border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin-right: 0.5rem;
+    }
+    label.btn:hover { background: #475569; }
+    input[type="file"] { display: none; }
+    .row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+    select, button {
+      background: #334155; color: var(--text); border: 1px solid var(--border);
+      padding: 0.4rem 0.75rem; border-radius: 6px; font-size: 0.9rem; cursor: pointer;
+    }
+    select:focus, button:focus { outline: 2px solid var(--accent); }
+    canvas {
+      display: block; width: 100%; max-width: 1000px; height: auto;
+      background: #0c1222; border-radius: 8px; border: 1px solid var(--border);
+    }
+    .legend {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+      margin-top: 0.75rem; font-size: 0.85rem; color: var(--muted);
+    }
+    .bar {
+      width: 200px; height: 10px; border-radius: 4px;
+      background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #fbbf24, #f97316, #b91c1c);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { padding: 0.35rem 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; }
+    .mono { font-family: ui-monospace, Consolas, monospace; font-size: 0.8rem; }
+    pre {
+      background: #0c1222; padding: 0.75rem; border-radius: 8px; overflow: auto;
+      max-height: 220px; font-size: 0.75rem; line-height: 1.4; color: #cbd5e1;
+    }
+    .ok { color: #4ade80; }
+    .err { color: #f87171; }
+    .staged-h3 { margin: 1rem 0 0.25rem; font-size: 0.95rem; color: #f0abfc; }
+    .staged-sub { margin: 0 0 0.5rem; font-size: 0.8rem; color: var(--muted); }
+    .staged-plot { margin-bottom: 1.25rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>p610_t3 results viewer</h1>
+    <span class="mono" id="status">Loading…</span>
+  </header>
+  <div class="panel">
+    <p class="hint">
+      Loads <code>sample.json</code>: node coordinates, T3 <code>elements</code>, and (when present) one
+      <strong>stages</strong> entry per excavated layer — cumulative u after each excavation, for
+      <strong>separate</strong> contour plots. Also loads <code>sample.res</code> for a text summary.
+      On <code>file://</code> use the pickers below; over HTTP, <em>Try fetch</em> auto-loads both files.
+    </p>
+
+    <div class="card">
+      <h2>Load files</h2>
+      <div class="row">
+        <label class="btn">sample.json <input type="file" id="fJson" accept=".json,application/json" /></label>
+        <label class="btn">sample.res <input type="file" id="fRes" accept=".res,.txt" /></label>
+        <button type="button" id="tryFetch" title="Works when this folder is served over HTTP">Try fetch (same folder)</button>
+      </div>
+    </div>
+
+    <div class="card" id="jsonBlock" style="display:none">
+      <h2>Contour plot (import <code>sample.json</code>)</h2>
+      <p class="hint" id="plotIntro" style="margin-top:0">
+        Choose <strong>stage</strong> (0 = in-situ, u=0; 1+ = after each excavation) and
+        <strong>displacement</strong> or <strong>centroid stress</strong>. Stress fields require
+        <code>element_stresses</code> in the JSON (current p610_t3).
+      </p>
+      <div class="row" style="margin-bottom:0.75rem; flex-wrap:wrap">
+        <label>Stage
+          <select id="stageSelect" title="stages[0] = in-situ before any cut"></select>
+        </label>
+        <label>Quantity
+          <select id="plotType">
+            <option value="disp" selected>Displacement</option>
+            <option value="stress" id="optStressMode">Stress (T3 centroid)</option>
+          </select>
+        </label>
+        <span id="dispFields">
+          <label>Field
+            <select id="field">
+              <option value="mag" selected>|u| (m)</option>
+              <option value="ux">u<sub>x</sub> (m)</option>
+              <option value="uy">u<sub>y</sub> (m)</option>
+            </select>
+          </label>
+        </span>
+        <span id="stressFields" style="display:none">
+          <label>Component
+            <select id="stressField">
+              <option value="sxx" selected>σ<sub>xx</sub></option>
+              <option value="syy">σ<sub>yy</sub></option>
+              <option value="txy">τ<sub>xy</sub></option>
+              <option value="szz">σ<sub>zz</sub></option>
+              <option value="svm">von Mises (kPa, ~σ scale)</option>
+            </select>
+          </label>
+        </span>
+        <label><input type="checkbox" id="showInactive" checked /> Dim excavated T3 in mesh</label>
+      </div>
+      <h3 class="staged-h3" id="plotTitle" style="margin-top:0"></h3>
+      <p class="staged-sub mono" id="plotSub"></p>
+      <div id="plotHost" style="max-width:1000px"></div>
+    </div>
+
+    <div class="card" id="resBlock" style="display:none">
+      <h2>sample.res — parsed</h2>
+      <p class="mono" id="resMeta"></p>
+      <div id="resTables"></div>
+    </div>
+
+    <div class="card" id="resRawBlock" style="display:none">
+      <h2>sample.res — raw (tail)</h2>
+      <pre id="resRaw" class="mono"></pre>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const status = $('status');
+    const plotHost = $('plotHost');
+    const plotIntro = $('plotIntro');
+
+    let data = null; // { nodes, elements, stages?, solver, layers }
+    let resText = '';
+
+    function setStatus(msg, isErr) {
+      status.textContent = msg;
+      status.className = isErr ? 'mono err' : 'mono ok';
+    }
+
+    function lerpColor(t) {
+      t = Math.max(0, Math.min(1, t));
+      const stops = [
+        [0.15, 0.3, 0.45], [0, 0.65, 0.9], [1, 0.75, 0.2], [0.95, 0.35, 0.1], [0.55, 0.1, 0.1]
+      ];
+      const n = stops.length - 1;
+      const f = t * n;
+      const i = Math.min(n - 1, Math.floor(f));
+      const u = f - i;
+      const a = stops[i], b = stops[i + 1];
+      const r = a[0] + (b[0] - a[0]) * u;
+      const g = a[1] + (b[1] - a[1]) * u;
+      const bl = a[2] + (b[2] - a[2]) * u;
+      return 'rgb(' + Math.round(r * 255) + ',' + Math.round(g * 255) + ',' + Math.round(bl * 255) + ')';
+    }
+
+    function valueForField(n, field) {
+      if (field === 'ux') return n.ux;
+      if (field === 'uy') return n.uy;
+      return Math.hypot(n.ux, n.uy);
+    }
+
+    function vonMises2D(sxx, syy, txy, szz) {
+      return Math.sqrt(
+        0.5 * (Math.pow(sxx - syy, 2) + Math.pow(syy - szz, 2) + Math.pow(szz - sxx, 2)) + 3 * txy * txy
+      );
+    }
+
+    function stressValue(es, comp) {
+      if (!es) return 0;
+      if (comp === 'svm') return vonMises2D(es.sxx, es.syy, es.txy, es.szz);
+      return +es[comp] || 0;
+    }
+
+    function drawMesh(ctx, nodes, elements, field, showInactive, stageIndex) {
+      const w = ctx.canvas.width, h = ctx.canvas.height;
+      const byId = new Map();
+      nodes.forEach((n) => byId.set(n.id, n));
+      const sIdx = stageIndex | 0;
+      const inSitu = sIdx === 0;
+
+      let vMin = Infinity, vMax = -Infinity;
+      nodes.forEach((n) => {
+        const v = valueForField(n, field);
+        if (Number.isFinite(v)) { vMin = Math.min(vMin, v); vMax = Math.max(vMax, v); }
+      });
+      if (vMax - vMin < 1e-20) { vMax = vMin + 1; }
+      const rangeText = field + ' min=' + vMin.toExponential(4) + ' max=' + vMax.toExponential(4);
+
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      nodes.forEach((n) => {
+        minX = Math.min(minX, n.x); maxX = Math.max(maxX, n.x);
+        minY = Math.min(minY, n.y); maxY = Math.max(maxY, n.y);
+      });
+      const pad = 0.04 * Math.max(maxX - minX, maxY - minY, 1);
+      minX -= pad; maxX += pad; minY -= pad; maxY += pad;
+
+      const margin = 20;
+      function project(x, y) {
+        const sx = (x - minX) / (maxX - minX) * (w - 2 * margin) + margin;
+        const sy = h - margin - (y - minY) / (maxY - minY) * (h - 2 * margin);
+        return [sx, sy];
+      }
+
+      ctx.fillStyle = '#0c1222';
+      ctx.fillRect(0, 0, w, h);
+
+      elements.forEach((el) => {
+        const a = byId.get(el.n1), b = byId.get(el.n2), c = byId.get(el.n3);
+        if (!a || !b || !c) return;
+        const activeMesh = inSitu || (el.active !== 0);
+        const va = valueForField(a, field);
+        const vb = valueForField(b, field);
+        const vc = valueForField(c, field);
+        const t = (va + vb + vc) / 3;
+        const norm = (t - vMin) / (vMax - vMin);
+        const [p1x, p1y] = project(a.x, a.y);
+        const [p2x, p2y] = project(b.x, b.y);
+        const [p3x, p3y] = project(c.x, c.y);
+        ctx.beginPath();
+        ctx.moveTo(p1x, p1y);
+        ctx.lineTo(p2x, p2y);
+        ctx.lineTo(p3x, p3y);
+        ctx.closePath();
+        if (activeMesh) {
+          ctx.fillStyle = lerpColor(norm);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = showInactive ? 'rgba(40,50,70,0.25)' : 'rgba(20,30,50,0.08)';
+          ctx.fill();
+        }
+        ctx.strokeStyle = activeMesh ? 'rgba(12,18,34,0.35)' : 'rgba(100,100,120,0.2)';
+        ctx.lineWidth = 0.3;
+        ctx.stroke();
+      });
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '12px system-ui';
+      ctx.fillText('x', w - 12, h - 8);
+      ctx.save();
+      ctx.translate(10, 24);
+      ctx.fillText('y', 0, 0);
+      ctx.restore();
+      return rangeText;
+    }
+
+    function drawMeshStress(ctx, stage, elements, comp, showInactive) {
+      const w = ctx.canvas.width, h = ctx.canvas.height;
+      const nodes = stage.nodes;
+      const est = stage.element_stresses;
+      if (!est || !est.length) { return 'no element_stresses in JSON'; }
+      const sMap = new Map();
+      est.forEach((e) => sMap.set(e.id, e));
+      const sIdx = stage.index | 0;
+      const inSitu = sIdx === 0;
+
+      let vMin = Infinity, vMax = -Infinity;
+      est.forEach((e) => {
+        const v = stressValue(e, comp);
+        if (Number.isFinite(v)) { vMin = Math.min(vMin, v); vMax = Math.max(vMax, v); }
+      });
+      if (vMax - vMin < 1e-20) { vMax = vMin + 1; }
+      const rangeText = comp + ' min=' + vMin.toExponential(4) + ' max=' + vMax.toExponential(4);
+
+      const byId = new Map();
+      nodes.forEach((n) => byId.set(n.id, n));
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      nodes.forEach((n) => {
+        minX = Math.min(minX, n.x); maxX = Math.max(maxX, n.x);
+        minY = Math.min(minY, n.y); maxY = Math.max(maxY, n.y);
+      });
+      const pad = 0.04 * Math.max(maxX - minX, maxY - minY, 1);
+      minX -= pad; maxX += pad; minY -= pad; maxY += pad;
+      const margin = 20;
+      function project(x, y) {
+        const sx = (x - minX) / (maxX - minX) * (w - 2 * margin) + margin;
+        const sy = h - margin - (y - minY) / (maxY - minY) * (h - 2 * margin);
+        return [sx, sy];
+      }
+
+      ctx.fillStyle = '#0c1222';
+      ctx.fillRect(0, 0, w, h);
+
+      elements.forEach((el) => {
+        const a = byId.get(el.n1), b = byId.get(el.n2), c = byId.get(el.n3);
+        if (!a || !b || !c) return;
+        const se = sMap.get(el.id);
+        const val = stressValue(se, comp);
+        const isVoid = !se || (Math.abs(se.sxx) + Math.abs(se.syy) + Math.abs(se.txy) + Math.abs(se.szz) < 1e-20);
+        const activeMesh = inSitu || !isVoid;
+        const norm = (val - vMin) / (vMax - vMin);
+        const [p1x, p1y] = project(a.x, a.y);
+        const [p2x, p2y] = project(b.x, b.y);
+        const [p3x, p3y] = project(c.x, c.y);
+        ctx.beginPath();
+        ctx.moveTo(p1x, p1y);
+        ctx.lineTo(p2x, p2y);
+        ctx.lineTo(p3x, p3y);
+        ctx.closePath();
+        if (activeMesh) {
+          ctx.fillStyle = lerpColor(Math.max(0, Math.min(1, norm)));
+          ctx.fill();
+        } else {
+          ctx.fillStyle = showInactive ? 'rgba(40,50,70,0.2)' : 'rgba(20,30,50,0.08)';
+          ctx.fill();
+        }
+        ctx.strokeStyle = activeMesh ? 'rgba(12,18,34,0.3)' : 'rgba(100,100,120,0.2)';
+        ctx.lineWidth = 0.3;
+        ctx.stroke();
+      });
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '12px system-ui';
+      ctx.fillText('x', w - 12, h - 8);
+      ctx.save();
+      ctx.translate(10, 24);
+      ctx.fillText('y', 0, 0);
+      ctx.restore();
+      return rangeText;
+    }
+
+    function getCurrentStage() {
+      if (!data) return null;
+      const st = data.stages;
+      if (st && st.length) {
+        const i = +$('stageSelect').value;
+        if (i >= 0 && i < st.length) return st[i];
+        return st[st.length - 1];
+      }
+      return { index: 0, nodes: data.nodes, neq: null, element_stresses: null };
+    }
+
+    function refreshStageList() {
+      const sel = $('stageSelect');
+      sel.innerHTML = '';
+      if (data && data.stages && data.stages.length) {
+        data.stages.forEach(function (st, i) {
+          const o = document.createElement('option');
+          o.value = String(i);
+          const lab = (st.name || ('stage ' + (st.index != null ? st.index : i)));
+          o.textContent = 'Stage ' + (st.index != null ? st.index : i) + ' — ' + lab;
+          sel.appendChild(o);
+        });
+        sel.value = String(Math.max(0, data.stages.length - 1));
+      } else {
+        const o = document.createElement('option');
+        o.value = '0';
+        o.textContent = 'Final (no stages in file)';
+        sel.appendChild(o);
+      }
+    }
+
+    function drawAll() {
+      if (!data || !data.nodes || !data.nodes.length) return;
+      const elements = data.elements;
+      if (!elements || !elements.length) { setStatus('JSON missing `elements`', true); return; }
+
+      const plotType = $('plotType').value;
+      const st = getCurrentStage();
+      if (!st) { setStatus('No stage', true); return; }
+      const stageIndex = (st.index != null) ? st.index : 0;
+      const title = (st.name ? st.name : ('Stage ' + stageIndex)) +
+        (plotType === 'disp' ? ' — displacement' : ' — stress');
+      $('plotTitle').textContent = title;
+      $('plotSub').textContent = (st.neq != null ? 'neq=' + st.neq + ' · ' : '') +
+        (st.elements_solid != null ? 'solid T3=' + st.elements_solid : '') +
+        (st.removed != null ? ' · removed this cut=' + st.removed : '');
+
+      const showInactive = $('showInactive').checked;
+      plotHost.innerHTML = '';
+      const cv = document.createElement('canvas');
+      cv.width = 1000; cv.height = 640;
+      const ctx2 = cv.getContext('2d');
+      let range = '';
+      if (plotType === 'disp') {
+        const field = $('field').value;
+        range = drawMesh(ctx2, st.nodes, elements, field, showInactive, stageIndex);
+      } else {
+        if (!st.element_stresses || !st.element_stresses.length) {
+          range = 'Missing element_stresses (rebuild p610_t3)';
+        } else {
+          const comp = $('stressField').value;
+          range = drawMeshStress(ctx2, st, elements, comp, showInactive);
+        }
+      }
+      const leg = document.createElement('div');
+      leg.className = 'legend';
+      leg.innerHTML = '<span>Low</span><div class="bar" aria-hidden="true"></div><span>High</span> <span class="mono">' + range + '</span>';
+      plotHost.appendChild(cv);
+      plotHost.appendChild(leg);
+    }
+
+    function onPlotTypeChange() {
+      const t = $('plotType').value;
+      $('dispFields').style.display = t === 'disp' ? 'inline' : 'none';
+      $('stressFields').style.display = t === 'stress' ? 'inline' : 'none';
+      const so = $('optStressMode');
+      if (t === 'stress' && so && so.disabled) $('plotType').value = 'disp';
+      drawAll();
+    }
+
+    function parseRes(text) {
+      const lines = text.split(/\r?\n/);
+      const out = { header: [], excavations: [] };
+      for (const line of lines) {
+        const t = line.trim();
+        if (/^Initial (elements|freedoms):/i.test(t)) out.header.push(t);
+        if (/^Stage 0/i.test(t) || /Stage\s+0.*in-?situ/i.test(t)) out.header.push('(Stage 0 in-situ block present)');
+      }
+      const reExc = /Excavation number\s+(\d+)/i;
+      const reFreed = /Freedoms:\s*(\d+)/i;
+      const reRem = /Elements remaining:\s*(\d+)\s*\(removed\s*(\d+)\)/i;
+      const reInc = /Inc\s+(\d+)\s+took\s+(\d+)\s+iterations/i;
+      const reNode = /^\s*(\d+)\s+([-+eE0-9.]+)\s+([-+eE0-9.]+)\s*$/;
+      let cur = null;
+      for (const line of lines) {
+        const t = line.trim();
+        const mE = t.match(reExc);
+        if (mE) {
+          cur = { n: +mE[1], freedoms: null, elementsRemaining: null, removed: null, incs: [], nodes: [] };
+          out.excavations.push(cur);
+          continue;
+        }
+        if (!cur) continue;
+        const mF = t.match(reFreed);
+        if (mF) { cur.freedoms = +mF[1]; continue; }
+        const mR = t.match(reRem);
+        if (mR) { cur.elementsRemaining = +mR[1]; cur.removed = +mR[2]; continue; }
+        const mI = t.match(reInc);
+        if (mI) { cur.incs.push({ inc: +mI[1], iters: +mI[2] }); continue; }
+        const mN = t.match(reNode);
+        if (mN && t.indexOf('Node') < 0) {
+          cur.nodes.push({ id: +mN[1], ux: +mN[2], uy: +mN[3] });
+        }
+      }
+      return out;
+    }
+
+    function renderRes(text) {
+      if (!text || !text.trim()) {
+        $('resBlock').style.display = 'none';
+        $('resRawBlock').style.display = 'none';
+        return;
+      }
+      resText = text;
+      const parsed = parseRes(text);
+      const meta = [];
+      meta.push('Layers (from .res): ' + (parsed.excavations.length || '—'));
+      parsed.header.forEach((h) => meta.push(h));
+      $('resMeta').textContent = meta.join(' | ');
+      const host = $('resTables');
+      host.innerHTML = '';
+      parsed.excavations.forEach((ex) => {
+        const d = document.createElement('div');
+        d.style.marginBottom = '1rem';
+        d.innerHTML = '<strong>Excavation ' + ex.n + '</strong> — ' +
+          'Freedoms: ' + (ex.freedoms ?? '—') + ', elements left: ' + (ex.elementsRemaining ?? '—') +
+          (ex.removed != null ? ' (removed ' + ex.removed + ')' : '');
+        if (ex.incs && ex.incs.length) {
+          const t = document.createElement('table');
+          t.innerHTML = '<tr><th>Inc</th><th>Iterations</th></tr>' +
+            ex.incs.map((i) => '<tr><td>' + i.inc + '</td><td>' + i.iters + '</td></tr>').join('');
+          d.appendChild(t);
+        }
+        if (ex.nodes && ex.nodes.length) {
+          const cap = document.createElement('p');
+          cap.className = 'mono';
+          cap.style.color = 'var(--muted)';
+          cap.style.fontSize = '0.8rem';
+          cap.textContent = 'Output nodes (from .res, first 12 rows):';
+          d.appendChild(cap);
+          const t2 = document.createElement('table');
+          const head = '<tr><th>Node</th><th>u_x</th><th>u_y</th></tr>';
+          const body = ex.nodes.slice(0, 12).map((n) =>
+            '<tr><td>' + n.id + '</td><td>' + n.ux + '</td><td>' + n.uy + '</td></tr>').join('');
+          t2.innerHTML = head + body;
+          d.appendChild(t2);
+        }
+        host.appendChild(d);
+      });
+      $('resBlock').style.display = 'block';
+      const lines = text.split(/\r?\n/);
+      $('resRaw').textContent = lines.slice(-50).join('\n');
+      $('resRawBlock').style.display = 'block';
+    }
+
+    function applyJson(j) {
+      if (!j || !j.nodes) { setStatus('Invalid JSON: expected { nodes, elements }', true); return; }
+      data = j;
+      $('jsonBlock').style.display = 'block';
+      const nSt = (j.n_stages != null) ? j.n_stages : (j.stages && j.stages.length) || 0;
+      setStatus('OK: ' + (j.solver || 'solver') + ' | ' + nSt + ' stage(s) in JSON | ' + j.nodes.length + ' nodes | ' + (j.elements && j.elements.length) + ' elements', false);
+      refreshStageList();
+      const canStress = j.stages && j.stages.some((s) => s.element_stresses && s.element_stresses.length);
+      const so = $('optStressMode');
+      if (so) {
+        so.disabled = !canStress;
+        if (so.disabled && $('plotType').value === 'stress') $('plotType').value = 'disp';
+      }
+      onPlotTypeChange();
+    }
+
+    async function tryFetch() {
+      try {
+        const r = await fetch('sample.json', { cache: 'no-store' });
+        if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+        applyJson(await r.json());
+      } catch (e) {
+        setStatus('fetch(sample.json) failed: ' + e.message + ' — use file picker or run: python -m http.server', true);
+      }
+      try {
+        const r2 = await fetch('sample.res', { cache: 'no-store' });
+        if (r2.ok) renderRes(await r2.text());
+        else setStatus($('status').textContent + ' (no sample.res from fetch)', false);
+      } catch (e) { /* optional */ }
+    }
+
+    $('field').onchange = drawAll;
+    $('showInactive').onchange = drawAll;
+    $('stageSelect').onchange = drawAll;
+    $('plotType').onchange = onPlotTypeChange;
+    $('stressField').onchange = drawAll;
+    $('tryFetch').onclick = tryFetch;
+
+    $('fJson').onchange = function (e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = function () {
+        try { applyJson(JSON.parse(r.result)); } catch (err) { setStatus('JSON parse error: ' + err.message, true); }
+      };
+      r.readAsText(f);
+    };
+
+    $('fRes').onchange = function (e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = function () { renderRes(r.result); setStatus('Loaded ' + f.name, false); };
+      r.readAsText(f);
+    };
+
+    // Auto-try fetch on load
+    tryFetch();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,9171 @@
+{
+  "formatVersion": "1.2",
+  "main": {
+    "selectedTabIndex": 1,
+    "zoomPanModeEnabled": false
+  },
+  "projectSettings": {
+    "selectedDimension": "twoD",
+    "selectedSettingsTabIndex": 0,
+    "isDeterministicAnalysis": true,
+    "isProbabilisticAnalysis": false,
+    "numberOfStages": 0,
+    "stageFooterTabs": [],
+    "projectName": "",
+    "author": "",
+    "createdOn": "2026-05-26T00:00:00+05:30",
+    "units": "SI",
+    "bishopMaxIterations": 100,
+    "bishopConvergenceTolerance": 1E-06,
+    "bishopInitialFactor": 1,
+    "numberOfStagesModel": 1,
+    "axisXMin": -0.44000000000000006,
+    "axisXMax": 4.840000000000001,
+    "axisYMin": -0.44000000000000006,
+    "axisYMax": 2.44,
+    "gridSpacingMeters": 10
+  },
+  "geometry": {
+    "canvasWidth": 600,
+    "canvasHeight": 400,
+    "axisXMin": -0.44000000000000006,
+    "axisXMax": 4.840000000000001,
+    "axisYMin": -0.44000000000000006,
+    "axisYMax": 2.44,
+    "layerElevationInput": "0.4",
+    "hasAddedElevationLayer": false,
+    "materialLayerCutElevations": [
+      0.4,
+      1
+    ],
+    "layerMaterialAssignments": [
+      {
+        "displayLayerNumber": 1,
+        "materialId": 1
+      },
+      {
+        "displayLayerNumber": 2,
+        "materialId": 2
+      },
+      {
+        "displayLayerNumber": 3,
+        "materialId": 1
+      }
+    ],
+    "layerDisplayNames": [
+      {
+        "displayLayerNumber": 1,
+        "name": "Material 1"
+      },
+      {
+        "displayLayerNumber": 2,
+        "name": "Material 2"
+      },
+      {
+        "displayLayerNumber": 3,
+        "name": "Material 1"
+      }
+    ],
+    "tunnelCenterXInput": "",
+    "tunnelCenterYInput": "",
+    "tunnelRadiusInput": "",
+    "geometryXInput": "",
+    "geometryYInput": "",
+    "vertices": [
+      {
+        "x": 0,
+        "y": 1,
+        "stablePointId": 171
+      },
+      {
+        "x": 0,
+        "y": 0.4,
+        "stablePointId": 177
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "stablePointId": 181
+      },
+      {
+        "x": 4.4,
+        "y": 0,
+        "stablePointId": 201
+      },
+      {
+        "x": 4.4,
+        "y": 0.4,
+        "stablePointId": 205
+      },
+      {
+        "x": 4.4,
+        "y": 1,
+        "stablePointId": 211
+      },
+      {
+        "x": 3.2,
+        "y": 1,
+        "stablePointId": 221
+      },
+      {
+        "x": 1.2,
+        "y": 2,
+        "stablePointId": 231
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "stablePointId": 161
+      }
+    ],
+    "lineSegments": [
+      {
+        "lineNumber": 1,
+        "fromPoint": "Point 171",
+        "toPoint": "Point 177",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 2,
+        "fromPoint": "Point 177",
+        "toPoint": "Point 181",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 3,
+        "fromPoint": "Point 181",
+        "toPoint": "Point 201",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 4,
+        "fromPoint": "Point 201",
+        "toPoint": "Point 205",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 5,
+        "fromPoint": "Point 205",
+        "toPoint": "Point 211",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 6,
+        "fromPoint": "Point 211",
+        "toPoint": "Point 221",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 7,
+        "fromPoint": "Point 221",
+        "toPoint": "Point 231",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 8,
+        "fromPoint": "Point 231",
+        "toPoint": "Point 161",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 9,
+        "fromPoint": "Point 161",
+        "toPoint": "Point 171",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 10,
+        "fromPoint": "Point 177",
+        "toPoint": "Point 205",
+        "isBoundaryEdge": false,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 11,
+        "fromPoint": "Point 171",
+        "toPoint": "Point 221",
+        "isBoundaryEdge": false,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      }
+    ],
+    "internalEdges": [
+      {
+        "isArc": false,
+        "stableMin": 177,
+        "stableMax": 205
+      },
+      {
+        "isArc": false,
+        "stableMin": 171,
+        "stableMax": 221
+      }
+    ],
+    "geometryCircles": [],
+    "surfaces": [
+      {
+        "surfaceNumber": 1,
+        "surfaceName": "",
+        "colorIndex": -1,
+        "isPolygonLocked": true,
+        "lockedPolygonVertexLabels": [
+          "Point 171",
+          "Point 221",
+          "Point 231",
+          "Point 161"
+        ],
+        "connectedLineNumbers": [
+          11,
+          9,
+          8,
+          7
+        ]
+      },
+      {
+        "surfaceNumber": 2,
+        "surfaceName": "",
+        "colorIndex": -1,
+        "isPolygonLocked": true,
+        "lockedPolygonVertexLabels": [
+          "Point 171",
+          "Point 221",
+          "Point 211",
+          "Point 205",
+          "Point 177"
+        ],
+        "connectedLineNumbers": [
+          11,
+          1,
+          10,
+          5,
+          6
+        ]
+      },
+      {
+        "surfaceNumber": 3,
+        "surfaceName": "",
+        "colorIndex": -1,
+        "isPolygonLocked": true,
+        "lockedPolygonVertexLabels": [
+          "Point 177",
+          "Point 205",
+          "Point 201",
+          "Point 181"
+        ],
+        "connectedLineNumbers": [
+          10,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "selectedSurfaceNumber": 3,
+    "tunnelRows": [],
+    "groundwaterLines": [],
+    "excavationPolygonsAxis": [],
+    "surfaceExcavationOperations": []
+  },
+  "materials": {
+    "selectedFailureCriterion": "mohrCoulomb",
+    "selectedMaterialType": "isotropic",
+    "selectedAnalysisCategory": "Slope stability \u2013 strength reduction (SRF)",
+    "selectedDetailedAnalysisType": "Multi-\u03BB strength reduction (SRF sweep)",
+    "showDeterministicTab": true,
+    "showProbabilisticTab": true,
+    "selectedMaterialLibraryId": 1,
+    "materialLibrary": [
+      {
+        "id": 1,
+        "name": "Material 1",
+        "description": "",
+        "colourArgb": 4289583334,
+        "failureCriterion": "mohrCoulomb",
+        "materialType": "isotropic",
+        "youngsModulus": 100000,
+        "poissonsRatio": 0.3,
+        "youngsModulusH": 100000,
+        "youngsModulusV": 50000,
+        "poissonsRatioHH": 0.3,
+        "poissonsRatioVH": 0.2,
+        "shearModulusVH": 20000,
+        "unitWeight": 20,
+        "saturatedUnitWeight": 22,
+        "isSaturatedEnabled": false,
+        "cohesion": 1,
+        "frictionAngle": 25,
+        "dilationAngle": 0,
+        "tensileCutoff": 0,
+        "ucs": 50,
+        "hoekBrownMi": 10,
+        "gsi": 50,
+        "disturbance": 0,
+        "modulusRatio": 400,
+        "dpAlpha": 0,
+        "dpK": 0,
+        "permeabilityX": 1E-06,
+        "permeabilityY": 1E-06,
+        "porosity": 0.3,
+        "initialVoidRatio": 0.5,
+        "specificStorage": 0.0001,
+        "thermalConductivityX": 2,
+        "thermalConductivityY": 2,
+        "heatCapacity": 1000,
+        "thermalExpansion": 1E-05,
+        "density": 2000,
+        "dampingRatio": 0.05
+      },
+      {
+        "id": 2,
+        "name": "Material 2",
+        "description": "",
+        "colourArgb": 4289583334,
+        "failureCriterion": "mohrCoulomb",
+        "materialType": "isotropic",
+        "youngsModulus": 100000,
+        "poissonsRatio": 0.3,
+        "youngsModulusH": 100000,
+        "youngsModulusV": 50000,
+        "poissonsRatioHH": 0.3,
+        "poissonsRatioVH": 0.2,
+        "shearModulusVH": 20000,
+        "unitWeight": 20,
+        "saturatedUnitWeight": 22,
+        "isSaturatedEnabled": false,
+        "cohesion": 0.5,
+        "frictionAngle": 15,
+        "dilationAngle": 0,
+        "tensileCutoff": 0,
+        "ucs": 50,
+        "hoekBrownMi": 10,
+        "gsi": 50,
+        "disturbance": 0,
+        "modulusRatio": 400,
+        "dpAlpha": 0,
+        "dpK": 0,
+        "permeabilityX": 1E-06,
+        "permeabilityY": 1E-06,
+        "porosity": 0.3,
+        "initialVoidRatio": 0.5,
+        "specificStorage": 0.0001,
+        "thermalConductivityX": 2,
+        "thermalConductivityY": 2,
+        "heatCapacity": 1000,
+        "thermalExpansion": 1E-05,
+        "density": 2000,
+        "dampingRatio": 0.05
+      }
+    ]
+  },
+  "mesh": {
+    "oneDMeshLength": "11.9161",
+    "oneDMeshN": "5",
+    "oneDMeshStatus": "",
+    "isDiscretized": true,
+    "showMeshElements": false,
+    "showMeshNodes": false,
+    "selectedTwoDElementFamily": "Quadrilaterals",
+    "selectedTwoDNodeOption": "8-node",
+    "selectedMeshNumberingDirection": "dir = x",
+    "discretizationNodes": [
+      {
+        "x": 0,
+        "y": 2
+      },
+      {
+        "x": 0,
+        "y": 1.9
+      },
+      {
+        "x": 0,
+        "y": 1.8
+      },
+      {
+        "x": 0,
+        "y": 1.7
+      },
+      {
+        "x": 0,
+        "y": 1.6
+      },
+      {
+        "x": 0,
+        "y": 1.5
+      },
+      {
+        "x": 0,
+        "y": 1.4
+      },
+      {
+        "x": 0,
+        "y": 1.3
+      },
+      {
+        "x": 0,
+        "y": 1.2
+      },
+      {
+        "x": 0,
+        "y": 1.1
+      },
+      {
+        "x": 0,
+        "y": 1
+      },
+      {
+        "x": 0,
+        "y": 0.9
+      },
+      {
+        "x": 0,
+        "y": 0.8
+      },
+      {
+        "x": 0,
+        "y": 0.7
+      },
+      {
+        "x": 0,
+        "y": 0.6
+      },
+      {
+        "x": 0,
+        "y": 0.5
+      },
+      {
+        "x": 0,
+        "y": 0.4
+      },
+      {
+        "x": 0,
+        "y": 0.3
+      },
+      {
+        "x": 0,
+        "y": 0.2
+      },
+      {
+        "x": 0,
+        "y": 0.1
+      },
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 0.12,
+        "y": 2
+      },
+      {
+        "x": 0.16,
+        "y": 1.8
+      },
+      {
+        "x": 0.2,
+        "y": 1.6
+      },
+      {
+        "x": 0.24,
+        "y": 1.4
+      },
+      {
+        "x": 0.28,
+        "y": 1.2
+      },
+      {
+        "x": 0.32,
+        "y": 1
+      },
+      {
+        "x": 0.32,
+        "y": 0.8
+      },
+      {
+        "x": 0.32,
+        "y": 0.6
+      },
+      {
+        "x": 0.32,
+        "y": 0.4
+      },
+      {
+        "x": 0.32,
+        "y": 0.2
+      },
+      {
+        "x": 0.32,
+        "y": 0
+      },
+      {
+        "x": 0.24,
+        "y": 2
+      },
+      {
+        "x": 0.28,
+        "y": 1.9
+      },
+      {
+        "x": 0.32,
+        "y": 1.8
+      },
+      {
+        "x": 0.36,
+        "y": 1.7
+      },
+      {
+        "x": 0.4,
+        "y": 1.6
+      },
+      {
+        "x": 0.44,
+        "y": 1.5
+      },
+      {
+        "x": 0.48,
+        "y": 1.4
+      },
+      {
+        "x": 0.52,
+        "y": 1.3
+      },
+      {
+        "x": 0.56,
+        "y": 1.2
+      },
+      {
+        "x": 0.6,
+        "y": 1.1
+      },
+      {
+        "x": 0.64,
+        "y": 1
+      },
+      {
+        "x": 0.64,
+        "y": 0.9
+      },
+      {
+        "x": 0.64,
+        "y": 0.8
+      },
+      {
+        "x": 0.64,
+        "y": 0.7
+      },
+      {
+        "x": 0.64,
+        "y": 0.6
+      },
+      {
+        "x": 0.64,
+        "y": 0.5
+      },
+      {
+        "x": 0.64,
+        "y": 0.4
+      },
+      {
+        "x": 0.64,
+        "y": 0.3
+      },
+      {
+        "x": 0.64,
+        "y": 0.2
+      },
+      {
+        "x": 0.64,
+        "y": 0.1
+      },
+      {
+        "x": 0.64,
+        "y": 0
+      },
+      {
+        "x": 0.36,
+        "y": 2
+      },
+      {
+        "x": 0.48,
+        "y": 1.8
+      },
+      {
+        "x": 0.6,
+        "y": 1.6
+      },
+      {
+        "x": 0.72,
+        "y": 1.4
+      },
+      {
+        "x": 0.84,
+        "y": 1.2
+      },
+      {
+        "x": 0.96,
+        "y": 1
+      },
+      {
+        "x": 0.96,
+        "y": 0.8
+      },
+      {
+        "x": 0.96,
+        "y": 0.6
+      },
+      {
+        "x": 0.96,
+        "y": 0.4
+      },
+      {
+        "x": 0.96,
+        "y": 0.2
+      },
+      {
+        "x": 0.96,
+        "y": 0
+      },
+      {
+        "x": 0.48,
+        "y": 2
+      },
+      {
+        "x": 0.56,
+        "y": 1.9
+      },
+      {
+        "x": 0.64,
+        "y": 1.8
+      },
+      {
+        "x": 0.72,
+        "y": 1.7
+      },
+      {
+        "x": 0.8,
+        "y": 1.6
+      },
+      {
+        "x": 0.88,
+        "y": 1.5
+      },
+      {
+        "x": 0.96,
+        "y": 1.4
+      },
+      {
+        "x": 1.04,
+        "y": 1.3
+      },
+      {
+        "x": 1.12,
+        "y": 1.2
+      },
+      {
+        "x": 1.2,
+        "y": 1.1
+      },
+      {
+        "x": 1.28,
+        "y": 1
+      },
+      {
+        "x": 1.28,
+        "y": 0.9
+      },
+      {
+        "x": 1.28,
+        "y": 0.8
+      },
+      {
+        "x": 1.28,
+        "y": 0.7
+      },
+      {
+        "x": 1.28,
+        "y": 0.6
+      },
+      {
+        "x": 1.28,
+        "y": 0.5
+      },
+      {
+        "x": 1.28,
+        "y": 0.4
+      },
+      {
+        "x": 1.28,
+        "y": 0.3
+      },
+      {
+        "x": 1.28,
+        "y": 0.2
+      },
+      {
+        "x": 1.28,
+        "y": 0.1
+      },
+      {
+        "x": 1.28,
+        "y": 0
+      },
+      {
+        "x": 0.6,
+        "y": 2
+      },
+      {
+        "x": 0.8,
+        "y": 1.8
+      },
+      {
+        "x": 1,
+        "y": 1.6
+      },
+      {
+        "x": 1.2,
+        "y": 1.4
+      },
+      {
+        "x": 1.4,
+        "y": 1.2
+      },
+      {
+        "x": 1.6,
+        "y": 1
+      },
+      {
+        "x": 1.6,
+        "y": 0.8
+      },
+      {
+        "x": 1.6,
+        "y": 0.6
+      },
+      {
+        "x": 1.6,
+        "y": 0.4
+      },
+      {
+        "x": 1.6,
+        "y": 0.2
+      },
+      {
+        "x": 1.6,
+        "y": 0
+      },
+      {
+        "x": 0.72,
+        "y": 2
+      },
+      {
+        "x": 0.84,
+        "y": 1.9
+      },
+      {
+        "x": 0.96,
+        "y": 1.8
+      },
+      {
+        "x": 1.08,
+        "y": 1.7
+      },
+      {
+        "x": 1.2,
+        "y": 1.6
+      },
+      {
+        "x": 1.32,
+        "y": 1.5
+      },
+      {
+        "x": 1.44,
+        "y": 1.4
+      },
+      {
+        "x": 1.56,
+        "y": 1.3
+      },
+      {
+        "x": 1.68,
+        "y": 1.2
+      },
+      {
+        "x": 1.8,
+        "y": 1.1
+      },
+      {
+        "x": 1.92,
+        "y": 1
+      },
+      {
+        "x": 1.92,
+        "y": 0.9
+      },
+      {
+        "x": 1.92,
+        "y": 0.8
+      },
+      {
+        "x": 1.92,
+        "y": 0.7
+      },
+      {
+        "x": 1.92,
+        "y": 0.6
+      },
+      {
+        "x": 1.92,
+        "y": 0.5
+      },
+      {
+        "x": 1.92,
+        "y": 0.4
+      },
+      {
+        "x": 1.92,
+        "y": 0.3
+      },
+      {
+        "x": 1.92,
+        "y": 0.2
+      },
+      {
+        "x": 1.92,
+        "y": 0.1
+      },
+      {
+        "x": 1.92,
+        "y": 0
+      },
+      {
+        "x": 0.84,
+        "y": 2
+      },
+      {
+        "x": 1.12,
+        "y": 1.8
+      },
+      {
+        "x": 1.4,
+        "y": 1.6
+      },
+      {
+        "x": 1.68,
+        "y": 1.4
+      },
+      {
+        "x": 1.96,
+        "y": 1.2
+      },
+      {
+        "x": 2.24,
+        "y": 1
+      },
+      {
+        "x": 2.24,
+        "y": 0.8
+      },
+      {
+        "x": 2.24,
+        "y": 0.6
+      },
+      {
+        "x": 2.24,
+        "y": 0.4
+      },
+      {
+        "x": 2.24,
+        "y": 0.2
+      },
+      {
+        "x": 2.24,
+        "y": 0
+      },
+      {
+        "x": 0.96,
+        "y": 2
+      },
+      {
+        "x": 1.12,
+        "y": 1.9
+      },
+      {
+        "x": 1.28,
+        "y": 1.8
+      },
+      {
+        "x": 1.44,
+        "y": 1.7
+      },
+      {
+        "x": 1.6,
+        "y": 1.6
+      },
+      {
+        "x": 1.76,
+        "y": 1.5
+      },
+      {
+        "x": 1.92,
+        "y": 1.4
+      },
+      {
+        "x": 2.08,
+        "y": 1.3
+      },
+      {
+        "x": 2.24,
+        "y": 1.2
+      },
+      {
+        "x": 2.4,
+        "y": 1.1
+      },
+      {
+        "x": 2.56,
+        "y": 1
+      },
+      {
+        "x": 2.56,
+        "y": 0.9
+      },
+      {
+        "x": 2.56,
+        "y": 0.8
+      },
+      {
+        "x": 2.56,
+        "y": 0.7
+      },
+      {
+        "x": 2.56,
+        "y": 0.6
+      },
+      {
+        "x": 2.56,
+        "y": 0.5
+      },
+      {
+        "x": 2.56,
+        "y": 0.4
+      },
+      {
+        "x": 2.56,
+        "y": 0.3
+      },
+      {
+        "x": 2.56,
+        "y": 0.2
+      },
+      {
+        "x": 2.56,
+        "y": 0.1
+      },
+      {
+        "x": 2.56,
+        "y": 0
+      },
+      {
+        "x": 1.08,
+        "y": 2
+      },
+      {
+        "x": 1.44,
+        "y": 1.8
+      },
+      {
+        "x": 1.8,
+        "y": 1.6
+      },
+      {
+        "x": 2.16,
+        "y": 1.4
+      },
+      {
+        "x": 2.52,
+        "y": 1.2
+      },
+      {
+        "x": 2.88,
+        "y": 1
+      },
+      {
+        "x": 2.88,
+        "y": 0.8
+      },
+      {
+        "x": 2.88,
+        "y": 0.6
+      },
+      {
+        "x": 2.88,
+        "y": 0.4
+      },
+      {
+        "x": 2.88,
+        "y": 0.2
+      },
+      {
+        "x": 2.88,
+        "y": 0
+      },
+      {
+        "x": 1.2,
+        "y": 2
+      },
+      {
+        "x": 1.4,
+        "y": 1.9
+      },
+      {
+        "x": 1.6,
+        "y": 1.8
+      },
+      {
+        "x": 1.8,
+        "y": 1.7
+      },
+      {
+        "x": 2,
+        "y": 1.6
+      },
+      {
+        "x": 2.2,
+        "y": 1.5
+      },
+      {
+        "x": 2.4,
+        "y": 1.4
+      },
+      {
+        "x": 2.6,
+        "y": 1.3
+      },
+      {
+        "x": 2.8,
+        "y": 1.2
+      },
+      {
+        "x": 3,
+        "y": 1.1
+      },
+      {
+        "x": 3.2,
+        "y": 1
+      },
+      {
+        "x": 3.2,
+        "y": 0.9
+      },
+      {
+        "x": 3.2,
+        "y": 0.8
+      },
+      {
+        "x": 3.2,
+        "y": 0.7
+      },
+      {
+        "x": 3.2,
+        "y": 0.6
+      },
+      {
+        "x": 3.2,
+        "y": 0.5
+      },
+      {
+        "x": 3.2,
+        "y": 0.4
+      },
+      {
+        "x": 3.2,
+        "y": 0.3
+      },
+      {
+        "x": 3.2,
+        "y": 0.2
+      },
+      {
+        "x": 3.2,
+        "y": 0.1
+      },
+      {
+        "x": 3.2,
+        "y": 0
+      },
+      {
+        "x": 3.32,
+        "y": 1
+      },
+      {
+        "x": 3.32,
+        "y": 0.8
+      },
+      {
+        "x": 3.32,
+        "y": 0.6
+      },
+      {
+        "x": 3.32,
+        "y": 0.4
+      },
+      {
+        "x": 3.32,
+        "y": 0.2
+      },
+      {
+        "x": 3.32,
+        "y": 0
+      },
+      {
+        "x": 3.44,
+        "y": 1
+      },
+      {
+        "x": 3.44,
+        "y": 0.9
+      },
+      {
+        "x": 3.44,
+        "y": 0.8
+      },
+      {
+        "x": 3.44,
+        "y": 0.7
+      },
+      {
+        "x": 3.44,
+        "y": 0.6
+      },
+      {
+        "x": 3.44,
+        "y": 0.5
+      },
+      {
+        "x": 3.44,
+        "y": 0.4
+      },
+      {
+        "x": 3.44,
+        "y": 0.3
+      },
+      {
+        "x": 3.44,
+        "y": 0.2
+      },
+      {
+        "x": 3.44,
+        "y": 0.1
+      },
+      {
+        "x": 3.44,
+        "y": 0
+      },
+      {
+        "x": 3.56,
+        "y": 1
+      },
+      {
+        "x": 3.56,
+        "y": 0.8
+      },
+      {
+        "x": 3.56,
+        "y": 0.6
+      },
+      {
+        "x": 3.56,
+        "y": 0.4
+      },
+      {
+        "x": 3.56,
+        "y": 0.2
+      },
+      {
+        "x": 3.56,
+        "y": 0
+      },
+      {
+        "x": 3.68,
+        "y": 1
+      },
+      {
+        "x": 3.68,
+        "y": 0.9
+      },
+      {
+        "x": 3.68,
+        "y": 0.8
+      },
+      {
+        "x": 3.68,
+        "y": 0.7
+      },
+      {
+        "x": 3.68,
+        "y": 0.6
+      },
+      {
+        "x": 3.68,
+        "y": 0.5
+      },
+      {
+        "x": 3.68,
+        "y": 0.4
+      },
+      {
+        "x": 3.68,
+        "y": 0.3
+      },
+      {
+        "x": 3.68,
+        "y": 0.2
+      },
+      {
+        "x": 3.68,
+        "y": 0.1
+      },
+      {
+        "x": 3.68,
+        "y": 0
+      },
+      {
+        "x": 3.8,
+        "y": 1
+      },
+      {
+        "x": 3.8,
+        "y": 0.8
+      },
+      {
+        "x": 3.8,
+        "y": 0.6
+      },
+      {
+        "x": 3.8,
+        "y": 0.4
+      },
+      {
+        "x": 3.8,
+        "y": 0.2
+      },
+      {
+        "x": 3.8,
+        "y": 0
+      },
+      {
+        "x": 3.92,
+        "y": 1
+      },
+      {
+        "x": 3.92,
+        "y": 0.9
+      },
+      {
+        "x": 3.92,
+        "y": 0.8
+      },
+      {
+        "x": 3.92,
+        "y": 0.7
+      },
+      {
+        "x": 3.92,
+        "y": 0.6
+      },
+      {
+        "x": 3.92,
+        "y": 0.5
+      },
+      {
+        "x": 3.92,
+        "y": 0.4
+      },
+      {
+        "x": 3.92,
+        "y": 0.3
+      },
+      {
+        "x": 3.92,
+        "y": 0.2
+      },
+      {
+        "x": 3.92,
+        "y": 0.1
+      },
+      {
+        "x": 3.92,
+        "y": 0
+      },
+      {
+        "x": 4.04,
+        "y": 1
+      },
+      {
+        "x": 4.04,
+        "y": 0.8
+      },
+      {
+        "x": 4.04,
+        "y": 0.6
+      },
+      {
+        "x": 4.04,
+        "y": 0.4
+      },
+      {
+        "x": 4.04,
+        "y": 0.2
+      },
+      {
+        "x": 4.04,
+        "y": 0
+      },
+      {
+        "x": 4.16,
+        "y": 1
+      },
+      {
+        "x": 4.16,
+        "y": 0.9
+      },
+      {
+        "x": 4.16,
+        "y": 0.8
+      },
+      {
+        "x": 4.16,
+        "y": 0.7
+      },
+      {
+        "x": 4.16,
+        "y": 0.6
+      },
+      {
+        "x": 4.16,
+        "y": 0.5
+      },
+      {
+        "x": 4.16,
+        "y": 0.4
+      },
+      {
+        "x": 4.16,
+        "y": 0.3
+      },
+      {
+        "x": 4.16,
+        "y": 0.2
+      },
+      {
+        "x": 4.16,
+        "y": 0.1
+      },
+      {
+        "x": 4.16,
+        "y": 0
+      },
+      {
+        "x": 4.28,
+        "y": 1
+      },
+      {
+        "x": 4.28,
+        "y": 0.8
+      },
+      {
+        "x": 4.28,
+        "y": 0.6
+      },
+      {
+        "x": 4.28,
+        "y": 0.4
+      },
+      {
+        "x": 4.28,
+        "y": 0.2
+      },
+      {
+        "x": 4.28,
+        "y": 0
+      },
+      {
+        "x": 4.4,
+        "y": 1
+      },
+      {
+        "x": 4.4,
+        "y": 0.9
+      },
+      {
+        "x": 4.4,
+        "y": 0.8
+      },
+      {
+        "x": 4.4,
+        "y": 0.7
+      },
+      {
+        "x": 4.4,
+        "y": 0.6
+      },
+      {
+        "x": 4.4,
+        "y": 0.5
+      },
+      {
+        "x": 4.4,
+        "y": 0.4
+      },
+      {
+        "x": 4.4,
+        "y": 0.3
+      },
+      {
+        "x": 4.4,
+        "y": 0.2
+      },
+      {
+        "x": 4.4,
+        "y": 0.1
+      },
+      {
+        "x": 4.4,
+        "y": 0
+      }
+    ],
+    "elements": [
+      {
+        "displayId": 1,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.14,
+        "centerY": 1.9,
+        "nodePoints": [
+          {
+            "x": 0.32,
+            "y": 1.8
+          },
+          {
+            "x": 0.24,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 0,
+            "y": 1.8
+          }
+        ]
+      },
+      {
+        "displayId": 2,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.42000000000000004,
+        "centerY": 1.9,
+        "nodePoints": [
+          {
+            "x": 0.64,
+            "y": 1.8
+          },
+          {
+            "x": 0.48,
+            "y": 2
+          },
+          {
+            "x": 0.24,
+            "y": 2
+          },
+          {
+            "x": 0.32,
+            "y": 1.8
+          }
+        ]
+      },
+      {
+        "displayId": 3,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.7,
+        "centerY": 1.9,
+        "nodePoints": [
+          {
+            "x": 0.96,
+            "y": 1.8
+          },
+          {
+            "x": 0.72,
+            "y": 2
+          },
+          {
+            "x": 0.48,
+            "y": 2
+          },
+          {
+            "x": 0.64,
+            "y": 1.8
+          }
+        ]
+      },
+      {
+        "displayId": 4,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.98,
+        "centerY": 1.9,
+        "nodePoints": [
+          {
+            "x": 1.28,
+            "y": 1.8
+          },
+          {
+            "x": 0.96,
+            "y": 2
+          },
+          {
+            "x": 0.72,
+            "y": 2
+          },
+          {
+            "x": 0.96,
+            "y": 1.8
+          }
+        ]
+      },
+      {
+        "displayId": 5,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.2600000000000002,
+        "centerY": 1.9,
+        "nodePoints": [
+          {
+            "x": 1.6,
+            "y": 1.8
+          },
+          {
+            "x": 1.2,
+            "y": 2
+          },
+          {
+            "x": 0.96,
+            "y": 2
+          },
+          {
+            "x": 1.28,
+            "y": 1.8
+          }
+        ]
+      },
+      {
+        "displayId": 6,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.18,
+        "centerY": 1.7000000000000002,
+        "nodePoints": [
+          {
+            "x": 0.4,
+            "y": 1.6
+          },
+          {
+            "x": 0.32,
+            "y": 1.8
+          },
+          {
+            "x": 0,
+            "y": 1.8
+          },
+          {
+            "x": 0,
+            "y": 1.6
+          }
+        ]
+      },
+      {
+        "displayId": 7,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.54,
+        "centerY": 1.7000000000000002,
+        "nodePoints": [
+          {
+            "x": 0.8,
+            "y": 1.6
+          },
+          {
+            "x": 0.64,
+            "y": 1.8
+          },
+          {
+            "x": 0.32,
+            "y": 1.8
+          },
+          {
+            "x": 0.4,
+            "y": 1.6
+          }
+        ]
+      },
+      {
+        "displayId": 8,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.8999999999999999,
+        "centerY": 1.7000000000000002,
+        "nodePoints": [
+          {
+            "x": 1.2,
+            "y": 1.6
+          },
+          {
+            "x": 0.96,
+            "y": 1.8
+          },
+          {
+            "x": 0.64,
+            "y": 1.8
+          },
+          {
+            "x": 0.8,
+            "y": 1.6
+          }
+        ]
+      },
+      {
+        "displayId": 9,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.2600000000000002,
+        "centerY": 1.7000000000000002,
+        "nodePoints": [
+          {
+            "x": 1.6,
+            "y": 1.6
+          },
+          {
+            "x": 1.28,
+            "y": 1.8
+          },
+          {
+            "x": 0.96,
+            "y": 1.8
+          },
+          {
+            "x": 1.2,
+            "y": 1.6
+          }
+        ]
+      },
+      {
+        "displayId": 10,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.62,
+        "centerY": 1.7000000000000002,
+        "nodePoints": [
+          {
+            "x": 2,
+            "y": 1.6
+          },
+          {
+            "x": 1.6,
+            "y": 1.8
+          },
+          {
+            "x": 1.28,
+            "y": 1.8
+          },
+          {
+            "x": 1.6,
+            "y": 1.6
+          }
+        ]
+      },
+      {
+        "displayId": 11,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.22,
+        "centerY": 1.5,
+        "nodePoints": [
+          {
+            "x": 0.48,
+            "y": 1.4
+          },
+          {
+            "x": 0.4,
+            "y": 1.6
+          },
+          {
+            "x": 0,
+            "y": 1.6
+          },
+          {
+            "x": 0,
+            "y": 1.4
+          }
+        ]
+      },
+      {
+        "displayId": 12,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.66,
+        "centerY": 1.5,
+        "nodePoints": [
+          {
+            "x": 0.96,
+            "y": 1.4
+          },
+          {
+            "x": 0.8,
+            "y": 1.6
+          },
+          {
+            "x": 0.4,
+            "y": 1.6
+          },
+          {
+            "x": 0.48,
+            "y": 1.4
+          }
+        ]
+      },
+      {
+        "displayId": 13,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.1,
+        "centerY": 1.5,
+        "nodePoints": [
+          {
+            "x": 1.44,
+            "y": 1.4
+          },
+          {
+            "x": 1.2,
+            "y": 1.6
+          },
+          {
+            "x": 0.8,
+            "y": 1.6
+          },
+          {
+            "x": 0.96,
+            "y": 1.4
+          }
+        ]
+      },
+      {
+        "displayId": 14,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.54,
+        "centerY": 1.5,
+        "nodePoints": [
+          {
+            "x": 1.92,
+            "y": 1.4
+          },
+          {
+            "x": 1.6,
+            "y": 1.6
+          },
+          {
+            "x": 1.2,
+            "y": 1.6
+          },
+          {
+            "x": 1.44,
+            "y": 1.4
+          }
+        ]
+      },
+      {
+        "displayId": 15,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.98,
+        "centerY": 1.5,
+        "nodePoints": [
+          {
+            "x": 2.4,
+            "y": 1.4
+          },
+          {
+            "x": 2,
+            "y": 1.6
+          },
+          {
+            "x": 1.6,
+            "y": 1.6
+          },
+          {
+            "x": 1.92,
+            "y": 1.4
+          }
+        ]
+      },
+      {
+        "displayId": 16,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.26,
+        "centerY": 1.2999999999999998,
+        "nodePoints": [
+          {
+            "x": 0.56,
+            "y": 1.2
+          },
+          {
+            "x": 0.48,
+            "y": 1.4
+          },
+          {
+            "x": 0,
+            "y": 1.4
+          },
+          {
+            "x": 0,
+            "y": 1.2
+          }
+        ]
+      },
+      {
+        "displayId": 17,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.78,
+        "centerY": 1.2999999999999998,
+        "nodePoints": [
+          {
+            "x": 1.12,
+            "y": 1.2
+          },
+          {
+            "x": 0.96,
+            "y": 1.4
+          },
+          {
+            "x": 0.48,
+            "y": 1.4
+          },
+          {
+            "x": 0.56,
+            "y": 1.2
+          }
+        ]
+      },
+      {
+        "displayId": 18,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.3,
+        "centerY": 1.2999999999999998,
+        "nodePoints": [
+          {
+            "x": 1.68,
+            "y": 1.2
+          },
+          {
+            "x": 1.44,
+            "y": 1.4
+          },
+          {
+            "x": 0.96,
+            "y": 1.4
+          },
+          {
+            "x": 1.12,
+            "y": 1.2
+          }
+        ]
+      },
+      {
+        "displayId": 19,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.82,
+        "centerY": 1.2999999999999998,
+        "nodePoints": [
+          {
+            "x": 2.24,
+            "y": 1.2
+          },
+          {
+            "x": 1.92,
+            "y": 1.4
+          },
+          {
+            "x": 1.44,
+            "y": 1.4
+          },
+          {
+            "x": 1.68,
+            "y": 1.2
+          }
+        ]
+      },
+      {
+        "displayId": 20,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.34,
+        "centerY": 1.2999999999999998,
+        "nodePoints": [
+          {
+            "x": 2.8,
+            "y": 1.2
+          },
+          {
+            "x": 2.4,
+            "y": 1.4
+          },
+          {
+            "x": 1.92,
+            "y": 1.4
+          },
+          {
+            "x": 2.24,
+            "y": 1.2
+          }
+        ]
+      },
+      {
+        "displayId": 21,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.30000000000000004,
+        "centerY": 1.1,
+        "nodePoints": [
+          {
+            "x": 0.64,
+            "y": 1
+          },
+          {
+            "x": 0.56,
+            "y": 1.2
+          },
+          {
+            "x": 0,
+            "y": 1.2
+          },
+          {
+            "x": 0,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "displayId": 22,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.9000000000000001,
+        "centerY": 1.1,
+        "nodePoints": [
+          {
+            "x": 1.28,
+            "y": 1
+          },
+          {
+            "x": 1.12,
+            "y": 1.2
+          },
+          {
+            "x": 0.56,
+            "y": 1.2
+          },
+          {
+            "x": 0.64,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "displayId": 23,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.5,
+        "centerY": 1.1,
+        "nodePoints": [
+          {
+            "x": 1.92,
+            "y": 1
+          },
+          {
+            "x": 1.68,
+            "y": 1.2
+          },
+          {
+            "x": 1.12,
+            "y": 1.2
+          },
+          {
+            "x": 1.28,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "displayId": 24,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.1,
+        "centerY": 1.1,
+        "nodePoints": [
+          {
+            "x": 2.56,
+            "y": 1
+          },
+          {
+            "x": 2.24,
+            "y": 1.2
+          },
+          {
+            "x": 1.68,
+            "y": 1.2
+          },
+          {
+            "x": 1.92,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "displayId": 25,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.7,
+        "centerY": 1.1,
+        "nodePoints": [
+          {
+            "x": 3.2,
+            "y": 1
+          },
+          {
+            "x": 2.8,
+            "y": 1.2
+          },
+          {
+            "x": 2.24,
+            "y": 1.2
+          },
+          {
+            "x": 2.56,
+            "y": 1
+          }
+        ]
+      },
+      {
+        "displayId": 26,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.32,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 0.64,
+            "y": 0.8
+          },
+          {
+            "x": 0.64,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 0,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 27,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.96,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 1.28,
+            "y": 0.8
+          },
+          {
+            "x": 1.28,
+            "y": 1
+          },
+          {
+            "x": 0.64,
+            "y": 1
+          },
+          {
+            "x": 0.64,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 28,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.6,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 1.92,
+            "y": 0.8
+          },
+          {
+            "x": 1.92,
+            "y": 1
+          },
+          {
+            "x": 1.28,
+            "y": 1
+          },
+          {
+            "x": 1.28,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 29,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.24,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 2.56,
+            "y": 0.8
+          },
+          {
+            "x": 2.56,
+            "y": 1
+          },
+          {
+            "x": 1.92,
+            "y": 1
+          },
+          {
+            "x": 1.92,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 30,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.88,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 3.2,
+            "y": 0.8
+          },
+          {
+            "x": 3.2,
+            "y": 1
+          },
+          {
+            "x": 2.56,
+            "y": 1
+          },
+          {
+            "x": 2.56,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 31,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.32,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 3.44,
+            "y": 0.8
+          },
+          {
+            "x": 3.44,
+            "y": 1
+          },
+          {
+            "x": 3.2,
+            "y": 1
+          },
+          {
+            "x": 3.2,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 32,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.56,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 3.68,
+            "y": 0.8
+          },
+          {
+            "x": 3.68,
+            "y": 1
+          },
+          {
+            "x": 3.44,
+            "y": 1
+          },
+          {
+            "x": 3.44,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 33,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.8000000000000003,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 3.92,
+            "y": 0.8
+          },
+          {
+            "x": 3.92,
+            "y": 1
+          },
+          {
+            "x": 3.68,
+            "y": 1
+          },
+          {
+            "x": 3.68,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 34,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.04,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 4.16,
+            "y": 0.8
+          },
+          {
+            "x": 4.16,
+            "y": 1
+          },
+          {
+            "x": 3.92,
+            "y": 1
+          },
+          {
+            "x": 3.92,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 35,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.28,
+        "centerY": 0.8999999999999999,
+        "nodePoints": [
+          {
+            "x": 4.4,
+            "y": 0.8
+          },
+          {
+            "x": 4.4,
+            "y": 1
+          },
+          {
+            "x": 4.16,
+            "y": 1
+          },
+          {
+            "x": 4.16,
+            "y": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 36,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.32,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 0.64,
+            "y": 0.6
+          },
+          {
+            "x": 0.64,
+            "y": 0.8
+          },
+          {
+            "x": 0,
+            "y": 0.8
+          },
+          {
+            "x": 0,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 37,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.96,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 1.28,
+            "y": 0.6
+          },
+          {
+            "x": 1.28,
+            "y": 0.8
+          },
+          {
+            "x": 0.64,
+            "y": 0.8
+          },
+          {
+            "x": 0.64,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 38,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.6,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 1.92,
+            "y": 0.6
+          },
+          {
+            "x": 1.92,
+            "y": 0.8
+          },
+          {
+            "x": 1.28,
+            "y": 0.8
+          },
+          {
+            "x": 1.28,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 39,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.24,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 2.56,
+            "y": 0.6
+          },
+          {
+            "x": 2.56,
+            "y": 0.8
+          },
+          {
+            "x": 1.92,
+            "y": 0.8
+          },
+          {
+            "x": 1.92,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 40,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.88,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 3.2,
+            "y": 0.6
+          },
+          {
+            "x": 3.2,
+            "y": 0.8
+          },
+          {
+            "x": 2.56,
+            "y": 0.8
+          },
+          {
+            "x": 2.56,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 41,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.32,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 3.44,
+            "y": 0.6
+          },
+          {
+            "x": 3.44,
+            "y": 0.8
+          },
+          {
+            "x": 3.2,
+            "y": 0.8
+          },
+          {
+            "x": 3.2,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 42,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.56,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 3.68,
+            "y": 0.6
+          },
+          {
+            "x": 3.68,
+            "y": 0.8
+          },
+          {
+            "x": 3.44,
+            "y": 0.8
+          },
+          {
+            "x": 3.44,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 43,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.8000000000000003,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 3.92,
+            "y": 0.6
+          },
+          {
+            "x": 3.92,
+            "y": 0.8
+          },
+          {
+            "x": 3.68,
+            "y": 0.8
+          },
+          {
+            "x": 3.68,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 44,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.04,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 4.16,
+            "y": 0.6
+          },
+          {
+            "x": 4.16,
+            "y": 0.8
+          },
+          {
+            "x": 3.92,
+            "y": 0.8
+          },
+          {
+            "x": 3.92,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 45,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.28,
+        "centerY": 0.7000000000000001,
+        "nodePoints": [
+          {
+            "x": 4.4,
+            "y": 0.6
+          },
+          {
+            "x": 4.4,
+            "y": 0.8
+          },
+          {
+            "x": 4.16,
+            "y": 0.8
+          },
+          {
+            "x": 4.16,
+            "y": 0.6
+          }
+        ]
+      },
+      {
+        "displayId": 46,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.32,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 0.64,
+            "y": 0.4
+          },
+          {
+            "x": 0.64,
+            "y": 0.6
+          },
+          {
+            "x": 0,
+            "y": 0.6
+          },
+          {
+            "x": 0,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 47,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.96,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 1.28,
+            "y": 0.4
+          },
+          {
+            "x": 1.28,
+            "y": 0.6
+          },
+          {
+            "x": 0.64,
+            "y": 0.6
+          },
+          {
+            "x": 0.64,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 48,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.6,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 1.92,
+            "y": 0.4
+          },
+          {
+            "x": 1.92,
+            "y": 0.6
+          },
+          {
+            "x": 1.28,
+            "y": 0.6
+          },
+          {
+            "x": 1.28,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 49,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.24,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 2.56,
+            "y": 0.4
+          },
+          {
+            "x": 2.56,
+            "y": 0.6
+          },
+          {
+            "x": 1.92,
+            "y": 0.6
+          },
+          {
+            "x": 1.92,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 50,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.88,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 3.2,
+            "y": 0.4
+          },
+          {
+            "x": 3.2,
+            "y": 0.6
+          },
+          {
+            "x": 2.56,
+            "y": 0.6
+          },
+          {
+            "x": 2.56,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 51,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.32,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 3.44,
+            "y": 0.4
+          },
+          {
+            "x": 3.44,
+            "y": 0.6
+          },
+          {
+            "x": 3.2,
+            "y": 0.6
+          },
+          {
+            "x": 3.2,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 52,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.56,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 3.68,
+            "y": 0.4
+          },
+          {
+            "x": 3.68,
+            "y": 0.6
+          },
+          {
+            "x": 3.44,
+            "y": 0.6
+          },
+          {
+            "x": 3.44,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 53,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.8000000000000003,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 3.92,
+            "y": 0.4
+          },
+          {
+            "x": 3.92,
+            "y": 0.6
+          },
+          {
+            "x": 3.68,
+            "y": 0.6
+          },
+          {
+            "x": 3.68,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 54,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.04,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 4.16,
+            "y": 0.4
+          },
+          {
+            "x": 4.16,
+            "y": 0.6
+          },
+          {
+            "x": 3.92,
+            "y": 0.6
+          },
+          {
+            "x": 3.92,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 55,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.28,
+        "centerY": 0.5,
+        "nodePoints": [
+          {
+            "x": 4.4,
+            "y": 0.4
+          },
+          {
+            "x": 4.4,
+            "y": 0.6
+          },
+          {
+            "x": 4.16,
+            "y": 0.6
+          },
+          {
+            "x": 4.16,
+            "y": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 56,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.32,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 0.64,
+            "y": 0.2
+          },
+          {
+            "x": 0.64,
+            "y": 0.4
+          },
+          {
+            "x": 0,
+            "y": 0.4
+          },
+          {
+            "x": 0,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 57,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.96,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 1.28,
+            "y": 0.2
+          },
+          {
+            "x": 1.28,
+            "y": 0.4
+          },
+          {
+            "x": 0.64,
+            "y": 0.4
+          },
+          {
+            "x": 0.64,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 58,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.6,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 1.92,
+            "y": 0.2
+          },
+          {
+            "x": 1.92,
+            "y": 0.4
+          },
+          {
+            "x": 1.28,
+            "y": 0.4
+          },
+          {
+            "x": 1.28,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 59,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.24,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 2.56,
+            "y": 0.2
+          },
+          {
+            "x": 2.56,
+            "y": 0.4
+          },
+          {
+            "x": 1.92,
+            "y": 0.4
+          },
+          {
+            "x": 1.92,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 60,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.88,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 3.2,
+            "y": 0.2
+          },
+          {
+            "x": 3.2,
+            "y": 0.4
+          },
+          {
+            "x": 2.56,
+            "y": 0.4
+          },
+          {
+            "x": 2.56,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 61,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.32,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 3.44,
+            "y": 0.2
+          },
+          {
+            "x": 3.44,
+            "y": 0.4
+          },
+          {
+            "x": 3.2,
+            "y": 0.4
+          },
+          {
+            "x": 3.2,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 62,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.56,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 3.68,
+            "y": 0.2
+          },
+          {
+            "x": 3.68,
+            "y": 0.4
+          },
+          {
+            "x": 3.44,
+            "y": 0.4
+          },
+          {
+            "x": 3.44,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 63,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.8000000000000003,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 3.92,
+            "y": 0.2
+          },
+          {
+            "x": 3.92,
+            "y": 0.4
+          },
+          {
+            "x": 3.68,
+            "y": 0.4
+          },
+          {
+            "x": 3.68,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 64,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.04,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 4.16,
+            "y": 0.2
+          },
+          {
+            "x": 4.16,
+            "y": 0.4
+          },
+          {
+            "x": 3.92,
+            "y": 0.4
+          },
+          {
+            "x": 3.92,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 65,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.28,
+        "centerY": 0.3,
+        "nodePoints": [
+          {
+            "x": 4.4,
+            "y": 0.2
+          },
+          {
+            "x": 4.4,
+            "y": 0.4
+          },
+          {
+            "x": 4.16,
+            "y": 0.4
+          },
+          {
+            "x": 4.16,
+            "y": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 66,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.32,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 0.64,
+            "y": 0
+          },
+          {
+            "x": 0.64,
+            "y": 0.2
+          },
+          {
+            "x": 0,
+            "y": 0.2
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 67,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.96,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 1.28,
+            "y": 0
+          },
+          {
+            "x": 1.28,
+            "y": 0.2
+          },
+          {
+            "x": 0.64,
+            "y": 0.2
+          },
+          {
+            "x": 0.64,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 68,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 1.6,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 1.92,
+            "y": 0
+          },
+          {
+            "x": 1.92,
+            "y": 0.2
+          },
+          {
+            "x": 1.28,
+            "y": 0.2
+          },
+          {
+            "x": 1.28,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 69,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.24,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 2.56,
+            "y": 0
+          },
+          {
+            "x": 2.56,
+            "y": 0.2
+          },
+          {
+            "x": 1.92,
+            "y": 0.2
+          },
+          {
+            "x": 1.92,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 70,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 2.88,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 3.2,
+            "y": 0
+          },
+          {
+            "x": 3.2,
+            "y": 0.2
+          },
+          {
+            "x": 2.56,
+            "y": 0.2
+          },
+          {
+            "x": 2.56,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 71,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.32,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 3.44,
+            "y": 0
+          },
+          {
+            "x": 3.44,
+            "y": 0.2
+          },
+          {
+            "x": 3.2,
+            "y": 0.2
+          },
+          {
+            "x": 3.2,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 72,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.56,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 3.68,
+            "y": 0
+          },
+          {
+            "x": 3.68,
+            "y": 0.2
+          },
+          {
+            "x": 3.44,
+            "y": 0.2
+          },
+          {
+            "x": 3.44,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 73,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 3.8000000000000003,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 3.92,
+            "y": 0
+          },
+          {
+            "x": 3.92,
+            "y": 0.2
+          },
+          {
+            "x": 3.68,
+            "y": 0.2
+          },
+          {
+            "x": 3.68,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 74,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.04,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 4.16,
+            "y": 0
+          },
+          {
+            "x": 4.16,
+            "y": 0.2
+          },
+          {
+            "x": 3.92,
+            "y": 0.2
+          },
+          {
+            "x": 3.92,
+            "y": 0
+          }
+        ]
+      },
+      {
+        "displayId": 75,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": true,
+        "isUnmatchedTriangle": false,
+        "centerX": 4.28,
+        "centerY": 0.1,
+        "nodePoints": [
+          {
+            "x": 4.4,
+            "y": 0
+          },
+          {
+            "x": 4.4,
+            "y": 0.2
+          },
+          {
+            "x": 4.16,
+            "y": 0.2
+          },
+          {
+            "x": 4.16,
+            "y": 0
+          }
+        ]
+      }
+    ],
+    "informationRows": [
+      {
+        "elementId": 1,
+        "node1": 3,
+        "node2": 2,
+        "node3": 1,
+        "node4": 22,
+        "node5": 33,
+        "node6": 34,
+        "node7": 35,
+        "node8": 23,
+        "etype": 1,
+        "n1X": 0,
+        "n1Y": 1.8,
+        "n2X": 0,
+        "n2Y": 1.9,
+        "n3X": 0,
+        "n3Y": 2,
+        "n4X": 0.12,
+        "n4Y": 2,
+        "n5X": 0.24,
+        "n5Y": 2,
+        "n6X": 0.28,
+        "n6Y": 1.9,
+        "n7X": 0.32,
+        "n7Y": 1.8,
+        "n8X": 0.16,
+        "n8Y": 1.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 2,
+        "node1": 35,
+        "node2": 34,
+        "node3": 33,
+        "node4": 54,
+        "node5": 65,
+        "node6": 66,
+        "node7": 67,
+        "node8": 55,
+        "etype": 1,
+        "n1X": 0.32,
+        "n1Y": 1.8,
+        "n2X": 0.28,
+        "n2Y": 1.9,
+        "n3X": 0.24,
+        "n3Y": 2,
+        "n4X": 0.36,
+        "n4Y": 2,
+        "n5X": 0.48,
+        "n5Y": 2,
+        "n6X": 0.56,
+        "n6Y": 1.9,
+        "n7X": 0.64,
+        "n7Y": 1.8,
+        "n8X": 0.48,
+        "n8Y": 1.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 3,
+        "node1": 67,
+        "node2": 66,
+        "node3": 65,
+        "node4": 86,
+        "node5": 97,
+        "node6": 98,
+        "node7": 99,
+        "node8": 87,
+        "etype": 1,
+        "n1X": 0.64,
+        "n1Y": 1.8,
+        "n2X": 0.56,
+        "n2Y": 1.9,
+        "n3X": 0.48,
+        "n3Y": 2,
+        "n4X": 0.6,
+        "n4Y": 2,
+        "n5X": 0.72,
+        "n5Y": 2,
+        "n6X": 0.84,
+        "n6Y": 1.9,
+        "n7X": 0.96,
+        "n7Y": 1.8,
+        "n8X": 0.8,
+        "n8Y": 1.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 4,
+        "node1": 99,
+        "node2": 98,
+        "node3": 97,
+        "node4": 118,
+        "node5": 129,
+        "node6": 130,
+        "node7": 131,
+        "node8": 119,
+        "etype": 1,
+        "n1X": 0.96,
+        "n1Y": 1.8,
+        "n2X": 0.84,
+        "n2Y": 1.9,
+        "n3X": 0.72,
+        "n3Y": 2,
+        "n4X": 0.84,
+        "n4Y": 2,
+        "n5X": 0.96,
+        "n5Y": 2,
+        "n6X": 1.12,
+        "n6Y": 1.9,
+        "n7X": 1.28,
+        "n7Y": 1.8,
+        "n8X": 1.12,
+        "n8Y": 1.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 5,
+        "node1": 131,
+        "node2": 130,
+        "node3": 129,
+        "node4": 150,
+        "node5": 161,
+        "node6": 162,
+        "node7": 163,
+        "node8": 151,
+        "etype": 1,
+        "n1X": 1.28,
+        "n1Y": 1.8,
+        "n2X": 1.12,
+        "n2Y": 1.9,
+        "n3X": 0.96,
+        "n3Y": 2,
+        "n4X": 1.08,
+        "n4Y": 2,
+        "n5X": 1.2,
+        "n5Y": 2,
+        "n6X": 1.4,
+        "n6Y": 1.9,
+        "n7X": 1.6,
+        "n7Y": 1.8,
+        "n8X": 1.44,
+        "n8Y": 1.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 6,
+        "node1": 5,
+        "node2": 4,
+        "node3": 3,
+        "node4": 23,
+        "node5": 35,
+        "node6": 36,
+        "node7": 37,
+        "node8": 24,
+        "etype": 1,
+        "n1X": 0,
+        "n1Y": 1.6,
+        "n2X": 0,
+        "n2Y": 1.7,
+        "n3X": 0,
+        "n3Y": 1.8,
+        "n4X": 0.16,
+        "n4Y": 1.8,
+        "n5X": 0.32,
+        "n5Y": 1.8,
+        "n6X": 0.36,
+        "n6Y": 1.7,
+        "n7X": 0.4,
+        "n7Y": 1.6,
+        "n8X": 0.2,
+        "n8Y": 1.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 7,
+        "node1": 37,
+        "node2": 36,
+        "node3": 35,
+        "node4": 55,
+        "node5": 67,
+        "node6": 68,
+        "node7": 69,
+        "node8": 56,
+        "etype": 1,
+        "n1X": 0.4,
+        "n1Y": 1.6,
+        "n2X": 0.36,
+        "n2Y": 1.7,
+        "n3X": 0.32,
+        "n3Y": 1.8,
+        "n4X": 0.48,
+        "n4Y": 1.8,
+        "n5X": 0.64,
+        "n5Y": 1.8,
+        "n6X": 0.72,
+        "n6Y": 1.7,
+        "n7X": 0.8,
+        "n7Y": 1.6,
+        "n8X": 0.6,
+        "n8Y": 1.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 8,
+        "node1": 69,
+        "node2": 68,
+        "node3": 67,
+        "node4": 87,
+        "node5": 99,
+        "node6": 100,
+        "node7": 101,
+        "node8": 88,
+        "etype": 1,
+        "n1X": 0.8,
+        "n1Y": 1.6,
+        "n2X": 0.72,
+        "n2Y": 1.7,
+        "n3X": 0.64,
+        "n3Y": 1.8,
+        "n4X": 0.8,
+        "n4Y": 1.8,
+        "n5X": 0.96,
+        "n5Y": 1.8,
+        "n6X": 1.08,
+        "n6Y": 1.7,
+        "n7X": 1.2,
+        "n7Y": 1.6,
+        "n8X": 1,
+        "n8Y": 1.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 9,
+        "node1": 101,
+        "node2": 100,
+        "node3": 99,
+        "node4": 119,
+        "node5": 131,
+        "node6": 132,
+        "node7": 133,
+        "node8": 120,
+        "etype": 1,
+        "n1X": 1.2,
+        "n1Y": 1.6,
+        "n2X": 1.08,
+        "n2Y": 1.7,
+        "n3X": 0.96,
+        "n3Y": 1.8,
+        "n4X": 1.12,
+        "n4Y": 1.8,
+        "n5X": 1.28,
+        "n5Y": 1.8,
+        "n6X": 1.44,
+        "n6Y": 1.7,
+        "n7X": 1.6,
+        "n7Y": 1.6,
+        "n8X": 1.4,
+        "n8Y": 1.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 10,
+        "node1": 133,
+        "node2": 132,
+        "node3": 131,
+        "node4": 151,
+        "node5": 163,
+        "node6": 164,
+        "node7": 165,
+        "node8": 152,
+        "etype": 1,
+        "n1X": 1.6,
+        "n1Y": 1.6,
+        "n2X": 1.44,
+        "n2Y": 1.7,
+        "n3X": 1.28,
+        "n3Y": 1.8,
+        "n4X": 1.44,
+        "n4Y": 1.8,
+        "n5X": 1.6,
+        "n5Y": 1.8,
+        "n6X": 1.8,
+        "n6Y": 1.7,
+        "n7X": 2,
+        "n7Y": 1.6,
+        "n8X": 1.8,
+        "n8Y": 1.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 11,
+        "node1": 7,
+        "node2": 6,
+        "node3": 5,
+        "node4": 24,
+        "node5": 37,
+        "node6": 38,
+        "node7": 39,
+        "node8": 25,
+        "etype": 1,
+        "n1X": 0,
+        "n1Y": 1.4,
+        "n2X": 0,
+        "n2Y": 1.5,
+        "n3X": 0,
+        "n3Y": 1.6,
+        "n4X": 0.2,
+        "n4Y": 1.6,
+        "n5X": 0.4,
+        "n5Y": 1.6,
+        "n6X": 0.44,
+        "n6Y": 1.5,
+        "n7X": 0.48,
+        "n7Y": 1.4,
+        "n8X": 0.24,
+        "n8Y": 1.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 12,
+        "node1": 39,
+        "node2": 38,
+        "node3": 37,
+        "node4": 56,
+        "node5": 69,
+        "node6": 70,
+        "node7": 71,
+        "node8": 57,
+        "etype": 1,
+        "n1X": 0.48,
+        "n1Y": 1.4,
+        "n2X": 0.44,
+        "n2Y": 1.5,
+        "n3X": 0.4,
+        "n3Y": 1.6,
+        "n4X": 0.6,
+        "n4Y": 1.6,
+        "n5X": 0.8,
+        "n5Y": 1.6,
+        "n6X": 0.88,
+        "n6Y": 1.5,
+        "n7X": 0.96,
+        "n7Y": 1.4,
+        "n8X": 0.72,
+        "n8Y": 1.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 13,
+        "node1": 71,
+        "node2": 70,
+        "node3": 69,
+        "node4": 88,
+        "node5": 101,
+        "node6": 102,
+        "node7": 103,
+        "node8": 89,
+        "etype": 1,
+        "n1X": 0.96,
+        "n1Y": 1.4,
+        "n2X": 0.88,
+        "n2Y": 1.5,
+        "n3X": 0.8,
+        "n3Y": 1.6,
+        "n4X": 1,
+        "n4Y": 1.6,
+        "n5X": 1.2,
+        "n5Y": 1.6,
+        "n6X": 1.32,
+        "n6Y": 1.5,
+        "n7X": 1.44,
+        "n7Y": 1.4,
+        "n8X": 1.2,
+        "n8Y": 1.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 14,
+        "node1": 103,
+        "node2": 102,
+        "node3": 101,
+        "node4": 120,
+        "node5": 133,
+        "node6": 134,
+        "node7": 135,
+        "node8": 121,
+        "etype": 1,
+        "n1X": 1.44,
+        "n1Y": 1.4,
+        "n2X": 1.32,
+        "n2Y": 1.5,
+        "n3X": 1.2,
+        "n3Y": 1.6,
+        "n4X": 1.4,
+        "n4Y": 1.6,
+        "n5X": 1.6,
+        "n5Y": 1.6,
+        "n6X": 1.76,
+        "n6Y": 1.5,
+        "n7X": 1.92,
+        "n7Y": 1.4,
+        "n8X": 1.68,
+        "n8Y": 1.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 15,
+        "node1": 135,
+        "node2": 134,
+        "node3": 133,
+        "node4": 152,
+        "node5": 165,
+        "node6": 166,
+        "node7": 167,
+        "node8": 153,
+        "etype": 1,
+        "n1X": 1.92,
+        "n1Y": 1.4,
+        "n2X": 1.76,
+        "n2Y": 1.5,
+        "n3X": 1.6,
+        "n3Y": 1.6,
+        "n4X": 1.8,
+        "n4Y": 1.6,
+        "n5X": 2,
+        "n5Y": 1.6,
+        "n6X": 2.2,
+        "n6Y": 1.5,
+        "n7X": 2.4,
+        "n7Y": 1.4,
+        "n8X": 2.16,
+        "n8Y": 1.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 16,
+        "node1": 9,
+        "node2": 8,
+        "node3": 7,
+        "node4": 25,
+        "node5": 39,
+        "node6": 40,
+        "node7": 41,
+        "node8": 26,
+        "etype": 1,
+        "n1X": 0,
+        "n1Y": 1.2,
+        "n2X": 0,
+        "n2Y": 1.3,
+        "n3X": 0,
+        "n3Y": 1.4,
+        "n4X": 0.24,
+        "n4Y": 1.4,
+        "n5X": 0.48,
+        "n5Y": 1.4,
+        "n6X": 0.52,
+        "n6Y": 1.3,
+        "n7X": 0.56,
+        "n7Y": 1.2,
+        "n8X": 0.28,
+        "n8Y": 1.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 17,
+        "node1": 41,
+        "node2": 40,
+        "node3": 39,
+        "node4": 57,
+        "node5": 71,
+        "node6": 72,
+        "node7": 73,
+        "node8": 58,
+        "etype": 1,
+        "n1X": 0.56,
+        "n1Y": 1.2,
+        "n2X": 0.52,
+        "n2Y": 1.3,
+        "n3X": 0.48,
+        "n3Y": 1.4,
+        "n4X": 0.72,
+        "n4Y": 1.4,
+        "n5X": 0.96,
+        "n5Y": 1.4,
+        "n6X": 1.04,
+        "n6Y": 1.3,
+        "n7X": 1.12,
+        "n7Y": 1.2,
+        "n8X": 0.84,
+        "n8Y": 1.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 18,
+        "node1": 73,
+        "node2": 72,
+        "node3": 71,
+        "node4": 89,
+        "node5": 103,
+        "node6": 104,
+        "node7": 105,
+        "node8": 90,
+        "etype": 1,
+        "n1X": 1.12,
+        "n1Y": 1.2,
+        "n2X": 1.04,
+        "n2Y": 1.3,
+        "n3X": 0.96,
+        "n3Y": 1.4,
+        "n4X": 1.2,
+        "n4Y": 1.4,
+        "n5X": 1.44,
+        "n5Y": 1.4,
+        "n6X": 1.56,
+        "n6Y": 1.3,
+        "n7X": 1.68,
+        "n7Y": 1.2,
+        "n8X": 1.4,
+        "n8Y": 1.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 19,
+        "node1": 105,
+        "node2": 104,
+        "node3": 103,
+        "node4": 121,
+        "node5": 135,
+        "node6": 136,
+        "node7": 137,
+        "node8": 122,
+        "etype": 1,
+        "n1X": 1.68,
+        "n1Y": 1.2,
+        "n2X": 1.56,
+        "n2Y": 1.3,
+        "n3X": 1.44,
+        "n3Y": 1.4,
+        "n4X": 1.68,
+        "n4Y": 1.4,
+        "n5X": 1.92,
+        "n5Y": 1.4,
+        "n6X": 2.08,
+        "n6Y": 1.3,
+        "n7X": 2.24,
+        "n7Y": 1.2,
+        "n8X": 1.96,
+        "n8Y": 1.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 20,
+        "node1": 137,
+        "node2": 136,
+        "node3": 135,
+        "node4": 153,
+        "node5": 167,
+        "node6": 168,
+        "node7": 169,
+        "node8": 154,
+        "etype": 1,
+        "n1X": 2.24,
+        "n1Y": 1.2,
+        "n2X": 2.08,
+        "n2Y": 1.3,
+        "n3X": 1.92,
+        "n3Y": 1.4,
+        "n4X": 2.16,
+        "n4Y": 1.4,
+        "n5X": 2.4,
+        "n5Y": 1.4,
+        "n6X": 2.6,
+        "n6Y": 1.3,
+        "n7X": 2.8,
+        "n7Y": 1.2,
+        "n8X": 2.52,
+        "n8Y": 1.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 21,
+        "node1": 11,
+        "node2": 10,
+        "node3": 9,
+        "node4": 26,
+        "node5": 41,
+        "node6": 42,
+        "node7": 43,
+        "node8": 27,
+        "etype": 1,
+        "n1X": 0,
+        "n1Y": 1,
+        "n2X": 0,
+        "n2Y": 1.1,
+        "n3X": 0,
+        "n3Y": 1.2,
+        "n4X": 0.28,
+        "n4Y": 1.2,
+        "n5X": 0.56,
+        "n5Y": 1.2,
+        "n6X": 0.6,
+        "n6Y": 1.1,
+        "n7X": 0.64,
+        "n7Y": 1,
+        "n8X": 0.32,
+        "n8Y": 1,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 22,
+        "node1": 43,
+        "node2": 42,
+        "node3": 41,
+        "node4": 58,
+        "node5": 73,
+        "node6": 74,
+        "node7": 75,
+        "node8": 59,
+        "etype": 1,
+        "n1X": 0.64,
+        "n1Y": 1,
+        "n2X": 0.6,
+        "n2Y": 1.1,
+        "n3X": 0.56,
+        "n3Y": 1.2,
+        "n4X": 0.84,
+        "n4Y": 1.2,
+        "n5X": 1.12,
+        "n5Y": 1.2,
+        "n6X": 1.2,
+        "n6Y": 1.1,
+        "n7X": 1.28,
+        "n7Y": 1,
+        "n8X": 0.96,
+        "n8Y": 1,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 23,
+        "node1": 75,
+        "node2": 74,
+        "node3": 73,
+        "node4": 90,
+        "node5": 105,
+        "node6": 106,
+        "node7": 107,
+        "node8": 91,
+        "etype": 1,
+        "n1X": 1.28,
+        "n1Y": 1,
+        "n2X": 1.2,
+        "n2Y": 1.1,
+        "n3X": 1.12,
+        "n3Y": 1.2,
+        "n4X": 1.4,
+        "n4Y": 1.2,
+        "n5X": 1.68,
+        "n5Y": 1.2,
+        "n6X": 1.8,
+        "n6Y": 1.1,
+        "n7X": 1.92,
+        "n7Y": 1,
+        "n8X": 1.6,
+        "n8Y": 1,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 24,
+        "node1": 107,
+        "node2": 106,
+        "node3": 105,
+        "node4": 122,
+        "node5": 137,
+        "node6": 138,
+        "node7": 139,
+        "node8": 123,
+        "etype": 1,
+        "n1X": 1.92,
+        "n1Y": 1,
+        "n2X": 1.8,
+        "n2Y": 1.1,
+        "n3X": 1.68,
+        "n3Y": 1.2,
+        "n4X": 1.96,
+        "n4Y": 1.2,
+        "n5X": 2.24,
+        "n5Y": 1.2,
+        "n6X": 2.4,
+        "n6Y": 1.1,
+        "n7X": 2.56,
+        "n7Y": 1,
+        "n8X": 2.24,
+        "n8Y": 1,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 25,
+        "node1": 139,
+        "node2": 138,
+        "node3": 137,
+        "node4": 154,
+        "node5": 169,
+        "node6": 170,
+        "node7": 171,
+        "node8": 155,
+        "etype": 1,
+        "n1X": 2.56,
+        "n1Y": 1,
+        "n2X": 2.4,
+        "n2Y": 1.1,
+        "n3X": 2.24,
+        "n3Y": 1.2,
+        "n4X": 2.52,
+        "n4Y": 1.2,
+        "n5X": 2.8,
+        "n5Y": 1.2,
+        "n6X": 3,
+        "n6Y": 1.1,
+        "n7X": 3.2,
+        "n7Y": 1,
+        "n8X": 2.88,
+        "n8Y": 1,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 26,
+        "node1": 13,
+        "node2": 12,
+        "node3": 11,
+        "node4": 27,
+        "node5": 43,
+        "node6": 44,
+        "node7": 45,
+        "node8": 28,
+        "etype": 2,
+        "n1X": 0,
+        "n1Y": 0.8,
+        "n2X": 0,
+        "n2Y": 0.9,
+        "n3X": 0,
+        "n3Y": 1,
+        "n4X": 0.32,
+        "n4Y": 1,
+        "n5X": 0.64,
+        "n5Y": 1,
+        "n6X": 0.64,
+        "n6Y": 0.9,
+        "n7X": 0.64,
+        "n7Y": 0.8,
+        "n8X": 0.32,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 27,
+        "node1": 45,
+        "node2": 44,
+        "node3": 43,
+        "node4": 59,
+        "node5": 75,
+        "node6": 76,
+        "node7": 77,
+        "node8": 60,
+        "etype": 2,
+        "n1X": 0.64,
+        "n1Y": 0.8,
+        "n2X": 0.64,
+        "n2Y": 0.9,
+        "n3X": 0.64,
+        "n3Y": 1,
+        "n4X": 0.96,
+        "n4Y": 1,
+        "n5X": 1.28,
+        "n5Y": 1,
+        "n6X": 1.28,
+        "n6Y": 0.9,
+        "n7X": 1.28,
+        "n7Y": 0.8,
+        "n8X": 0.96,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 28,
+        "node1": 77,
+        "node2": 76,
+        "node3": 75,
+        "node4": 91,
+        "node5": 107,
+        "node6": 108,
+        "node7": 109,
+        "node8": 92,
+        "etype": 2,
+        "n1X": 1.28,
+        "n1Y": 0.8,
+        "n2X": 1.28,
+        "n2Y": 0.9,
+        "n3X": 1.28,
+        "n3Y": 1,
+        "n4X": 1.6,
+        "n4Y": 1,
+        "n5X": 1.92,
+        "n5Y": 1,
+        "n6X": 1.92,
+        "n6Y": 0.9,
+        "n7X": 1.92,
+        "n7Y": 0.8,
+        "n8X": 1.6,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 29,
+        "node1": 109,
+        "node2": 108,
+        "node3": 107,
+        "node4": 123,
+        "node5": 139,
+        "node6": 140,
+        "node7": 141,
+        "node8": 124,
+        "etype": 2,
+        "n1X": 1.92,
+        "n1Y": 0.8,
+        "n2X": 1.92,
+        "n2Y": 0.9,
+        "n3X": 1.92,
+        "n3Y": 1,
+        "n4X": 2.24,
+        "n4Y": 1,
+        "n5X": 2.56,
+        "n5Y": 1,
+        "n6X": 2.56,
+        "n6Y": 0.9,
+        "n7X": 2.56,
+        "n7Y": 0.8,
+        "n8X": 2.24,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 30,
+        "node1": 141,
+        "node2": 140,
+        "node3": 139,
+        "node4": 155,
+        "node5": 171,
+        "node6": 172,
+        "node7": 173,
+        "node8": 156,
+        "etype": 2,
+        "n1X": 2.56,
+        "n1Y": 0.8,
+        "n2X": 2.56,
+        "n2Y": 0.9,
+        "n3X": 2.56,
+        "n3Y": 1,
+        "n4X": 2.88,
+        "n4Y": 1,
+        "n5X": 3.2,
+        "n5Y": 1,
+        "n6X": 3.2,
+        "n6Y": 0.9,
+        "n7X": 3.2,
+        "n7Y": 0.8,
+        "n8X": 2.88,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 31,
+        "node1": 173,
+        "node2": 172,
+        "node3": 171,
+        "node4": 182,
+        "node5": 188,
+        "node6": 189,
+        "node7": 190,
+        "node8": 183,
+        "etype": 2,
+        "n1X": 3.2,
+        "n1Y": 0.8,
+        "n2X": 3.2,
+        "n2Y": 0.9,
+        "n3X": 3.2,
+        "n3Y": 1,
+        "n4X": 3.32,
+        "n4Y": 1,
+        "n5X": 3.44,
+        "n5Y": 1,
+        "n6X": 3.44,
+        "n6Y": 0.9,
+        "n7X": 3.44,
+        "n7Y": 0.8,
+        "n8X": 3.32,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 32,
+        "node1": 190,
+        "node2": 189,
+        "node3": 188,
+        "node4": 199,
+        "node5": 205,
+        "node6": 206,
+        "node7": 207,
+        "node8": 200,
+        "etype": 2,
+        "n1X": 3.44,
+        "n1Y": 0.8,
+        "n2X": 3.44,
+        "n2Y": 0.9,
+        "n3X": 3.44,
+        "n3Y": 1,
+        "n4X": 3.56,
+        "n4Y": 1,
+        "n5X": 3.68,
+        "n5Y": 1,
+        "n6X": 3.68,
+        "n6Y": 0.9,
+        "n7X": 3.68,
+        "n7Y": 0.8,
+        "n8X": 3.56,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 33,
+        "node1": 207,
+        "node2": 206,
+        "node3": 205,
+        "node4": 216,
+        "node5": 222,
+        "node6": 223,
+        "node7": 224,
+        "node8": 217,
+        "etype": 2,
+        "n1X": 3.68,
+        "n1Y": 0.8,
+        "n2X": 3.68,
+        "n2Y": 0.9,
+        "n3X": 3.68,
+        "n3Y": 1,
+        "n4X": 3.8,
+        "n4Y": 1,
+        "n5X": 3.92,
+        "n5Y": 1,
+        "n6X": 3.92,
+        "n6Y": 0.9,
+        "n7X": 3.92,
+        "n7Y": 0.8,
+        "n8X": 3.8,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 34,
+        "node1": 224,
+        "node2": 223,
+        "node3": 222,
+        "node4": 233,
+        "node5": 239,
+        "node6": 240,
+        "node7": 241,
+        "node8": 234,
+        "etype": 2,
+        "n1X": 3.92,
+        "n1Y": 0.8,
+        "n2X": 3.92,
+        "n2Y": 0.9,
+        "n3X": 3.92,
+        "n3Y": 1,
+        "n4X": 4.04,
+        "n4Y": 1,
+        "n5X": 4.16,
+        "n5Y": 1,
+        "n6X": 4.16,
+        "n6Y": 0.9,
+        "n7X": 4.16,
+        "n7Y": 0.8,
+        "n8X": 4.04,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 35,
+        "node1": 241,
+        "node2": 240,
+        "node3": 239,
+        "node4": 250,
+        "node5": 256,
+        "node6": 257,
+        "node7": 258,
+        "node8": 251,
+        "etype": 2,
+        "n1X": 4.16,
+        "n1Y": 0.8,
+        "n2X": 4.16,
+        "n2Y": 0.9,
+        "n3X": 4.16,
+        "n3Y": 1,
+        "n4X": 4.28,
+        "n4Y": 1,
+        "n5X": 4.4,
+        "n5Y": 1,
+        "n6X": 4.4,
+        "n6Y": 0.9,
+        "n7X": 4.4,
+        "n7Y": 0.8,
+        "n8X": 4.28,
+        "n8Y": 0.8,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 36,
+        "node1": 15,
+        "node2": 14,
+        "node3": 13,
+        "node4": 28,
+        "node5": 45,
+        "node6": 46,
+        "node7": 47,
+        "node8": 29,
+        "etype": 2,
+        "n1X": 0,
+        "n1Y": 0.6,
+        "n2X": 0,
+        "n2Y": 0.7,
+        "n3X": 0,
+        "n3Y": 0.8,
+        "n4X": 0.32,
+        "n4Y": 0.8,
+        "n5X": 0.64,
+        "n5Y": 0.8,
+        "n6X": 0.64,
+        "n6Y": 0.7,
+        "n7X": 0.64,
+        "n7Y": 0.6,
+        "n8X": 0.32,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 37,
+        "node1": 47,
+        "node2": 46,
+        "node3": 45,
+        "node4": 60,
+        "node5": 77,
+        "node6": 78,
+        "node7": 79,
+        "node8": 61,
+        "etype": 2,
+        "n1X": 0.64,
+        "n1Y": 0.6,
+        "n2X": 0.64,
+        "n2Y": 0.7,
+        "n3X": 0.64,
+        "n3Y": 0.8,
+        "n4X": 0.96,
+        "n4Y": 0.8,
+        "n5X": 1.28,
+        "n5Y": 0.8,
+        "n6X": 1.28,
+        "n6Y": 0.7,
+        "n7X": 1.28,
+        "n7Y": 0.6,
+        "n8X": 0.96,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 38,
+        "node1": 79,
+        "node2": 78,
+        "node3": 77,
+        "node4": 92,
+        "node5": 109,
+        "node6": 110,
+        "node7": 111,
+        "node8": 93,
+        "etype": 2,
+        "n1X": 1.28,
+        "n1Y": 0.6,
+        "n2X": 1.28,
+        "n2Y": 0.7,
+        "n3X": 1.28,
+        "n3Y": 0.8,
+        "n4X": 1.6,
+        "n4Y": 0.8,
+        "n5X": 1.92,
+        "n5Y": 0.8,
+        "n6X": 1.92,
+        "n6Y": 0.7,
+        "n7X": 1.92,
+        "n7Y": 0.6,
+        "n8X": 1.6,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 39,
+        "node1": 111,
+        "node2": 110,
+        "node3": 109,
+        "node4": 124,
+        "node5": 141,
+        "node6": 142,
+        "node7": 143,
+        "node8": 125,
+        "etype": 2,
+        "n1X": 1.92,
+        "n1Y": 0.6,
+        "n2X": 1.92,
+        "n2Y": 0.7,
+        "n3X": 1.92,
+        "n3Y": 0.8,
+        "n4X": 2.24,
+        "n4Y": 0.8,
+        "n5X": 2.56,
+        "n5Y": 0.8,
+        "n6X": 2.56,
+        "n6Y": 0.7,
+        "n7X": 2.56,
+        "n7Y": 0.6,
+        "n8X": 2.24,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 40,
+        "node1": 143,
+        "node2": 142,
+        "node3": 141,
+        "node4": 156,
+        "node5": 173,
+        "node6": 174,
+        "node7": 175,
+        "node8": 157,
+        "etype": 2,
+        "n1X": 2.56,
+        "n1Y": 0.6,
+        "n2X": 2.56,
+        "n2Y": 0.7,
+        "n3X": 2.56,
+        "n3Y": 0.8,
+        "n4X": 2.88,
+        "n4Y": 0.8,
+        "n5X": 3.2,
+        "n5Y": 0.8,
+        "n6X": 3.2,
+        "n6Y": 0.7,
+        "n7X": 3.2,
+        "n7Y": 0.6,
+        "n8X": 2.88,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 41,
+        "node1": 175,
+        "node2": 174,
+        "node3": 173,
+        "node4": 183,
+        "node5": 190,
+        "node6": 191,
+        "node7": 192,
+        "node8": 184,
+        "etype": 2,
+        "n1X": 3.2,
+        "n1Y": 0.6,
+        "n2X": 3.2,
+        "n2Y": 0.7,
+        "n3X": 3.2,
+        "n3Y": 0.8,
+        "n4X": 3.32,
+        "n4Y": 0.8,
+        "n5X": 3.44,
+        "n5Y": 0.8,
+        "n6X": 3.44,
+        "n6Y": 0.7,
+        "n7X": 3.44,
+        "n7Y": 0.6,
+        "n8X": 3.32,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 42,
+        "node1": 192,
+        "node2": 191,
+        "node3": 190,
+        "node4": 200,
+        "node5": 207,
+        "node6": 208,
+        "node7": 209,
+        "node8": 201,
+        "etype": 2,
+        "n1X": 3.44,
+        "n1Y": 0.6,
+        "n2X": 3.44,
+        "n2Y": 0.7,
+        "n3X": 3.44,
+        "n3Y": 0.8,
+        "n4X": 3.56,
+        "n4Y": 0.8,
+        "n5X": 3.68,
+        "n5Y": 0.8,
+        "n6X": 3.68,
+        "n6Y": 0.7,
+        "n7X": 3.68,
+        "n7Y": 0.6,
+        "n8X": 3.56,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 43,
+        "node1": 209,
+        "node2": 208,
+        "node3": 207,
+        "node4": 217,
+        "node5": 224,
+        "node6": 225,
+        "node7": 226,
+        "node8": 218,
+        "etype": 2,
+        "n1X": 3.68,
+        "n1Y": 0.6,
+        "n2X": 3.68,
+        "n2Y": 0.7,
+        "n3X": 3.68,
+        "n3Y": 0.8,
+        "n4X": 3.8,
+        "n4Y": 0.8,
+        "n5X": 3.92,
+        "n5Y": 0.8,
+        "n6X": 3.92,
+        "n6Y": 0.7,
+        "n7X": 3.92,
+        "n7Y": 0.6,
+        "n8X": 3.8,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 44,
+        "node1": 226,
+        "node2": 225,
+        "node3": 224,
+        "node4": 234,
+        "node5": 241,
+        "node6": 242,
+        "node7": 243,
+        "node8": 235,
+        "etype": 2,
+        "n1X": 3.92,
+        "n1Y": 0.6,
+        "n2X": 3.92,
+        "n2Y": 0.7,
+        "n3X": 3.92,
+        "n3Y": 0.8,
+        "n4X": 4.04,
+        "n4Y": 0.8,
+        "n5X": 4.16,
+        "n5Y": 0.8,
+        "n6X": 4.16,
+        "n6Y": 0.7,
+        "n7X": 4.16,
+        "n7Y": 0.6,
+        "n8X": 4.04,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 45,
+        "node1": 243,
+        "node2": 242,
+        "node3": 241,
+        "node4": 251,
+        "node5": 258,
+        "node6": 259,
+        "node7": 260,
+        "node8": 252,
+        "etype": 2,
+        "n1X": 4.16,
+        "n1Y": 0.6,
+        "n2X": 4.16,
+        "n2Y": 0.7,
+        "n3X": 4.16,
+        "n3Y": 0.8,
+        "n4X": 4.28,
+        "n4Y": 0.8,
+        "n5X": 4.4,
+        "n5Y": 0.8,
+        "n6X": 4.4,
+        "n6Y": 0.7,
+        "n7X": 4.4,
+        "n7Y": 0.6,
+        "n8X": 4.28,
+        "n8Y": 0.6,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 46,
+        "node1": 17,
+        "node2": 16,
+        "node3": 15,
+        "node4": 29,
+        "node5": 47,
+        "node6": 48,
+        "node7": 49,
+        "node8": 30,
+        "etype": 2,
+        "n1X": 0,
+        "n1Y": 0.4,
+        "n2X": 0,
+        "n2Y": 0.5,
+        "n3X": 0,
+        "n3Y": 0.6,
+        "n4X": 0.32,
+        "n4Y": 0.6,
+        "n5X": 0.64,
+        "n5Y": 0.6,
+        "n6X": 0.64,
+        "n6Y": 0.5,
+        "n7X": 0.64,
+        "n7Y": 0.4,
+        "n8X": 0.32,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 47,
+        "node1": 49,
+        "node2": 48,
+        "node3": 47,
+        "node4": 61,
+        "node5": 79,
+        "node6": 80,
+        "node7": 81,
+        "node8": 62,
+        "etype": 2,
+        "n1X": 0.64,
+        "n1Y": 0.4,
+        "n2X": 0.64,
+        "n2Y": 0.5,
+        "n3X": 0.64,
+        "n3Y": 0.6,
+        "n4X": 0.96,
+        "n4Y": 0.6,
+        "n5X": 1.28,
+        "n5Y": 0.6,
+        "n6X": 1.28,
+        "n6Y": 0.5,
+        "n7X": 1.28,
+        "n7Y": 0.4,
+        "n8X": 0.96,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 48,
+        "node1": 81,
+        "node2": 80,
+        "node3": 79,
+        "node4": 93,
+        "node5": 111,
+        "node6": 112,
+        "node7": 113,
+        "node8": 94,
+        "etype": 2,
+        "n1X": 1.28,
+        "n1Y": 0.4,
+        "n2X": 1.28,
+        "n2Y": 0.5,
+        "n3X": 1.28,
+        "n3Y": 0.6,
+        "n4X": 1.6,
+        "n4Y": 0.6,
+        "n5X": 1.92,
+        "n5Y": 0.6,
+        "n6X": 1.92,
+        "n6Y": 0.5,
+        "n7X": 1.92,
+        "n7Y": 0.4,
+        "n8X": 1.6,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 49,
+        "node1": 113,
+        "node2": 112,
+        "node3": 111,
+        "node4": 125,
+        "node5": 143,
+        "node6": 144,
+        "node7": 145,
+        "node8": 126,
+        "etype": 2,
+        "n1X": 1.92,
+        "n1Y": 0.4,
+        "n2X": 1.92,
+        "n2Y": 0.5,
+        "n3X": 1.92,
+        "n3Y": 0.6,
+        "n4X": 2.24,
+        "n4Y": 0.6,
+        "n5X": 2.56,
+        "n5Y": 0.6,
+        "n6X": 2.56,
+        "n6Y": 0.5,
+        "n7X": 2.56,
+        "n7Y": 0.4,
+        "n8X": 2.24,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 50,
+        "node1": 145,
+        "node2": 144,
+        "node3": 143,
+        "node4": 157,
+        "node5": 175,
+        "node6": 176,
+        "node7": 177,
+        "node8": 158,
+        "etype": 2,
+        "n1X": 2.56,
+        "n1Y": 0.4,
+        "n2X": 2.56,
+        "n2Y": 0.5,
+        "n3X": 2.56,
+        "n3Y": 0.6,
+        "n4X": 2.88,
+        "n4Y": 0.6,
+        "n5X": 3.2,
+        "n5Y": 0.6,
+        "n6X": 3.2,
+        "n6Y": 0.5,
+        "n7X": 3.2,
+        "n7Y": 0.4,
+        "n8X": 2.88,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 51,
+        "node1": 177,
+        "node2": 176,
+        "node3": 175,
+        "node4": 184,
+        "node5": 192,
+        "node6": 193,
+        "node7": 194,
+        "node8": 185,
+        "etype": 2,
+        "n1X": 3.2,
+        "n1Y": 0.4,
+        "n2X": 3.2,
+        "n2Y": 0.5,
+        "n3X": 3.2,
+        "n3Y": 0.6,
+        "n4X": 3.32,
+        "n4Y": 0.6,
+        "n5X": 3.44,
+        "n5Y": 0.6,
+        "n6X": 3.44,
+        "n6Y": 0.5,
+        "n7X": 3.44,
+        "n7Y": 0.4,
+        "n8X": 3.32,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 52,
+        "node1": 194,
+        "node2": 193,
+        "node3": 192,
+        "node4": 201,
+        "node5": 209,
+        "node6": 210,
+        "node7": 211,
+        "node8": 202,
+        "etype": 2,
+        "n1X": 3.44,
+        "n1Y": 0.4,
+        "n2X": 3.44,
+        "n2Y": 0.5,
+        "n3X": 3.44,
+        "n3Y": 0.6,
+        "n4X": 3.56,
+        "n4Y": 0.6,
+        "n5X": 3.68,
+        "n5Y": 0.6,
+        "n6X": 3.68,
+        "n6Y": 0.5,
+        "n7X": 3.68,
+        "n7Y": 0.4,
+        "n8X": 3.56,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 53,
+        "node1": 211,
+        "node2": 210,
+        "node3": 209,
+        "node4": 218,
+        "node5": 226,
+        "node6": 227,
+        "node7": 228,
+        "node8": 219,
+        "etype": 2,
+        "n1X": 3.68,
+        "n1Y": 0.4,
+        "n2X": 3.68,
+        "n2Y": 0.5,
+        "n3X": 3.68,
+        "n3Y": 0.6,
+        "n4X": 3.8,
+        "n4Y": 0.6,
+        "n5X": 3.92,
+        "n5Y": 0.6,
+        "n6X": 3.92,
+        "n6Y": 0.5,
+        "n7X": 3.92,
+        "n7Y": 0.4,
+        "n8X": 3.8,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 54,
+        "node1": 228,
+        "node2": 227,
+        "node3": 226,
+        "node4": 235,
+        "node5": 243,
+        "node6": 244,
+        "node7": 245,
+        "node8": 236,
+        "etype": 2,
+        "n1X": 3.92,
+        "n1Y": 0.4,
+        "n2X": 3.92,
+        "n2Y": 0.5,
+        "n3X": 3.92,
+        "n3Y": 0.6,
+        "n4X": 4.04,
+        "n4Y": 0.6,
+        "n5X": 4.16,
+        "n5Y": 0.6,
+        "n6X": 4.16,
+        "n6Y": 0.5,
+        "n7X": 4.16,
+        "n7Y": 0.4,
+        "n8X": 4.04,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 55,
+        "node1": 245,
+        "node2": 244,
+        "node3": 243,
+        "node4": 252,
+        "node5": 260,
+        "node6": 261,
+        "node7": 262,
+        "node8": 253,
+        "etype": 2,
+        "n1X": 4.16,
+        "n1Y": 0.4,
+        "n2X": 4.16,
+        "n2Y": 0.5,
+        "n3X": 4.16,
+        "n3Y": 0.6,
+        "n4X": 4.28,
+        "n4Y": 0.6,
+        "n5X": 4.4,
+        "n5Y": 0.6,
+        "n6X": 4.4,
+        "n6Y": 0.5,
+        "n7X": 4.4,
+        "n7Y": 0.4,
+        "n8X": 4.28,
+        "n8Y": 0.4,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 56,
+        "node1": 19,
+        "node2": 18,
+        "node3": 17,
+        "node4": 30,
+        "node5": 49,
+        "node6": 50,
+        "node7": 51,
+        "node8": 31,
+        "etype": 1,
+        "n1X": 0,
+        "n1Y": 0.2,
+        "n2X": 0,
+        "n2Y": 0.3,
+        "n3X": 0,
+        "n3Y": 0.4,
+        "n4X": 0.32,
+        "n4Y": 0.4,
+        "n5X": 0.64,
+        "n5Y": 0.4,
+        "n6X": 0.64,
+        "n6Y": 0.3,
+        "n7X": 0.64,
+        "n7Y": 0.2,
+        "n8X": 0.32,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 57,
+        "node1": 51,
+        "node2": 50,
+        "node3": 49,
+        "node4": 62,
+        "node5": 81,
+        "node6": 82,
+        "node7": 83,
+        "node8": 63,
+        "etype": 1,
+        "n1X": 0.64,
+        "n1Y": 0.2,
+        "n2X": 0.64,
+        "n2Y": 0.3,
+        "n3X": 0.64,
+        "n3Y": 0.4,
+        "n4X": 0.96,
+        "n4Y": 0.4,
+        "n5X": 1.28,
+        "n5Y": 0.4,
+        "n6X": 1.28,
+        "n6Y": 0.3,
+        "n7X": 1.28,
+        "n7Y": 0.2,
+        "n8X": 0.96,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 58,
+        "node1": 83,
+        "node2": 82,
+        "node3": 81,
+        "node4": 94,
+        "node5": 113,
+        "node6": 114,
+        "node7": 115,
+        "node8": 95,
+        "etype": 1,
+        "n1X": 1.28,
+        "n1Y": 0.2,
+        "n2X": 1.28,
+        "n2Y": 0.3,
+        "n3X": 1.28,
+        "n3Y": 0.4,
+        "n4X": 1.6,
+        "n4Y": 0.4,
+        "n5X": 1.92,
+        "n5Y": 0.4,
+        "n6X": 1.92,
+        "n6Y": 0.3,
+        "n7X": 1.92,
+        "n7Y": 0.2,
+        "n8X": 1.6,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 59,
+        "node1": 115,
+        "node2": 114,
+        "node3": 113,
+        "node4": 126,
+        "node5": 145,
+        "node6": 146,
+        "node7": 147,
+        "node8": 127,
+        "etype": 1,
+        "n1X": 1.92,
+        "n1Y": 0.2,
+        "n2X": 1.92,
+        "n2Y": 0.3,
+        "n3X": 1.92,
+        "n3Y": 0.4,
+        "n4X": 2.24,
+        "n4Y": 0.4,
+        "n5X": 2.56,
+        "n5Y": 0.4,
+        "n6X": 2.56,
+        "n6Y": 0.3,
+        "n7X": 2.56,
+        "n7Y": 0.2,
+        "n8X": 2.24,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 60,
+        "node1": 147,
+        "node2": 146,
+        "node3": 145,
+        "node4": 158,
+        "node5": 177,
+        "node6": 178,
+        "node7": 179,
+        "node8": 159,
+        "etype": 1,
+        "n1X": 2.56,
+        "n1Y": 0.2,
+        "n2X": 2.56,
+        "n2Y": 0.3,
+        "n3X": 2.56,
+        "n3Y": 0.4,
+        "n4X": 2.88,
+        "n4Y": 0.4,
+        "n5X": 3.2,
+        "n5Y": 0.4,
+        "n6X": 3.2,
+        "n6Y": 0.3,
+        "n7X": 3.2,
+        "n7Y": 0.2,
+        "n8X": 2.88,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 61,
+        "node1": 179,
+        "node2": 178,
+        "node3": 177,
+        "node4": 185,
+        "node5": 194,
+        "node6": 195,
+        "node7": 196,
+        "node8": 186,
+        "etype": 1,
+        "n1X": 3.2,
+        "n1Y": 0.2,
+        "n2X": 3.2,
+        "n2Y": 0.3,
+        "n3X": 3.2,
+        "n3Y": 0.4,
+        "n4X": 3.32,
+        "n4Y": 0.4,
+        "n5X": 3.44,
+        "n5Y": 0.4,
+        "n6X": 3.44,
+        "n6Y": 0.3,
+        "n7X": 3.44,
+        "n7Y": 0.2,
+        "n8X": 3.32,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 62,
+        "node1": 196,
+        "node2": 195,
+        "node3": 194,
+        "node4": 202,
+        "node5": 211,
+        "node6": 212,
+        "node7": 213,
+        "node8": 203,
+        "etype": 1,
+        "n1X": 3.44,
+        "n1Y": 0.2,
+        "n2X": 3.44,
+        "n2Y": 0.3,
+        "n3X": 3.44,
+        "n3Y": 0.4,
+        "n4X": 3.56,
+        "n4Y": 0.4,
+        "n5X": 3.68,
+        "n5Y": 0.4,
+        "n6X": 3.68,
+        "n6Y": 0.3,
+        "n7X": 3.68,
+        "n7Y": 0.2,
+        "n8X": 3.56,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 63,
+        "node1": 213,
+        "node2": 212,
+        "node3": 211,
+        "node4": 219,
+        "node5": 228,
+        "node6": 229,
+        "node7": 230,
+        "node8": 220,
+        "etype": 1,
+        "n1X": 3.68,
+        "n1Y": 0.2,
+        "n2X": 3.68,
+        "n2Y": 0.3,
+        "n3X": 3.68,
+        "n3Y": 0.4,
+        "n4X": 3.8,
+        "n4Y": 0.4,
+        "n5X": 3.92,
+        "n5Y": 0.4,
+        "n6X": 3.92,
+        "n6Y": 0.3,
+        "n7X": 3.92,
+        "n7Y": 0.2,
+        "n8X": 3.8,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 64,
+        "node1": 230,
+        "node2": 229,
+        "node3": 228,
+        "node4": 236,
+        "node5": 245,
+        "node6": 246,
+        "node7": 247,
+        "node8": 237,
+        "etype": 1,
+        "n1X": 3.92,
+        "n1Y": 0.2,
+        "n2X": 3.92,
+        "n2Y": 0.3,
+        "n3X": 3.92,
+        "n3Y": 0.4,
+        "n4X": 4.04,
+        "n4Y": 0.4,
+        "n5X": 4.16,
+        "n5Y": 0.4,
+        "n6X": 4.16,
+        "n6Y": 0.3,
+        "n7X": 4.16,
+        "n7Y": 0.2,
+        "n8X": 4.04,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 65,
+        "node1": 247,
+        "node2": 246,
+        "node3": 245,
+        "node4": 253,
+        "node5": 262,
+        "node6": 263,
+        "node7": 264,
+        "node8": 254,
+        "etype": 1,
+        "n1X": 4.16,
+        "n1Y": 0.2,
+        "n2X": 4.16,
+        "n2Y": 0.3,
+        "n3X": 4.16,
+        "n3Y": 0.4,
+        "n4X": 4.28,
+        "n4Y": 0.4,
+        "n5X": 4.4,
+        "n5Y": 0.4,
+        "n6X": 4.4,
+        "n6Y": 0.3,
+        "n7X": 4.4,
+        "n7Y": 0.2,
+        "n8X": 4.28,
+        "n8Y": 0.2,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 66,
+        "node1": 21,
+        "node2": 20,
+        "node3": 19,
+        "node4": 31,
+        "node5": 51,
+        "node6": 52,
+        "node7": 53,
+        "node8": 32,
+        "etype": 1,
+        "n1X": 0,
+        "n1Y": 0,
+        "n2X": 0,
+        "n2Y": 0.1,
+        "n3X": 0,
+        "n3Y": 0.2,
+        "n4X": 0.32,
+        "n4Y": 0.2,
+        "n5X": 0.64,
+        "n5Y": 0.2,
+        "n6X": 0.64,
+        "n6Y": 0.1,
+        "n7X": 0.64,
+        "n7Y": 0,
+        "n8X": 0.32,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 67,
+        "node1": 53,
+        "node2": 52,
+        "node3": 51,
+        "node4": 63,
+        "node5": 83,
+        "node6": 84,
+        "node7": 85,
+        "node8": 64,
+        "etype": 1,
+        "n1X": 0.64,
+        "n1Y": 0,
+        "n2X": 0.64,
+        "n2Y": 0.1,
+        "n3X": 0.64,
+        "n3Y": 0.2,
+        "n4X": 0.96,
+        "n4Y": 0.2,
+        "n5X": 1.28,
+        "n5Y": 0.2,
+        "n6X": 1.28,
+        "n6Y": 0.1,
+        "n7X": 1.28,
+        "n7Y": 0,
+        "n8X": 0.96,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 68,
+        "node1": 85,
+        "node2": 84,
+        "node3": 83,
+        "node4": 95,
+        "node5": 115,
+        "node6": 116,
+        "node7": 117,
+        "node8": 96,
+        "etype": 1,
+        "n1X": 1.28,
+        "n1Y": 0,
+        "n2X": 1.28,
+        "n2Y": 0.1,
+        "n3X": 1.28,
+        "n3Y": 0.2,
+        "n4X": 1.6,
+        "n4Y": 0.2,
+        "n5X": 1.92,
+        "n5Y": 0.2,
+        "n6X": 1.92,
+        "n6Y": 0.1,
+        "n7X": 1.92,
+        "n7Y": 0,
+        "n8X": 1.6,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 69,
+        "node1": 117,
+        "node2": 116,
+        "node3": 115,
+        "node4": 127,
+        "node5": 147,
+        "node6": 148,
+        "node7": 149,
+        "node8": 128,
+        "etype": 1,
+        "n1X": 1.92,
+        "n1Y": 0,
+        "n2X": 1.92,
+        "n2Y": 0.1,
+        "n3X": 1.92,
+        "n3Y": 0.2,
+        "n4X": 2.24,
+        "n4Y": 0.2,
+        "n5X": 2.56,
+        "n5Y": 0.2,
+        "n6X": 2.56,
+        "n6Y": 0.1,
+        "n7X": 2.56,
+        "n7Y": 0,
+        "n8X": 2.24,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 70,
+        "node1": 149,
+        "node2": 148,
+        "node3": 147,
+        "node4": 159,
+        "node5": 179,
+        "node6": 180,
+        "node7": 181,
+        "node8": 160,
+        "etype": 1,
+        "n1X": 2.56,
+        "n1Y": 0,
+        "n2X": 2.56,
+        "n2Y": 0.1,
+        "n3X": 2.56,
+        "n3Y": 0.2,
+        "n4X": 2.88,
+        "n4Y": 0.2,
+        "n5X": 3.2,
+        "n5Y": 0.2,
+        "n6X": 3.2,
+        "n6Y": 0.1,
+        "n7X": 3.2,
+        "n7Y": 0,
+        "n8X": 2.88,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 71,
+        "node1": 181,
+        "node2": 180,
+        "node3": 179,
+        "node4": 186,
+        "node5": 196,
+        "node6": 197,
+        "node7": 198,
+        "node8": 187,
+        "etype": 1,
+        "n1X": 3.2,
+        "n1Y": 0,
+        "n2X": 3.2,
+        "n2Y": 0.1,
+        "n3X": 3.2,
+        "n3Y": 0.2,
+        "n4X": 3.32,
+        "n4Y": 0.2,
+        "n5X": 3.44,
+        "n5Y": 0.2,
+        "n6X": 3.44,
+        "n6Y": 0.1,
+        "n7X": 3.44,
+        "n7Y": 0,
+        "n8X": 3.32,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 72,
+        "node1": 198,
+        "node2": 197,
+        "node3": 196,
+        "node4": 203,
+        "node5": 213,
+        "node6": 214,
+        "node7": 215,
+        "node8": 204,
+        "etype": 1,
+        "n1X": 3.44,
+        "n1Y": 0,
+        "n2X": 3.44,
+        "n2Y": 0.1,
+        "n3X": 3.44,
+        "n3Y": 0.2,
+        "n4X": 3.56,
+        "n4Y": 0.2,
+        "n5X": 3.68,
+        "n5Y": 0.2,
+        "n6X": 3.68,
+        "n6Y": 0.1,
+        "n7X": 3.68,
+        "n7Y": 0,
+        "n8X": 3.56,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 73,
+        "node1": 215,
+        "node2": 214,
+        "node3": 213,
+        "node4": 220,
+        "node5": 230,
+        "node6": 231,
+        "node7": 232,
+        "node8": 221,
+        "etype": 1,
+        "n1X": 3.68,
+        "n1Y": 0,
+        "n2X": 3.68,
+        "n2Y": 0.1,
+        "n3X": 3.68,
+        "n3Y": 0.2,
+        "n4X": 3.8,
+        "n4Y": 0.2,
+        "n5X": 3.92,
+        "n5Y": 0.2,
+        "n6X": 3.92,
+        "n6Y": 0.1,
+        "n7X": 3.92,
+        "n7Y": 0,
+        "n8X": 3.8,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 74,
+        "node1": 232,
+        "node2": 231,
+        "node3": 230,
+        "node4": 237,
+        "node5": 247,
+        "node6": 248,
+        "node7": 249,
+        "node8": 238,
+        "etype": 1,
+        "n1X": 3.92,
+        "n1Y": 0,
+        "n2X": 3.92,
+        "n2Y": 0.1,
+        "n3X": 3.92,
+        "n3Y": 0.2,
+        "n4X": 4.04,
+        "n4Y": 0.2,
+        "n5X": 4.16,
+        "n5Y": 0.2,
+        "n6X": 4.16,
+        "n6Y": 0.1,
+        "n7X": 4.16,
+        "n7Y": 0,
+        "n8X": 4.04,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      },
+      {
+        "elementId": 75,
+        "node1": 249,
+        "node2": 248,
+        "node3": 247,
+        "node4": 254,
+        "node5": 264,
+        "node6": 265,
+        "node7": 266,
+        "node8": 255,
+        "etype": 1,
+        "n1X": 4.16,
+        "n1Y": 0,
+        "n2X": 4.16,
+        "n2Y": 0.1,
+        "n3X": 4.16,
+        "n3Y": 0.2,
+        "n4X": 4.28,
+        "n4Y": 0.2,
+        "n5X": 4.4,
+        "n5Y": 0.2,
+        "n6X": 4.4,
+        "n6Y": 0.1,
+        "n7X": 4.4,
+        "n7Y": 0,
+        "n8X": 4.28,
+        "n8Y": 0,
+        "kind": "Q8",
+        "status": "Active",
+        "smithEmb2dLocalOrder": true
+      }
+    ],
+    "meshPopupSelectedTabIndex": 9,
+    "meshElementOrder": "3-node",
+    "rs2dMeshType": "Graded",
+    "rs2dElementType": "8-node quadrilateral",
+    "rs2dGradationFactor": "1.3",
+    "rs2dExcavationNodeCount": "110",
+    "rs2dAdvancedExpanded": false,
+    "rs2dDiscretized": false,
+    "globalDensityPreset": "Medium",
+    "globalMeshSize": "0.5",
+    "nearBoundaryMeshSize": "0.1",
+    "surfaceMeshStatus": "No mesh generated.",
+    "rectangularMeshL": "1",
+    "rectangularMeshH": "0.2",
+    "rectangularMeshNx": "10",
+    "rectangularMeshNy": "2",
+    "tunnelMeshGenerationMethod": "cdt",
+    "meshSmoothingMethod": "laplacian",
+    "smoothingIterations": "3",
+    "autoRegenerateMesh": false,
+    "refineNearExcavation": true,
+    "refineNearLoads": false,
+    "refineNearMaterialInterfaces": false,
+    "refineNearStiffnessContrast": false,
+    "tunnelDiameter": "",
+    "farFieldEdgeLength": "5.0",
+    "nearTunnelEdgeLength": "0.2",
+    "ringCount": "4",
+    "ringGrowthFactor": "1.2",
+    "firstRingThickness": "0.3",
+    "pointLoadRefinementRadius": "",
+    "minAngleDegrees": "20",
+    "maxRefinementIterations": "100",
+    "mergeTolerance": "1e-6"
+  },
+  "loads": [
+    {
+      "type": "point",
+      "direction": "axial",
+      "magnitude": 10,
+      "startX": 0,
+      "startY": 0,
+      "endX": 0,
+      "endY": 0
+    }
+  ],
+  "boundaryConditions": {
+    "rows": [
+      {
+        "nodeId": 1,
+        "boundaryName": "Node 1",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 2,
+        "boundaryName": "Node 2",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 3,
+        "boundaryName": "Node 3",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 4,
+        "boundaryName": "Node 4",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 5,
+        "boundaryName": "Node 5",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 6,
+        "boundaryName": "Node 6",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 7,
+        "boundaryName": "Node 7",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 8,
+        "boundaryName": "Node 8",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 9,
+        "boundaryName": "Node 9",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 10,
+        "boundaryName": "Node 10",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 11,
+        "boundaryName": "Node 11",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 12,
+        "boundaryName": "Node 12",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 13,
+        "boundaryName": "Node 13",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 14,
+        "boundaryName": "Node 14",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 15,
+        "boundaryName": "Node 15",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 16,
+        "boundaryName": "Node 16",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 17,
+        "boundaryName": "Node 17",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 18,
+        "boundaryName": "Node 18",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 19,
+        "boundaryName": "Node 19",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 20,
+        "boundaryName": "Node 20",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 21,
+        "boundaryName": "Node 21",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 32,
+        "boundaryName": "Node 32",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 53,
+        "boundaryName": "Node 53",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 64,
+        "boundaryName": "Node 64",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 85,
+        "boundaryName": "Node 85",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 96,
+        "boundaryName": "Node 96",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 117,
+        "boundaryName": "Node 117",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 128,
+        "boundaryName": "Node 128",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 149,
+        "boundaryName": "Node 149",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 160,
+        "boundaryName": "Node 160",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 181,
+        "boundaryName": "Node 181",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 187,
+        "boundaryName": "Node 187",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 188,
+        "boundaryName": "Node 188",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 189,
+        "boundaryName": "Node 189",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 190,
+        "boundaryName": "Node 190",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 191,
+        "boundaryName": "Node 191",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 192,
+        "boundaryName": "Node 192",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 193,
+        "boundaryName": "Node 193",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 194,
+        "boundaryName": "Node 194",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 195,
+        "boundaryName": "Node 195",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 196,
+        "boundaryName": "Node 196",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 197,
+        "boundaryName": "Node 197",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 198,
+        "boundaryName": "Node 198",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 204,
+        "boundaryName": "Node 204",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 205,
+        "boundaryName": "Node 205",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 206,
+        "boundaryName": "Node 206",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 207,
+        "boundaryName": "Node 207",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 208,
+        "boundaryName": "Node 208",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 209,
+        "boundaryName": "Node 209",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 210,
+        "boundaryName": "Node 210",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 211,
+        "boundaryName": "Node 211",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 212,
+        "boundaryName": "Node 212",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 213,
+        "boundaryName": "Node 213",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 214,
+        "boundaryName": "Node 214",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 215,
+        "boundaryName": "Node 215",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 221,
+        "boundaryName": "Node 221",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 222,
+        "boundaryName": "Node 222",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 223,
+        "boundaryName": "Node 223",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 224,
+        "boundaryName": "Node 224",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 225,
+        "boundaryName": "Node 225",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 226,
+        "boundaryName": "Node 226",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 227,
+        "boundaryName": "Node 227",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 228,
+        "boundaryName": "Node 228",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 229,
+        "boundaryName": "Node 229",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 230,
+        "boundaryName": "Node 230",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 231,
+        "boundaryName": "Node 231",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 232,
+        "boundaryName": "Node 232",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 238,
+        "boundaryName": "Node 238",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 239,
+        "boundaryName": "Node 239",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 240,
+        "boundaryName": "Node 240",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 241,
+        "boundaryName": "Node 241",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 242,
+        "boundaryName": "Node 242",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 243,
+        "boundaryName": "Node 243",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 244,
+        "boundaryName": "Node 244",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 245,
+        "boundaryName": "Node 245",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 246,
+        "boundaryName": "Node 246",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 247,
+        "boundaryName": "Node 247",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 248,
+        "boundaryName": "Node 248",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 249,
+        "boundaryName": "Node 249",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 255,
+        "boundaryName": "Node 255",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      },
+      {
+        "nodeId": 256,
+        "boundaryName": "Node 256",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 257,
+        "boundaryName": "Node 257",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 258,
+        "boundaryName": "Node 258",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 259,
+        "boundaryName": "Node 259",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 260,
+        "boundaryName": "Node 260",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 261,
+        "boundaryName": "Node 261",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 262,
+        "boundaryName": "Node 262",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 263,
+        "boundaryName": "Node 263",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 264,
+        "boundaryName": "Node 264",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 265,
+        "boundaryName": "Node 265",
+        "bcType": "Roller X",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "x restrained (roller on y-axis plane)"
+      },
+      {
+        "nodeId": 266,
+        "boundaryName": "Node 266",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Both DOFs restrained"
+      }
+    ],
+    "statusMessage": "Showing 91 marker(s) on the BC canvas.",
+    "nodesText": "",
+    "selectedBCTypeForBoundary": "Fixed",
+    "bcValueForBoundary": "0"
+  },
+  "feAnalysis": {
+    "statusMessage": "Load mesh data or run analysis.",
+    "feAnalysisSubTabIndex": 0,
+    "stagedExcavationEnabled": false,
+    "gravityEnabled": true,
+    "gravityAcceleration": 9.81,
+    "loadSteppingEnabled": false,
+    "numberOfLoadSteps": 1,
+    "cppExecutableDirectory": "",
+    "stageDefinitions": [],
+    "convergenceTolerance": 0.0001,
+    "maxIterations": 500,
+    "loadIncrements": 5,
+    "srfTrialCount": 6,
+    "srfValues": [
+      1,
+      1.1,
+      1.2,
+      1.3,
+      1.4,
+      1.5
+    ]
+  },
+  "results": {
+    "resultsSubTabIndex": 0,
+    "vectorOutputType": "Displacement Vectors",
+    "vectorDisplacementComponent": "Both (Ux \u002B Uy)",
+    "vectorScale": 1,
+    "deformedMeshExaggeration": 50,
+    "showUndeformedOutline": true,
+    "showMesh": true,
+    "isLinePlotMode": false,
+    "selectedOutputType": "Displacement Magnitude",
+    "visualizationMode": "Contour",
+    "feStatusMessage": "Run FE Analysis to view results."
+  },
+  "script": {
+    "scriptContent": "! \u003Csolver:p64\u003E\r\n! Example 2: A two-layer slope (Smith \u0026 Griffiths Program 6.4)\r\n! Generated by tools/gen_slope64_ex2.ps1\r\n! Book: k_h=0 (pseudo-static not used by p64 C\u002B\u002B); nosurf=0; gam_w=9.81\r\n! Book fos_tol=0.05 is FoS bracket metadata \u00E2\u20AC\u201D solver uses displacement tol below\r\n! \u003CBEGIN:AnalysisOptions\u003E\r\n! failure_criterion MohrCoulomb\r\n! material_type Isotropic\r\n! mesh_type Q8\r\n! mesh_source explicit\r\n! solver_executable SRF\r\n! embankment_nx1 5\r\n! embankment_nx2 5\r\n! embankment_ny1 5\r\n! embankment_ny2 5\r\n! embankment_w1 1.2\r\n! embankment_s1 2\r\n! embankment_w2 1.2\r\n! embankment_h1 1\r\n! embankment_h2 1\r\n! mesh_coord_y_offset 2\r\n! srf_mode multi\r\n! \u003CEND:AnalysisOptions\u003E\r\n75  266  2\r\n25  1  0  20  100000  0.3\r\n15  0.5  0  20  100000  0.3\r\n1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  2  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1\r\n0  2\r\n0  1.9\r\n0  1.8\r\n0  1.7\r\n0  1.6\r\n0  1.5\r\n0  1.4\r\n0  1.3\r\n0  1.2\r\n0  1.1\r\n0  1\r\n0  0.9\r\n0  0.8\r\n0  0.7\r\n0  0.6\r\n0  0.5\r\n0  0.4\r\n0  0.3\r\n0  0.2\r\n0  0.1\r\n0  0\r\n0.12  2\r\n0.16  1.8\r\n0.2  1.6\r\n0.24  1.4\r\n0.28  1.2\r\n0.32  1\r\n0.32  0.8\r\n0.32  0.6\r\n0.32  0.4\r\n0.32  0.2\r\n0.32  0\r\n0.24  2\r\n0.28  1.9\r\n0.32  1.8\r\n0.36  1.7\r\n0.4  1.6\r\n0.44  1.5\r\n0.48  1.4\r\n0.52  1.3\r\n0.56  1.2\r\n0.6  1.1\r\n0.64  1\r\n0.64  0.9\r\n0.64  0.8\r\n0.64  0.7\r\n0.64  0.6\r\n0.64  0.5\r\n0.64  0.4\r\n0.64  0.3\r\n0.64  0.2\r\n0.64  0.1\r\n0.64  0\r\n0.36  2\r\n0.48  1.8\r\n0.6  1.6\r\n0.72  1.4\r\n0.84  1.2\r\n0.96  1\r\n0.96  0.8\r\n0.96  0.6\r\n0.96  0.4\r\n0.96  0.2\r\n0.96  0\r\n0.48  2\r\n0.56  1.9\r\n0.64  1.8\r\n0.72  1.7\r\n0.8  1.6\r\n0.88  1.5\r\n0.96  1.4\r\n1.04  1.3\r\n1.12  1.2\r\n1.2  1.1\r\n1.28  1\r\n1.28  0.9\r\n1.28  0.8\r\n1.28  0.7\r\n1.28  0.6\r\n1.28  0.5\r\n1.28  0.4\r\n1.28  0.3\r\n1.28  0.2\r\n1.28  0.1\r\n1.28  0\r\n0.6  2\r\n0.8  1.8\r\n1  1.6\r\n1.2  1.4\r\n1.4  1.2\r\n1.6  1\r\n1.6  0.8\r\n1.6  0.6\r\n1.6  0.4\r\n1.6  0.2\r\n1.6  0\r\n0.72  2\r\n0.84  1.9\r\n0.96  1.8\r\n1.08  1.7\r\n1.2  1.6\r\n1.32  1.5\r\n1.44  1.4\r\n1.56  1.3\r\n1.68  1.2\r\n1.8  1.1\r\n1.92  1\r\n1.92  0.9\r\n1.92  0.8\r\n1.92  0.7\r\n1.92  0.6\r\n1.92  0.5\r\n1.92  0.4\r\n1.92  0.3\r\n1.92  0.2\r\n1.92  0.1\r\n1.92  0\r\n0.84  2\r\n1.12  1.8\r\n1.4  1.6\r\n1.68  1.4\r\n1.96  1.2\r\n2.24  1\r\n2.24  0.8\r\n2.24  0.6\r\n2.24  0.4\r\n2.24  0.2\r\n2.24  0\r\n0.96  2\r\n1.12  1.9\r\n1.28  1.8\r\n1.44  1.7\r\n1.6  1.6\r\n1.76  1.5\r\n1.92  1.4\r\n2.08  1.3\r\n2.24  1.2\r\n2.4  1.1\r\n2.56  1\r\n2.56  0.9\r\n2.56  0.8\r\n2.56  0.7\r\n2.56  0.6\r\n2.56  0.5\r\n2.56  0.4\r\n2.56  0.3\r\n2.56  0.2\r\n2.56  0.1\r\n2.56  0\r\n1.08  2\r\n1.44  1.8\r\n1.8  1.6\r\n2.16  1.4\r\n2.52  1.2\r\n2.88  1\r\n2.88  0.8\r\n2.88  0.6\r\n2.88  0.4\r\n2.88  0.2\r\n2.88  0\r\n1.2  2\r\n1.4  1.9\r\n1.6  1.8\r\n1.8  1.7\r\n2  1.6\r\n2.2  1.5\r\n2.4  1.4\r\n2.6  1.3\r\n2.8  1.2\r\n3  1.1\r\n3.2  1\r\n3.2  0.9\r\n3.2  0.8\r\n3.2  0.7\r\n3.2  0.6\r\n3.2  0.5\r\n3.2  0.4\r\n3.2  0.3\r\n3.2  0.2\r\n3.2  0.1\r\n3.2  0\r\n3.32  1\r\n3.32  0.8\r\n3.32  0.6\r\n3.32  0.4\r\n3.32  0.2\r\n3.32  0\r\n3.44  1\r\n3.44  0.9\r\n3.44  0.8\r\n3.44  0.7\r\n3.44  0.6\r\n3.44  0.5\r\n3.44  0.4\r\n3.44  0.3\r\n3.44  0.2\r\n3.44  0.1\r\n3.44  0\r\n3.56  1\r\n3.56  0.8\r\n3.56  0.6\r\n3.56  0.4\r\n3.56  0.2\r\n3.56  0\r\n3.68  1\r\n3.68  0.9\r\n3.68  0.8\r\n3.68  0.7\r\n3.68  0.6\r\n3.68  0.5\r\n3.68  0.4\r\n3.68  0.3\r\n3.68  0.2\r\n3.68  0.1\r\n3.68  0\r\n3.8  1\r\n3.8  0.8\r\n3.8  0.6\r\n3.8  0.4\r\n3.8  0.2\r\n3.8  0\r\n3.92  1\r\n3.92  0.9\r\n3.92  0.8\r\n3.92  0.7\r\n3.92  0.6\r\n3.92  0.5\r\n3.92  0.4\r\n3.92  0.3\r\n3.92  0.2\r\n3.92  0.1\r\n3.92  0\r\n4.04  1\r\n4.04  0.8\r\n4.04  0.6\r\n4.04  0.4\r\n4.04  0.2\r\n4.04  0\r\n4.16  1\r\n4.16  0.9\r\n4.16  0.8\r\n4.16  0.7\r\n4.16  0.6\r\n4.16  0.5\r\n4.16  0.4\r\n4.16  0.3\r\n4.16  0.2\r\n4.16  0.1\r\n4.16  0\r\n4.28  1\r\n4.28  0.8\r\n4.28  0.6\r\n4.28  0.4\r\n4.28  0.2\r\n4.28  0\r\n4.4  1\r\n4.4  0.9\r\n4.4  0.8\r\n4.4  0.7\r\n4.4  0.6\r\n4.4  0.5\r\n4.4  0.4\r\n4.4  0.3\r\n4.4  0.2\r\n4.4  0.1\r\n4.4  0\r\n3  2  1  22  33  34  35  23\r\n35  34  33  54  65  66  67  55\r\n67  66  65  86  97  98  99  87\r\n99  98  97  118  129  130  131  119\r\n131  130  129  150  161  162  163  151\r\n5  4  3  23  35  36  37  24\r\n37  36  35  55  67  68  69  56\r\n69  68  67  87  99  100  101  88\r\n101  100  99  119  131  132  133  120\r\n133  132  131  151  163  164  165  152\r\n7  6  5  24  37  38  39  25\r\n39  38  37  56  69  70  71  57\r\n71  70  69  88  101  102  103  89\r\n103  102  101  120  133  134  135  121\r\n135  134  133  152  165  166  167  153\r\n9  8  7  25  39  40  41  26\r\n41  40  39  57  71  72  73  58\r\n73  72  71  89  103  104  105  90\r\n105  104  103  121  135  136  137  122\r\n137  136  135  153  167  168  169  154\r\n11  10  9  26  41  42  43  27\r\n43  42  41  58  73  74  75  59\r\n75  74  73  90  105  106  107  91\r\n107  106  105  122  137  138  139  123\r\n139  138  137  154  169  170  171  155\r\n13  12  11  27  43  44  45  28\r\n45  44  43  59  75  76  77  60\r\n77  76  75  91  107  108  109  92\r\n109  108  107  123  139  140  141  124\r\n141  140  139  155  171  172  173  156\r\n173  172  171  182  188  189  190  183\r\n190  189  188  199  205  206  207  200\r\n207  206  205  216  222  223  224  217\r\n224  223  222  233  239  240  241  234\r\n241  240  239  250  256  257  258  251\r\n15  14  13  28  45  46  47  29\r\n47  46  45  60  77  78  79  61\r\n79  78  77  92  109  110  111  93\r\n111  110  109  124  141  142  143  125\r\n143  142  141  156  173  174  175  157\r\n175  174  173  183  190  191  192  184\r\n192  191  190  200  207  208  209  201\r\n209  208  207  217  224  225  226  218\r\n226  225  224  234  241  242  243  235\r\n243  242  241  251  258  259  260  252\r\n17  16  15  29  47  48  49  30\r\n49  48  47  61  79  80  81  62\r\n81  80  79  93  111  112  113  94\r\n113  112  111  125  143  144  145  126\r\n145  144  143  157  175  176  177  158\r\n177  176  175  184  192  193  194  185\r\n194  193  192  201  209  210  211  202\r\n211  210  209  218  226  227  228  219\r\n228  227  226  235  243  244  245  236\r\n245  244  243  252  260  261  262  253\r\n19  18  17  30  49  50  51  31\r\n51  50  49  62  81  82  83  63\r\n83  82  81  94  113  114  115  95\r\n115  114  113  126  145  146  147  127\r\n147  146  145  158  177  178  179  159\r\n179  178  177  185  194  195  196  186\r\n196  195  194  202  211  212  213  203\r\n213  212  211  219  228  229  230  220\r\n230  229  228  236  245  246  247  237\r\n247  246  245  253  262  263  264  254\r\n21  20  19  31  51  52  53  32\r\n53  52  51  63  83  84  85  64\r\n85  84  83  95  115  116  117  96\r\n117  116  115  127  147  148  149  128\r\n149  148  147  159  179  180  181  160\r\n181  180  179  186  196  197  198  187\r\n198  197  196  203  213  214  215  204\r\n215  214  213  220  230  231  232  221\r\n232  231  230  237  247  248  249  238\r\n249  248  247  254  264  265  266  255\r\n91\r\n1  0  1\r\n2  0  1\r\n3  0  1\r\n4  0  1\r\n5  0  1\r\n6  0  1\r\n7  0  1\r\n8  0  1\r\n9  0  1\r\n10  0  1\r\n11  0  1\r\n12  0  1\r\n13  0  1\r\n14  0  1\r\n15  0  1\r\n16  0  1\r\n17  0  1\r\n18  0  1\r\n19  0  1\r\n20  0  1\r\n21  0  0\r\n32  0  0\r\n53  0  0\r\n64  0  0\r\n85  0  0\r\n96  0  0\r\n117  0  0\r\n128  0  0\r\n149  0  0\r\n160  0  0\r\n181  0  0\r\n187  0  0\r\n188  0  1\r\n189  0  1\r\n190  0  1\r\n191  0  1\r\n192  0  1\r\n193  0  1\r\n194  0  1\r\n195  0  1\r\n196  0  1\r\n197  0  1\r\n198  0  0\r\n204  0  0\r\n205  0  1\r\n206  0  1\r\n207  0  1\r\n208  0  1\r\n209  0  1\r\n210  0  1\r\n211  0  1\r\n212  0  1\r\n213  0  1\r\n214  0  1\r\n215  0  0\r\n221  0  0\r\n222  0  1\r\n223  0  1\r\n224  0  1\r\n225  0  1\r\n226  0  1\r\n227  0  1\r\n228  0  1\r\n229  0  1\r\n230  0  1\r\n231  0  1\r\n232  0  0\r\n238  0  0\r\n239  0  1\r\n240  0  1\r\n241  0  1\r\n242  0  1\r\n243  0  1\r\n244  0  1\r\n245  0  1\r\n246  0  1\r\n247  0  1\r\n248  0  1\r\n249  0  0\r\n255  0  0\r\n256  0  1\r\n257  0  1\r\n258  0  1\r\n259  0  1\r\n260  0  1\r\n261  0  1\r\n262  0  1\r\n263  0  1\r\n264  0  1\r\n265  0  1\r\n266  0  0\r\n0.0001  500\r\n6\r\n1  1.1  1.2  1.3  1.4  1.5\n",
+    "outputText": "",
+    "statusMessage": "Loaded ex2_twolayer_slope.dat",
+    "isManualContent": true
+  },
+  "fieldStress": {
+    "global": {
+      "mode": "gravity",
+      "sigma1": -1000,
+      "sigma3": -500,
+      "sigmaZ": -750,
+      "angleDeg": 0,
+      "directSxx": -100,
+      "directSyy": -100,
+      "directTxy": 0,
+      "kx": 0.5,
+      "kz": 0.5,
+      "autoSurface": true,
+      "ySurface": 0,
+      "useEffectiveStressRatio": false
+    }
+  },
+  "userDefinedMesh": {
+    "elementType": "Q8",
+    "q8MeshMode": "Embankment",
+    "q8MeshDensity": "1",
+    "p64Nx1": "20",
+    "p64Nx2": "10",
+    "p64Ny1": "10",
+    "p64Ny2": "5",
+    "p64W1": "20",
+    "p64S1": "20",
+    "p64W2": "20",
+    "p64H1": "10",
+    "p64H2": "5",
+    "rectUseGeometryExtent": true,
+    "rectXMin": "0",
+    "rectXMax": "4.4",
+    "rectYMin": "0",
+    "rectYMax": "2",
+    "rectElementsX": "20",
+    "rectElementsY": "10",
+    "nodes": [
+      {
+        "nodeId": 1,
+        "x": "0",
+        "y": "2"
+      },
+      {
+        "nodeId": 2,
+        "x": "0",
+        "y": "1.9"
+      },
+      {
+        "nodeId": 3,
+        "x": "0",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 4,
+        "x": "0",
+        "y": "1.7"
+      },
+      {
+        "nodeId": 5,
+        "x": "0",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 6,
+        "x": "0",
+        "y": "1.5"
+      },
+      {
+        "nodeId": 7,
+        "x": "0",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 8,
+        "x": "0",
+        "y": "1.3"
+      },
+      {
+        "nodeId": 9,
+        "x": "0",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 10,
+        "x": "0",
+        "y": "1.1"
+      },
+      {
+        "nodeId": 11,
+        "x": "0",
+        "y": "1"
+      },
+      {
+        "nodeId": 12,
+        "x": "0",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 13,
+        "x": "0",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 14,
+        "x": "0",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 15,
+        "x": "0",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 16,
+        "x": "0",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 17,
+        "x": "0",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 18,
+        "x": "0",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 19,
+        "x": "0",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 20,
+        "x": "0",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 21,
+        "x": "0",
+        "y": "0"
+      },
+      {
+        "nodeId": 22,
+        "x": "0.12",
+        "y": "2"
+      },
+      {
+        "nodeId": 23,
+        "x": "0.16",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 24,
+        "x": "0.2",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 25,
+        "x": "0.24",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 26,
+        "x": "0.28",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 27,
+        "x": "0.32",
+        "y": "1"
+      },
+      {
+        "nodeId": 28,
+        "x": "0.32",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 29,
+        "x": "0.32",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 30,
+        "x": "0.32",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 31,
+        "x": "0.32",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 32,
+        "x": "0.32",
+        "y": "0"
+      },
+      {
+        "nodeId": 33,
+        "x": "0.24",
+        "y": "2"
+      },
+      {
+        "nodeId": 34,
+        "x": "0.28",
+        "y": "1.9"
+      },
+      {
+        "nodeId": 35,
+        "x": "0.32",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 36,
+        "x": "0.36",
+        "y": "1.7"
+      },
+      {
+        "nodeId": 37,
+        "x": "0.4",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 38,
+        "x": "0.44",
+        "y": "1.5"
+      },
+      {
+        "nodeId": 39,
+        "x": "0.48",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 40,
+        "x": "0.52",
+        "y": "1.3"
+      },
+      {
+        "nodeId": 41,
+        "x": "0.56",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 42,
+        "x": "0.6",
+        "y": "1.1"
+      },
+      {
+        "nodeId": 43,
+        "x": "0.64",
+        "y": "1"
+      },
+      {
+        "nodeId": 44,
+        "x": "0.64",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 45,
+        "x": "0.64",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 46,
+        "x": "0.64",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 47,
+        "x": "0.64",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 48,
+        "x": "0.64",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 49,
+        "x": "0.64",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 50,
+        "x": "0.64",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 51,
+        "x": "0.64",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 52,
+        "x": "0.64",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 53,
+        "x": "0.64",
+        "y": "0"
+      },
+      {
+        "nodeId": 54,
+        "x": "0.36",
+        "y": "2"
+      },
+      {
+        "nodeId": 55,
+        "x": "0.48",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 56,
+        "x": "0.6",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 57,
+        "x": "0.72",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 58,
+        "x": "0.84",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 59,
+        "x": "0.96",
+        "y": "1"
+      },
+      {
+        "nodeId": 60,
+        "x": "0.96",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 61,
+        "x": "0.96",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 62,
+        "x": "0.96",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 63,
+        "x": "0.96",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 64,
+        "x": "0.96",
+        "y": "0"
+      },
+      {
+        "nodeId": 65,
+        "x": "0.48",
+        "y": "2"
+      },
+      {
+        "nodeId": 66,
+        "x": "0.56",
+        "y": "1.9"
+      },
+      {
+        "nodeId": 67,
+        "x": "0.64",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 68,
+        "x": "0.72",
+        "y": "1.7"
+      },
+      {
+        "nodeId": 69,
+        "x": "0.8",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 70,
+        "x": "0.88",
+        "y": "1.5"
+      },
+      {
+        "nodeId": 71,
+        "x": "0.96",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 72,
+        "x": "1.04",
+        "y": "1.3"
+      },
+      {
+        "nodeId": 73,
+        "x": "1.12",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 74,
+        "x": "1.2",
+        "y": "1.1"
+      },
+      {
+        "nodeId": 75,
+        "x": "1.28",
+        "y": "1"
+      },
+      {
+        "nodeId": 76,
+        "x": "1.28",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 77,
+        "x": "1.28",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 78,
+        "x": "1.28",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 79,
+        "x": "1.28",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 80,
+        "x": "1.28",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 81,
+        "x": "1.28",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 82,
+        "x": "1.28",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 83,
+        "x": "1.28",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 84,
+        "x": "1.28",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 85,
+        "x": "1.28",
+        "y": "0"
+      },
+      {
+        "nodeId": 86,
+        "x": "0.6",
+        "y": "2"
+      },
+      {
+        "nodeId": 87,
+        "x": "0.8",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 88,
+        "x": "1",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 89,
+        "x": "1.2",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 90,
+        "x": "1.4",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 91,
+        "x": "1.6",
+        "y": "1"
+      },
+      {
+        "nodeId": 92,
+        "x": "1.6",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 93,
+        "x": "1.6",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 94,
+        "x": "1.6",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 95,
+        "x": "1.6",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 96,
+        "x": "1.6",
+        "y": "0"
+      },
+      {
+        "nodeId": 97,
+        "x": "0.72",
+        "y": "2"
+      },
+      {
+        "nodeId": 98,
+        "x": "0.84",
+        "y": "1.9"
+      },
+      {
+        "nodeId": 99,
+        "x": "0.96",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 100,
+        "x": "1.08",
+        "y": "1.7"
+      },
+      {
+        "nodeId": 101,
+        "x": "1.2",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 102,
+        "x": "1.32",
+        "y": "1.5"
+      },
+      {
+        "nodeId": 103,
+        "x": "1.44",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 104,
+        "x": "1.56",
+        "y": "1.3"
+      },
+      {
+        "nodeId": 105,
+        "x": "1.68",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 106,
+        "x": "1.8",
+        "y": "1.1"
+      },
+      {
+        "nodeId": 107,
+        "x": "1.92",
+        "y": "1"
+      },
+      {
+        "nodeId": 108,
+        "x": "1.92",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 109,
+        "x": "1.92",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 110,
+        "x": "1.92",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 111,
+        "x": "1.92",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 112,
+        "x": "1.92",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 113,
+        "x": "1.92",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 114,
+        "x": "1.92",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 115,
+        "x": "1.92",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 116,
+        "x": "1.92",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 117,
+        "x": "1.92",
+        "y": "0"
+      },
+      {
+        "nodeId": 118,
+        "x": "0.84",
+        "y": "2"
+      },
+      {
+        "nodeId": 119,
+        "x": "1.12",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 120,
+        "x": "1.4",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 121,
+        "x": "1.68",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 122,
+        "x": "1.96",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 123,
+        "x": "2.24",
+        "y": "1"
+      },
+      {
+        "nodeId": 124,
+        "x": "2.24",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 125,
+        "x": "2.24",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 126,
+        "x": "2.24",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 127,
+        "x": "2.24",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 128,
+        "x": "2.24",
+        "y": "0"
+      },
+      {
+        "nodeId": 129,
+        "x": "0.96",
+        "y": "2"
+      },
+      {
+        "nodeId": 130,
+        "x": "1.12",
+        "y": "1.9"
+      },
+      {
+        "nodeId": 131,
+        "x": "1.28",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 132,
+        "x": "1.44",
+        "y": "1.7"
+      },
+      {
+        "nodeId": 133,
+        "x": "1.6",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 134,
+        "x": "1.76",
+        "y": "1.5"
+      },
+      {
+        "nodeId": 135,
+        "x": "1.92",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 136,
+        "x": "2.08",
+        "y": "1.3"
+      },
+      {
+        "nodeId": 137,
+        "x": "2.24",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 138,
+        "x": "2.4",
+        "y": "1.1"
+      },
+      {
+        "nodeId": 139,
+        "x": "2.56",
+        "y": "1"
+      },
+      {
+        "nodeId": 140,
+        "x": "2.56",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 141,
+        "x": "2.56",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 142,
+        "x": "2.56",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 143,
+        "x": "2.56",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 144,
+        "x": "2.56",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 145,
+        "x": "2.56",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 146,
+        "x": "2.56",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 147,
+        "x": "2.56",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 148,
+        "x": "2.56",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 149,
+        "x": "2.56",
+        "y": "0"
+      },
+      {
+        "nodeId": 150,
+        "x": "1.08",
+        "y": "2"
+      },
+      {
+        "nodeId": 151,
+        "x": "1.44",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 152,
+        "x": "1.8",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 153,
+        "x": "2.16",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 154,
+        "x": "2.52",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 155,
+        "x": "2.88",
+        "y": "1"
+      },
+      {
+        "nodeId": 156,
+        "x": "2.88",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 157,
+        "x": "2.88",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 158,
+        "x": "2.88",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 159,
+        "x": "2.88",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 160,
+        "x": "2.88",
+        "y": "0"
+      },
+      {
+        "nodeId": 161,
+        "x": "1.2",
+        "y": "2"
+      },
+      {
+        "nodeId": 162,
+        "x": "1.4",
+        "y": "1.9"
+      },
+      {
+        "nodeId": 163,
+        "x": "1.6",
+        "y": "1.8"
+      },
+      {
+        "nodeId": 164,
+        "x": "1.8",
+        "y": "1.7"
+      },
+      {
+        "nodeId": 165,
+        "x": "2",
+        "y": "1.6"
+      },
+      {
+        "nodeId": 166,
+        "x": "2.2",
+        "y": "1.5"
+      },
+      {
+        "nodeId": 167,
+        "x": "2.4",
+        "y": "1.4"
+      },
+      {
+        "nodeId": 168,
+        "x": "2.6",
+        "y": "1.3"
+      },
+      {
+        "nodeId": 169,
+        "x": "2.8",
+        "y": "1.2"
+      },
+      {
+        "nodeId": 170,
+        "x": "3",
+        "y": "1.1"
+      },
+      {
+        "nodeId": 171,
+        "x": "3.2",
+        "y": "1"
+      },
+      {
+        "nodeId": 172,
+        "x": "3.2",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 173,
+        "x": "3.2",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 174,
+        "x": "3.2",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 175,
+        "x": "3.2",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 176,
+        "x": "3.2",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 177,
+        "x": "3.2",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 178,
+        "x": "3.2",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 179,
+        "x": "3.2",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 180,
+        "x": "3.2",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 181,
+        "x": "3.2",
+        "y": "0"
+      },
+      {
+        "nodeId": 182,
+        "x": "3.32",
+        "y": "1"
+      },
+      {
+        "nodeId": 183,
+        "x": "3.32",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 184,
+        "x": "3.32",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 185,
+        "x": "3.32",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 186,
+        "x": "3.32",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 187,
+        "x": "3.32",
+        "y": "0"
+      },
+      {
+        "nodeId": 188,
+        "x": "3.44",
+        "y": "1"
+      },
+      {
+        "nodeId": 189,
+        "x": "3.44",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 190,
+        "x": "3.44",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 191,
+        "x": "3.44",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 192,
+        "x": "3.44",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 193,
+        "x": "3.44",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 194,
+        "x": "3.44",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 195,
+        "x": "3.44",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 196,
+        "x": "3.44",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 197,
+        "x": "3.44",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 198,
+        "x": "3.44",
+        "y": "0"
+      },
+      {
+        "nodeId": 199,
+        "x": "3.56",
+        "y": "1"
+      },
+      {
+        "nodeId": 200,
+        "x": "3.56",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 201,
+        "x": "3.56",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 202,
+        "x": "3.56",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 203,
+        "x": "3.56",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 204,
+        "x": "3.56",
+        "y": "0"
+      },
+      {
+        "nodeId": 205,
+        "x": "3.68",
+        "y": "1"
+      },
+      {
+        "nodeId": 206,
+        "x": "3.68",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 207,
+        "x": "3.68",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 208,
+        "x": "3.68",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 209,
+        "x": "3.68",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 210,
+        "x": "3.68",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 211,
+        "x": "3.68",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 212,
+        "x": "3.68",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 213,
+        "x": "3.68",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 214,
+        "x": "3.68",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 215,
+        "x": "3.68",
+        "y": "0"
+      },
+      {
+        "nodeId": 216,
+        "x": "3.8",
+        "y": "1"
+      },
+      {
+        "nodeId": 217,
+        "x": "3.8",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 218,
+        "x": "3.8",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 219,
+        "x": "3.8",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 220,
+        "x": "3.8",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 221,
+        "x": "3.8",
+        "y": "0"
+      },
+      {
+        "nodeId": 222,
+        "x": "3.92",
+        "y": "1"
+      },
+      {
+        "nodeId": 223,
+        "x": "3.92",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 224,
+        "x": "3.92",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 225,
+        "x": "3.92",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 226,
+        "x": "3.92",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 227,
+        "x": "3.92",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 228,
+        "x": "3.92",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 229,
+        "x": "3.92",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 230,
+        "x": "3.92",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 231,
+        "x": "3.92",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 232,
+        "x": "3.92",
+        "y": "0"
+      },
+      {
+        "nodeId": 233,
+        "x": "4.04",
+        "y": "1"
+      },
+      {
+        "nodeId": 234,
+        "x": "4.04",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 235,
+        "x": "4.04",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 236,
+        "x": "4.04",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 237,
+        "x": "4.04",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 238,
+        "x": "4.04",
+        "y": "0"
+      },
+      {
+        "nodeId": 239,
+        "x": "4.16",
+        "y": "1"
+      },
+      {
+        "nodeId": 240,
+        "x": "4.16",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 241,
+        "x": "4.16",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 242,
+        "x": "4.16",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 243,
+        "x": "4.16",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 244,
+        "x": "4.16",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 245,
+        "x": "4.16",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 246,
+        "x": "4.16",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 247,
+        "x": "4.16",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 248,
+        "x": "4.16",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 249,
+        "x": "4.16",
+        "y": "0"
+      },
+      {
+        "nodeId": 250,
+        "x": "4.28",
+        "y": "1"
+      },
+      {
+        "nodeId": 251,
+        "x": "4.28",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 252,
+        "x": "4.28",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 253,
+        "x": "4.28",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 254,
+        "x": "4.28",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 255,
+        "x": "4.28",
+        "y": "0"
+      },
+      {
+        "nodeId": 256,
+        "x": "4.4",
+        "y": "1"
+      },
+      {
+        "nodeId": 257,
+        "x": "4.4",
+        "y": "0.9"
+      },
+      {
+        "nodeId": 258,
+        "x": "4.4",
+        "y": "0.8"
+      },
+      {
+        "nodeId": 259,
+        "x": "4.4",
+        "y": "0.7"
+      },
+      {
+        "nodeId": 260,
+        "x": "4.4",
+        "y": "0.6"
+      },
+      {
+        "nodeId": 261,
+        "x": "4.4",
+        "y": "0.5"
+      },
+      {
+        "nodeId": 262,
+        "x": "4.4",
+        "y": "0.4"
+      },
+      {
+        "nodeId": 263,
+        "x": "4.4",
+        "y": "0.3"
+      },
+      {
+        "nodeId": 264,
+        "x": "4.4",
+        "y": "0.2"
+      },
+      {
+        "nodeId": 265,
+        "x": "4.4",
+        "y": "0.1"
+      },
+      {
+        "nodeId": 266,
+        "x": "4.4",
+        "y": "0"
+      }
+    ],
+    "elements": [
+      {
+        "elemId": 1,
+        "n1": "3",
+        "n2": "2",
+        "n3": "1",
+        "n4": "22",
+        "n5": "33",
+        "n6": "34",
+        "n7": "35",
+        "n8": "23",
+        "etype": "1"
+      },
+      {
+        "elemId": 2,
+        "n1": "35",
+        "n2": "34",
+        "n3": "33",
+        "n4": "54",
+        "n5": "65",
+        "n6": "66",
+        "n7": "67",
+        "n8": "55",
+        "etype": "1"
+      },
+      {
+        "elemId": 3,
+        "n1": "67",
+        "n2": "66",
+        "n3": "65",
+        "n4": "86",
+        "n5": "97",
+        "n6": "98",
+        "n7": "99",
+        "n8": "87",
+        "etype": "1"
+      },
+      {
+        "elemId": 4,
+        "n1": "99",
+        "n2": "98",
+        "n3": "97",
+        "n4": "118",
+        "n5": "129",
+        "n6": "130",
+        "n7": "131",
+        "n8": "119",
+        "etype": "1"
+      },
+      {
+        "elemId": 5,
+        "n1": "131",
+        "n2": "130",
+        "n3": "129",
+        "n4": "150",
+        "n5": "161",
+        "n6": "162",
+        "n7": "163",
+        "n8": "151",
+        "etype": "1"
+      },
+      {
+        "elemId": 6,
+        "n1": "5",
+        "n2": "4",
+        "n3": "3",
+        "n4": "23",
+        "n5": "35",
+        "n6": "36",
+        "n7": "37",
+        "n8": "24",
+        "etype": "1"
+      },
+      {
+        "elemId": 7,
+        "n1": "37",
+        "n2": "36",
+        "n3": "35",
+        "n4": "55",
+        "n5": "67",
+        "n6": "68",
+        "n7": "69",
+        "n8": "56",
+        "etype": "1"
+      },
+      {
+        "elemId": 8,
+        "n1": "69",
+        "n2": "68",
+        "n3": "67",
+        "n4": "87",
+        "n5": "99",
+        "n6": "100",
+        "n7": "101",
+        "n8": "88",
+        "etype": "1"
+      },
+      {
+        "elemId": 9,
+        "n1": "101",
+        "n2": "100",
+        "n3": "99",
+        "n4": "119",
+        "n5": "131",
+        "n6": "132",
+        "n7": "133",
+        "n8": "120",
+        "etype": "1"
+      },
+      {
+        "elemId": 10,
+        "n1": "133",
+        "n2": "132",
+        "n3": "131",
+        "n4": "151",
+        "n5": "163",
+        "n6": "164",
+        "n7": "165",
+        "n8": "152",
+        "etype": "1"
+      },
+      {
+        "elemId": 11,
+        "n1": "7",
+        "n2": "6",
+        "n3": "5",
+        "n4": "24",
+        "n5": "37",
+        "n6": "38",
+        "n7": "39",
+        "n8": "25",
+        "etype": "1"
+      },
+      {
+        "elemId": 12,
+        "n1": "39",
+        "n2": "38",
+        "n3": "37",
+        "n4": "56",
+        "n5": "69",
+        "n6": "70",
+        "n7": "71",
+        "n8": "57",
+        "etype": "1"
+      },
+      {
+        "elemId": 13,
+        "n1": "71",
+        "n2": "70",
+        "n3": "69",
+        "n4": "88",
+        "n5": "101",
+        "n6": "102",
+        "n7": "103",
+        "n8": "89",
+        "etype": "1"
+      },
+      {
+        "elemId": 14,
+        "n1": "103",
+        "n2": "102",
+        "n3": "101",
+        "n4": "120",
+        "n5": "133",
+        "n6": "134",
+        "n7": "135",
+        "n8": "121",
+        "etype": "1"
+      },
+      {
+        "elemId": 15,
+        "n1": "135",
+        "n2": "134",
+        "n3": "133",
+        "n4": "152",
+        "n5": "165",
+        "n6": "166",
+        "n7": "167",
+        "n8": "153",
+        "etype": "1"
+      },
+      {
+        "elemId": 16,
+        "n1": "9",
+        "n2": "8",
+        "n3": "7",
+        "n4": "25",
+        "n5": "39",
+        "n6": "40",
+        "n7": "41",
+        "n8": "26",
+        "etype": "1"
+      },
+      {
+        "elemId": 17,
+        "n1": "41",
+        "n2": "40",
+        "n3": "39",
+        "n4": "57",
+        "n5": "71",
+        "n6": "72",
+        "n7": "73",
+        "n8": "58",
+        "etype": "1"
+      },
+      {
+        "elemId": 18,
+        "n1": "73",
+        "n2": "72",
+        "n3": "71",
+        "n4": "89",
+        "n5": "103",
+        "n6": "104",
+        "n7": "105",
+        "n8": "90",
+        "etype": "1"
+      },
+      {
+        "elemId": 19,
+        "n1": "105",
+        "n2": "104",
+        "n3": "103",
+        "n4": "121",
+        "n5": "135",
+        "n6": "136",
+        "n7": "137",
+        "n8": "122",
+        "etype": "1"
+      },
+      {
+        "elemId": 20,
+        "n1": "137",
+        "n2": "136",
+        "n3": "135",
+        "n4": "153",
+        "n5": "167",
+        "n6": "168",
+        "n7": "169",
+        "n8": "154",
+        "etype": "1"
+      },
+      {
+        "elemId": 21,
+        "n1": "11",
+        "n2": "10",
+        "n3": "9",
+        "n4": "26",
+        "n5": "41",
+        "n6": "42",
+        "n7": "43",
+        "n8": "27",
+        "etype": "1"
+      },
+      {
+        "elemId": 22,
+        "n1": "43",
+        "n2": "42",
+        "n3": "41",
+        "n4": "58",
+        "n5": "73",
+        "n6": "74",
+        "n7": "75",
+        "n8": "59",
+        "etype": "1"
+      },
+      {
+        "elemId": 23,
+        "n1": "75",
+        "n2": "74",
+        "n3": "73",
+        "n4": "90",
+        "n5": "105",
+        "n6": "106",
+        "n7": "107",
+        "n8": "91",
+        "etype": "1"
+      },
+      {
+        "elemId": 24,
+        "n1": "107",
+        "n2": "106",
+        "n3": "105",
+        "n4": "122",
+        "n5": "137",
+        "n6": "138",
+        "n7": "139",
+        "n8": "123",
+        "etype": "1"
+      },
+      {
+        "elemId": 25,
+        "n1": "139",
+        "n2": "138",
+        "n3": "137",
+        "n4": "154",
+        "n5": "169",
+        "n6": "170",
+        "n7": "171",
+        "n8": "155",
+        "etype": "1"
+      },
+      {
+        "elemId": 26,
+        "n1": "13",
+        "n2": "12",
+        "n3": "11",
+        "n4": "27",
+        "n5": "43",
+        "n6": "44",
+        "n7": "45",
+        "n8": "28",
+        "etype": "2"
+      },
+      {
+        "elemId": 27,
+        "n1": "45",
+        "n2": "44",
+        "n3": "43",
+        "n4": "59",
+        "n5": "75",
+        "n6": "76",
+        "n7": "77",
+        "n8": "60",
+        "etype": "2"
+      },
+      {
+        "elemId": 28,
+        "n1": "77",
+        "n2": "76",
+        "n3": "75",
+        "n4": "91",
+        "n5": "107",
+        "n6": "108",
+        "n7": "109",
+        "n8": "92",
+        "etype": "2"
+      },
+      {
+        "elemId": 29,
+        "n1": "109",
+        "n2": "108",
+        "n3": "107",
+        "n4": "123",
+        "n5": "139",
+        "n6": "140",
+        "n7": "141",
+        "n8": "124",
+        "etype": "2"
+      },
+      {
+        "elemId": 30,
+        "n1": "141",
+        "n2": "140",
+        "n3": "139",
+        "n4": "155",
+        "n5": "171",
+        "n6": "172",
+        "n7": "173",
+        "n8": "156",
+        "etype": "2"
+      },
+      {
+        "elemId": 31,
+        "n1": "173",
+        "n2": "172",
+        "n3": "171",
+        "n4": "182",
+        "n5": "188",
+        "n6": "189",
+        "n7": "190",
+        "n8": "183",
+        "etype": "2"
+      },
+      {
+        "elemId": 32,
+        "n1": "190",
+        "n2": "189",
+        "n3": "188",
+        "n4": "199",
+        "n5": "205",
+        "n6": "206",
+        "n7": "207",
+        "n8": "200",
+        "etype": "2"
+      },
+      {
+        "elemId": 33,
+        "n1": "207",
+        "n2": "206",
+        "n3": "205",
+        "n4": "216",
+        "n5": "222",
+        "n6": "223",
+        "n7": "224",
+        "n8": "217",
+        "etype": "2"
+      },
+      {
+        "elemId": 34,
+        "n1": "224",
+        "n2": "223",
+        "n3": "222",
+        "n4": "233",
+        "n5": "239",
+        "n6": "240",
+        "n7": "241",
+        "n8": "234",
+        "etype": "2"
+      },
+      {
+        "elemId": 35,
+        "n1": "241",
+        "n2": "240",
+        "n3": "239",
+        "n4": "250",
+        "n5": "256",
+        "n6": "257",
+        "n7": "258",
+        "n8": "251",
+        "etype": "2"
+      },
+      {
+        "elemId": 36,
+        "n1": "15",
+        "n2": "14",
+        "n3": "13",
+        "n4": "28",
+        "n5": "45",
+        "n6": "46",
+        "n7": "47",
+        "n8": "29",
+        "etype": "2"
+      },
+      {
+        "elemId": 37,
+        "n1": "47",
+        "n2": "46",
+        "n3": "45",
+        "n4": "60",
+        "n5": "77",
+        "n6": "78",
+        "n7": "79",
+        "n8": "61",
+        "etype": "2"
+      },
+      {
+        "elemId": 38,
+        "n1": "79",
+        "n2": "78",
+        "n3": "77",
+        "n4": "92",
+        "n5": "109",
+        "n6": "110",
+        "n7": "111",
+        "n8": "93",
+        "etype": "2"
+      },
+      {
+        "elemId": 39,
+        "n1": "111",
+        "n2": "110",
+        "n3": "109",
+        "n4": "124",
+        "n5": "141",
+        "n6": "142",
+        "n7": "143",
+        "n8": "125",
+        "etype": "2"
+      },
+      {
+        "elemId": 40,
+        "n1": "143",
+        "n2": "142",
+        "n3": "141",
+        "n4": "156",
+        "n5": "173",
+        "n6": "174",
+        "n7": "175",
+        "n8": "157",
+        "etype": "2"
+      },
+      {
+        "elemId": 41,
+        "n1": "175",
+        "n2": "174",
+        "n3": "173",
+        "n4": "183",
+        "n5": "190",
+        "n6": "191",
+        "n7": "192",
+        "n8": "184",
+        "etype": "2"
+      },
+      {
+        "elemId": 42,
+        "n1": "192",
+        "n2": "191",
+        "n3": "190",
+        "n4": "200",
+        "n5": "207",
+        "n6": "208",
+        "n7": "209",
+        "n8": "201",
+        "etype": "2"
+      },
+      {
+        "elemId": 43,
+        "n1": "209",
+        "n2": "208",
+        "n3": "207",
+        "n4": "217",
+        "n5": "224",
+        "n6": "225",
+        "n7": "226",
+        "n8": "218",
+        "etype": "2"
+      },
+      {
+        "elemId": 44,
+        "n1": "226",
+        "n2": "225",
+        "n3": "224",
+        "n4": "234",
+        "n5": "241",
+        "n6": "242",
+        "n7": "243",
+        "n8": "235",
+        "etype": "2"
+      },
+      {
+        "elemId": 45,
+        "n1": "243",
+        "n2": "242",
+        "n3": "241",
+        "n4": "251",
+        "n5": "258",
+        "n6": "259",
+        "n7": "260",
+        "n8": "252",
+        "etype": "2"
+      },
+      {
+        "elemId": 46,
+        "n1": "17",
+        "n2": "16",
+        "n3": "15",
+        "n4": "29",
+        "n5": "47",
+        "n6": "48",
+        "n7": "49",
+        "n8": "30",
+        "etype": "2"
+      },
+      {
+        "elemId": 47,
+        "n1": "49",
+        "n2": "48",
+        "n3": "47",
+        "n4": "61",
+        "n5": "79",
+        "n6": "80",
+        "n7": "81",
+        "n8": "62",
+        "etype": "2"
+      },
+      {
+        "elemId": 48,
+        "n1": "81",
+        "n2": "80",
+        "n3": "79",
+        "n4": "93",
+        "n5": "111",
+        "n6": "112",
+        "n7": "113",
+        "n8": "94",
+        "etype": "2"
+      },
+      {
+        "elemId": 49,
+        "n1": "113",
+        "n2": "112",
+        "n3": "111",
+        "n4": "125",
+        "n5": "143",
+        "n6": "144",
+        "n7": "145",
+        "n8": "126",
+        "etype": "2"
+      },
+      {
+        "elemId": 50,
+        "n1": "145",
+        "n2": "144",
+        "n3": "143",
+        "n4": "157",
+        "n5": "175",
+        "n6": "176",
+        "n7": "177",
+        "n8": "158",
+        "etype": "2"
+      },
+      {
+        "elemId": 51,
+        "n1": "177",
+        "n2": "176",
+        "n3": "175",
+        "n4": "184",
+        "n5": "192",
+        "n6": "193",
+        "n7": "194",
+        "n8": "185",
+        "etype": "2"
+      },
+      {
+        "elemId": 52,
+        "n1": "194",
+        "n2": "193",
+        "n3": "192",
+        "n4": "201",
+        "n5": "209",
+        "n6": "210",
+        "n7": "211",
+        "n8": "202",
+        "etype": "2"
+      },
+      {
+        "elemId": 53,
+        "n1": "211",
+        "n2": "210",
+        "n3": "209",
+        "n4": "218",
+        "n5": "226",
+        "n6": "227",
+        "n7": "228",
+        "n8": "219",
+        "etype": "2"
+      },
+      {
+        "elemId": 54,
+        "n1": "228",
+        "n2": "227",
+        "n3": "226",
+        "n4": "235",
+        "n5": "243",
+        "n6": "244",
+        "n7": "245",
+        "n8": "236",
+        "etype": "2"
+      },
+      {
+        "elemId": 55,
+        "n1": "245",
+        "n2": "244",
+        "n3": "243",
+        "n4": "252",
+        "n5": "260",
+        "n6": "261",
+        "n7": "262",
+        "n8": "253",
+        "etype": "2"
+      },
+      {
+        "elemId": 56,
+        "n1": "19",
+        "n2": "18",
+        "n3": "17",
+        "n4": "30",
+        "n5": "49",
+        "n6": "50",
+        "n7": "51",
+        "n8": "31",
+        "etype": "1"
+      },
+      {
+        "elemId": 57,
+        "n1": "51",
+        "n2": "50",
+        "n3": "49",
+        "n4": "62",
+        "n5": "81",
+        "n6": "82",
+        "n7": "83",
+        "n8": "63",
+        "etype": "1"
+      },
+      {
+        "elemId": 58,
+        "n1": "83",
+        "n2": "82",
+        "n3": "81",
+        "n4": "94",
+        "n5": "113",
+        "n6": "114",
+        "n7": "115",
+        "n8": "95",
+        "etype": "1"
+      },
+      {
+        "elemId": 59,
+        "n1": "115",
+        "n2": "114",
+        "n3": "113",
+        "n4": "126",
+        "n5": "145",
+        "n6": "146",
+        "n7": "147",
+        "n8": "127",
+        "etype": "1"
+      },
+      {
+        "elemId": 60,
+        "n1": "147",
+        "n2": "146",
+        "n3": "145",
+        "n4": "158",
+        "n5": "177",
+        "n6": "178",
+        "n7": "179",
+        "n8": "159",
+        "etype": "1"
+      },
+      {
+        "elemId": 61,
+        "n1": "179",
+        "n2": "178",
+        "n3": "177",
+        "n4": "185",
+        "n5": "194",
+        "n6": "195",
+        "n7": "196",
+        "n8": "186",
+        "etype": "1"
+      },
+      {
+        "elemId": 62,
+        "n1": "196",
+        "n2": "195",
+        "n3": "194",
+        "n4": "202",
+        "n5": "211",
+        "n6": "212",
+        "n7": "213",
+        "n8": "203",
+        "etype": "1"
+      },
+      {
+        "elemId": 63,
+        "n1": "213",
+        "n2": "212",
+        "n3": "211",
+        "n4": "219",
+        "n5": "228",
+        "n6": "229",
+        "n7": "230",
+        "n8": "220",
+        "etype": "1"
+      },
+      {
+        "elemId": 64,
+        "n1": "230",
+        "n2": "229",
+        "n3": "228",
+        "n4": "236",
+        "n5": "245",
+        "n6": "246",
+        "n7": "247",
+        "n8": "237",
+        "etype": "1"
+      },
+      {
+        "elemId": 65,
+        "n1": "247",
+        "n2": "246",
+        "n3": "245",
+        "n4": "253",
+        "n5": "262",
+        "n6": "263",
+        "n7": "264",
+        "n8": "254",
+        "etype": "1"
+      },
+      {
+        "elemId": 66,
+        "n1": "21",
+        "n2": "20",
+        "n3": "19",
+        "n4": "31",
+        "n5": "51",
+        "n6": "52",
+        "n7": "53",
+        "n8": "32",
+        "etype": "1"
+      },
+      {
+        "elemId": 67,
+        "n1": "53",
+        "n2": "52",
+        "n3": "51",
+        "n4": "63",
+        "n5": "83",
+        "n6": "84",
+        "n7": "85",
+        "n8": "64",
+        "etype": "1"
+      },
+      {
+        "elemId": 68,
+        "n1": "85",
+        "n2": "84",
+        "n3": "83",
+        "n4": "95",
+        "n5": "115",
+        "n6": "116",
+        "n7": "117",
+        "n8": "96",
+        "etype": "1"
+      },
+      {
+        "elemId": 69,
+        "n1": "117",
+        "n2": "116",
+        "n3": "115",
+        "n4": "127",
+        "n5": "147",
+        "n6": "148",
+        "n7": "149",
+        "n8": "128",
+        "etype": "1"
+      },
+      {
+        "elemId": 70,
+        "n1": "149",
+        "n2": "148",
+        "n3": "147",
+        "n4": "159",
+        "n5": "179",
+        "n6": "180",
+        "n7": "181",
+        "n8": "160",
+        "etype": "1"
+      },
+      {
+        "elemId": 71,
+        "n1": "181",
+        "n2": "180",
+        "n3": "179",
+        "n4": "186",
+        "n5": "196",
+        "n6": "197",
+        "n7": "198",
+        "n8": "187",
+        "etype": "1"
+      },
+      {
+        "elemId": 72,
+        "n1": "198",
+        "n2": "197",
+        "n3": "196",
+        "n4": "203",
+        "n5": "213",
+        "n6": "214",
+        "n7": "215",
+        "n8": "204",
+        "etype": "1"
+      },
+      {
+        "elemId": 73,
+        "n1": "215",
+        "n2": "214",
+        "n3": "213",
+        "n4": "220",
+        "n5": "230",
+        "n6": "231",
+        "n7": "232",
+        "n8": "221",
+        "etype": "1"
+      },
+      {
+        "elemId": 74,
+        "n1": "232",
+        "n2": "231",
+        "n3": "230",
+        "n4": "237",
+        "n5": "247",
+        "n6": "248",
+        "n7": "249",
+        "n8": "238",
+        "etype": "1"
+      },
+      {
+        "elemId": 75,
+        "n1": "249",
+        "n2": "248",
+        "n3": "247",
+        "n4": "254",
+        "n5": "264",
+        "n6": "265",
+        "n7": "266",
+        "n8": "255",
+        "etype": "1"
+      }
+    ]
+  },
+  "verification": {
+    "selectedProblem": "Kirsch \u2014 circular hole, plane strain (p610_t3_elastic)",
+    "tolerancePercent": 5,
+    "autoFromMeta": true,
+    "e_kPa": 10000000,
+    "nu": 0.2,
+    "sigma_v_kPa": 100,
+    "k0": 1,
+    "a": 1,
+    "cx": 0,
+    "cy": 0,
+    "pi_kPa": 0,
+    "phiDeg": 30,
+    "c_kPa": 3450,
+    "psiDeg": 30,
+    "gamma": 0
+  }
+}

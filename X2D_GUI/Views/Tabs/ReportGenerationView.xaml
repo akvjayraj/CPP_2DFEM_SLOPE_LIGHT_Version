@@ -1,0 +1,55 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.ReportGenerationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Letterhead" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                <TextBlock Text="Company"/>
+                <TextBox Text="{Binding Options.Company, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <TextBlock Text="Report title"/>
+                <TextBox Text="{Binding Options.ReportTitle, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <TextBlock Text="Client"/>
+                <TextBox Text="{Binding Options.Client, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <TextBlock Text="Location"/>
+                <TextBox Text="{Binding Options.Location, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <TextBlock Text="Document no. / revision"/>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                    <TextBox Width="160" Text="{Binding Options.DocumentNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Width="60" Margin="8,0,0,0" Text="{Binding Options.Revision, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <TextBlock Text="Prepared / checked"/>
+                <TextBox Text="{Binding Options.PreparedBy, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,4"/>
+                <TextBox Text="{Binding Options.CheckedBy, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"/>
+
+                <TextBlock Text="Sections" FontWeight="SemiBold" Margin="0,8,0,8"/>
+                <CheckBox Content="Cover page" IsChecked="{Binding Options.IncludeCoverPage}"/>
+                <CheckBox Content="Materials" IsChecked="{Binding Options.IncludeMaterials}"/>
+                <CheckBox Content="Groundwater" IsChecked="{Binding Options.IncludeGroundwater}"/>
+                <CheckBox Content="Validation" IsChecked="{Binding Options.IncludeValidation}"/>
+                <CheckBox Content="Sensitivity" IsChecked="{Binding Options.IncludeSensitivity}"/>
+                <CheckBox Content="Probabilistic" IsChecked="{Binding Options.IncludeProbabilistic}"/>
+                <CheckBox Content="Back analysis" IsChecked="{Binding Options.IncludeBackAnalysis}"/>
+
+                <TextBlock Text="Notes" Margin="0,12,0,4"/>
+                <TextBox Height="80" AcceptsReturn="True" TextWrapping="Wrap"
+                         Text="{Binding Options.Notes, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                    <Button Content="Generate Report Preview" Command="{Binding GenerateReportCommand}" Width="180" Margin="0,0,8,0"/>
+                    <Button Content="Export PDF" Command="{Binding ExportPdfCommand}" Width="120"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBox Grid.Column="1" Margin="16,0,0,0"
+                 Text="{Binding ReportPreview, Mode=OneWay}" TextWrapping="Wrap" AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto" IsReadOnly="True"
+                 FontFamily="Consolas"/>
+    </Grid>
+</UserControl>

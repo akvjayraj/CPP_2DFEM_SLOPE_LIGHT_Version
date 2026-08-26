@@ -1,0 +1,32 @@
+RS2 Example 12 — Simple Slope with Water Table
+Source: RS2 Slope Stability Verification Part 1, §12
+(Slide2 verification problem #16; Arai & Tagyo 1985 example #3)
+
+Geometry (m): (0,0)-(0,15)-(18,15)-(48,35)-(66,35)-(66,0)
+Water table (hydrostatic): (0,15)-(18,15)-(30,23)-(48,29)-(66,32)
+Material: c'=41.65 kPa, phi'=15 deg, gamma=18.82 kN/m3
+
+Literature factors of safety:
+  APP			    T6 medium 1.14;
+  SSR (RS2)                 1.09
+  Bishop (circular)         1.117
+  Spencer (non-circular)    1.094
+  Arai & Tagyo Bishop       1.138
+
+Notes (2026-07-26):
+  FoS ~1.25 with SRF+GW ON meant dry-equivalent (Static u not in T3 .dat).
+  Fix 1: P610T3DatContentBuilder embeds Groundwater; BuildBlock forces
+  Water Surfaces when SurfPoints exist; Ex12 sets gwStaticIncludeWaterSurfaces.
+  Fix 2: Rebuild library/solver/SRF/slope_stability_T3_SRF.exe — stale binary
+  parsed Groundwater in .res but did not emit u_kPa into JSON (viz stayed ~0).
+  After rebuild, expect Coupled Static + hydrostatic nosurf>=5, nonzero u contours,
+  and FoS ~1.09-1.20.
+
+Notes (2026-07-27):
+  T6 Coupled Static bracket failed ("no convergence down to F=0.019") because
+  library/solver/SRF/slope_stability_T6_SRF.exe was stale (2026-07-12): gravity
+  turn-on lacked the current 100-step ramp + co-ramped hydrostatic u. First
+  increment hit the iteration limit and aborted. Rebuilt T6 from p610 core;
+  same Ex12-class finer mesh (1119 nodes / 514 els) converges at F=1.0 and
+  F=1.1 with GW on; F=1.15 hits the iteration limit → critical FoS ≈ 1.10–1.15
+  (much closer to SSR 1.09 than coarse T3 ≈1.25). Re-run Coupled Static in GUI.

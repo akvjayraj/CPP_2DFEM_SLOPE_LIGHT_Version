@@ -1,0 +1,141 @@
+Joint verification - numerical vs analytical
+Generated: 2026-08-16 11:55
+Solver: p610_t3_elastoplastic  layers=0
+Units: kPa, m.  JR-01/02: kn=1e5 kPa/m, E=3e7 kPa.  JR-03 (RS3 Case 1): kn=1e7 kPa/m, E=2e6 kPa, nu=0.01.
+Sign: un > 0 opening; closure dc = -un; sn compression-positive.
+PASS if relative error on closure/sn/kn is below 1 percent.
+Force equilibrium PASS if relative error on Fy vs sigma*B is below 0.1 percent.
+
+================================================================================
+JR-01  Horizontal joint, normal compression
+Folder: JR01_SingleJointNormalCompression
+Joint: (0,1) -> (1,1).  Analytical: dc = sigma_n / kn,  sn = sigma_v,  tau = 0.
+================================================================================
+
+Case                        sn_an     sn_num      dc_an     dc_num  err_dc%   err_F%   STAT
+medium 1 MPa               1000.0     1000.0     0.0100     0.0100    0.000    0.000   PASS
+medium 2 MPa               2000.0     2000.0     0.0200     0.0200    0.000    0.000   PASS
+medium 5 MPa               5000.0     5000.0     0.0500     0.0500    0.000    0.000   PASS
+medium 10 MPa             10000.0    10000.0     0.1000     0.1000    0.000    0.000   PASS
+coarse 10 MPa             10000.0    10000.0     0.1000     0.1000    0.000    0.000   PASS
+fine 10 MPa               10000.0    10000.0     0.1000     0.1000    0.000    0.000   PASS
+
+Linearity: k_fit = 100000 kPa/m  (analytical kn = 100000)  R2 = 1.000000  PASS
+Unload 0 MPa: dc_num = 0 m  (analytical 0)  PASS
+Tension +100 kPa: un = 0.001 m  sn = 0 kPa  slipped = 8/8  (expect un>0, sn~0)
+Tension cutoff: PASS
+JR-01 summary: 6 PASS, 0 FAIL (load/mesh rows)
+
+================================================================================
+JR-02  Joint at 45 deg to horizontal, vertical compression
+Folder: JR02_SingleJoint45DegCompression
+Joint: (0,0.5) -> (1,1.5).  Uniaxial vertical stress on a 45 deg plane:
+  sn = sigma_v / 2
+  tau_elastic = sigma_v / 2
+  dc = sn / kn = sigma_v / (2 kn)
+  us_elastic = tau / ks
+At 10 MPa: sn=5000 kPa, dc=0.050 m, tau=5000 kPa, us=0.050 m.
+The published .xfem has c=0, phi=0. Mohr-Coulomb then cuts tau to 0 and the
+upper block can slide. Two numerical series are reported:
+  (A) phi=89 deg  - elastic Goodman check vs the formulae above
+  (B) phi=0 deg   - as published in the .xfem (shear strength = 0)
+================================================================================
+
+(A) Elastic joint (phi=89 deg, c=0) - compare to sn=sigma/2, dc=sigma/(2 kn)
+Case                        sn_an     sn_num      dc_an     dc_num  err_dc%   err_F%   STAT
+medium 1 MPa                500.0      500.0     0.0050     0.0050    0.000    0.000   PASS
+    tau_an=500.0  tau_num=-500  us_an=0.0050  us_num=-0.005  slipped=0/8
+medium 2 MPa               1000.0     1000.0     0.0100     0.0100    0.000    0.000   PASS
+    tau_an=1000.0  tau_num=-1000  us_an=0.0100  us_num=-0.01  slipped=0/8
+medium 5 MPa               2500.0     2500.0     0.0250     0.0250    0.000    0.000   PASS
+    tau_an=2500.0  tau_num=-2500  us_an=0.0250  us_num=-0.025  slipped=0/8
+medium 10 MPa              5000.0     5000.0     0.0500     0.0500    0.000    0.000   PASS
+    tau_an=5000.0  tau_num=-5000  us_an=0.0500  us_num=-0.05  slipped=0/8
+
+(B) Published joint (phi=0, c=0) - MC cuts shear; expect tau~0 and slip
+Case                        sn_an     sn_num      dc_an     dc_num  err_dc%   err_F%   STAT
+medium 1 MPa                500.0      500.0     0.0050     0.0050    0.000    0.000   PASS
+    tau_an=500.0  tau_num=0  us_an=0.0050  us_num=-0.005  slipped=8/8
+medium 2 MPa               1000.0     1000.0     0.0100     0.0100    0.000    0.000   PASS
+    tau_an=1000.0  tau_num=0  us_an=0.0100  us_num=-0.01  slipped=8/8
+medium 5 MPa               2500.0     2500.0     0.0250     0.0250    0.000    0.000   PASS
+    tau_an=2500.0  tau_num=0  us_an=0.0250  us_num=-0.025  slipped=8/8
+medium 10 MPa              5000.0     5000.0     0.0500     0.0500    0.000    0.000   PASS
+    tau_an=5000.0  tau_num=0  us_an=0.0500  us_num=-0.05  slipped=8/8
+
+================================================================================
+JR-03  RS3 Case 1 - single jointed rock column under axial pressure
+Folder: JR03_SingleJointColumnAxial
+Column 1 m x 3 m, joint at y=1.5 m.  P=1 MPa, E=2000 MPa, kn=10 GPa/m, nu=0.01.
+Analytical (Deb and Das / RS3):
+  u(y) = P y / E  +  H(y - yj) * (P / kn)
+  dc = P / kn = 0.100 mm
+  u(top) = P H / E + P / kn = 1.500 + 0.100 = 1.600 mm
+================================================================================
+
+Case               dc_an_mm  dc_num_mm    uTop_an   uTop_num   err_u%   err_F%   STAT
+medium 1 MPa         0.1000     0.1000    0.00160    0.00160    0.009    0.000   PASS
+  u(y) along x=0.5 (mm downward) vs Deb-Das:
+    y=0     u_an=0.0000 mm  u_num=0.0000 mm  err=0.000%
+    y=0.75  u_an=0.3750 mm  u_num=0.3750 mm  err=0.010%
+    y=1.5-  u_an=0.7500 mm  u_num=0.7499 mm  err=0.010%
+    y=1.5+  u_an=0.8500 mm  u_num=0.8499 mm  err=0.009%  (jump 0.1000 mm)
+    y=2.25  u_an=1.2250 mm  u_num=1.2249 mm  err=0.009%
+    y=3     u_an=1.6000 mm  u_num=1.5998 mm  err=0.009%
+medium 2 MPa         0.2000     0.2000    0.00320    0.00320    0.009    0.000   PASS
+coarse 1 MPa         0.1000     0.1000    0.00160    0.00160    0.009    0.000   PASS
+fine 1 MPa           0.1000     0.1000    0.00160    0.00160    0.009    0.000   PASS
+
+JR-03 summary: 4 PASS, 0 FAIL
+
+================================================================================
+JR-04  RS3 Case 2 - jointed column under body force (gamma = 10 MPa/m)
+Folder: JR04_SingleJointColumnBodyForce
+Analytical: u(y) = (gamma/E)(H y - y^2/2) + H(y-yj)*gamma(H-yj)/kn
+  dc = 1.50 mm   u(top) = 24.00 mm   sn = 15 MPa
+================================================================================
+
+Case             dc_an_mm  dc_num_mm    uTop_an   uTop_num   err_u%   err_F%   STAT
+medium             1.5000     1.5000    0.02400    0.02400    0.000    2.083   PASS
+coarse             1.5000     1.5000    0.02400    0.02400    0.003    4.167   PASS
+fine               1.5000     1.5000    0.02400    0.02400    0.001    1.042   PASS
+JR-04 summary: 3 PASS, 0 FAIL
+
+================================================================================
+JR-05  RS3 Case 4 - triaxial jointed column, Mohr-Coulomb slip
+Folder: JR05_TriaxialJointSlip
+sigma1 = sigma3 + 2(sigma3 tan phi + c) / ((1 - tan phi cot beta) sin 2 beta)
+Case 1: sigma3=35 MPa, c=11.135 MPa.  Case 2: sigma3=70 MPa, c=0.2749 MPa.  phi=30 deg.
+Compare sn and |tau| at the analytical failure sigma1 (2 percent).
+================================================================================
+
+Case                 s1_MPa      sn_an     sn_num     tau_an  err_sn%   err_t%   STAT
+jr05_c1_35deg         415.2   290111.2   290111.2   178630.8    0.000    0.000   PASS
+jr05_c1_40deg         239.1   154741.5   154741.5   100475.0    0.000    0.000   PASS
+jr05_c1_45deg         183.3   109156.6   109156.6    74156.6    0.000    0.000   PASS
+jr05_c1_50deg         158.5    86012.5    86012.5    60794.3    0.000    0.000   PASS
+jr05_c1_60deg         143.6    62143.2    62143.2    47013.4    0.000    0.000   PASS
+jr05_c1_70deg         158.5    49442.6    49442.6    39680.7    0.000    0.000   PASS
+jr05_c2_35deg         563.6   401192.6   401192.6   231903.6    0.000    0.000   PASS
+jr05_c2_40deg         334.9   225451.8   225451.8   130439.6    0.000    0.000   PASS
+jr05_c2_45deg         262.5   166272.2   166272.2    96272.2    0.000    0.000   PASS
+jr05_c2_50deg         230.3   136225.9   136225.9    78925.0    0.000    0.000   PASS
+jr05_c2_60deg         211.0   105238.1   105238.1    61034.1    0.000    0.000   PASS
+jr05_c2_70deg         230.3    88749.8    88749.8    51514.6    0.000    0.000   PASS
+JR-05 summary: 12 PASS, 0 FAIL
+
+--------------------------------------------------------------------------------
+JR-01: 6 PASS, 0 FAIL
+JR-02 elastic (A): 4 PASS, 0 FAIL
+JR-02 published (B): 4 PASS, 0 FAIL vs elastic formulae (shear yield expected)
+JR-03 RS3 Case 1: 4 PASS, 0 FAIL
+JR-04 RS3 Case 2: 3 PASS, 0 FAIL
+JR-05 RS3 Case 4: 12 PASS, 0 FAIL
+--------------------------------------------------------------------------------
+Notes
+- JR-01 analytical dc = sigma_n/kn is independent of the rock Young modulus.
+- JR-02 elastic analytical uses Cauchy projection of uniaxial sigma_v onto a 45 deg plane.
+- JR-03 is RS3 Joint Verification Case 1 (Deb and Das). Compare u(y), not only closure.
+- JR-04 is RS3 Case 2: body force gamma=10 MPa/m. Compare u(y) and joint overburden.
+- JR-05 is RS3 Case 4 / RS2 Table 27.1 cohesions. Compare sn and tau at analytical sigma1.
+- Source JSON: JR01 / JR02 / JR03 / JR04 / JR05 decks/*.json written by this script.

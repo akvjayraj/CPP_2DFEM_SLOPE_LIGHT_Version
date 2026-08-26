@@ -1,0 +1,588 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.MaterialPropertiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:GeotechSlopeApp.Models"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:FailureCriterionConverter x:Key="FailureCriterionConverter"/>
+        <converters:MaterialTypeConverter x:Key="MaterialTypeConverter"/>
+        <converters:BooleanToGridLengthConverter x:Key="BooleanToGridLengthConverter" TrueValue="6" FalseValue="0"/>
+        <converters:BooleanToGridLengthConverter x:Key="BooleanToStarGridLengthConverter" TrueValue="1*" FalseValue="0"/>
+        <converters:BooleanToGridLengthConverter x:Key="BooleanToGridLengthConverterReversed" TrueValue="0" FalseValue="1*"/>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <converters:NumericTextConverter x:Key="NumericText"/>
+        <Style x:Key="ToolBtn" TargetType="Button">
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource ViewportPaperBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+        </Style>
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="RowBackground" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+        </Style>
+        <ControlTemplate x:Key="HeaderlessMaterialSubtabsTemplate" TargetType="TabControl">
+            <ContentPresenter ContentSource="SelectedContent"
+                              Margin="{TemplateBinding Padding}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+    <Grid Margin="12">
+        <!-- Tab area (popup) + Canvas (main tab) -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{Binding ShowCanvas, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToGridLengthConverterReversed}}"/>
+                <RowDefinition Height="{Binding ShowCanvas, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToGridLengthConverter}}"/>
+                <RowDefinition Height="{Binding ShowCanvas, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToStarGridLengthConverter}}"/>
+            </Grid.RowDefinitions>
+
+            <!-- ── Row 0: Materials & Regions panel (popup mode, ShowCanvas=false) ── -->
+            <TabControl x:Name="MaterialSubtabs"
+                        Grid.Row="0"
+                        SelectedIndex="{Binding SelectedMaterialSubtabIndex, Mode=TwoWay}"
+                        Visibility="{Binding ShowCanvas, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                <TabControl.Style>
+                    <Style TargetType="TabControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowSubtabHeaders, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False">
+                                <Setter Property="Template" Value="{StaticResource HeaderlessMaterialSubtabsTemplate}"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TabControl.Style>
+                <TabItem x:Name="LayeringControlsTab" Header="Layering controls">
+                    <Grid Margin="0,6,0,0">
+                        <GroupBox Header="Layering Controls" Padding="10"
+                                  BorderBrush="#FFE2E8F0" BorderThickness="1">
+                            <StackPanel>
+                                <!-- Mode toggle -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <TextBlock Text="Layer type:" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold"/>
+                                    <RadioButton Content="Horizontal"
+                                                 IsChecked="{Binding GeometryDefinition.IsHorizontalLayerMode, Mode=TwoWay}"
+                                                 VerticalAlignment="Center" Margin="0,0,12,0"/>
+                                    <RadioButton Content="Non-Horizontal"
+                                                 IsChecked="{Binding GeometryDefinition.IsNonHorizontalLayerMode, Mode=TwoWay}"
+                                                 VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <!-- Horizontal controls (elevation only) -->
+                                <StackPanel Visibility="{Binding GeometryDefinition.IsHorizontalLayerMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="Draw horizontal cuts through the slope polygon to form sequential layers. Enter an elevation above the base (in project units) and click Add Layer."
+                                               Margin="0,0,0,10" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <TextBlock Text="Elevation:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <TextBox Width="120"
+                                                 Text="{Binding GeometryDefinition.LayerElevationInput, UpdateSourceTrigger=PropertyChanged}"
+                                                 Margin="0,0,8,0"/>
+                                        <Button Content="Add Layer" Width="110"
+                                                Command="{Binding GeometryDefinition.AddLayerLineCommand}"
+                                                Margin="0,0,8,0"/>
+                                        <Button Content="Delete" Width="80"
+                                                Command="{Binding GeometryDefinition.RemoveSelectedLayerCommand}"
+                                                CommandParameter="{Binding SelectedLayerSummaryForMaterials}"
+                                                Margin="0,0,8,0"/>
+                                        <Button Content="Import CSV" Width="110"
+                                                Command="{Binding GeometryDefinition.ImportLayersFromCsvCommand}"
+                                                Margin="0,0,8,0"/>
+                                        <Button Content="Export CSV" Width="110"
+                                                Command="{Binding GeometryDefinition.ExportLayersToCsvCommand}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding GeometryDefinition.LayeringControlsStatus}"
+                                               Foreground="#FF0F766E" FontStyle="Italic"
+                                               Margin="0,0,0,10" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <!-- Non-Horizontal controls (coordinate input) -->
+                                <StackPanel Visibility="{Binding GeometryDefinition.IsNonHorizontalLayerMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="Enter boundary point coordinates in project axis units (X horizontal, Y vertical), or click on the canvas. Add Point queues points; Add Layer creates the cut."
+                                               Margin="0,0,0,8" TextWrapping="Wrap" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <TextBox Width="80"
+                                                 Text="{Binding GeometryDefinition.LayerPointXInput, UpdateSourceTrigger=PropertyChanged}"
+                                                 Margin="0,0,12,0"/>
+                                        <TextBlock Text="Y:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <TextBox Width="80"
+                                                 Text="{Binding GeometryDefinition.LayerPointYInput, UpdateSourceTrigger=PropertyChanged}"
+                                                 Margin="0,0,12,0"/>
+                                        <Button Content="Add Point" Width="90"
+                                                Command="{Binding GeometryDefinition.AddLayerPointFromInputCommand}"
+                                                Margin="0,0,8,0"/>
+                                        <Button Content="Clear Points" Width="90"
+                                                Command="{Binding GeometryDefinition.ClearPendingLayerPointsCommand}"/>
+                                    </StackPanel>
+                                    <DataGrid ItemsSource="{Binding GeometryDefinition.PendingLayerPoints}"
+                                              SelectedItem="{Binding GeometryDefinition.SelectedPendingLayerPoint, Mode=TwoWay}"
+                                              AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                              HeadersVisibility="Column" MaxHeight="120" MinHeight="60"
+                                              Margin="0,0,0,8"
+                                              GridLinesVisibility="Horizontal" FontSize="12" RowHeight="28">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="#" Binding="{Binding PointNumber}" Width="40" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="X" Binding="{Binding AxisX, StringFormat={}{0:0.###}}" Width="90" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Y" Binding="{Binding AxisY, StringFormat={}{0:0.###}}" Width="90" IsReadOnly="True"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <Button Content="Remove Point" Width="100"
+                                                Command="{Binding GeometryDefinition.RemovePendingLayerPointCommand}"
+                                                CommandParameter="{Binding GeometryDefinition.SelectedPendingLayerPoint}"
+                                                Margin="0,0,8,0"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Button Content="Start Drawing" Width="110"
+                                                Command="{Binding GeometryDefinition.StartNonHorizontalLayerDrawCommand}"
+                                                Margin="0,0,8,0"/>
+                                        <Button Content="Add Layer" Width="110"
+                                                Command="{Binding GeometryDefinition.AddLayerLineCommand}"
+                                                Margin="0,0,8,0"/>
+                                        <Button Content="Delete" Width="80"
+                                                Command="{Binding GeometryDefinition.RemoveSelectedLayerCommand}"
+                                                CommandParameter="{Binding SelectedLayerSummaryForMaterials}"
+                                                Margin="0,0,8,0"/>
+                                        <Button Content="Cancel" Width="80"
+                                                Command="{Binding GeometryDefinition.CancelNonHorizontalLayerDrawCommand}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding GeometryDefinition.NonHorizontalLayerDrawStatus}"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" FontStyle="Italic" FontSize="11"
+                                               Margin="0,0,0,4" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding GeometryDefinition.LayeringControlsStatus}"
+                                               Foreground="#FF0F766E" FontStyle="Italic"
+                                               Margin="0,0,0,10" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <DataGrid ItemsSource="{Binding GeometryDefinition.LayerCoordinateSummaries}"
+                                          SelectedItem="{Binding SelectedLayerSummaryForMaterials, Mode=TwoWay}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False"
+                                          EnableRowVirtualization="False"
+                                          AlternationCount="1000" MinHeight="180" MaxHeight="420"
+                                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                          GridLinesVisibility="Horizontal" HeadersVisibility="Column"
+                                          FontSize="12" RowHeight="32">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Layer #" Binding="{Binding DisplayLayerNumber}" Width="72" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Layer name" Binding="{Binding LayerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="140"/>
+                                        <DataGridTextColumn Header="P1" Binding="{Binding Point1Name}" Width="60" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="P2" Binding="{Binding Point2Name}" Width="60" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="P3" Binding="{Binding Point3Name}" Width="60" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="P4" Binding="{Binding Point4Name}" Width="60" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="P5" Binding="{Binding Point5Name}" Width="60" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="P6" Binding="{Binding Point6Name}" Width="60" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="P7" Binding="{Binding Point7Name}" Width="60" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="P8" Binding="{Binding Point8Name}" Width="60" IsReadOnly="True"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+
+                <TabItem x:Name="ProjectMaterialsTab" Header="Project materials">
+                    <Grid Margin="0,6,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Project Materials" Padding="6">
+                            <DockPanel>
+                                <!-- Toolbar -->
+                                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,6"
+                                            Visibility="{Binding ShowProjectMaterialsToolbar, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Button Content="Add"       Style="{StaticResource ToolBtn}" Command="{Binding OpenAddMaterialDialogCommand}"/>
+                                    <Button Content="Edit"      Style="{StaticResource ToolBtn}" Command="{Binding EditMaterialCommand}"/>
+                                    <Button Content="Duplicate" Style="{StaticResource ToolBtn}" Command="{Binding DuplicateMaterialCommand}"/>
+                                    <Button Content="Delete"    Style="{StaticResource ToolBtn}" Command="{Binding RemoveMaterialCommand}"/>
+                                    <Separator Margin="4,0" Width="1" Background="#CCC"/>
+                                    <Button Command="{Binding ToggleExcavateModeCommand}"
+                                            ToolTip="Click a closed surface region on the canvas to excavate it for the active stage. Excavated zones appear as solid white."
+                                            MinWidth="80">
+                                        <Button.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="⛏ " FontSize="11"/>
+                                                <TextBlock Text="{Binding ExcavateModeButtonLabel}"/>
+                                            </StackPanel>
+                                        </Button.Content>
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource ToolBtn}">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsExcavateMode}" Value="True">
+                                                        <Setter Property="Background" Value="#FFFDE68A"/>
+                                                        <Setter Property="BorderBrush" Value="#FFD97706"/>
+                                                        <Setter Property="Foreground" Value="#FF92400E"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <Button Content="↩ Undo Exc"  Style="{StaticResource ToolBtn}" Command="{Binding UndoExcavationCommand}"  ToolTip="Undo last excavation"/>
+                                    <Button Content="↪ Redo Exc"  Style="{StaticResource ToolBtn}" Command="{Binding RedoExcavationCommand}"  ToolTip="Redo last undone excavation"/>
+                                    <Separator Margin="4,0" Width="1" Background="#CCC"/>
+                                    <Button Content="Library"   Style="{StaticResource ToolBtn}" Command="{Binding OpenMaterialLibraryCommand}"/>
+                                    <Separator Margin="4,0" Width="1" Background="#CCC"/>
+                                    <Button Content="Import"    Style="{StaticResource ToolBtn}" Command="{Binding ImportMaterialDatabaseCommand}"/>
+                                    <Button Content="Export"    Style="{StaticResource ToolBtn}" Command="{Binding ExportMaterialsCommand}"/>
+                                </StackPanel>
+                                <TextBlock DockPanel.Dock="Top" Margin="0,0,0,6" TextWrapping="Wrap" FontSize="11" FontStyle="Italic" Foreground="{DynamicResource SecondaryTextBrush}"
+                                           Visibility="{Binding IsStagedAnalysisEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                           Text="Staged FE analysis is on — footer stage tabs match Project Settings → Analysis Type (staged stages)."/>
+                                <!-- Excavation status bar -->
+                                <Border DockPanel.Dock="Top"
+                                        Background="#FFFFFBEB"
+                                        BorderBrush="#FFFDE68A"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="6,3"
+                                        Margin="0,0,0,6"
+                                        Visibility="{Binding IsExcavateMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="⛏  EXCAVATE MODE  —  " FontWeight="SemiBold" FontSize="11" Foreground="#FF92400E"/>
+                                        <TextBlock Text="{Binding StagedConstructionStatusMessage}" FontSize="11" Foreground="#FF92400E" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock DockPanel.Dock="Top" Margin="0,0,0,6" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"
+                                           Text="{Binding MaterialTypeCountSummary}"/>
+                                <!-- Materials DataGrid -->
+                                <DataGrid ItemsSource="{Binding Materials}"
+                                          SelectedItem="{Binding SelectedMaterialModel, Mode=TwoWay}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          IsReadOnly="False" SelectionMode="Single"
+                                          GridLinesVisibility="Horizontal"
+                                          FontSize="12" HeadersVisibility="Column"
+                                          Background="{DynamicResource PanelBackgroundBrush}"
+                                          Foreground="{DynamicResource WindowForegroundBrush}"
+                                          RowBackground="{DynamicResource PanelBackgroundBrush}"
+                                          AlternatingRowBackground="{DynamicResource PanelBackgroundBrush}"
+                                          HorizontalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                                          VerticalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                                          BorderThickness="0">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Colour" Width="46">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border Width="24" Height="14" CornerRadius="2"
+                                                            Background="{Binding ColourBrush}" Margin="4,2"
+                                                            ToolTip="Double-click to pick a colour"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <ListBox ItemsSource="{Binding DataContext.ColourPalette, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                             SelectedItem="{Binding Colour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             MaxHeight="120" BorderThickness="1" BorderBrush="#FFE2E8F0"
+                                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid Columns="4"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Width="18" Height="14" CornerRadius="2"
+                                                                        Background="{Binding}" Margin="1"/>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="Type #"     Binding="{Binding Id}"            Width="52"/>
+                                        <DataGridTextColumn Header="Name"       Binding="{Binding Name}"          Width="120"/>
+                                        <DataGridTemplateColumn Header="φ (°)" Width="50">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="4,0"
+                                                               Text="{Binding FrictionAngle, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Margin="0"
+                                                             Text="{Binding FrictionAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="60">
+                                            <DataGridTemplateColumn.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Text="{Binding DataContext.CohesionHeader, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.HeaderTemplate>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="4,0"
+                                                               Text="{Binding Cohesion, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Margin="0"
+                                                             Text="{Binding Cohesion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="ψ (°)" Width="50">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="4,0"
+                                                               Text="{Binding DilationAngle, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Margin="0"
+                                                             Text="{Binding DilationAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="72">
+                                            <DataGridTemplateColumn.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Text="{Binding DataContext.UnitWeightHeader, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.HeaderTemplate>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="4,0"
+                                                               Text="{Binding UnitWeight, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Margin="0"
+                                                             Text="{Binding UnitWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="85">
+                                            <DataGridTemplateColumn.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Text="{Binding DataContext.YoungsModulusHeader, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.HeaderTemplate>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="4,0"
+                                                               Text="{Binding YoungsModulus, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Margin="0"
+                                                             Text="{Binding YoungsModulus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="ν (-)" Width="50">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="4,0"
+                                                               Text="{Binding PoissonsRatio, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Margin="0"
+                                                             Text="{Binding PoissonsRatio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Header="Criterion"  Binding="{Binding FailureCriterion}" Width="100"/>
+                                        <DataGridTextColumn Header="Mat. type"  Binding="{Binding MaterialType}"  Width="90"/>
+                                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                        </GroupBox>
+                        <!-- ── Excavated Elements per Stage (hidden when empty) ─── -->
+                        <GroupBox Grid.Row="1" Header="Excavated Elements per Stage" Padding="6"
+                                  Margin="0,0,0,4"
+                                  Visibility="{Binding HasExcavationSummary, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <DataGrid ItemsSource="{Binding ExcavationSummaryRows}"
+                                      AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                      IsReadOnly="True" HeadersVisibility="Column"
+                                      MaxHeight="180"
+                                      GridLinesVisibility="Horizontal" FontSize="12"
+                                      Background="{DynamicResource PanelBackgroundBrush}"
+                                      Foreground="{DynamicResource WindowForegroundBrush}"
+                                      AlternatingRowBackground="{DynamicResource PanelBackgroundBrush}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Stage #"       Binding="{Binding StageNumber}"   Width="60"/>
+                                    <DataGridTextColumn Header="Stage Name"    Binding="{Binding StageName}"     Width="180"/>
+                                    <DataGridTextColumn Header="Element Count" Binding="{Binding ElementCount}"  Width="100"/>
+                                    <DataGridTextColumn Header="Excavated Element IDs"
+                                                        Binding="{Binding ElementIdsTruncated}" Width="*">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="ToolTip" Value="{Binding ElementIdsFull}"/>
+                                                <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+
+                <TabItem x:Name="LayerMaterialAssignmentTab" Header="Layer-material assignment">
+                    <Grid Margin="0,6,0,0">
+                        <!-- ── Layer–Material Assignments ──────────────────── -->
+                        <GroupBox Header="Layer–Material Assignments" Padding="6">
+                            <DockPanel>
+                                <!-- Toolbar -->
+                                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,6">
+                                    <Button Content="Assign Material…" Style="{StaticResource ToolBtn}"
+                                            Command="{Binding AssignMaterialToRegionCommand}"/>
+                                    <Button Content="Clear All" Style="{StaticResource ToolBtn}"
+                                            Command="{Binding ClearMaterialAssignmentsCommand}"/>
+                                    <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource SecondaryTextBrush}" FontStyle="Italic" FontSize="11"
+                                               Text="  Layer names come from Layering Controls above. Use the combo to assign, or Assign Material… above."/>
+                                </StackPanel>
+                                <!-- Layers DataGrid -->
+                                <DataGrid ItemsSource="{Binding LayerAssignments}"
+                                          SelectedItem="{Binding SelectedLayerAssignmentRow, Mode=TwoWay}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          SelectionMode="Single" GridLinesVisibility="Horizontal"
+                                          AlternatingRowBackground="#F8F8F8" FontSize="12" HeadersVisibility="Column">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Layer name" Binding="{Binding LayerDisplayName}" Width="*" IsReadOnly="True"/>
+                                        <!-- Assigned Material – ComboBox inline -->
+                                        <DataGridTemplateColumn Header="Assigned Material" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Border Width="14" Height="14" CornerRadius="2" Margin="2,2,6,2"
+                                                                Background="{Binding AssignedMaterial.ColourBrush}"
+                                                                Visibility="{Binding AssignedMaterial, Converter={StaticResource NullToVisibilityConverter}}"
+                                                                ToolTip="Double-click the Colour column to change"/>
+                                                        <TextBlock VerticalAlignment="Center"
+                                                                   Text="{Binding AssignedMaterial.Name, TargetNullValue='(none)'}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox ItemsSource="{Binding DataContext.Materials, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                              SelectedItem="{Binding AssignedMaterial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                              DisplayMemberPath="Name"
+                                                              IsEditable="False"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                        <!-- Stiffness summary of the assigned material -->
+                                        <DataGridTextColumn Width="85" IsReadOnly="True"
+                                                            Binding="{Binding AssignedMaterial.YoungsModulus, StringFormat=N0, TargetNullValue=''}">
+                                            <DataGridTextColumn.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Text="{Binding DataContext.YoungsModulusHeader, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                                </DataTemplate>
+                                            </DataGridTextColumn.HeaderTemplate>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="ν"       Width="50" IsReadOnly="True"
+                                                            Binding="{Binding AssignedMaterial.PoissonsRatio, StringFormat=F3, TargetNullValue=''}"/>
+                                        <DataGridTextColumn Width="60" IsReadOnly="True"
+                                                            Binding="{Binding AssignedMaterial.Cohesion,      StringFormat=F0, TargetNullValue=''}">
+                                            <DataGridTextColumn.HeaderTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Text="{Binding DataContext.CohesionHeader, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                                </DataTemplate>
+                                            </DataGridTextColumn.HeaderTemplate>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Header="φ (°)"   Width="50" IsReadOnly="True"
+                                                            Binding="{Binding AssignedMaterial.FrictionAngle, StringFormat=F1, TargetNullValue=''}"/>
+                                        <DataGridTemplateColumn Header="Colour" Width="50">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Border Width="24" Height="14" CornerRadius="2" Margin="4,2"
+                                                            Background="{Binding AssignedMaterial.ColourBrush}"
+                                                            Visibility="{Binding AssignedMaterial, Converter={StaticResource NullToVisibilityConverter}}"
+                                                            ToolTip="Double-click to pick a colour"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <ListBox ItemsSource="{Binding DataContext.ColourPalette, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                             SelectedItem="{Binding AssignedMaterial.Colour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             MaxHeight="120" BorderThickness="1" BorderBrush="#FFE2E8F0"
+                                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <UniformGrid Columns="4"/>
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Width="18" Height="14" CornerRadius="2"
+                                                                        Background="{Binding}" Margin="1"/>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+
+            <!-- Splitter + Canvas (main-tab canvas mode, ShowCanvas=true) -->
+            <GridSplitter Grid.Row="1" Height="6" Margin="0" HorizontalAlignment="Stretch"
+                          Background="#FFE2E8F0" ShowsPreview="True" ResizeDirection="Rows"
+                          Visibility="{Binding ShowCanvas, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <controls:SlopeCanvasView Grid.Row="2"
+                                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                      IsGeometryEditable="True"
+                                      DataContext="{Binding GeometryDefinition}"
+                                      ZoomPanModeEnabled="{Binding DataContext.ZoomPanModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
+                                      Visibility="{Binding ShowCanvas, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
+    </Grid>
+</UserControl>

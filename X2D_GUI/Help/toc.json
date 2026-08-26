@@ -1,0 +1,122 @@
+{
+  "title": "Geotechnical Slope Stability - User Manual",
+  "topics": [
+    {
+      "id": "index",
+      "title": "Welcome",
+      "file": "index.md"
+    },
+    {
+      "id": "getting-started",
+      "title": "Getting started",
+      "file": "getting-started/overview.md",
+      "children": [
+        { "id": "interface-tour", "title": "Tour of the interface", "file": "getting-started/interface-tour.md" },
+        { "id": "project-files", "title": "Projects and files", "file": "getting-started/project-files.md" },
+        { "id": "quick-start", "title": "Quick start: your first analysis", "file": "getting-started/quick-start-fem.md" }
+      ]
+    },
+    {
+      "id": "tutorials",
+      "title": "Tutorials",
+      "file": "tutorials/overview.md",
+      "children": [
+        { "id": "tutorial-field-stations-import", "title": "Field Stations — borehole log to soil block", "file": "tutorials/field-stations-import.md" },
+        { "id": "tutorial-field-stations-slope-a", "title": "Cut the slope — Method A (drag vertices)", "file": "tutorials/field-stations-slope-method-a.md" },
+        { "id": "tutorial-field-stations-slope-b", "title": "Cut the slope — Method B (draw lines)", "file": "tutorials/field-stations-slope-method-b.md" },
+        { "id": "tutorial-field-stations-slope-c", "title": "Cut the slope — Method C (excavate)", "file": "tutorials/field-stations-slope-method-c.md" }
+      ]
+    },
+    {
+      "id": "project-settings",
+      "title": "Project Settings",
+      "file": "project-settings/general.md",
+      "tabIndex": 0,
+      "children": [
+        { "id": "grid-axes", "title": "Grid and axes", "file": "project-settings/grid-axes.md" },
+        { "id": "analysis-type", "title": "Analysis type", "file": "project-settings/analysis-type.md" }
+      ]
+    },
+    {
+      "id": "geometry",
+      "title": "Geometry",
+      "file": "geometry/boundaries.md",
+      "tabIndex": 1,
+      "children": [
+        { "id": "excavation-tunnel", "title": "Excavations and tunnels", "file": "geometry/excavation-tunnel.md" },
+        { "id": "geometry-import", "title": "Importing geometry", "file": "geometry/import.md" },
+        { "id": "slope-image", "title": "Slope image underlay", "file": "geometry/slope-image.md" },
+        { "id": "production-geometry", "title": "Production geometry and interchange", "file": "geometry/production-geometry.md" },
+        { "id": "joint-networks", "title": "Joint networks", "file": "geometry/joint-networks.md" }
+      ]
+    },
+    {
+      "id": "materials",
+      "title": "Materials",
+      "file": "materials/defining-materials.md",
+      "tabIndex": 2,
+      "children": [
+        { "id": "layer-assignment", "title": "Layers and assignment", "file": "materials/layer-assignment.md" }
+      ]
+    },
+    {
+      "id": "mesh",
+      "title": "Mesh",
+      "file": "fem/overview.md",
+      "tabIndex": 3
+    },
+    {
+      "id": "loading",
+      "title": "Loads",
+      "file": "fem/overview.md",
+      "tabIndex": 4
+    },
+    {
+      "id": "boundary-conditions",
+      "title": "Boundary conditions",
+      "file": "fem/overview.md",
+      "tabIndex": 5
+    },
+    {
+      "id": "groundwater",
+      "title": "Groundwater",
+      "file": "water/groundwater-overview.md",
+      "tabIndex": 6,
+      "children": [
+        { "id": "water-table", "title": "Water tables and piezometric lines", "file": "water/water-table.md" }
+      ]
+    },
+    {
+      "id": "fem",
+      "title": "FE Analysis",
+      "file": "fem/overview.md",
+      "tabIndex": 7,
+      "children": [
+        { "id": "script-editor", "title": "Script Editor", "file": "fem/script-editor.md", "tabIndex": 12 },
+        { "id": "fe-results", "title": "FE results", "file": "fem/fe-results.md", "tabIndex": 9 },
+        { "id": "verification-tab", "title": "Verification tab", "file": "fem/verification-tab.md", "tabIndex": 8 }
+      ]
+    },
+    {
+      "id": "sensitivity",
+      "title": "Sensitivity, probabilistic, and export",
+      "file": "analysis/wave3-delivery.md",
+      "tabIndex": 10
+    },
+    {
+      "id": "report",
+      "title": "Report",
+      "file": "analysis/wave3-delivery.md",
+      "tabIndex": 11
+    },
+    {
+      "id": "reference",
+      "title": "Reference",
+      "file": "reference/xfem-format.md",
+      "children": [
+        { "id": "shortcuts", "title": "Keyboard shortcuts", "file": "reference/keyboard-shortcuts.md" },
+        { "id": "glossary", "title": "Glossary", "file": "reference/glossary.md" }
+      ]
+    }
+  ]
+}

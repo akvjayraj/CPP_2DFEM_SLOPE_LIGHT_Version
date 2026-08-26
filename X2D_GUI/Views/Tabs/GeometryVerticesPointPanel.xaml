@@ -1,0 +1,130 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.GeometryVerticesPointPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+    </UserControl.Resources>
+    <StackPanel Margin="0,0,0,12">
+        <GroupBox Header="Geometry Vertices" Margin="0,0,0,12">
+            <StackPanel Margin="8">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button Content="From mesh boundary"
+                            Command="{Binding ImportBoundaryFromMeshCommand}"
+                            Height="24"
+                            Padding="6,0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,8,0"
+                            ToolTip="Walk the outer mesh boundary and merge collinear vertices into straight L1..Ln segments (RS2-style macro outline from the .dat mesh perimeter)."/>
+                    <Button x:Name="NewGeometryVertexButton"
+                            Content="New"
+                            Command="{Binding StartNewPointModeCommand}"
+                            Width="60"
+                            Height="24"
+                            Padding="4,0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,8,0"
+                            IsEnabled="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"/>
+                    <Button x:Name="EditGeometryVerticesButton"
+                            Content="Edit"
+                            Command="{Binding StartGeometryVerticesEditCommand}"
+                            Width="60"
+                            Height="24"
+                            Padding="4,0"
+                            VerticalAlignment="Center"
+                            Margin="0,0,8,0"
+                            IsEnabled="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"/>
+                    <Button x:Name="FinishGeometryVerticesButton"
+                            Content="Finish"
+                            Command="{Binding FinishGeometryVerticesEditCommand}"
+                            Width="60"
+                            Height="24"
+                            Padding="4,0"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"/>
+                </StackPanel>
+                <TextBlock Text="{Binding GridSpacingDescription}" Margin="0,0,0,4" Foreground="#FF475569"/>
+                <TextBlock Text="{Binding GeometryImportStatusMessage}"
+                           Margin="0,0,0,6"
+                           Foreground="#FF334155"
+                           FontSize="11"
+                           TextWrapping="Wrap"/>
+                <DataGrid x:Name="GeometryVerticesGrid"
+                          ItemsSource="{Binding GeometryVertexRows}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          HeadersVisibility="Column"
+                          Height="200"
+                          Margin="0,0,0,8"
+                          PreviewMouseRightButtonDown="GeometryVerticesGrid_PreviewMouseRightButtonDown"
+                          PreviewKeyDown="GeometryVerticesGrid_PreviewKeyDown"
+                          AddingNewItem="GeometryVerticesGrid_AddingNewItem"
+                          BeginningEdit="GeometryVerticesGrid_BeginningEdit"
+                          SelectionChanged="GeometryVerticesGrid_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID"
+                                            Binding="{Binding StablePointId}"
+                                            IsReadOnly="True"
+                                            Width="44"/>
+                        <DataGridTextColumn Header="Point"
+                                            Binding="{Binding PointLabel}"
+                                            IsReadOnly="True"
+                                            Width="220"/>
+                        <DataGridTextColumn Header="X"
+                                            Binding="{Binding AxisX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.###}}"
+                                            x:Name="XColumn"/>
+                        <DataGridTextColumn Header="Y"
+                                            Binding="{Binding AxisY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.###}}"
+                                            x:Name="YColumn"/>
+                        <DataGridTemplateColumn Header="Actions" Width="70" IsReadOnly="True">
+                            <DataGridTemplateColumn.Visibility>
+                                <Binding Path="DataContext.IsGeometryVerticesEditMode, RelativeSource={RelativeSource AncestorType=DataGrid}">
+                                    <Binding.Converter>
+                                        <BooleanToVisibilityConverter/>
+                                    </Binding.Converter>
+                                </Binding>
+                            </DataGridTemplateColumn.Visibility>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Delete"
+                                            Command="{Binding DataContext.RemoveGeometryVertexCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}"
+                                            Width="55"
+                                            Height="20"
+                                            Padding="2,0"
+                                            FontSize="10"
+                                            Margin="2,0"
+                                            IsEnabled="{Binding DataContext.IsTunnelCircleDrawingMode, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource BooleanNegationConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                    <Setter Property="Background" Value="#CCFDE68A"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Point" Margin="0,0,0,12">
+            <StackPanel Margin="8">
+                <Button Content="Update" Command="{Binding AddGeometryPointFromInputCommand}" Width="90" HorizontalAlignment="Left" Margin="0,0,0,8"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBox Width="70" Text="{Binding GeometryXInput, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,12,0"/>
+                    <TextBlock Text="Y:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                    <TextBox Width="70" Text="{Binding GeometryYInput, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,12,0"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

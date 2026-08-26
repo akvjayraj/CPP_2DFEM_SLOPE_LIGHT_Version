@@ -1,0 +1,27 @@
+! <solver:p64>
+! Axisymmetric elastic smoke: single Q4 from r=1..2, z=0..1 (S&G ?r, ??=u/r).
+! High c so F=1 remains elastic; compare umax vs plane Q4 on the same mesh.
+! <BEGIN:AnalysisOptions>
+! failure_criterion MohrCoulomb
+! material_type Isotropic
+! mesh_type Q4
+! mesh_source explicit
+! srf_mode single
+! srf_F 1.0
+! analysis_type axisymmetric
+! solver_executable slope_stability_Q4_SRF_axisym
+! <END:AnalysisOptions>
+1  4  1
+0  1.0e6  0  20  1.0e5  0.3
+1.0  0.0
+2.0  0.0
+2.0  1.0
+1.0  1.0
+1 2 3 4
+4
+1 0 0
+2 1 0
+3 1 1
+4 0 1
+1
+1.0

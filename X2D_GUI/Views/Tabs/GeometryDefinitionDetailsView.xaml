@@ -1,0 +1,149 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.GeometryDefinitionDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16,0,12,12">
+            <TextBlock Text="{Binding GeometryCanvasCoordinates}"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,12"/>
+            <tabs:GeometryVerticesPointPanel />
+            <tabs:GeometryLineSegmentsPanel />
+
+            <GroupBox Header="Tunnel Excavation" Margin="0,12,0,8">
+                <StackPanel Margin="12">
+                    <TextBlock Text="Click 'Add Circle' then click on canvas to set center and drag to set radius."
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,8"
+                               Foreground="#FF475569"
+                               FontStyle="Italic"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Center X:" VerticalAlignment="Center" Margin="0,0,4,0" Width="60"/>
+                        <TextBox Width="80" Text="{Binding TunnelCenterXInput, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,12,0"/>
+                        <TextBlock Text="Center Y:" VerticalAlignment="Center" Margin="0,0,4,0" Width="60"/>
+                        <TextBox Width="80" Text="{Binding TunnelCenterYInput, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,12,0"/>
+                        <TextBlock Text="Radius:" VerticalAlignment="Center" Margin="0,0,4,0" Width="50"/>
+                        <TextBox Width="80" Text="{Binding TunnelRadiusInput, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <Button Content="Add Circle"
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,8"
+                            Command="{Binding AddTunnelExcavationCircleCommand}"
+                            IsEnabled="{Binding IsAddCircleEnabled}"/>
+                    <TextBlock Text="{Binding TunnelCircleDrawingStatus}"
+                               Margin="0,0,0,8"
+                               Foreground="#FF475569"
+                               Visibility="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="Tunnel Circles" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Button x:Name="EditTunnelCirclesButton"
+                                Content="Edit"
+                                Command="{Binding ToggleTunnelCirclesEditModeCommand}"
+                                Width="60"
+                                Height="24"
+                                Padding="4,0"
+                                VerticalAlignment="Center"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Finish"
+                                Command="{Binding FinishTunnelCircleDrawingCommand}"
+                                Width="60"
+                                Height="24"
+                                Padding="4,0"
+                                VerticalAlignment="Center"
+                                Margin="0,0,8,0"
+                                IsEnabled="{Binding IsTunnelCircleDrawingMode}"/>
+                        <Button Content="Delete"
+                                Click="DeleteTunnelCircleButton_Click"
+                                Width="60"
+                                Height="24"
+                                Padding="4,0"
+                                VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <DataGrid x:Name="TunnelCirclesGrid"
+                              ItemsSource="{Binding FilteredTunnelExcavationCircleRows}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              IsReadOnly="False"
+                              HeadersVisibility="Column"
+                              Height="150"
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow"
+                              SelectionChanged="TunnelCirclesGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Circle #"
+                                                Binding="{Binding CircleNumber}"
+                                                Width="70"
+                                                IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Center X"
+                                                Binding="{Binding CenterX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F3}}"
+                                                Width="100"
+                                                x:Name="TunnelCircleCenterXColumn"/>
+                            <DataGridTextColumn Header="Center Y"
+                                                Binding="{Binding CenterY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F3}}"
+                                                Width="100"
+                                                x:Name="TunnelCircleCenterYColumn"/>
+                            <DataGridTextColumn Header="Radius"
+                                                Binding="{Binding Radius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F3}}"
+                                                Width="100"
+                                                x:Name="TunnelCircleRadiusColumn"/>
+                            <DataGridTextColumn Header="Stage"
+                                                Binding="{Binding Stage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Width="80"
+                                                x:Name="TunnelCircleStageColumn">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="{Binding Stage, TargetNullValue='-'}"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                        <Setter Property="Text" Value="{Binding Stage, TargetNullValue=''}"/>
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Unit"
+                                                Binding="{Binding UnitLabel}"
+                                                Width="50"
+                                                IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </GroupBox>
+
+            <tabs:GeometrySurfaceExcavationPanel />
+
+            <TextBlock Text="{Binding BulkPointDeleteStatus}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,8"
+                       Foreground="#FFB91C1C"
+                       FontWeight="SemiBold"
+                       Visibility="{Binding IsBulkPointDeleteMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <WrapPanel Margin="0,0,0,8">
+                <Button Content="Bulk Delete"
+                        Width="110"
+                        Margin="0,0,8,0"
+                        Command="{Binding StartBulkPointDeleteModeCommand}"
+                        Visibility="{Binding IsBulkPointDeleteModeInactive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Button Content="Cancel Delete"
+                        Width="110"
+                        Margin="0,0,8,0"
+                        Command="{Binding CancelBulkPointDeleteModeCommand}"
+                        Visibility="{Binding IsBulkPointDeleteMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Button Content="Delete Last" Width="110" Margin="0,0,8,0" Command="{Binding DeleteLastGeometryPointCommand}"/>
+                <Button Content="Delete All" Width="110" Margin="0,0,8,0" Command="{Binding ClearGeometryPointsCommand}"/>
+                <Button Content="Import CSV / DXF" Width="130" Margin="0,0,8,0" Command="{Binding ImportGeometryFromCsvCommand}"/>
+                <Button Content="Export CSV" Width="110" Margin="0,0,8,0" Command="{Binding ExportGeometryToCsvCommand}"/>
+                <Button Content="Clear" Width="110" Command="{Binding ClearCurrentStageCommand}"/>
+            </WrapPanel>
+
+            <TextBlock Text="Click inside the sketch area or enter coordinates to build the slope polygon."
+                       TextWrapping="Wrap" Margin="0,12,0,0" Foreground="#FF475569"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,26 @@
+! <solver:p610_t3>
+! Tiny T3 axisym gravity column smoke
+! <BEGIN:AnalysisOptions>
+! failure_criterion MohrCoulomb
+! material_type Isotropic
+! mesh_type T3
+! srf_mode single
+! srf_F 1.0
+! analysis_type axisymmetric
+! solver_executable slope_stability_T3_SRF_axisym
+! <END:AnalysisOptions>
+2  4  1
+0  1.0e6  0  20  1.0e5  0.3  0.5
+1.0  0.0
+2.0  0.0
+2.0  1.0
+1.0  1.0
+1 2 3
+1 3 4
+4
+1 0 0
+2 1 0
+3 1 1
+4 0 1
+0
+1.0e-5  50  1  0

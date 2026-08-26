@@ -1,0 +1,18 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.PrintPreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Print Preview"
+        Width="900"
+        Height="700"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False">
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Print..." Click="OnPrintClick" Padding="12,4"/>
+            <Button Content="Page Setup..." Click="OnPageSetupClick" Padding="12,4"/>
+            <Separator/>
+            <Button Content="Close" Click="OnCloseClick" Padding="12,4"/>
+        </ToolBar>
+        <DocumentViewer x:Name="PreviewViewer"/>
+    </DockPanel>
+</Window>

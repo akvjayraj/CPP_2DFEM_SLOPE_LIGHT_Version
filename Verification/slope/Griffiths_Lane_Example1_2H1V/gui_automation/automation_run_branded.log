@@ -1,0 +1,28 @@
+Running T3 from C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\Griffiths_Lane_Example1_2H1V\griffiths_lane_example1_2h1v_t3.xfem
+[T3] SRF auto-bracket: probing seed F=1
+[T3] SRF auto-bracket: expanding upward, F=1.5
+[T3] SRF trial F=1.5: failed
+[T3] SRF bracket iter 1/20: F=1.25 (converged), bracket=[1.25, 1.5]
+[T3] SRF bracket iter 2/20: F=1.375 (converged), bracket=[1.375, 1.5]
+[T3] SRF trial F=1.438: converged
+[T3] SRF bracket iter 3/20: F=1.438 (converged), bracket=[1.438, 1.5]
+[T3] SRF trial F=1.469: converged
+[T3] SRF bracket iter 4/20: F=1.469 (converged), bracket=[1.469, 1.5]
+[T3] SRF trial F=1.484: failed
+[T3] SRF bracket iter 5/20: F=1.484 (failed), bracket=[1.469, 1.484]
+[T3] SRF trial F=1.477: converged
+Completed T3: FoS=1.481 status=Critical FoS ≈ 1.481 (auto-detected bracket in 2 expansion + 6 bisection trial(s), F ? [1.477, 1.484])
+Running T6 from C:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\Griffiths_Lane_Example1_2H1V\griffiths_lane_example1_2h1v_t6.xfem
+[T6] SRF auto-bracket: probing seed F=1
+[T6] SRF auto-bracket: expanding upward, F=1.5
+[T6] SRF trial F=1.5: failed
+[T6] SRF trial F=1.25: converged
+[T6] SRF bracket iter 1/20: F=1.25 (converged), bracket=[1.25, 1.5]
+[T6] SRF trial F=1.375: converged
+[T6] SRF bracket iter 2/20: F=1.375 (converged), bracket=[1.375, 1.5]
+[T6] SRF trial F=1.438: failed
+[T6] SRF bracket iter 3/20: F=1.438 (failed), bracket=[1.375, 1.438]
+[T6] SRF trial F=1.406: converged
+[T6] SRF bracket iter 4/20: F=1.406 (converged), bracket=[1.406, 1.438]
+[T6] SRF trial F=1.422: converged
+[T6] SRF bracket iter 5/20: F=1.422 (converged), bracket=[1.422, 1.438]

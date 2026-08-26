@@ -1,0 +1,1859 @@
+<Window x:Class="GeotechSlopeApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs"
+        xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls"
+        xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+        xmlns:ws="clr-namespace:GeotechSlopeApp.Views.Workspace"
+        Title="Geotechnical Slope Stability (Light)" Height="720" Width="1080"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewProjectCommand}" />
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenProjectCommand}" />
+        <KeyBinding Gesture="Ctrl+D1" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="1" />
+        <KeyBinding Gesture="Ctrl+D2" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="2" />
+        <KeyBinding Gesture="Ctrl+D3" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="3" />
+        <KeyBinding Gesture="Ctrl+D4" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="4" />
+        <KeyBinding Gesture="Ctrl+D5" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="5" />
+        <KeyBinding Gesture="Ctrl+D6" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="6" />
+        <KeyBinding Gesture="Ctrl+D7" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="7" />
+        <KeyBinding Gesture="Ctrl+D8" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="8" />
+        <KeyBinding Gesture="Ctrl+D9" Command="{Binding OpenRecentByIndexCommand}" CommandParameter="9" />
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" />
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+Z" Command="{Binding RedoCommand}" />
+        <KeyBinding Gesture="Ctrl+F4" Command="{Binding CloseProjectCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+G" Command="{Binding ImportGeometryFileCommand}" />
+        <KeyBinding Gesture="F1" Command="{Binding ViewHelpCommand}" />
+        <KeyBinding Gesture="Ctrl+P" Command="{Binding PrintCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+P" Command="{Binding PrintPreviewCommand}" />
+        <KeyBinding Gesture="F5" Command="{Binding RunFEAnalysisMenuCommand}" />
+        <KeyBinding Gesture="Shift+F5" Command="{Binding StopAnalysisCommand}" />
+        <KeyBinding Gesture="F7" Command="{Binding WorkspaceF7Command}" />
+        <KeyBinding Gesture="F10" Command="{Binding GeometryDefinitionVM.ToggleShowAxesCommand}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
+        <KeyBinding Gesture="Ctrl+Add" Command="{Binding ZoomInCommand}" />
+        <KeyBinding Gesture="Ctrl+OemPlus" Command="{Binding ZoomInCommand}" />
+        <KeyBinding Gesture="Ctrl+Subtract" Command="{Binding ZoomOutCommand}" />
+        <KeyBinding Gesture="Ctrl+OemMinus" Command="{Binding ZoomOutCommand}" />
+        <KeyBinding Gesture="Ctrl+D0" Command="{Binding ZoomToFitCommand}" />
+        <KeyBinding Gesture="Ctrl+NumPad0" Command="{Binding ZoomToFitCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+H" Command="{Binding ResetZoomCommand}" />
+        <KeyBinding Gesture="Delete" Command="{Binding DeleteSelectionCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitPanModeCommand}" />
+        <KeyBinding Key="P" Command="{Binding TogglePanModeCommand}" />
+    </Window.InputBindings>
+    <Window.Resources>
+        <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <converters:BooleanToGridLengthConverter x:Key="WorkspaceSideColConverter" TrueValue="240" FalseValue="0"/>
+        <converters:BooleanToGridLengthConverter x:Key="WorkspaceAnalysisColConverter" TrueValue="280" FalseValue="0"/>
+        <converters:BooleanToGridLengthConverter x:Key="WorkspaceResultsColConverter" TrueValue="280" FalseValue="0"/>
+        <converters:BooleanToGridLengthConverter x:Key="WorkspaceLogRowConverter" TrueValue="140" FalseValue="0"/>
+        <converters:BooleanToGridLengthConverter x:Key="WorkspaceGeometryTableRowConverter" TrueValue="160" FalseValue="0"/>
+        <converters:BooleanToGridLengthConverter x:Key="WorkspaceAnalysisOnlyColConverter" TrueValue="280" FalseValue="0"/>
+
+        <!-- ── Toolbar button / separator styles ─────────────────────────── -->
+        <Style x:Key="ToolbarBtnStyle" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="1,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E0E7FF"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#A5B4FC"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#C7D2FE"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.38"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ToolbarToggleBtnStyle" TargetType="ToggleButton">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="1,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#E0E7FF"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#A5B4FC"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#C7D2FE"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#818CF8"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.38"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ToolbarSepStyle" TargetType="Separator">
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Background" Value="#CBD5E1"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ToolbarGlyphStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <!-- New / Open / Recent / Close -->
+                <MenuItem Header="_New Project"
+                          Command="{Binding NewProjectCommand}"
+                          InputGestureText="Ctrl+N" />
+                <MenuItem Header="_Open..."
+                          Command="{Binding OpenProjectCommand}"
+                          InputGestureText="Ctrl+O" />
+                <MenuItem Header="Open _Recent">
+                    <MenuItem Header="(No recent projects)"
+                              IsEnabled="False"
+                              Visibility="{Binding RecentProjects.HasEntries, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                    <MenuItem ItemsSource="{Binding RecentProjects.Entries}"
+                              Visibility="{Binding RecentProjects.HasEntries, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header" Value="{Binding DisplayName}" />
+                                <Setter Property="InputGestureText" Value="{Binding ShortcutText}" />
+                                <Setter Property="ToolTip" Value="{Binding ToolTip}" />
+                                <Setter Property="Command"
+                                        Value="{Binding DataContext.OpenRecentProjectCommand,
+                                                RelativeSource={RelativeSource AncestorType=Menu}}" />
+                                <Setter Property="CommandParameter" Value="{Binding FilePath}" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Close Project"
+                          Command="{Binding CloseProjectCommand}"
+                          InputGestureText="Ctrl+F4" />
+                <Separator />
+
+                <!-- Save group -->
+                <MenuItem Header="_Save"
+                          Command="{Binding SaveCommand}"
+                          InputGestureText="Ctrl+S" />
+                <MenuItem Header="Save _As..."
+                          Command="{Binding SaveAsCommand}"
+                          InputGestureText="Ctrl+Shift+S" />
+                <MenuItem Header="Save a Cop_y..."
+                          Command="{Binding SaveCopyCommand}" />
+                <Separator />
+
+                <!-- Import submenu -->
+                <MenuItem Header="_Import">
+                    <MenuItem Header="Geometry (CSV / DXF / LandXML / GeoJSON)..."
+                              Command="{Binding ImportGeometryFileCommand}"
+                              InputGestureText="Ctrl+Shift+G"
+                              ToolTip="Import points, lines, and surfaces from CSV, DXF, LandXML, or GeoJSON (DWG: Save As DXF first)" />
+                    <MenuItem Header="Slope Image..."
+                              Command="{Binding ImportSlopeImageCommand}"
+                              ToolTip="Import a PNG/JPG underlay, calibrate X/Y, then digitize geometry on the canvas" />
+                    <MenuItem Header="Mesh (.msh / .inp)..."
+                              Command="{Binding ImportMeshFileCommand}"
+                              ToolTip="Import a pre-generated mesh file" />
+                    <MenuItem Header="Material Database..."
+                              Command="{Binding ImportMaterialDatabaseCommand}"
+                              ToolTip="Import material properties from an external database" />
+                    <MenuItem Header="Boundary Conditions (CSV)..."
+                              Command="{Binding ImportBoundaryConditionsCommand}"
+                              ToolTip="Import boundary condition definitions from CSV" />
+                </MenuItem>
+
+                <!-- Export submenu -->
+                <MenuItem Header="_Export">
+                    <MenuItem Header="Geometry (DXF / CSV / LandXML / GeoJSON)..."
+                              Command="{Binding ExportGeometryCommand}"
+                              ToolTip="Export geometry to DXF, CSV, LandXML, or GeoJSON" />
+                    <MenuItem Header="Mesh (.msh)..."
+                              Command="{Binding ExportMeshCommand}"
+                              ToolTip="Export the generated mesh to a mesh file" />
+                    <MenuItem Header="Results (CSV / VTK)..."
+                              Command="{Binding ExportResultsCommand}"
+                              ToolTip="Export analysis results to CSV or VTK format" />
+                    <MenuItem Header="Report (PDF)..."
+                              Command="{Binding ExportReportCommand}"
+                              ToolTip="Generate and export a PDF report" />
+                    <Separator />
+                    <MenuItem Header="Export to Abaqus (.inp)..."
+                              Command="{Binding ExportToAbaqusCommand}"
+                              ToolTip="Export model in Abaqus input file format" />
+                    <MenuItem Header="Export to ANSYS (.cdb)..."
+                              Command="{Binding ExportToAnsysCommand}"
+                              ToolTip="Export model in ANSYS CDB format" />
+                </MenuItem>
+                <Separator />
+
+                <!-- Print group -->
+                <MenuItem Header="_Print..."
+                          Command="{Binding PrintCommand}"
+                          InputGestureText="Ctrl+P" />
+                <MenuItem Header="Print Pre_view..."
+                          Command="{Binding PrintPreviewCommand}"
+                          InputGestureText="Ctrl+Shift+P" />
+                <MenuItem Header="Page Set_up..."
+                          Command="{Binding PageSetupCommand}" />
+                <Separator />
+
+                <!-- Project settings -->
+                <MenuItem Header="Pro_ject Settings..."
+                          Click="ProjectSettingsMenuItem_Click" />
+                <Separator />
+
+                <!-- Recent files clear -->
+                <MenuItem Header="Clear Recent Files"
+                          Command="{Binding ClearRecentFilesCommand}" />
+                <Separator />
+
+                <MenuItem Header="E_xit"
+                          Command="{Binding ExitApplicationCommand}"
+                          InputGestureText="Alt+F4" />
+            </MenuItem>
+            <!-- ═══ VIEW ═══ -->
+            <MenuItem Header="_View">
+                <MenuItem Header="Zoom _In"           Command="{Binding ZoomInCommand}"         InputGestureText="Ctrl+=" />
+                <MenuItem Header="Zoom _Out"          Command="{Binding ZoomOutCommand}"        InputGestureText="Ctrl+-" />
+                <MenuItem Header="Zoom to _Fit"       Command="{Binding ZoomToFitCommand}"      InputGestureText="Ctrl+0" />
+                <MenuItem Header="_Reset Zoom"        Command="{Binding ResetZoomCommand}"      InputGestureText="Ctrl+Shift+H" />
+                <Separator />
+                <MenuItem Header="_Pan / Zoom Mode"
+                          Command="{Binding TogglePanModeCommand}"
+                          IsCheckable="True"
+                          IsChecked="{Binding ZoomPanModeEnabled, Mode=TwoWay}"
+                          InputGestureText="P"
+                          ToolTip="Toggle pan and zoom interaction on the canvas" />
+                <Separator />
+                <MenuItem Header="Show _Node Numbers"
+                          IsCheckable="True"
+                          IsChecked="{Binding MeshVM.ShowMeshNodes, Mode=TwoWay}"
+                          ToolTip="Show node ID labels on the mesh canvas" />
+                <MenuItem Header="Show _Element Numbers"
+                          IsCheckable="True"
+                          IsChecked="{Binding MeshVM.ShowMeshElements, Mode=TwoWay}"
+                          ToolTip="Show element ID labels on the mesh canvas" />
+                <MenuItem Header="Show _Grid"
+                          Command="{Binding GeometryDefinitionVM.ToggleShowGridCommand}"
+                          IsCheckable="True"
+                          IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=OneWay}"
+                          InputGestureText="F7"
+                          ToolTip="Toggle the background snap grid (world coordinates)" />
+                <MenuItem Header="Show _Axes"
+                          Command="{Binding GeometryDefinitionVM.ToggleShowAxesCommand}"
+                          IsCheckable="True"
+                          IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=OneWay}"
+                          InputGestureText="F10"
+                          ToolTip="Toggle global X/Y axis arrows at the canvas origin (Plaxis-style)" />
+                <MenuItem Header="Show _Boundary Conditions"
+                          IsCheckable="True" IsChecked="True"
+                          Click="StubMenuItem_Click"
+                          ToolTip="Toggle boundary condition markers on the canvas" />
+                <MenuItem Header="Show Load _Vectors"
+                          IsCheckable="True" IsChecked="True"
+                          Click="StubMenuItem_Click"
+                          ToolTip="Toggle load arrow overlays on the canvas" />
+                <MenuItem Header="Show _Material Zones"
+                          IsCheckable="True" IsChecked="True"
+                          Click="StubMenuItem_Click"
+                          ToolTip="Toggle material zone fill colours" />
+                <MenuItem Header="Show _Ponded Water"
+                          IsCheckable="True"
+                          IsChecked="{Binding GroundwaterVM.ShowPondedFreeWaterRegion, Mode=TwoWay}"
+                          ToolTip="Show the ponded free-water region above the ground (Groundwater tab). Requires Include Groundwater + Static → Ponded free-water pressures." />
+                <Separator />
+                <MenuItem Header="_Contour Plot Options..."
+                          Click="StubMenuItem_Click"
+                          ToolTip="Set colour map, legend range, and band count" />
+                <MenuItem Header="_Vector Plot Options..."
+                          Click="StubMenuItem_Click"
+                          ToolTip="Set arrow scale and density for vector plots" />
+                <MenuItem Header="Deformed Shape _Scale..."
+                          Click="StubMenuItem_Click"
+                          ToolTip="Set displacement magnification factor for deformed shape overlay" />
+                <Separator />
+                <MenuItem Header="Toggle _Full Screen"
+                          Click="ToggleFullScreenMenuItem_Click"
+                          InputGestureText="F11" />
+                <MenuItem Header="Toggle _Toolbars"       Click="StubMenuItem_Click" />
+                <MenuItem Header="Toggle _Status Bar"     Click="StubMenuItem_Click" />
+                <Separator />
+                <MenuItem Header="_User interface">
+                    <MenuItem Header="_Classic tabs"
+                              IsCheckable="True"
+                              IsChecked="{Binding UseClassicTabs, Mode=OneWay}"
+                              Command="{Binding SetClassicLayoutCommand}"/>
+                    <MenuItem Header="_Analysis Workspace"
+                              IsCheckable="True"
+                              IsChecked="{Binding UseAnalysisWorkspace, Mode=OneWay}"
+                              Command="{Binding SetWorkspaceLayoutCommand}"/>
+                </MenuItem>
+            </MenuItem>
+
+            <!-- ═══ EDIT ═══ -->
+            <MenuItem Header="_Edit">
+                <MenuItem Header="{Binding UndoMenuText}" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z" />
+                <MenuItem Header="{Binding RedoMenuText}" Command="{Binding RedoCommand}" InputGestureText="Ctrl+Y" />
+                <Separator />
+                <MenuItem Header="Cu_t"    Command="{Binding CutCommand}"    InputGestureText="Ctrl+X" />
+                <MenuItem Header="_Copy"   Command="{Binding CopyCommand}"   InputGestureText="Ctrl+C" />
+                <MenuItem Header="_Paste"  Command="{Binding PasteCommand}"  InputGestureText="Ctrl+V" />
+                <MenuItem Header="_Delete" Command="{Binding DeleteSelectionCommand}" InputGestureText="Del" />
+                <Separator />
+                <MenuItem Header="Select _All"    Command="{Binding SelectAllCommand}"   InputGestureText="Ctrl+A" />
+                <MenuItem Header="Dese_lect All"  Command="{Binding DeselectAllCommand}" InputGestureText="Esc" />
+                <Separator />
+                <MenuItem Header="_Find / Go To..."
+                          Click="StubMenuItem_Click"
+                          InputGestureText="Ctrl+F"
+                          ToolTip="Find a node or element by ID" />
+                <Separator />
+                <MenuItem Header="P_references..." Command="{Binding PreferencesCommand}" />
+            </MenuItem>
+
+            <!-- ═══ GEOMETRY ═══ -->
+            <MenuItem Header="_Geometry">
+                <MenuItem Header="Navigate to _Geometry Tab" Command="{Binding NavigateToGeometryCommand}" />
+                <Separator />
+                <MenuItem Header="Add _Points (Vertices)..."
+                          Command="{Binding MenuAddVertexCommand}"
+                          InputGestureText="V"
+                          ToolTip="Open the Geometry Vertices &amp; Point panel" />
+                <MenuItem Header="Add _Line Segments..."
+                          Command="{Binding MenuAddLineSegmentCommand}"
+                          InputGestureText="L"
+                          ToolTip="Draw straight line segments between vertices" />
+                <MenuItem Header="Add _Arc..."
+                          Command="{Binding MenuAddArcCommand}"
+                          InputGestureText="A"
+                          ToolTip="Draw an arc defined by three vertices" />
+                <MenuItem Header="Add _Circle..."
+                          Command="{Binding MenuAddCircleCommand}"
+                          InputGestureText="C"
+                          ToolTip="Draw a full circle from centre and radius" />
+                <MenuItem Header="Add _Surface / Region..."
+                          Command="{Binding MenuAddSurfaceCommand}"
+                          InputGestureText="S"
+                          ToolTip="Define a closed region from existing line segments" />
+                <Separator />
+                <MenuItem Header="_Tunnel Wizard..."
+                          Command="{Binding OpenTunnelWizardCommand}"
+                          InputGestureText="Ctrl+T"
+                          ToolTip="Six-step parametric setup: shape, dimensions, domain, stress, mesh density, review" />
+                <MenuItem Header="Add _Joint..."
+                          Command="{Binding OpenJointWizardCommand}"
+                          ToolTip="Place a joint: pick a property set, end condition, install stage, and location" />
+                <MenuItem Header="Joint _Properties..."
+                          Command="{Binding OpenJointPropertiesCommand}"
+                          ToolTip="Define reusable Mohr–Coulomb joint property sets (kn, ks, c, φ, residual, staging)" />
+                <Separator />
+                <MenuItem Header="_Boolean Operations">
+                    <MenuItem Header="_Union"
+                              Command="{Binding GeometryBooleanUnionCommand}"
+                              ToolTip="Merge two surfaces into one" />
+                    <MenuItem Header="_Intersect"
+                              Command="{Binding GeometryBooleanIntersectCommand}"
+                              ToolTip="Keep the overlapping region of two surfaces" />
+                    <MenuItem Header="_Subtract (Excavate)"
+                              Command="{Binding GeometryBooleanSubtractCommand}"
+                              ToolTip="Subtract one surface from another" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Delete _Last Vertex"
+                          Command="{Binding GeometryDefinitionVM.DeleteLastGeometryPointCommand}"
+                          ToolTip="Remove the most recently placed vertex" />
+                <MenuItem Header="Delete _All Vertices"
+                          Command="{Binding GeometryDefinitionVM.ClearGeometryPointsCommand}"
+                          ToolTip="Clear all geometry vertices from the current stage" />
+                <MenuItem Header="Clear _Stage Geometry"
+                          Command="{Binding GeometryDefinitionVM.ClearCurrentStageCommand}"
+                          ToolTip="Remove all geometry from the current construction stage" />
+                <Separator />
+                <MenuItem Header="Draw _Weak Plane..."
+                          Command="{Binding GeometryDefinitionVM.StartDrawWeakPlaneCommand}"
+                          ToolTip="Draw a weak-plane polyline (or use Add Joint for placed joints)" />
+                <MenuItem Header="Draw _Bedding / Contact..."
+                          Command="{Binding GeometryDefinitionVM.StartDrawBeddingCommand}"
+                          ToolTip="Draw a bedding or material-contact polyline" />
+                <MenuItem Header="Draw _Tension Crack..."
+                          Command="{Binding GeometryDefinitionVM.StartDrawTensionCrackCommand}"
+                          ToolTip="Draw a tension-crack polyline" />
+                <MenuItem Header="_Finish Geological Feature"
+                          Command="{Binding GeometryDefinitionVM.FinishGeologicalFeatureCommand}"
+                          ToolTip="Commit the geological polyline being drawn" />
+                <MenuItem Header="Cancel Geological Feature"
+                          Command="{Binding GeometryDefinitionVM.CancelGeologicalFeatureCommand}" />
+                <Separator />
+                <MenuItem Header="_Heal Geometry"
+                          Command="{Binding GeometryDefinitionVM.HealGeometryCommand}"
+                          ToolTip="Merge near-coincident vertices and close small gaps" />
+                <MenuItem Header="Commit Kernel _Booleans"
+                          Command="{Binding GeometryDefinitionVM.CommitKernelBooleansCommand}"
+                          ToolTip="Rebuild solid topology from excavation / fill history" />
+                <Separator />
+                <MenuItem Header="_Snap Settings..."
+                          Command="{Binding SnapSettingsCommand}"
+                          ToolTip="Configure grid snap, point snap, and angle snap" />
+                <MenuItem Header="_Grid Settings..."
+                          Command="{Binding GridSettingsCommand}"
+                          ToolTip="Set grid spacing and origin" />
+                <MenuItem Header="_Measure Distance"
+                          Command="{Binding GeometryDefinitionVM.ToggleMeasureModeCommand}"
+                          IsChecked="{Binding GeometryDefinitionVM.IsMeasureMode, Mode=OneWay}"
+                          IsCheckable="False"
+                          ToolTip="Measure the distance and bearing between two picked points" />
+                <MenuItem Header="_Verify Geometry"
+                          Command="{Binding VerifyGeometryCommand}"
+                          ToolTip="Check for self-intersections and unclosed contours" />
+                <Separator />
+                <MenuItem Header="_Import Geometry (CSV / DXF / LandXML / GeoJSON)..."
+                          Command="{Binding ImportGeometryFileCommand}"
+                          InputGestureText="Ctrl+Shift+G"
+                          ToolTip="Import points, lines, and surfaces from CSV, DXF, LandXML, or GeoJSON" />
+                <MenuItem Header="Import Slope _Image..."
+                          Command="{Binding ImportSlopeImageCommand}"
+                          ToolTip="Import a PNG/JPG underlay, calibrate X/Y, then digitize geometry on the canvas" />
+                <MenuItem Header="_Export Geometry (DXF / CSV / LandXML / GeoJSON)..."
+                          Command="{Binding ExportGeometryCommand}"
+                          ToolTip="Export geometry to DXF, CSV, LandXML, or GeoJSON" />
+            </MenuItem>
+
+            <!-- ═══ MATERIAL PROPERTIES ═══ -->
+            <MenuItem Header="_Material Properties">
+                <MenuItem Header="Navigate to _Material Properties Tab" Command="{Binding NavigateToMaterialsCommand}" />
+                <Separator />
+                <MenuItem Header="_Add Material..."
+                          Command="{Binding AddMaterialCommand}"
+                          ToolTip="Define a new soil, rock, or structural material" />
+                <MenuItem Header="_Edit Selected Material..."
+                          Command="{Binding EditMaterialCommand}"
+                          ToolTip="Modify properties of the currently selected material" />
+                <MenuItem Header="_Delete Selected Material"
+                          Command="{Binding DeleteMaterialCommand}"
+                          ToolTip="Remove the selected material from the project" />
+                <MenuItem Header="D_uplicate Material"
+                          Command="{Binding DuplicateMaterialCommand}"
+                          ToolTip="Create a copy of the selected material" />
+                <Separator />
+                <MenuItem Header="_Assign Material to Region..."
+                          Command="{Binding AssignMaterialToRegionCommand}"
+                          ToolTip="Paint a material onto a geometry surface region" />
+                <MenuItem Header="Clear _All Material Assignments"
+                          Command="{Binding ClearMaterialAssignmentsCommand}"
+                          ToolTip="Remove all material-to-region assignments" />
+                <Separator />
+                <MenuItem Header="Material _Library..."
+                          Command="{Binding MaterialLibraryCommand}"
+                          ToolTip="Browse built-in presets (sand, clay, rock, concrete, steel…)" />
+                <MenuItem Header="_Import Material Database..."
+                          Command="{Binding ImportMaterialDatabaseCommand}"
+                          ToolTip="Load materials from an external database file" />
+                <MenuItem Header="E_xport Materials..."
+                          Command="{Binding ExportMaterialsCommand}"
+                          ToolTip="Save current material list to a database file" />
+            </MenuItem>
+
+            <!-- ═══ LOADING ═══ -->
+            <MenuItem Header="_Loading">
+                <MenuItem Header="Navigate to _Load Conditions Tab" Command="{Binding NavigateToLoadConditionsCommand}" />
+                <Separator />
+                <MenuItem Header="_Add Load..."
+                          Command="{Binding MenuAddLoadCommand}"
+                          ToolTip="Add a load condition to the current stage" />
+                <MenuItem Header="_Delete Selected Load"  Command="{Binding DeleteLoadCommand}" />
+                <MenuItem Header="Clear _All Loads"
+                          Command="{Binding ClearAllLoadsCommand}"
+                          ToolTip="Remove all loads from the current stage" />
+                <Separator />
+                <MenuItem Header="Load _Type">
+                    <MenuItem Header="Point _Load..."
+                              Command="{Binding AddPointLoadCommand}"
+                              ToolTip="Apply a concentrated nodal force" />
+                    <MenuItem Header="_Line Load (UDL)..."
+                              Command="{Binding AddLineLoadCommand}"
+                              ToolTip="Apply a uniformly distributed load along an edge" />
+                    <MenuItem Header="_Pressure Load..."
+                              Command="{Binding AddPressureLoadCommand}"
+                              ToolTip="Apply normal pressure to a surface boundary" />
+                    <MenuItem Header="_Body Force..."
+                              Command="{Binding AddBodyForceCommand}"
+                              ToolTip="Apply a volumetric force to a region" />
+                    <MenuItem Header="_Gravity (Self-Weight)..."
+                              Command="{Binding AddGravityLoadCommand}"
+                              ToolTip="Apply gravitational body force (g = 9.81 m/s²)" />
+                    <MenuItem Header="_Seismic / Inertia Load..."
+                              Command="{Binding AddSeismicLoadCommand}"
+                              ToolTip="Define horizontal/vertical pseudo-static seismic coefficients" />
+                    <MenuItem Header="P_ore Pressure Load..."
+                              Command="{Binding AddPressureLoadCommand}"
+                              ToolTip="Apply pore water pressure as a boundary condition" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Load _Combinations..."
+                          Command="{Binding LoadCombinationsCommand}"
+                          ToolTip="Define factored load combinations (ULS, SLS, ASD…)" />
+                <MenuItem Header="Load C_ases..."
+                          Command="{Binding LoadCasesCommand}"
+                          ToolTip="Manage named load cases (Dead, Live, Wind, Seismic…)" />
+                <Separator />
+                <MenuItem Header="_Import Loads (CSV)..."  Command="{Binding ImportLoadsCommand}" />
+                <MenuItem Header="E_xport Loads (CSV)..."  Command="{Binding ExportLoadsCommand}" />
+            </MenuItem>
+
+            <!-- ═══ ANALYSIS ═══ -->
+            <MenuItem Header="_Analysis">
+                <MenuItem Header="_Run FE Analysis"
+                          Command="{Binding RunFEAnalysisMenuCommand}"
+                          InputGestureText="F5"
+                          ToolTip="Execute the finite element solver on the current model" />
+                <MenuItem Header="_Stop Analysis"
+                          Command="{Binding StopAnalysisCommand}"
+                          InputGestureText="Shift+F5"
+                          ToolTip="Interrupt the currently running solver" />
+                <Separator />
+                <MenuItem Header="Analysis _Settings..."
+                          Command="{Binding AnalysisSettingsCommand}"
+                          ToolTip="Set analysis type, step count, and output frequency" />
+                <MenuItem Header="_Solver Options..."
+                          Command="{Binding SolverOptionsCommand}"
+                          ToolTip="Choose solver type, bandwidth optimisation, and memory limits" />
+                <MenuItem Header="_Convergence Criteria..."
+                          Command="{Binding ConvergenceCriteriaCommand}"
+                          ToolTip="Set displacement and force norm tolerances for nonlinear analysis" />
+                <Separator />
+                <MenuItem Header="Pre-processing">
+                    <MenuItem Header="Navigate to _Mesh"
+                              Command="{Binding NavigateToMeshCommand}" />
+                    <MenuItem Header="Navigate to _Boundary Conditions"
+                              Command="{Binding NavigateToBoundaryConditionsCommand}" />
+                    <MenuItem Header="Navigate to _Groundwater"
+                              Command="{Binding NavigateToGroundwaterCommand}" />
+                    <MenuItem Header="Navigate to S_upport"
+                              Command="{Binding NavigateToSupportCommand}"
+                              ToolTip="FE support elements and patterns (anchors, nails, piles)"/>
+                    <MenuItem Header="Navigate to _Field Stations"
+                              Command="{Binding NavigateToFieldStationsCommand}"
+                              ToolTip="Open Project Settings → Field Stations (borehole logs → soil block)" />
+                    <MenuItem Header="Navigate to _FE Analysis"
+                              Command="{Binding NavigateToFEAnalysisCommand}" />
+                </MenuItem>
+                <MenuItem Header="Post-processing">
+                    <MenuItem Header="Navigate to _Verification"
+                              Command="{Binding NavigateToVerificationCommand}" />
+                    <MenuItem Header="Navigate to Sensitivity &amp; _Probabilistic"
+                              Command="{Binding NavigateToSensitivityCommand}" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Validation Check"
+                          Command="{Binding ValidationCheckCommand}"
+                          ToolTip="Check model completeness before solving (mesh, BCs, materials)" />
+                <MenuItem Header="Analysis _History..."
+                          Command="{Binding AnalysisHistoryCommand}"
+                          ToolTip="View log of previous runs and their status" />
+            </MenuItem>
+
+            <!-- ═══ RESULTS ═══ -->
+            <MenuItem Header="_Results">
+                <MenuItem Header="Navigate to _Results Visualization" Command="{Binding NavigateToResultsCommand}" />
+                <Separator />
+                <MenuItem Header="_Contour Plots">
+                    <MenuItem Header="_Stress  (σx, σy, τxy, σ1, σ2, σVM)..."
+                              Command="{Binding ContourPlotStressCommand}"
+                              ToolTip="Filled contour plot of stress components and invariants" />
+                    <MenuItem Header="S_train  (εx, εy, γxy, εv, εeq)..."
+                              Command="{Binding ContourPlotStrainCommand}"
+                              ToolTip="Filled contour plot of strain components" />
+                    <MenuItem Header="_Displacement  (ux, uy, |u|)..."
+                              Command="{Binding ContourPlotDisplacementCommand}"
+                              ToolTip="Filled contour plot of nodal displacements" />
+                    <MenuItem Header="_Pore Pressure / Hydraulic Head..."
+                              Command="{Binding ContourPlotPorePressureCommand}"
+                              ToolTip="Filled contour plot of pore water pressure or total head" />
+                    <MenuItem Header="_Yield Zones / Plasticity..."
+                              Command="{Binding ContourPlotYieldZonesCommand}"
+                              ToolTip="Highlight elements at yield (plastic zones)" />
+                </MenuItem>
+                <MenuItem Header="_Vector Plots">
+                    <MenuItem Header="_Displacement Vectors..."
+                              Command="{Binding VectorPlotDisplacementCommand}"
+                              ToolTip="Nodal displacements as scaled arrows" />
+                    <MenuItem Header="_Flux / Seepage Vectors..."
+                              Command="{Binding VectorPlotFluxCommand}"
+                              ToolTip="Groundwater seepage flux arrows" />
+                </MenuItem>
+                <MenuItem Header="_Deformed Shape..."
+                          Command="{Binding DeformedShapeCommand}"
+                          ToolTip="Mesh overlay with amplified nodal displacements" />
+                <MenuItem Header="_Animate Results..."
+                          Command="{Binding AnimateResultsCommand}"
+                          ToolTip="Animate load-step or construction-stage progression" />
+                <Separator />
+                <MenuItem Header="Query _Node..."
+                          Command="{Binding QueryNodeCommand}"
+                          ToolTip="Show all result quantities at a picked node" />
+                <MenuItem Header="Query _Element..."
+                          Command="{Binding QueryElementCommand}"
+                          ToolTip="Show stress, strain, and status for a picked element" />
+                <Separator />
+                <MenuItem Header="Export Results (CSV / VTK)..."
+                          Command="{Binding ExportResultsCommand}"
+                          ToolTip="Write nodal and element results to CSV or VTK" />
+                <MenuItem Header="Export Report (PDF)..."
+                          Command="{Binding ExportReportCommand}"
+                          ToolTip="Generate a PDF report with result tables and screenshots" />
+                <MenuItem Header="Navigate to _Report Generation"
+                          Command="{Binding GenerateReportMenuCommand}" />
+                <MenuItem Header="_Copy Summary to Clipboard"
+                          Command="{Binding CopySummaryCommand}"
+                          ToolTip="Copy key analysis result statistics to the clipboard" />
+            </MenuItem>
+
+            <!-- ═══ WINDOW ═══ -->
+            <MenuItem Header="_Window">
+                <MenuItem Header="Close All _Popups"
+                          Click="CloseAllPopupsMenuItem_Click"
+                          ToolTip="Close all floating tool windows" />
+                <Separator />
+                <MenuItem Header="Navigate to _Project Settings"             Command="{Binding NavigateToTabCommand}" CommandParameter="0" />
+                <MenuItem Header="Navigate to _Geometry Definition"          Command="{Binding NavigateToTabCommand}" CommandParameter="1" />
+                <MenuItem Header="Navigate to _Material Properties"          Command="{Binding NavigateToTabCommand}" CommandParameter="2" />
+                <MenuItem Header="Navigate to Me_sh"                         Command="{Binding NavigateToTabCommand}" CommandParameter="3" />
+                <MenuItem Header="Navigate to _Load Conditions"              Command="{Binding NavigateToTabCommand}" CommandParameter="4" />
+                <MenuItem Header="Navigate to _Boundary Conditions"          Command="{Binding NavigateToTabCommand}" CommandParameter="5" />
+                <MenuItem Header="Navigate to _Groundwater"                  Command="{Binding NavigateToTabCommand}" CommandParameter="6" />
+                <MenuItem Header="Navigate to _FE Analysis"                  Command="{Binding NavigateToTabCommand}" CommandParameter="7" />
+                <MenuItem Header="Navigate to _Verification"                 Command="{Binding NavigateToTabCommand}" CommandParameter="8" />
+                <MenuItem Header="Navigate to _Results Visualization"        Command="{Binding NavigateToTabCommand}" CommandParameter="9" />
+                <MenuItem Header="Navigate to Sensitivity &amp; _Probabilistic" Command="{Binding NavigateToTabCommand}" CommandParameter="10" />
+                <MenuItem Header="Navigate to Re_port Generation"            Command="{Binding NavigateToTabCommand}" CommandParameter="11" />
+                <MenuItem Header="Navigate to _Script Editor"                Command="{Binding NavigateToTabCommand}" CommandParameter="12" />
+                <MenuItem Header="Navigate to S_upport"                     Command="{Binding NavigateToTabCommand}" CommandParameter="13" />
+            </MenuItem>
+
+            <!-- ═══ HELP ═══ -->
+            <MenuItem Header="_Help">
+                <MenuItem Header="View _Help"          Command="{Binding ViewHelpCommand}"        InputGestureText="F1" />
+                <MenuItem Header="_Getting Started..."  Command="{Binding GettingStartedCommand}"  ToolTip="Step-by-step intro to building and solving a model" />
+                <MenuItem Header="_Tutorials..."        Command="{Binding TutorialsCommand}"        ToolTip="Worked example projects (slope, tunnel, footing…)" />
+                <Separator />
+                <MenuItem Header="_Theory Manual..."   Command="{Binding TheoryManualCommand}"    ToolTip="FEM formulation, element types, constitutive models" />
+                <MenuItem Header="_User Manual..."     Command="{Binding UserManualCommand}"      ToolTip="All GUI panels and workflow steps" />
+                <Separator />
+                <MenuItem Header="Check for _Updates..." Command="{Binding CheckForUpdatesCommand}" />
+                <MenuItem Header="_License Information..." Command="{Binding LicenseInfoCommand}" />
+                <Separator />
+                <MenuItem Header="_About X2D FEM..."   Command="{Binding AboutCommand}" />
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="WorkspaceRibbonRow" Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ws:AnalysisRibbonView x:Name="WorkspaceRibbon"
+                                   Grid.Row="0"
+                                   VerticalAlignment="Top"
+                                   Visibility="{Binding UseAnalysisWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Grid Grid.Row="1">
+                <ws:FileWorkspaceView Visibility="{Binding IsFileWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <Grid Visibility="{Binding IsFileWorkspace, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0"
+                      Visibility="{Binding ShowWorkspaceLeftColumn, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding WorkspaceLeftColumnWidth}"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0"
+                          Background="{DynamicResource PanelBackgroundBrush}">
+                        <Grid Visibility="{Binding IsGeometryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ws:GeometryExplorerView DataContext="{Binding Workspace.Geometry}"/>
+                        </Grid>
+                        <Grid Visibility="{Binding IsMaterialsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ws:MaterialsExplorerView DataContext="{Binding Workspace.Materials}"/>
+                        </Grid>
+                        <Grid Visibility="{Binding IsMeshWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ws:MeshExplorerView DataContext="{Binding Workspace.Mesh}"/>
+                        </Grid>
+                        <Grid Visibility="{Binding IsLoadsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ws:LoadsExplorerView DataContext="{Binding Workspace.Loads}"/>
+                        </Grid>
+                        <Grid Visibility="{Binding IsBoundaryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ws:BoundaryExplorerView DataContext="{Binding Workspace.Boundary}"/>
+                        </Grid>
+                        <Grid Visibility="{Binding IsGroundwaterWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ws:GroundwaterExplorerView DataContext="{Binding Workspace.Groundwater}"/>
+                        </Grid>
+                        <Grid Visibility="{Binding IsResultsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ws:ResultsExplorerView DataContext="{Binding Workspace.Results}"/>
+                        </Grid>
+                        <Grid Visibility="{Binding IsAnalysisChrome, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ws:ProjectExplorerView Grid.Row="0" DataContext="{Binding Workspace.Explorer}"/>
+                                <ws:AnalysisSummaryView Grid.Row="1"
+                                                       Visibility="{Binding IsAnalysisRibbonWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <ws:StageManagerView Grid.Row="1" Height="150"
+                                                    Visibility="{Binding IsResultsInspectorChrome, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Column="1"
+                      Visibility="{Binding ShowWorkspaceCenterToolsColumn, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ws:AnalysisTypePanelView Grid.Column="0"
+                                              Visibility="{Binding IsAnalysisChrome, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Grid Grid.Column="0"
+                          Visibility="{Binding IsMeshWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:MeshControlsView DataContext="{Binding Workspace.Mesh}"/>
+                    </Grid>
+                    <Grid Grid.Column="0"
+                          Visibility="{Binding IsLoadsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:LoadsPropertiesView DataContext="{Binding Workspace.Loads}"/>
+                    </Grid>
+                    <Grid Grid.Column="0"
+                          Visibility="{Binding IsBoundaryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:BoundaryPropertiesView DataContext="{Binding Workspace.Boundary}"/>
+                    </Grid>
+                    <Grid Grid.Column="0"
+                          Visibility="{Binding IsGroundwaterWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:GroundwaterPropertiesView DataContext="{Binding Workspace.Groundwater}"/>
+                    </Grid>
+                    <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="{Binding WorkspaceSolverLogRowHeight}"/>
+                        <RowDefinition Height="{Binding WorkspaceBottomChromeRowHeight}"/>
+                    </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Border Margin="12"
+                    RenderTransformOrigin="0.5,0.5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                <TabControl x:Name="MainTabs"
+                            SelectedIndex="{Binding SelectedTabIndex}"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            SelectionChanged="MainTabs_OnSelectionChanged">
+
+                    <!-- Custom template: inserts static toolbar between tab strip and content -->
+                    <TabControl.Template>
+                        <ControlTemplate TargetType="TabControl">
+                            <Grid SnapsToDevicePixels="True"
+                                  ClipToBounds="True"
+                                  KeyboardNavigation.TabNavigation="Local">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Row 0: Tab header strip -->
+                                <TabPanel Grid.Row="0"
+                                          IsItemsHost="True"
+                                          Panel.ZIndex="1"
+                                          KeyboardNavigation.TabIndex="1"
+                                          Background="Transparent"
+                                          Visibility="{Binding DataContext.UseClassicTabs, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                <!-- Row 1: Static toolbar — always visible, independent of active tab -->
+                                <Border Grid.Row="1"
+                                        Background="{DynamicResource PanelBackgroundBrush}"
+                                        BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                        BorderThickness="0,1,0,1"
+                                        Padding="6,3"
+                                        Visibility="{Binding DataContext.UseClassicTabs, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+                                        <!-- ── File ───────────────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="New Project (Ctrl+N)"
+                                                Command="{Binding NewProjectCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8A5;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Open Project (Ctrl+O)"
+                                                Command="{Binding OpenProjectCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xED25;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Save (Ctrl+S)"
+                                                Command="{Binding SaveCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE74E;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Save As"
+                                                Command="{Binding SaveAsCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE792;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Save Copy"
+                                                Command="{Binding SaveCopyCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8C8;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Print (Ctrl+P)"
+                                                Command="{Binding PrintCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE749;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"/>
+
+                                        <!-- ── Edit ───────────────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Undo"
+                                                Command="{Binding UndoCommand}"
+                                                IsEnabled="{Binding CanUndo}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE7A7;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Redo"
+                                                Command="{Binding RedoCommand}"
+                                                IsEnabled="{Binding CanRedo}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE7A6;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding ShowDisplayAnalysisToolbarGroup, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Display / Analysis ─────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Contour / Results"
+                                                Command="{Binding NavigateToResultsCommand}"
+                                                Visibility="{Binding IsResultsVisualizationTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE790;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Run FE Analysis"
+                                                Command="{Binding RunFEAnalysisMenuCommand}"
+                                                Visibility="{Binding IsFeAnalysisTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8EF;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Mesh visibility ────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Toggle Mesh Elements"
+                                                Command="{Binding ToggleElementNumbersCommand}"
+                                                Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE80A;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Toggle Mesh Nodes"
+                                                Command="{Binding ToggleNodeNumbersCommand}"
+                                                Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE81E;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Mesh Information"
+                                                Command="{Binding MeshInformationPopupCommand}"
+                                                Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE946;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Unstructured Mesh"
+                                                Command="{Binding UnstructuredMeshPopupCommand}"
+                                                Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8B7;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Structured Mesh"
+                                                Command="{Binding StructuredMeshPopupCommand}"
+                                                Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xF0E2;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="{Binding MeshVM.ExcavateElementsButtonLabel}"
+                                                Command="{Binding MeshVM.ToggleExcavateElementsModeCommand}"
+                                                Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE74D;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding IsMeshTabActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Zoom to Fit ────────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Zoom to Fit (Ctrl+0)"
+                                                Command="{Binding ZoomToFitCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE9A6;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"/>
+
+                                        <!-- ── Zoom ───────────────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Zoom In (Ctrl+=)"
+                                                Command="{Binding ZoomInCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8A3;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Zoom Out (Ctrl+-)"
+                                                Command="{Binding ZoomOutCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE71F;"/>
+                                        </Button>
+                                        <ToggleButton Style="{StaticResource ToolbarToggleBtnStyle}"
+                                                      ToolTip="Pan / Move Mode"
+                                                      Command="{Binding TogglePanModeCommand}"
+                                                      IsChecked="{Binding ZoomPanModeEnabled, Mode=TwoWay}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE7C4;"/>
+                                        </ToggleButton>
+                                        <ToggleButton Style="{StaticResource ToolbarToggleBtnStyle}"
+                                                      ToolTip="Zoom to Area — drag on canvas to zoom"
+                                                      Command="{Binding ToggleZoomAreaModeCommand}"
+                                                      IsChecked="{Binding ZoomAreaModeEnabled, Mode=TwoWay}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE721;"/>
+                                        </ToggleButton>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Reset Zoom (Ctrl+Shift+H)"
+                                                Command="{Binding ResetZoomCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE71E;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Lock Zoom"
+                                                IsEnabled="False">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE72E;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding ShowSettingsShortcutToolbarGroup, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Grid ───────────────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Grid Settings"
+                                                Command="{Binding GridSettingsCommand}"
+                                                Visibility="{Binding IsProjectSettingsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xF16C;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Project Settings - General"
+                                                Command="{Binding ProjectSettingsGeneralCommand}"
+                                                Visibility="{Binding IsProjectSettingsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE713;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Project Settings - Analysis Type"
+                                                Command="{Binding ProjectSettingsAnalysisTypeCommand}"
+                                                Visibility="{Binding IsProjectSettingsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE9D9;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Material Properties - Layering Controls"
+                                                Command="{Binding MaterialLayeringControlsCommand}"
+                                                Visibility="{Binding IsMaterialPropertiesTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE789;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Material Properties - Project Materials"
+                                                Command="{Binding MaterialProjectMaterialsCommand}"
+                                                Visibility="{Binding IsMaterialPropertiesTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xED0C;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Material Properties - Layer-Material Assignment"
+                                                Command="{Binding MaterialLayerMaterialAssignmentCommand}"
+                                                Visibility="{Binding IsMaterialPropertiesTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8D3;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding ShowSettingsShortcutToolbarGroup, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Import ─────────────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Import slope image underlay"
+                                                Command="{Binding ImportSlopeImageCommand}"
+                                                IsEnabled="True">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xEB9F;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Geometry tools ─────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Closed Polygon - add points and automatically close boundary edges"
+                                                Command="{Binding GeometryClosedPolygonCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE92E;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Open Polygon - add points only; select point pairs to create line segments manually"
+                                                Command="{Binding GeometryOpenPolygonCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8A3;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Add Surface / Region"
+                                                Command="{Binding MenuAddSurfaceCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE7C9;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Geometry Definition"
+                                                Command="{Binding NavigateToGeometryCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xF4E2;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Add Vertex"
+                                                Command="{Binding MenuAddVertexCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xECC5;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Add Arc"
+                                                Command="{Binding MenuAddArcCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xF4AB;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Add Line Segment"
+                                                Command="{Binding MenuAddLineSegmentCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xED63;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Add Circle"
+                                                Command="{Binding MenuAddCircleCommand}"
+                                                Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xF136;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding IsGeometryTabActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Delete ─────────────────────────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Delete Selection"
+                                                Command="{Binding DeleteSelectionCommand}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE74D;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding IsBoundaryConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                        <!-- ── Boundary Conditions shortcuts ─────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Import Boundaries - open Apply BC to Outer Boundary panel"
+                                                Command="{Binding BcImportBoundariesPopupCommand}"
+                                                Visibility="{Binding IsBoundaryConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE896;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Show/Hide BC markers (use BC popup to pick Structural / Seepage first)"
+                                                Command="{Binding BoundaryConditionsVM.ShowMarkersCommand}"
+                                                Visibility="{Binding IsBoundaryConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE890;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Clear all boundary conditions"
+                                                Command="{Binding BoundaryConditionsVM.ClearBoundaryConditionsCommand}"
+                                                Visibility="{Binding IsBoundaryConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE894;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"/>
+
+                                        <!-- ── Load Conditions shortcuts ───────────────────── -->
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Load Conditions - Field Stress"
+                                                Command="{Binding LoadFieldStressPopupCommand}"
+                                                Visibility="{Binding IsLoadConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE9D9;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Load Conditions - Seismic Load"
+                                                Command="{Binding LoadSeismicLoadPopupCommand}"
+                                                Visibility="{Binding IsLoadConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xEC4A;"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ToolbarBtnStyle}"
+                                                ToolTip="Load Conditions - Loads"
+                                                Command="{Binding LoadLoadsPopupCommand}"
+                                                Visibility="{Binding IsLoadConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <TextBlock Style="{StaticResource ToolbarGlyphStyle}" Text="&#xE8FD;"/>
+                                        </Button>
+
+                                        <Separator Style="{StaticResource ToolbarSepStyle}"
+                                                   Visibility="{Binding IsLoadConditionsTabActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Row 2: Tab content (canvas) -->
+                                <Border Grid.Row="2"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        KeyboardNavigation.TabNavigation="Local"
+                                        KeyboardNavigation.TabIndex="2">
+                                    <ContentPresenter x:Name="PART_SelectedContentHost"
+                                                      ContentSource="SelectedContent"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                      Margin="{TemplateBinding Padding}"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </TabControl.Template>
+
+                    <TabItem Header="Project Settings">
+                        <tabs:ProjectSettingsView DataContext="{Binding ProjectSettingsVM}" />
+                    </TabItem>
+                    <TabItem Header="Geometry Definition" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:GeometryDefinitionView DataContext="{Binding GeometryDefinitionVM}" />
+                    </TabItem>
+                    <TabItem Header="Material Properties" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <Grid Margin="12">
+                            <controls:SlopeCanvasView HorizontalAlignment="Stretch"
+                                                      VerticalAlignment="Stretch"
+                                                      IsGeometryEditable="True"
+                                                      DataContext="{Binding MaterialPropertiesVM.GeometryDefinition}"
+                                                      ZoomPanModeEnabled="{Binding DataContext.ZoomPanModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                      ZoomAreaModeEnabled="{Binding DataContext.ZoomAreaModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Mesh" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:MeshView DataContext="{Binding}"/>
+                    </TabItem>
+                    <TabItem Header="Load Conditions" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:LoadConditionsView Margin="12"
+                                                 DataContext="{Binding LoadConditionsVM}"/>
+                    </TabItem>
+                    <TabItem Header="Boundary conditions" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:BoundaryConditionsView DataContext="{Binding BoundaryConditionsVM}"/>
+                    </TabItem>
+                    <TabItem Header="Groundwater" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:GroundwaterView DataContext="{Binding GroundwaterVM}"/>
+                    </TabItem>
+                    <TabItem Header="FE Analysis" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:FEAnalysisView DataContext="{Binding FEAnalysisVM}"/>
+                    </TabItem>
+                    <TabItem Header="Verification" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:VerificationView DataContext="{Binding VerificationVM}"/>
+                    </TabItem>
+                    <TabItem Header="Results Visualization" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:ResultsVisualizationView DataContext="{Binding ResultsVM}"/>
+                    </TabItem>
+                    <TabItem Header="Sensitivity &amp; Probabilistic" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:SensitivityProbabilisticView DataContext="{Binding}" />
+                    </TabItem>
+                    <TabItem Header="Report Generation" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:ReportGenerationView DataContext="{Binding ReportGenerationVM}"/>
+                    </TabItem>
+                    <TabItem Header="Script Editor" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:ScriptView DataContext="{Binding ScriptVM}" />
+                    </TabItem>
+                    <TabItem Header="Support" IsEnabled="{Binding AreMainTabsEnabled}">
+                        <tabs:SupportView DataContext="{Binding SupportVM}"/>
+                    </TabItem>
+                </TabControl>
+            </Border>
+        <Grid Visibility="{Binding ShowWorkspaceCanvasZoomBar, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Margin="12,2,12,0"
+                    Padding="6,2"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Visibility="{Binding ShowStageFooterRow, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="Stage:" VerticalAlignment="Center" Margin="0,0,6,0"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <ComboBox Width="160"
+                              ItemsSource="{Binding ProjectSettingsVM.StageFooterTabs}"
+                              SelectedIndex="{Binding ProjectSettingsVM.SelectedStageFooterTabIndex}"
+                              DisplayMemberPath="StageName"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding IsGeometryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.Geometry.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel DataContext="{Binding Workspace.Geometry}">
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding ShowPoints}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Points" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ShowLines}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Lines" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ShowSurfaces}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Surfaces" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ShowRegions}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Regions" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ShowLabels}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Labels" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ShowSnap}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Snap" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ShowAxes, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding IsMaterialsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.Materials.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel>
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.Materials.ShowLayerLabels, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Layer labels" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.Materials.ShowInternalAndLayerCutLines, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Internal/layer-cut lines" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding IsMeshWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.Mesh.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel>
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding MeshVM.ShowMeshElements, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Show Mesh" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding MeshVM.ShowMeshNodes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Show Nodes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding MeshVM.ShowBoundaryDiscretizationMarkers, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Discretization markers" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding IsLoadsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.Loads.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel>
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.Loads.ShowPointLoads, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Point loads" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.Loads.ShowLineLoads, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Line loads" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding IsBoundaryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.Boundary.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel>
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.Boundary.MarkersVisible, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="BC markers" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.Boundary.ShowStructuralMarkers, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Structural markers" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.Boundary.ShowSeepageMarkers, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Seepage markers" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding IsGroundwaterWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.Groundwater.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel>
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GroundwaterVM.ShowSaturatedMaterialZone, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Saturated zone" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GroundwaterVM.ShowUnsaturatedMaterialZone, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Dry zone" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="{Binding IsAnalysisRibbonWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel>
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding Workspace.ShowGeometryLines, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Geometry lines" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Visibility="Collapsed">
+            <Border HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="20,40,0,0"
+                    Padding="10,8"
+                    Background="{DynamicResource PanelBackgroundBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    TextElement.Foreground="{DynamicResource WindowForegroundBrush}"
+                    Visibility="{Binding Workspace.IsViewOptionsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                    </Style>
+                </Border.Resources>
+                <StackPanel>
+                    <TextBlock Text="View Options" FontWeight="SemiBold" Margin="0,0,0,6"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowGrid, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Grid" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding GeometryDefinitionVM.ShowAxes, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Axes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ResultsVM.ShowMesh, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Show Mesh" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ResultsVM.ShowUndeformedOutline, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Undeformed outline" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ResultsVM.ShowPhreaticOnDeformedMesh, Mode=TwoWay}" Margin="0,0,0,3"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Phreatic on deformed mesh" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ResultsVM.ShowPseudoStaticForceVectors, Mode=TwoWay}"
+                              Foreground="{DynamicResource WindowForegroundBrush}">
+                        <TextBlock Text="Pseudo-static force vectors" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </CheckBox>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <ws:AnalysisCenterHostView
+            Visibility="{Binding IsAnalysisRibbonWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
+                    <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch"
+                                  Visibility="{Binding ShowWorkspaceBottomSplitter, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <ws:SolverMonitorView Grid.Row="2"
+                                          Visibility="{Binding IsResultsInspectorChrome, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <ws:AnalysisDashboardView Grid.Row="2"
+                                              Visibility="{Binding IsAnalysisRibbonWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Grid Grid.Row="3"
+                          Visibility="{Binding IsGeometryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:GeometryPointsTableView DataContext="{Binding Workspace.Geometry}"/>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Visibility="{Binding IsMaterialsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <tabs:MaterialPropertiesView ShowCanvas="False"
+                                                     ShowSubtabHeaders="False"
+                                                     DataContext="{Binding MaterialPropertiesVM}"/>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Visibility="{Binding IsMeshWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:MeshInformationTableView DataContext="{Binding Workspace.Mesh}"/>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Visibility="{Binding IsLoadsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:LoadsTableView DataContext="{Binding Workspace.Loads}"/>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Visibility="{Binding IsBoundaryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:BoundaryTableView DataContext="{Binding Workspace.Boundary}"/>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Visibility="{Binding IsGroundwaterWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:GroundwaterTableView DataContext="{Binding Workspace.Groundwater}"/>
+                    </Grid>
+                    <Grid Grid.Row="3"
+                          Visibility="{Binding IsResultsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:ResultsTableView DataContext="{Binding Workspace.Results}"/>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="3"
+                      Visibility="{Binding ShowWorkspaceRightColumn, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="280"/>
+                    </Grid.ColumnDefinitions>
+                    <GridSplitter Grid.Column="0" Width="4" HorizontalAlignment="Center"/>
+                    <TabControl Grid.Column="1"
+                                Visibility="{Binding IsResultsInspectorChrome, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Background="{DynamicResource PanelBackgroundBrush}">
+                        <TabItem Header="Results">
+                            <ws:ResultsCategoryPanelView/>
+                        </TabItem>
+                        <TabItem Header="Check">
+                            <ws:CheckModelView/>
+                        </TabItem>
+                    </TabControl>
+                    <ws:AnalysisToolsView Grid.Column="1"
+                                          Visibility="{Binding IsAnalysisRibbonWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Grid Grid.Column="1"
+                          Visibility="{Binding IsGeometryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:GeometryPropertiesView DataContext="{Binding Workspace.Geometry}"/>
+                    </Grid>
+                    <Grid Grid.Column="1"
+                          Visibility="{Binding IsMaterialsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:MaterialsInspectorView DataContext="{Binding Workspace.Materials}"/>
+                    </Grid>
+                    <Grid Grid.Column="1"
+                          Visibility="{Binding IsLoadsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:LoadsInspectorView DataContext="{Binding Workspace.Loads}"/>
+                    </Grid>
+                    <Grid Grid.Column="1"
+                          Visibility="{Binding IsResultsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ws:ResultsPropertiesView DataContext="{Binding Workspace.Results}"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+                </Grid>
+            <StatusBar Grid.Row="2"
+                       Background="{DynamicResource PanelBackgroundBrush}"
+                       Foreground="{DynamicResource WindowForegroundBrush}"
+                       Visibility="{Binding IsFileOrAnalysisChrome, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StatusBarItem Content="{Binding Workspace.StatusReady}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.StatusUnits}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.StatusStrip}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.StatusDimension}"/>
+                <StatusBarItem Content="XYZ"/>
+            </StatusBar>
+            <StatusBar Grid.Row="2"
+                       Background="{DynamicResource PanelBackgroundBrush}"
+                       Foreground="{DynamicResource WindowForegroundBrush}"
+                       Visibility="{Binding IsGeometryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StatusBarItem Content="{Binding Workspace.Geometry.StatusReady}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Geometry.StatusUnits}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Geometry.StatusAnalysis}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Geometry.StatusDimension}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Geometry.StatusLastSaved}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Geometry.StatusCursor}"/>
+            </StatusBar>
+            <StatusBar Grid.Row="2"
+                       Background="{DynamicResource PanelBackgroundBrush}"
+                       Foreground="{DynamicResource WindowForegroundBrush}"
+                       Visibility="{Binding IsMaterialsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StatusBarItem Content="{Binding Workspace.Materials.StatusReady}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Materials.StatusUnits}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Materials.StatusAnalysis}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Materials.StatusDimension}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Materials.StatusLastSaved}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Materials.StatusCursor}"/>
+            </StatusBar>
+            <StatusBar Grid.Row="2"
+                       Background="{DynamicResource PanelBackgroundBrush}"
+                       Foreground="{DynamicResource WindowForegroundBrush}"
+                       Visibility="{Binding IsMeshWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StatusBarItem Content="{Binding Workspace.Mesh.StatusReady}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Mesh.StatusUnits}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Mesh.StatusAnalysis}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Mesh.StatusDimension}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Mesh.StatusLastSaved}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Mesh.StatusCursor}"/>
+            </StatusBar>
+            <StatusBar Grid.Row="2"
+                       Background="{DynamicResource PanelBackgroundBrush}"
+                       Foreground="{DynamicResource WindowForegroundBrush}"
+                       Visibility="{Binding IsLoadsWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StatusBarItem Content="{Binding Workspace.Loads.StatusReady}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Loads.StatusUnits}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Loads.StatusAnalysis}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Loads.StatusDimension}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Loads.StatusLastSaved}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Loads.StatusCursor}"/>
+            </StatusBar>
+            <StatusBar Grid.Row="2"
+                       Background="{DynamicResource PanelBackgroundBrush}"
+                       Foreground="{DynamicResource WindowForegroundBrush}"
+                       Visibility="{Binding IsBoundaryWorkspace, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StatusBarItem Content="{Binding Workspace.Boundary.StatusReady}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Boundary.StatusUnits}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Boundary.StatusAnalysis}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Boundary.StatusDimension}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Boundary.StatusLastSaved}"/>
+                <Separator/>
+                <StatusBarItem Content="{Binding Workspace.Boundary.StatusCursor}"/>
+            </StatusBar>
+        </Grid>
+
+        <!-- Footer: workspace tabs (projects) + stage tabs (staged excavation) -->
+        <Border Grid.Row="2"
+                BorderBrush="#FFCBD5E1"
+                BorderThickness="0,1,0,0"
+                Background="#FFF1F5F9">
+            <Grid Margin="12,8,12,12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Row A: staged excavation stage tabs (above the project tabs) -->
+                <TabControl x:Name="StageFooterTabsControl"
+                            Grid.Row="0"
+                            ItemsSource="{Binding ProjectSettingsVM.StageFooterTabs}"
+                            SelectedIndex="{Binding ProjectSettingsVM.SelectedStageFooterTabIndex}"
+                            SelectionChanged="StageFooterTabs_SelectionChanged"
+                            Visibility="{Binding ShowStageFooterRow, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding StageName}"/>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <Grid/>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+
+                <!-- Row B: project workspace tabs (below the stage tabs) -->
+                <TabControl x:Name="WorkspaceFooterTabsControl"
+                            Grid.Row="1"
+                            Margin="0,6,0,0"
+                            ItemsSource="{Binding ProjectWorkspace.Slots}"
+                            SelectedIndex="{Binding ProjectWorkspace.ActiveIndex, Mode=OneWay}"
+                            SelectionChanged="WorkspaceFooterTabs_SelectionChanged"
+                            Visibility="{Binding ProjectWorkspace.Slots.Count, Converter={StaticResource CountToVisibilityConverter}}">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="8,4">
+                                <TextBlock Text="{Binding Label}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <Button Content="×"
+                                        Width="20"
+                                        Height="20"
+                                        Padding="0"
+                                        FontSize="14"
+                                        FontWeight="Bold"
+                                        Click="CloseWorkspaceTab_OnClick"
+                                        Tag="{Binding}"
+                                        Cursor="Hand"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Foreground="Gray"
+                                        ToolTip="Close Project">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                    <Setter Property="Background" Value="#FFE0E0E0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <Grid/>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

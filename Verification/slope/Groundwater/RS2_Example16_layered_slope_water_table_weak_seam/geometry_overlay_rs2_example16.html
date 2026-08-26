@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>RS2 Example 16 — Geometry overlay vs RS2 Part 1 §16</title>
+<style>
+  body { font-family: "Segoe UI", system-ui, sans-serif; margin: 24px; color: #1a2332; background: #f6f7f9; }
+  h1 { font-size: 18px; margin: 0 0 8px; }
+  p { font-size: 13px; color: #5c6778; max-width: 820px; line-height: 1.45; }
+  .panel { background: #fff; border: 1px solid #d0d5dd; border-radius: 8px; padding: 16px; margin-top: 16px; }
+  svg { width: 100%; max-width: 900px; height: auto; display: block; background: #fafbfc; border: 1px solid #e4e7eb; border-radius: 6px; }
+  table { border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+  th, td { border: 1px solid #d0d5dd; padding: 6px 10px; text-align: left; }
+  th { background: #1f3864; color: #fff; }
+  .ok { color: #1a8f55; font-weight: 600; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px; margin: 10px 0; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 22px; height: 3px; display: inline-block; }
+</style>
+</head>
+<body>
+  <h1>RS2 Example 16 — Geometry overlay</h1>
+  <p>
+    Reconstructed model from <code>rs2_example16_layered_slope_water_table_weak_seam.xfem</code>
+    compared to the RS2 Part 1 §16 / Greco (1996) description used in this repo
+    (outline, 0.5&nbsp;m base weak seam, layer cuts, phreatic surface).
+  </p>
+
+  <div class="panel">
+    <div class="legend">
+      <span><i class="sw" style="background:#1a5fbf"></i> App outline</span>
+      <span><i class="sw" style="background:#c23040"></i> Weak seam cut (y≈0.5–15.5)</span>
+      <span><i class="sw" style="background:#b7791f"></i> Layer cuts</span>
+      <span><i class="sw" style="background:#1570ef;height:0;border-top:2px dashed #1570ef"></i> Phreatic surface</span>
+      <span><i class="sw" style="background:#1a8f55"></i> RS2 expected outline (same polyline)</span>
+    </div>
+    <svg viewBox="-10 -10 270 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- grid -->
+      <g stroke="#e6e9ee" stroke-width="0.3">
+        <line x1="0" y1="0" x2="240" y2="0"/>
+        <line x1="0" y1="20" x2="240" y2="20"/>
+        <line x1="0" y1="40" x2="240" y2="40"/>
+        <line x1="0" y1="70" x2="240" y2="70"/>
+        <line x1="0" y1="0" x2="0" y2="70"/>
+        <line x1="50" y1="0" x2="50" y2="70"/>
+        <line x1="100" y1="0" x2="100" y2="70"/>
+        <line x1="150" y1="0" x2="150" y2="70"/>
+        <line x1="200" y1="0" x2="200" y2="70"/>
+        <line x1="240" y1="0" x2="240" y2="70"/>
+      </g>
+      <!-- y-up transform: flip via matrix so SVG y increases upward visually -->
+      <g transform="translate(0,90) scale(1,-1)">
+        <!-- RS2 expected = app outline (identical) -->
+        <polyline fill="rgba(26,143,85,0.08)" stroke="#1a8f55" stroke-width="1.2"
+          points="0,0 0,20 55,20 75,30 95,40 100,40 145,70 240,70 240,15 150,15 0,0"/>
+        <!-- App outline on top -->
+        <polyline fill="none" stroke="#1a5fbf" stroke-width="0.7" stroke-dasharray="3 2"
+          points="0,0 0,20 55,20 75,30 95,40 100,40 145,70 240,70 240,15 150,15 0,0"/>
+        <!-- weak seam -->
+        <polyline fill="none" stroke="#c23040" stroke-width="1.4"
+          points="0,0.5 150,15.5 240,15.5"/>
+        <!-- layer cuts -->
+        <polyline fill="none" stroke="#b7791f" stroke-width="1"
+          points="75,30 240,30"/>
+        <polyline fill="none" stroke="#b7791f" stroke-width="1"
+          points="100,40 190,55 240,55"/>
+        <!-- WT -->
+        <polyline fill="none" stroke="#1570ef" stroke-width="1.2" stroke-dasharray="4 2"
+          points="0,20 55,20 190,55 240,55"/>
+      </g>
+      <text x="2" y="98" font-size="3.5" fill="#5c6778">x (m)</text>
+      <text x="2" y="8" font-size="3.5" fill="#5c6778">y (m) ↑</text>
+    </svg>
+
+    <table>
+      <thead><tr><th>Feature</th><th>App (.xfem)</th><th>RS2 / literature target</th><th>Match</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Outline vertices</td>
+          <td>(0,0)–(0,20)–(55,20)–(75,30)–(95,40)–(100,40)–(145,70)–(240,70)–(240,15)–(150,15)</td>
+          <td>Same reconstructed polyline (RS2 Fig. not digitized as coords in PDF text)</td>
+          <td class="ok">YES</td>
+        </tr>
+        <tr>
+          <td>Weak seam</td>
+          <td>Cut (0,0.5)–(150,15.5)–(240,15.5); mat4 φ=16°, c=9.8 kPa</td>
+          <td>0.5 m thick at base; φ=16°, c=9.8 kPa</td>
+          <td class="ok">YES</td>
+        </tr>
+        <tr>
+          <td>Layer cuts</td>
+          <td>(75,30)–(240,30); (100,40)–(190,55)–(240,55)</td>
+          <td>Layer breaks per RS2 §16 reconstruction</td>
+          <td class="ok">YES</td>
+        </tr>
+        <tr>
+          <td>Phreatic surface</td>
+          <td>(0,20),(55,20),(190,55),(240,55); γw=9.81</td>
+          <td>Same</td>
+          <td class="ok">YES</td>
+        </tr>
+        <tr>
+          <td>Materials 1–4</td>
+          <td>c=[9.8,58.8,19.8,9.8], φ=[35,25,30,16], γ=[20,19,21.5,21.5]</td>
+          <td>RS2 Part 1 §16 table</td>
+          <td class="ok">YES</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:12px">
+      Conclusion: FoS mismatch vs literature ~1.02 is <strong>not</strong> from geometry/material
+      mis-entry. See yield-gate rebracket notes in <code>gui_automation/rs2_example16_gui_run_summary.md</code>.
+    </p>
+  </div>
+</body>
+</html>

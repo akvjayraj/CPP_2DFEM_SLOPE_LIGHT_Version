@@ -1,0 +1,35 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.AnalysisCasesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource="{Binding CaseSet.Cases}"
+                  SelectedItem="{Binding SelectedCase}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive, UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                <DataGridTextColumn Header="k_h" Binding="{Binding SeismicKh, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                <DataGridTextColumn Header="k_v" Binding="{Binding SeismicKv, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                <DataGridTextColumn Header="Load factor" Binding="{Binding LoadFactor, UpdateSourceTrigger=PropertyChanged}" Width="90"/>
+                <DataGridTextColumn Header="SRF" Binding="{Binding LastFoSText}" Width="70" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,8">
+            <Button Content="Add Case" Command="{Binding AddCaseCommand}" Width="100" Margin="0,0,8,0"/>
+            <Button Content="Remove Case" Command="{Binding RemoveCaseCommand}" Width="110" Margin="0,0,8,0"/>
+            <Button Content="Apply Selected" Command="{Binding ApplyCaseCommand}" Width="130" Margin="0,0,8,0"/>
+            <Button Content="Capture Current SRF" Command="{Binding CaptureCurrentCommand}" Width="160" Margin="0,0,8,0"/>
+            <Button Content="Evaluate All" Command="{Binding EvaluateAllCommand}" Width="120"/>
+        </StackPanel>
+        <TextBlock Grid.Row="2" Text="{Binding StatusMessage}" TextWrapping="Wrap"/>
+    </Grid>
+</UserControl>

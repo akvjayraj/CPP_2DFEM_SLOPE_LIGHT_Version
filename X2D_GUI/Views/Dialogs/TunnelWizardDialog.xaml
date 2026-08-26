@@ -1,0 +1,308 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.TunnelWizardDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Tunnel Wizard"
+        Width="980" Height="640"
+        MinWidth="900" MinHeight="560"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        ShowInTaskbar="False">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis"/>
+
+        <Style x:Key="SectionLabel" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#FF334155"/>
+            <Setter Property="Margin"     Value="0,0,0,6"/>
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Width"             Value="160"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground"        Value="#FF475569"/>
+        </Style>
+        <Style x:Key="FieldBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width"   Value="160"/>
+            <Setter Property="Height"  Value="26"/>
+            <Setter Property="Padding" Value="4,2"/>
+        </Style>
+        <Style x:Key="StepperChip" TargetType="Border">
+            <Setter Property="CornerRadius"        Value="14"/>
+            <Setter Property="Padding"             Value="10,4"/>
+            <Setter Property="Margin"              Value="0,0,6,0"/>
+            <Setter Property="VerticalAlignment"   Value="Center"/>
+            <Setter Property="Background"          Value="#FFE2E8F0"/>
+        </Style>
+        <Style x:Key="StepperChipActive" TargetType="Border" BasedOn="{StaticResource StepperChip}">
+            <Setter Property="Background" Value="#FF1D4ED8"/>
+        </Style>
+        <Style x:Key="StepperText" TargetType="TextBlock">
+            <Setter Property="FontWeight"        Value="SemiBold"/>
+            <Setter Property="Foreground"        Value="#FF334155"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="StepperTextActive" TargetType="TextBlock" BasedOn="{StaticResource StepperText}">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Background="#FFF8FAFC" LastChildFill="True">
+
+        <!-- Stepper header -->
+        <Border DockPanel.Dock="Top" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="0,0,0,1" Padding="14,10">
+            <DockPanel>
+                <TextBlock Text="{Binding StepLabel}" FontSize="14" FontWeight="Bold" Foreground="#FF1D4ED8" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource StepperChip}"><TextBlock Text="1 Shape"      Style="{StaticResource StepperText}"/></Border>
+                    <Border Style="{StaticResource StepperChip}"><TextBlock Text="2 Dimensions" Style="{StaticResource StepperText}"/></Border>
+                    <Border Style="{StaticResource StepperChip}"><TextBlock Text="3 Domain"     Style="{StaticResource StepperText}"/></Border>
+                    <Border Style="{StaticResource StepperChip}"><TextBlock Text="4 Stress"     Style="{StaticResource StepperText}"/></Border>
+                    <Border Style="{StaticResource StepperChip}"><TextBlock Text="5 Mesh"       Style="{StaticResource StepperText}"/></Border>
+                    <Border Style="{StaticResource StepperChip}"><TextBlock Text="6 Review"     Style="{StaticResource StepperText}"/></Border>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Bottom button bar -->
+        <Border DockPanel.Dock="Bottom" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="0,1,0,0" Padding="14,10">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button Content="Cancel" Width="100" Height="30" Margin="6,0,0,0" Click="CancelButton_Click"/>
+                    <Button Content="Apply"  Width="100" Height="30" Margin="6,0,0,0" Command="{Binding ApplyCommand}" Background="#FF1D4ED8" Foreground="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="◀ Back" Width="80" Height="30" Margin="0,0,6,0" Command="{Binding PrevStepCommand}"/>
+                    <Button Content="Next ▶" Width="80" Height="30" Margin="0,0,6,0" Command="{Binding NextStepCommand}"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Main: left = step content, right = live preview -->
+        <Grid Margin="14,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="380"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Step content -->
+            <Border Grid.Column="0" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="6" Padding="16">
+                <Grid>
+                    <!-- Step 1: Shape -->
+                    <StackPanel Visibility="{Binding IsStepShape, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="Choose a tunnel cross-section"            Style="{StaticResource SectionLabel}" FontSize="14"/>
+                        <TextBlock Text="The wizard supports four standard shape families. Custom polyline / DXF import lands in Phase 2." TextWrapping="Wrap" Foreground="#FF64748B" Margin="0,0,0,16"/>
+                        <UniformGrid Columns="2" Rows="2" HorizontalAlignment="Left">
+                            <RadioButton Content="●  Circle"        Margin="0,0,16,8" GroupName="Shape" IsChecked="{Binding ShapeIsCircle,      Mode=OneWay}" Command="{Binding ApplyShapePresetCommand}" CommandParameter="Circle"/>
+                            <RadioButton Content="◧  Rectangular"   Margin="0,0,16,8" GroupName="Shape" IsChecked="{Binding ShapeIsRectangular, Mode=OneWay}" Command="{Binding ApplyShapePresetCommand}" CommandParameter="Rectangular"/>
+                            <RadioButton Content="∩  Horseshoe"     Margin="0,0,16,8" GroupName="Shape" IsChecked="{Binding ShapeIsHorseshoe,   Mode=OneWay}" Command="{Binding ApplyShapePresetCommand}" CommandParameter="Horseshoe"/>
+                            <RadioButton Content="⌒  NATM 3-radius arch" Margin="0,0,16,8" GroupName="Shape" IsChecked="{Binding ShapeIsNatm,   Mode=OneWay}" Command="{Binding ApplyShapePresetCommand}" CommandParameter="NatmArch"/>
+                        </UniformGrid>
+                    </StackPanel>
+
+                    <!-- Step 2: Dimensions -->
+                    <StackPanel Visibility="{Binding IsStepDimensions, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="Tunnel dimensions" Style="{StaticResource SectionLabel}" FontSize="14"/>
+                        <TextBlock Text="All distances in axis units (m). Centre is in the model coordinate system." TextWrapping="Wrap" Foreground="#FF64748B" Margin="0,0,0,12"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock Text="Centre X (m)" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding CenterX, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock Text="Centre Y (m)" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding CenterY, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+
+                        <!-- Circle params -->
+                        <StackPanel Margin="0,12,0,0" Visibility="{Binding ShapeIsCircle, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Radius (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding Radius, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Rectangular params -->
+                        <StackPanel Margin="0,12,0,0" Visibility="{Binding ShapeIsRectangular, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Width (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                <TextBlock Text="Height (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Horseshoe params -->
+                        <StackPanel Margin="0,12,0,0" Visibility="{Binding ShapeIsHorseshoe, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Span (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding HorseshoeSpan, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                <TextBlock Text="Total height (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding HorseshoeHeight, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <TextBlock Text="Crown radius is span/2 (semi-circular crown)." Foreground="#FF94A3B8" FontStyle="Italic" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <!-- NATM params -->
+                        <StackPanel Margin="0,12,0,0" Visibility="{Binding ShapeIsNatm, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Span (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding NatmSpan, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                <TextBlock Text="Total height (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding NatmHeight, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                <TextBlock Text="Crown radius (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding NatmCrownRadius, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                <TextBlock Text="Invert radius (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding NatmInvertRadius, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Step 3: Domain -->
+                    <StackPanel Visibility="{Binding IsStepDomain, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="Outer domain extent" Style="{StaticResource SectionLabel}" FontSize="14"/>
+                        <TextBlock Text="Set the analysis box around the tunnel. Recommended ≥ 5 × tunnel diameter to avoid boundary effects on stress." TextWrapping="Wrap" Foreground="#FF64748B" Margin="0,0,0,12"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock Text="X min (m)" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding DomainXMin, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="X max (m)" Style="{StaticResource FieldLabel}" Margin="20,0,0,0"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding DomainXMax, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock Text="Y min (m)" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding DomainYMin, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Y max (m)" Style="{StaticResource FieldLabel}" Margin="20,0,0,0"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding DomainYMax, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <Button Content="Auto-size (5 × diameter)" Width="180" Height="28" Margin="0,12,0,0" HorizontalAlignment="Left" Click="AutoSizeDomain_Click"/>
+                    </StackPanel>
+
+                    <!-- Step 4: Stress -->
+                    <StackPanel Visibility="{Binding IsStepStress, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="Field stress preset" Style="{StaticResource SectionLabel}" FontSize="14"/>
+                        <TextBlock Text="Pick a stress style. The wizard writes the equivalent values into FieldStressViewModel.Global." TextWrapping="Wrap" Foreground="#FF64748B" Margin="0,0,0,12"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <RadioButton Content="Hydrostatic"   IsChecked="{Binding StressIsHydrostatic, Mode=OneWay}" Command="{Binding ApplyStressPresetCommand}" CommandParameter="Hydrostatic" Margin="0,0,16,0"/>
+                            <RadioButton Content="K0 lateral"    IsChecked="{Binding StressIsK0,          Mode=OneWay}" Command="{Binding ApplyStressPresetCommand}" CommandParameter="K0Lateral"   Margin="0,0,16,0"/>
+                            <RadioButton Content="Gravity"       IsChecked="{Binding StressIsGravity,     Mode=OneWay}" Command="{Binding ApplyStressPresetCommand}" CommandParameter="Gravity"     Margin="0,0,16,0"/>
+                            <RadioButton Content="Direct tensor" IsChecked="{Binding StressIsDirect,      Mode=OneWay}" Command="{Binding ApplyStressPresetCommand}" CommandParameter="Direct"/>
+                        </StackPanel>
+
+                        <!-- Hydrostatic -->
+                        <StackPanel Visibility="{Binding StressIsHydrostatic, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="σ magnitude (kPa)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding StressMagnitude, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="(compressive; sign flipped on apply)" Foreground="#FF94A3B8" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- K0 -->
+                        <StackPanel Visibility="{Binding StressIsK0, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="γ (kN/m³)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding StressGamma, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="K0" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding StressK, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Depth (m)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding StressDepth, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Gravity -->
+                        <StackPanel Visibility="{Binding StressIsGravity, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="γ (kN/m³)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding StressGamma, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="K (Kx = Kz)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding StressK, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Direct -->
+                        <StackPanel Visibility="{Binding StressIsDirect, Converter={StaticResource BoolVis}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="σxx (kPa)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding DirectSxx, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="σyy (kPa)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding DirectSyy, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="τxy (kPa)" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource FieldBox}" Text="{Binding DirectTxy, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Step 5: Mesh -->
+                    <StackPanel Visibility="{Binding IsStepMesh, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="Mesh density preset" Style="{StaticResource SectionLabel}" FontSize="14"/>
+                        <TextBlock Text="Coarse runs fast (good for first-pass), Fine resolves the tunnel wall accurately. Values scale with the tunnel size." TextWrapping="Wrap" Foreground="#FF64748B" Margin="0,0,0,12"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <RadioButton Content="Coarse" IsChecked="{Binding MeshIsCoarse, Mode=OneWay}" Command="{Binding ApplyMeshPresetCommand}" CommandParameter="Coarse" Margin="0,0,16,0"/>
+                            <RadioButton Content="Medium" IsChecked="{Binding MeshIsMedium, Mode=OneWay}" Command="{Binding ApplyMeshPresetCommand}" CommandParameter="Medium" Margin="0,0,16,0"/>
+                            <RadioButton Content="Fine"   IsChecked="{Binding MeshIsFine,   Mode=OneWay}" Command="{Binding ApplyMeshPresetCommand}" CommandParameter="Fine"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Far-field h (m)" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding FarFieldEdgeLength, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Near-tunnel h (m)" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding NearTunnelEdgeLength, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Refinement rings" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding RingCount, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Ring growth factor" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding RingGrowthFactor, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="First ring thickness (m)" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Style="{StaticResource FieldBox}" Text="{Binding FirstRingThickness, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Step 6: Review -->
+                    <StackPanel Visibility="{Binding IsStepReview, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="Review and apply" Style="{StaticResource SectionLabel}" FontSize="14"/>
+                        <TextBlock Text="Click Apply to push these settings into the model: outer domain, tunnel polygon, field-stress preset, tunnel mesh, auto boundary conditions, and Initial Stress + Excavate stages." TextWrapping="Wrap" Foreground="#FF64748B" Margin="0,0,0,12"/>
+                        <Border Background="#FFF1F5F9" Padding="10" CornerRadius="4">
+                            <TextBlock Text="{Binding ReviewSummary}" FontFamily="Consolas" TextWrapping="NoWrap" />
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Live preview -->
+            <Border Grid.Column="1" Margin="14,0,0,0" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="6" Padding="6">
+                <DockPanel>
+                    <TextBlock Text="Preview" FontWeight="SemiBold" Foreground="#FF334155" Margin="6,4,0,4" DockPanel.Dock="Top"/>
+                    <Canvas x:Name="PreviewCanvas" Background="#FFF8FAFC" SnapsToDevicePixels="True" ClipToBounds="True">
+                        <Polyline x:Name="DomainPolyline" Stroke="#FF94A3B8" StrokeThickness="1.0" StrokeDashArray="3,2"/>
+                        <Polyline x:Name="TunnelPolyline" Stroke="#FF1D4ED8" StrokeThickness="1.6" Fill="#22C7D2FE"/>
+                    </Canvas>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>

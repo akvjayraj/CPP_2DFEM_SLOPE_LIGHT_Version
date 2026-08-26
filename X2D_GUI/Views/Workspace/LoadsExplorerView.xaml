@@ -1,0 +1,117 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.LoadsExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="PanelCollapseButton" TargetType="Button">
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TreeView">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4,0,4,8"/>
+        </Style>
+        <Style TargetType="TreeViewItem">
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Padding" Value="4,3"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel Visibility="{Binding IsExplorerExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border DockPanel.Dock="Top" Padding="10,10,10,8">
+            <DockPanel>
+                <Button DockPanel.Dock="Right"
+                        Style="{StaticResource PanelCollapseButton}"
+                        Command="{Binding ToggleExplorerCommand}"
+                        ToolTip="Collapse or expand Load Explorer">
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                               FontSize="12"
+                               Text="{Binding ExplorerChevronGlyph}"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </Button>
+                <TextBlock Text="LOAD EXPLORER"
+                           FontWeight="SemiBold"
+                           FontSize="13"
+                           VerticalAlignment="Center"/>
+            </DockPanel>
+        </Border>
+        <Border DockPanel.Dock="Bottom"
+                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="10,8"
+                Visibility="{Binding IsExplorerExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,6">
+                    <Button DockPanel.Dock="Right"
+                            Style="{StaticResource PanelCollapseButton}"
+                            Command="{Binding ToggleSummaryCommand}"
+                            ToolTip="Collapse or expand Load Summary">
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                                   FontSize="12"
+                                   Text="{Binding SummaryChevronGlyph}"
+                                   Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    </Button>
+                    <TextBlock Text="LOAD SUMMARY" FontWeight="SemiBold"/>
+                </DockPanel>
+                <StackPanel Visibility="{Binding IsSummaryExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="{Binding TotalLoadCount, StringFormat=All loads: {0}}" Margin="0,0,0,2"/>
+                    <TextBlock Text="{Binding NodalCount, StringFormat=Nodal loads: {0}}" Margin="0,0,0,2"/>
+                    <TextBlock Text="{Binding LineCount, StringFormat=Line loads: {0}}" Margin="0,0,0,2"/>
+                    <TextBlock Text="{Binding TriangularCount, StringFormat=Triangular edge: {0}}" Margin="0,0,0,2"/>
+                    <TextBlock Text="{Binding EnabledCount, StringFormat=Enabled: {0}}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <DockPanel Visibility="{Binding IsExplorerExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBox DockPanel.Dock="Top"
+                     Margin="10,0,10,8"
+                     Padding="6,4"
+                     Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Search load explorer..."/>
+            <TreeView ItemsSource="{Binding Roots}" SelectedItemChanged="OnSelectedItemChanged">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontFamily="Segoe MDL2 Assets, Segoe Fluent Icons"
+                                       FontSize="14"
+                                       Text="{Binding Glyph}"
+                                       Margin="0,0,6,0"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource WindowForegroundBrush}"/>
+                            <TextBlock VerticalAlignment="Center"
+                                       Foreground="{DynamicResource WindowForegroundBrush}">
+                                <Run Text="{Binding Title, Mode=OneWay}"/>
+                                <Run Text="{Binding CountLabel, Mode=OneWay}"
+                                     Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,5 @@
+{
+  "layerCutY": 20.0,
+  "layerMaterialIds": [2, 1],
+  "comment": "Display layer 1 (below y=20) -> material 2 (weak phi=15/c=0.5); layer 2 (above) -> material 1 (strong phi=25/c=1)."
+}

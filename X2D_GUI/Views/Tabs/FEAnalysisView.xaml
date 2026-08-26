@@ -1,0 +1,637 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.FEAnalysisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:InvertedBooleanConverter x:Key="InvertedBooleanConverter"/>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
+        <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+        <converters:SrfSearchModeToBooleanConverter x:Key="SrfSearchModeToBooleanConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <TabControl SelectedIndex="{Binding FeAnalysisSubTabIndex, Mode=TwoWay}">
+        <!-- ═══════════════════ OVERVIEW + RUN ═══════════════════ -->
+        <TabItem Header="Overview and Run">
+            <Grid Margin="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                    <TextBlock Text="Finite Element Analysis"
+                               FontSize="20"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="{Binding StatusMessage}"
+                               Margin="0,4,0,0"
+                               Foreground="Gray"/>
+                    <TextBlock Text="{Binding ActiveAnalysisModeSummary, Mode=OneWay}"
+                               FontWeight="SemiBold"
+                               Margin="0,4,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="Mesh: " FontWeight="SemiBold" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding MeshStatsBaseLine, Mode=OneWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <TextBlock Text="Mesh type: " FontWeight="SemiBold" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding ResolvedMeshTypeForRun, Mode=OneWay}"/>
+                        <TextBlock Text="   Solver: " FontWeight="SemiBold" Margin="12,0,4,0"/>
+                        <TextBlock Text="{Binding ResolvedSolverForRun, Mode=OneWay}"/>
+                    </StackPanel>
+                    <TextBlock Margin="0,4,0,0"
+                               Text="{Binding SeismicRunSummary, Mode=OneWay}"
+                               FontWeight="SemiBold">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#FF64748B"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSeismicEnabledForRun}" Value="True">
+                                        <Setter Property="Foreground" Value="#FFEA580C"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Margin="0,2,0,0"
+                               Text="{Binding GroundwaterRunSummary, Mode=OneWay}"
+                               FontWeight="SemiBold">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#FF64748B"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsGroundwaterEnabledForRun}" Value="True">
+                                        <Setter Property="Foreground" Value="#FF0284C7"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Margin="0,2,0,0"
+                               Text="{Binding LoadsRunSummary, Mode=OneWay}"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#FF64748B"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasLoadsForRun}" Value="True">
+                                        <Setter Property="Foreground" Value="#FF0F766E"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+
+                <!--
+                    Model Health Coach. Read-only advisory panel that surfaces the
+                    most common pre-flight problems (no mesh, no fixed support,
+                    far field too close to the tunnel, ...). Bound to
+                    MainWindowViewModel.ModelHealthVM via RelativeSource because
+                    the surrounding TabItem's DataContext is the FEAnalysisVM.
+                -->
+                <Expander Grid.Row="1"
+                          DataContext="{Binding DataContext.ModelHealthVM, RelativeSource={RelativeSource AncestorType=Window}}"
+                          IsExpanded="True" Margin="0,0,0,12">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Model Health: "
+                                       FontWeight="SemiBold" Foreground="#FF0F172A"/>
+                            <TextBlock Text="{Binding SummaryText}" FontWeight="SemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#FFD97706"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsHealthy}" Value="True">
+                                                <Setter Property="Foreground" Value="#FF059669"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CriticalCount}" Value="0">
+                                                <Setter Property="Foreground" Value="#FFD97706"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Expander.Header>
+                    <Border Padding="12" Background="#FFF8FAFC"
+                            BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="Pre-flight checks: mesh, supports, field stress, far-field distance, staging consistency."
+                                           Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap"
+                                           VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Button Content="Refresh"
+                                            Command="{Binding RefreshCommand}"
+                                            Padding="10,4"/>
+                                    <Button Content="Stop"
+                                            Command="{Binding DataContext.StopAnalysisCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            Padding="10,4"
+                                            Margin="8,0,0,0"
+                                            ToolTip="Stop the running solver"/>
+                                </StackPanel>
+                            </Grid>
+                            <ItemsControl ItemsSource="{Binding Issues}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,4,0,0" Padding="10,8"
+                                                BorderThickness="1" CornerRadius="4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#FFFEF3C7"/>
+                                                    <Setter Property="BorderBrush" Value="#FFFDE68A"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding SeverityLabel}" Value="CRITICAL">
+                                                            <Setter Property="Background" Value="#FFFEE2E2"/>
+                                                            <Setter Property="BorderBrush" Value="#FFFCA5A5"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding SeverityLabel}" Value="INFO">
+                                                            <Setter Property="Background" Value="#FFF1F5F9"/>
+                                                            <Setter Property="BorderBrush" Value="#FFCBD5E1"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding SeverityLabel}"
+                                                               FontWeight="Bold" FontSize="11"
+                                                               Margin="0,0,8,0">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Foreground" Value="#FFB45309"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding SeverityLabel}" Value="CRITICAL">
+                                                                        <Setter Property="Foreground" Value="#FFB91C1C"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding SeverityLabel}" Value="INFO">
+                                                                        <Setter Property="Foreground" Value="#FF475569"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold"/>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding Detail}"
+                                                           Margin="0,2,0,0" Foreground="#FF334155"
+                                                           TextWrapping="Wrap" FontSize="12"/>
+                                                <TextBlock Text="{Binding FixHint}"
+                                                           Margin="0,4,0,0" Foreground="#FF1E40AF"
+                                                           FontStyle="Italic" TextWrapping="Wrap" FontSize="11"
+                                                           Visibility="{Binding FixHint, Converter={StaticResource EmptyStringToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Text="No issues detected. Ready to run."
+                                       Foreground="#FF059669" FontStyle="Italic" Margin="0,8,0,0"
+                                       Visibility="{Binding HasIssues, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Border>
+                </Expander>
+
+                <!-- Analysis Options -->
+                <GroupBox Grid.Row="2" Header="Analysis Options" Margin="0,0,0,12">
+                    <Grid Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+                                  Content="Enable Staged Excavation Analysis"
+                                  IsChecked="{Binding StagedExcavationEnabled}"
+                                  Margin="0,4"
+                                  ToolTip="Perform sequential analysis for each excavation stage. Edit the phase schedule in the Staged Analysis subtab."/>
+
+                        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                  Content="Enable Gravity"
+                                  IsChecked="{Binding GravityEnabled}"
+                                  Margin="0,8,0,4"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="2"
+                                   Text="Gravity (m/s²):"
+                                   VerticalAlignment="Center"
+                                   Margin="8,8,0,4"/>
+                        <TextBox Grid.Row="1" Grid.Column="3"
+                                 Text="{Binding GravityAcceleration, UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding GravityEnabled}"
+                                 Margin="8,8,4,4"/>
+
+                        <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                  Content="Enable Load Stepping"
+                                  IsChecked="{Binding LoadSteppingEnabled}"
+                                  Margin="0,8,0,4"
+                                  ToolTip="Apply loads incrementally in multiple steps. Useful for nonlinear analysis and convergence."/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="2"
+                                   Text="Number of steps:"
+                                   VerticalAlignment="Center"
+                                   Margin="8,8,0,4"/>
+                        <TextBox Grid.Row="2" Grid.Column="3"
+                                 Text="{Binding NumberOfLoadSteps, UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding LoadSteppingEnabled}"
+                                 Margin="8,8,4,4"
+                                 ToolTip="Number of load increments (1 = full load in one step)"/>
+                    </Grid>
+                </GroupBox>
+
+                <!-- Solver Control Block -->
+                <GroupBox Grid.Row="3" Header="Solver control block:" Margin="0,0,0,12"
+                          Visibility="{Binding SolverControlVisibility}">
+                    <StackPanel Margin="8">
+
+                        <!-- tol + limit: always visible -->
+                        <Grid Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="Convergence tolerance (tol):"
+                                       VerticalAlignment="Center"
+                                       Margin="0,4,8,4"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding ConvergenceToleranceText, UpdateSourceTrigger=LostFocus}"
+                                     Margin="0,4,16,4"
+                                     ToolTip="Convergence tolerance for elastoplastic Newton/viscoplastic loop (e.g. 1e-5)."/>
+                            <TextBlock Grid.Column="2"
+                                       Text="Max iterations (limit):"
+                                       VerticalAlignment="Center"
+                                       Margin="8,4,8,4"/>
+                            <TextBox Grid.Column="3"
+                                     Text="{Binding MaxIterations, UpdateSourceTrigger=LostFocus}"
+                                     Margin="0,4,4,4"
+                                     ToolTip="Maximum nonlinear iterations per load step."/>
+                        </Grid>
+
+                        <!-- incs + layers: non-SRF mode only -->
+                        <Grid Margin="0,0,0,0"
+                              Visibility="{Binding IsSrfSolverMode, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="Load increments (incs):"
+                                       VerticalAlignment="Center"
+                                       Margin="0,4,8,4"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding LoadIncrements, UpdateSourceTrigger=LostFocus}"
+                                     Margin="0,4,16,4"
+                                     ToolTip="Number of load increments applied during the analysis."/>
+                            <TextBlock Grid.Column="2"
+                                       Text="Solver path / layer selector (layers):"
+                                       VerticalAlignment="Center"
+                                       Margin="8,4,8,4"/>
+                            <TextBox Grid.Column="3"
+                                     Text="{Binding LayersText, UpdateSourceTrigger=LostFocus}"
+                                     Margin="0,4,4,4"
+                                     ToolTip="Empty or 'auto' = derive from staged excavation count. 0 = infinite-medium MC. &gt;0 = staged excavation count override."/>
+                        </Grid>
+
+                        <!-- SRF search mode + trial/bracket controls: SRF mode only -->
+                        <StackPanel Visibility="{Binding IsSrfSolverMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <CheckBox Content="Axisymmetric continuum (mechanical SRF)"
+                                      IsChecked="{Binding SrfAxisymmetric, Mode=TwoWay}"
+                                      Margin="0,0,0,8"
+                                      ToolTip="Routes to slope_stability_*_SRF_axisym (S&amp;G ×r, εθ=u/r). Use Roller X on r=0."/>
+
+                            <!-- Search mode selector -->
+                            <StackPanel Orientation="Horizontal" Margin="0,4,0,8">
+                                <TextBlock Text="SRF search mode:"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <RadioButton Content="Sweep (fixed trial list)"
+                                             GroupName="SrfSearchMode"
+                                             Margin="0,0,16,0"
+                                             VerticalAlignment="Center"
+                                             IsChecked="{Binding SelectedSrfSearchMode, Converter={StaticResource SrfSearchModeToBooleanConverter}, ConverterParameter=Sweep}"
+                                             ToolTip="Run a fixed list of SRF trial F-values and estimate the critical FoS afterward."/>
+                                <RadioButton Content="Bracket (auto-converge to critical FoS)"
+                                             GroupName="SrfSearchMode"
+                                             VerticalAlignment="Center"
+                                             IsChecked="{Binding SelectedSrfSearchMode, Converter={StaticResource SrfSearchModeToBooleanConverter}, ConverterParameter=Bracket}"
+                                             ToolTip="Iteratively bisect a [F_min, F_max] bracket (auto-detected or manual) until the critical FoS converges within tolerance."/>
+                            </StackPanel>
+
+                            <!-- In-situ stress path for gravity-only SRF -->
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                           Text="In-situ stress:"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding SrfInsituModeChoices}"
+                                          SelectedItem="{Binding SelectedSrfInsituMode}"
+                                          VerticalAlignment="Center"
+                                          ToolTip="Auto: K0 for Coupled GW / Ru, gravity turn-on for dry SRF. K0 keeps Stage-0 geostatic (+ Ru/WT). Gravity clears Stage-0 and ramps self-weight from zero."/>
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding SrfInsituModeSummary, StringFormat='Resolved: {0}'}"
+                                           VerticalAlignment="Center"
+                                           Margin="12,0,0,0"
+                                           FontStyle="Italic"
+                                           Foreground="Gray"/>
+                            </Grid>
+
+                            <!-- Sweep controls: nsrf + F-value list -->
+                            <StackPanel Visibility="{Binding IsSrfSweepMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="SRF trials (nsrf):"
+                                               VerticalAlignment="Center"
+                                               Margin="0,4,8,4"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding SrfTrialCount, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,16,4"
+                                             ToolTip="Number of SRF trial F-values (nsrf). Changing this resizes the list below."/>
+                                </Grid>
+                                <TextBlock Text="SRF trial values (F₁ … Fₙ):"
+                                           Margin="0,2,0,4"
+                                           FontStyle="Italic"
+                                           Foreground="Gray"/>
+                                <ItemsControl ItemsSource="{Binding SrfValues}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="0,2,12,2">
+                                                <TextBlock Text="{Binding Index, StringFormat='F{0}:'}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,4,0"
+                                                           FontSize="11"/>
+                                                <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus}"
+                                                         Width="72"
+                                                         ToolTip="{Binding Index, StringFormat='Strength reduction factor trial {0}'}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button Content="Apply Ex2 two-layer SRF preset"
+                                        Command="{Binding ApplyEx2TwoLayerSrfPresetCommand}"
+                                        Margin="0,8,0,0"
+                                        HorizontalAlignment="Left"
+                                        ToolTip="Sets tol=1e-4, limit=500, incs=20, layers=1, 6 SRF trials (1.0–1.5), Ex2 MC materials, and y=20 layer cut."/>
+                            </StackPanel>
+
+                            <!-- Bracket controls: auto-detect (default) or manual F_min/F_max override -->
+                            <StackPanel Visibility="{Binding IsSrfBracketMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <CheckBox Content="Auto-detect bracket"
+                                          IsChecked="{Binding AutoDetectSrfBracket}"
+                                          Margin="0,0,0,8"
+                                          ToolTip="When checked, the bracket [F_min, F_max] is found automatically by expanding outward from the starting FoS guess. When unchecked, enter F_min/F_max manually below."/>
+
+                                <!-- Auto-detect: seed + expansion factor + max steps -->
+                                <Grid Margin="0,0,0,4"
+                                      Visibility="{Binding AutoDetectSrfBracket, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="70"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="Starting FoS guess:"
+                                               VerticalAlignment="Center"
+                                               Margin="0,4,8,4"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding SrfBracketSeed, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,16,4"
+                                             ToolTip="Seed FoS for the auto-expansion phase (default 1.0)."/>
+                                    <TextBlock Grid.Column="2"
+                                               Text="Expansion factor:"
+                                               VerticalAlignment="Center"
+                                               Margin="0,4,8,4"/>
+                                    <TextBox Grid.Column="3"
+                                             Text="{Binding SrfBracketExpansionFactor, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,16,4"
+                                             ToolTip="Geometric growth factor applied per expansion step (must be &gt; 1.0; default 1.5)."/>
+                                    <TextBlock Grid.Column="4"
+                                               Text="Max expansion steps:"
+                                               VerticalAlignment="Center"
+                                               Margin="0,4,8,4"/>
+                                    <TextBox Grid.Column="5"
+                                             Text="{Binding SrfMaxExpansionSteps, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,4,4"
+                                             ToolTip="Safety cap on auto-expansion steps before giving up with an error (default 10)."/>
+                                </Grid>
+                                <TextBlock Text="{Binding DetectedSrfBracketPreview}"
+                                           Margin="0,0,0,8"
+                                           FontStyle="Italic"
+                                           Foreground="Gray"
+                                           Visibility="{Binding AutoDetectSrfBracket, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                <!-- Manual override: F_min / F_max -->
+                                <Grid Margin="0,0,0,8"
+                                      Visibility="{Binding IsSrfBracketManualMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="Minimum FoS (F_min):"
+                                               VerticalAlignment="Center"
+                                               Margin="0,4,8,4"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding SrfFoSMin, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,16,4"
+                                             ToolTip="Must converge — the known-stable lower bound of the bracket."/>
+                                    <TextBlock Grid.Column="2"
+                                               Text="Maximum FoS (F_max):"
+                                               VerticalAlignment="Center"
+                                               Margin="8,4,8,4"/>
+                                    <TextBox Grid.Column="3"
+                                             Text="{Binding SrfFoSMax, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,4,4"
+                                             ToolTip="Must fail to converge — the known-unstable upper bound of the bracket."/>
+                                </Grid>
+
+                                <!-- Always visible: bracket tolerance + max bisection iterations -->
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               Text="Bracket tolerance:"
+                                               VerticalAlignment="Center"
+                                               Margin="0,4,8,4"/>
+                                    <TextBox Grid.Column="1"
+                                             Text="{Binding SrfBracketTolerance, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,16,4"
+                                             ToolTip="Bisection stops once the bracket width (F_hi − F_lo) falls below this value (default 0.01)."/>
+                                    <TextBlock Grid.Column="2"
+                                               Text="Max bracket iterations:"
+                                               VerticalAlignment="Center"
+                                               Margin="8,4,8,4"/>
+                                    <TextBox Grid.Column="3"
+                                             Text="{Binding SrfMaxBracketIterations, UpdateSourceTrigger=LostFocus}"
+                                             Margin="0,4,4,4"
+                                             ToolTip="Safety cap on bisection iterations, separate from the expansion-phase cap above (default 20)."/>
+                                </Grid>
+                            </StackPanel>
+
+                        </StackPanel>
+
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- FEM Verification -->
+                <GroupBox Grid.Row="4" Header="FEM Verification" Margin="0,0,0,12">
+                    <Grid Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Runs 3 verification problems (cantilever, uniaxial tension, patch test) and compares FEM with analytical solutions. See Docs/FEM_Verification.md."
+                                      TextWrapping="Wrap" Margin="0,0,0,8" Foreground="Gray" FontSize="11"/>
+                            <TextBlock Text="{Binding VerificationResult.Summary, FallbackValue='Run verification to validate FEM implementation.'}"
+                                      TextWrapping="Wrap" Margin="0,0,0,4" FontWeight="SemiBold"/>
+                            <TextBlock Text="✓ Pass: &lt;5% error typical for linear triangles. Refine mesh for better accuracy."
+                                      Foreground="Green" FontSize="11" Margin="0,2,0,0"
+                                      Visibility="{Binding VerificationResult.Success, Converter={StaticResource InvertedBooleanConverter}, FallbackValue=Collapsed}"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="Run Verification"
+                                Command="{Binding RunVerificationCommand}"
+                                IsEnabled="{Binding IsSolving, Converter={StaticResource InvertedBooleanConverter}}"
+                                Padding="12,6" VerticalAlignment="Top"
+                                ToolTip="Run cantilever beam benchmark and compare with analytical solution"/>
+                    </Grid>
+                </GroupBox>
+
+                <!-- Run specific stage (kept for compatibility with existing AvailableStagesForRun binding) -->
+                <GroupBox Grid.Row="5" Header="Run Specific Stage" Margin="0,0,0,12">
+                    <Grid Margin="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="Select Stage:"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"/>
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding AvailableStagesForRun}"
+                                  SelectedItem="{Binding SelectedStageForRun, Mode=TwoWay}"
+                                  DisplayMemberPath="DisplayText"
+                                  Margin="0,0,8,0"
+                                  IsEnabled="{Binding IsSolving, Converter={StaticResource InvertedBooleanConverter}}"/>
+                        <Button Grid.Column="2"
+                                Content="Run Selected Stage"
+                                Command="{Binding RunSelectedStageCommand}"
+                                IsEnabled="{Binding CanRunSelectedStage}"
+                                Padding="12,6"
+                                ToolTip="For advanced configuration (presets, λ, load factor, per-phase activity), use the Staged Analysis subtab above."/>
+                    </Grid>
+                </GroupBox>
+
+                <!-- Pointer to Staged Analysis subtab -->
+                <Border Grid.Row="6" Padding="10" Margin="0,0,0,12"
+                        Background="#FFEEF2FF" BorderBrush="#FF4F46E5" BorderThickness="1" CornerRadius="4"
+                        Visibility="{Binding StagedExcavationEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel>
+                        <TextBlock FontWeight="SemiBold" Foreground="#FF312E81" Text="Staged Analysis enabled"/>
+                        <TextBlock Foreground="#FF312E81" Margin="0,2,0,0" TextWrapping="Wrap">
+                            Open the <Run FontWeight="SemiBold">Staged Analysis</Run> subtab (top of this page) to edit the phase schedule, apply tunneling presets (NATM, TBM, top-heading/bench/invert), configure λ and load factors, and run staged / safety analyses.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Primary controls -->
+                <StackPanel Grid.Row="7"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,0,12">
+                    <Button Content="Clear Mesh Data"
+                            Command="{Binding ClearMeshDataCommand}"
+                            IsEnabled="{Binding IsSolving, Converter={StaticResource InvertedBooleanConverter}}"
+                            Padding="12,6"
+                            Margin="0,0,8,0"/>
+                    <Button Content="Load Mesh Data"
+                            Command="{Binding LoadMeshDataCommand}"
+                            IsEnabled="{Binding IsSolving, Converter={StaticResource InvertedBooleanConverter}}"
+                            Padding="12,6"
+                            Margin="0,0,8,0"/>
+                    <Button Content="Run FE Analysis"
+                            Command="{Binding RunAnalysisCommand}"
+                            IsEnabled="{Binding IsSolving, Converter={StaticResource InvertedBooleanConverter}}"
+                            Padding="12,6"
+                            Margin="0,0,8,0"/>
+                </StackPanel>
+
+                <Grid Grid.Row="8">
+                    <controls:SlopeCanvasView HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"
+                                              DataContext="{Binding DataContext.GeometryDefinitionVM, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              ZoomPanModeEnabled="{Binding DataContext.ZoomPanModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+
+        <!-- ═══════════════════ STAGED ANALYSIS ═══════════════════ -->
+        <!-- Only surfaced when the "Enable Staged Excavation Analysis" checkbox is
+             ticked on Overview and Run > Analysis Options (FEAnalysisVM.StagedExcavationEnabled).
+             The TabItem inherits the TabControl's DataContext (the FEAnalysisVM); the
+             inner StagedAnalysisView retargets its own DataContext explicitly. -->
+        <TabItem Header="Staged Analysis"
+                 Visibility="{Binding StagedExcavationEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+            <tabs:StagedAnalysisView DataContext="{Binding DataContext.StagedAnalysisVM, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </TabItem>
+
+        <!-- ═══════════════════ EXECUTION DETAILS ═══════════════════ -->
+        <TabItem Header="Execution Details">
+            <tabs:FEAnalysisExecutionDetailsView/>
+        </TabItem>
+    </TabControl>
+</UserControl>

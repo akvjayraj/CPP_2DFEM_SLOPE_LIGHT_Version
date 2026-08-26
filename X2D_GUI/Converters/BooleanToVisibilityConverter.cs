@@ -1,0 +1,19 @@
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+
+namespace GeotechSlopeApp.Converters;
+
+public class BooleanToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        bool b = value is bool vb && vb;
+        if (parameter is string s && s.Equals("Inverse", StringComparison.OrdinalIgnoreCase))
+            b = !b;
+        return b ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is Visibility v && v == Visibility.Visible;
+}

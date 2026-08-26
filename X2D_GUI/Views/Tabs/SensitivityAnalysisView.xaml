@@ -1,0 +1,96 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.SensitivityAnalysisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="12">
+        <TabControl>
+            <TabItem Header="Sensitivity Setup">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Simulation Count:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Width="120"
+                             Text="{Binding Settings.SimulationCount, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Material Variation (%):" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <Slider Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100"
+                            Value="{Binding Settings.MaterialVariationPercent, UpdateSourceTrigger=PropertyChanged}"
+                            TickFrequency="5" IsSnapToTickEnabled="True" Width="240"/>
+
+                    <CheckBox Grid.Row="2" Grid.ColumnSpan="2"
+                              Content="Enable probabilistic sampling"
+                              Margin="0,8,0,0"
+                              IsChecked="{Binding Settings.IsProbabilistic}"/>
+
+                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Run Sensitivity"
+                            Command="{Binding RunSensitivityCommand}"
+                            Width="180" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+
+                    <DockPanel Grid.Row="4" Grid.ColumnSpan="2" Margin="0,16,0,0">
+                        <TextBlock DockPanel.Dock="Top" Text="{Binding StatusMessage}" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                        <Button DockPanel.Dock="Bottom" Content="Export Tornado CSV"
+                                Command="{Binding ExportTornadoCsvCommand}"
+                                Width="180" HorizontalAlignment="Left" Margin="0,8,0,0"/>
+                        <DataGrid ItemsSource="{Binding Results}" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Parameter" Binding="{Binding Parameter}" Width="*"/>
+                                <DataGridTextColumn Header="Value" Binding="{Binding Value, StringFormat=G4}" Width="90"/>
+                                <DataGridTextColumn Header="SRF" Binding="{Binding FactorOfSafety, StringFormat=F3}" Width="80"/>
+                                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Parametric Analysis">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Parameter:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" Width="200"
+                              ItemsSource="{Binding AvailableParameters}"
+                              SelectedItem="{Binding SelectedParameter}"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Start Value:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Width="140"
+                             Text="{Binding ParametricStartValue, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="End Value:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Width="140"
+                             Text="{Binding ParametricEndValue, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Increment:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Width="140"
+                             Text="{Binding ParametricIncrement, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}}"/>
+
+                    <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Run Parametric Sweep"
+                            Command="{Binding RunParametricAnalysisCommand}"
+                            Width="200" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+
+                    <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Margin="0,16,0,0"
+                               Text="{Binding ParametricStatusMessage}" TextWrapping="Wrap"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

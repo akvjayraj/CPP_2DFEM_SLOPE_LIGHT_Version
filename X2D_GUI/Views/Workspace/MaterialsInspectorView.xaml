@@ -1,0 +1,60 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.MaterialsInspectorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10"
+                  Visibility="{Binding IsInspectorExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel>
+            <TextBlock Text="Properties" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Name" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedName}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="1" Text="ID" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedId}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="2" Text="Color" Margin="0,0,0,4"/>
+                <Border Grid.Row="2" Grid.Column="1" Width="22" Height="12" HorizontalAlignment="Left"
+                        CornerRadius="2" Margin="0,0,0,4"
+                        Background="{Binding SelectedMaterial.ColourBrush}"/>
+                <TextBlock Grid.Row="3" Text="Group" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedGroup}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="4" Text="Model" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedCriterion}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="5" Text="Type" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedType}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="6" Text="γ" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding SelectedUnitWeight}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="7" Text="E" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding SelectedYoungsModulus}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="8" Text="ν" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding SelectedPoissonsRatio}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="9" Text="c' / φ'"/>
+                <TextBlock Grid.Row="9" Grid.Column="1">
+                    <Run Text="{Binding SelectedCohesion, Mode=OneWay}"/>
+                    <Run Text=" / "/>
+                    <Run Text="{Binding SelectedFrictionAngle, Mode=OneWay}"/>
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

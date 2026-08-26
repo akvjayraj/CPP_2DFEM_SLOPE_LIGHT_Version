@@ -1,0 +1,32 @@
+Part 1
+Ex 12
+  APP			    1.19 very coarse; 1.14 coarse
+  SSR (RS2)                 1.09
+  Bishop (circular)         1.117
+  Spencer (non-circular)    1.094
+  Arai & Tagyo Bishop       1.138
+
+Ex 14
+
+  APP			    0.775 T3 mesh   T6 mesh
+  SSR (RS2)                 0.98
+  Spencer (Slide2)          1.01
+  Baker (1980) Spencer      1.02
+  Spencer (1969)            1.08
+
+
+Ex 27
+
+  APP			    1.381-1.422 T6 mesh
+  SSR (RS2)                 1.31
+  Bishop (Slide2)           1.339
+  Hassan and Wolff          1.334
+
+Ex 35
+
+APP			1.62
+SSR			1.64
+Bishop  		1.60 
+Spencer  		1.60 
+GLE 			1.60
+Note: Referee Factor of Safety = 1.60 [Duncan and Wright] 

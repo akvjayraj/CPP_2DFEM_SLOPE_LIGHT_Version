@@ -1,0 +1,5 @@
+sigma_MPa,sn_num_kPa,closure_analytical_m,closure_avg_m,closure_min_m,closure_max_m,kn_num_kPa_per_m,error_pct,equil_error_pct,status
+1,1000,0.010,0.010,0.010,0.010,100000,0.00,0.00,PASS
+2,2000,0.020,0.020,0.020,0.020,100000,0.00,0.00,PASS
+5,5000,0.050,0.050,0.050,0.050,100000,0.00,0.00,PASS
+10,10000,0.100,0.100,0.100,0.100,100000,0.00,0.00,PASS

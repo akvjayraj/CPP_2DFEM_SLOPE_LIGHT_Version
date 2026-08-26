@@ -1,0 +1,10 @@
+# Method C — air polygon above the ground (subtract from the soil block).
+# Surface → Excavate, click these vertices, then Geometry → Commit Kernel Booleans.
+# Reference elevation = 0. Box top is Y = 25; ground is 20 → 15 → 10.
+3,20
+8,20
+25,15
+40,10
+45,10
+45,25
+3,25

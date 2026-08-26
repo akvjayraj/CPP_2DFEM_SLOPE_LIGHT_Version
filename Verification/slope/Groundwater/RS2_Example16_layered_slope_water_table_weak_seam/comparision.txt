@@ -1,0 +1,8 @@
+﻿T3 mesh (yield-gate rebracket 2026-07-19T00:54:33.6953075+05:30)
+only SRF (dry hand note):1.25
+With SRF+load:1.22
+with SRF+ water:0.95
+with water + load+ SRF:0.85
+with SRF + Seismic= 0.59 Kh=0.4
+with SRF + Seismic= 0.22 Kh=0.5
+literature RS2 SSR:1.02

@@ -1,0 +1,18 @@
+RS2 Part 2 Example 36 — Seepage analysis homogeneous slope
+Duncan & Wright (2005) Fig. 6.37
+
+Geometry (ft): (0,0)-(0,40)-(120,40)-(200,80)-(440,80)-(440,0)
+Material: c'=200 psf, phi'=20 deg, gamma=125 pcf, gamma_w=62.4 pcf
+
+Case 1 — FE seepage (this folder: rs2_example36_case1_fe_seepage.xfem)
+  Heads: left H=40 ft, right H=75 ft
+  APP
+  SSR (RS2)                 1.12
+  Bishop (circular)         1.139
+  Spencer (circular)        1.138
+  GLE (circular)            1.140
+  Note: Referee Factor of Safety = 1.138 [Duncan and Wright]
+
+Case 2 — Piezometric line approximation
+  See sibling folder: RS2_Part 2 Example36_piezometric_line
+  Piezo polyline (ft): (0,40)-(120,40)-(440,75)

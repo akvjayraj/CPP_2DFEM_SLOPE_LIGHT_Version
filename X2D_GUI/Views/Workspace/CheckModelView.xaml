@@ -1,0 +1,33 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.CheckModelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel Background="{DynamicResource PanelBackgroundBrush}">
+        <DockPanel DockPanel.Dock="Top" Margin="8,8,8,4">
+            <TextBlock Text="Check Model" FontWeight="SemiBold"
+                       Foreground="{DynamicResource WindowForegroundBrush}"/>
+            <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                    Content="Refresh"
+                    Command="{Binding ModelHealthVM.RefreshCommand}"
+                    Padding="8,2"/>
+        </DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin="8,0,8,6"
+                   Text="{Binding ModelHealthVM.SummaryText}"
+                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+        <ListBox ItemsSource="{Binding ModelHealthVM.Issues}"
+                 BorderThickness="0"
+                 Background="Transparent">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,0,0,6">
+                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource WindowForegroundBrush}"/>
+                        <TextBlock Text="{Binding Detail}" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Text="{Binding FixHint}" TextWrapping="Wrap" FontStyle="Italic"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>

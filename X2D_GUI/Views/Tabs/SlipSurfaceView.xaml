@@ -1,0 +1,1023 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.SlipSurfaceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+        <converters:RadiusResolutionConverter x:Key="RadiusResolutionConverter"/>
+    </UserControl.Resources>
+    <Grid Margin="12">
+        <TabControl>
+            <TabItem Header="Parameters">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Slip Surface Type:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" Width="200"
+                              ItemsSource="{Binding AvailableSurfaceTypes}"
+                              SelectedItem="{Binding SlipSurface.SurfaceType}" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Radius selection method:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Width="400"
+                              ItemsSource="{Binding AvailableRadiusSelectionMethods}"
+                              SelectedItem="{Binding RadiusSelectionMethod, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Failure type (H-based scaling):" VerticalAlignment="Center" Margin="0,0,8,8"
+                               IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" Width="300"
+                              ItemsSource="{Binding AvailableHBasedFailureTypes}"
+                              SelectedItem="{Binding HBasedFailureType, UpdateSourceTrigger=PropertyChanged}"
+                              IsEnabled="{Binding IsHBasedScalingSelected}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="k Min:" VerticalAlignment="Center" Margin="0,0,8,8"
+                               IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Width="120"
+                             Text="{Binding HBasedKMin, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.##}}"
+                             IsEnabled="{Binding IsHBasedScalingSelected}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="k Max:" VerticalAlignment="Center" Margin="0,0,8,8"
+                               IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Width="120"
+                             Text="{Binding HBasedKMax, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.##}}"
+                             IsEnabled="{Binding IsHBasedScalingSelected}"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Minimum Radius:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" Width="120"
+                             Text="{Binding SlipSurface.MinRadius, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Maximum Radius:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <TextBox Grid.Row="6" Grid.Column="1" Width="120"
+                             Text="{Binding SlipSurface.MaxRadius, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Increment (H-based scaling):" VerticalAlignment="Center" Margin="0,0,8,8"
+                               IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                    <TextBox Grid.Row="7" Grid.Column="1" Width="120"
+                             Text="{Binding HBasedIncrement, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.##}}"
+                             IsEnabled="{Binding IsHBasedScalingSelected}"/>
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Number of Radii (Nr):" VerticalAlignment="Center" Margin="0,0,8,8"
+                               IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                    <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
+                        <RadioButton Content="Coarse (20-60)" 
+                                     GroupName="RadiusResolution"
+                                     IsChecked="{Binding RadiusResolutionMode, Converter={StaticResource RadiusResolutionConverter}, ConverterParameter=Coarse, Mode=TwoWay}"
+                                     Margin="0,0,16,0"
+                                     IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                        <RadioButton Content="Fine (80-150)" 
+                                     GroupName="RadiusResolution"
+                                     IsChecked="{Binding RadiusResolutionMode, Converter={StaticResource RadiusResolutionConverter}, ConverterParameter=Fine, Mode=TwoWay}"
+                                     IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="no of circle:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <TextBox Grid.Row="9" Grid.Column="1" Width="120"
+                             Text="{Binding NumberOfGeneratedCircles, Mode=OneWay}"
+                             IsReadOnly="True"/>
+
+                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Grid Resolution:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                    <Slider Grid.Row="10" Grid.Column="1" Minimum="5" Maximum="200"
+                            Value="{Binding SlipSurface.GridResolution, UpdateSourceTrigger=PropertyChanged}"
+                            TickFrequency="5" IsSnapToTickEnabled="True" Width="240"/>
+
+                    <TextBlock Grid.Row="11" Grid.ColumnSpan="2" Margin="0,16,0,0" TextWrapping="Wrap"
+                               Text="Adjust search parameters to control how potential slip surfaces are generated."/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Box Method">
+                <Grid Margin="12">
+                    <TabControl SelectedIndex="{Binding BoxMethodTabIndex}">
+                        <TabItem Header="Manual" IsEnabled="{Binding IsManualTabEnabled}">
+                            <Grid Margin="12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="Select two vertices along the slope boundary to define the diameter of a slip circle. The chosen points are highlighted in red on the canvas."
+                                           TextWrapping="Wrap"/>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,8">
+                                    <TextBlock Text="Start vertex:" VerticalAlignment="Center" Width="110"/>
+                                    <ComboBox Width="240"
+                                              ItemsSource="{Binding VertexOptions}"
+                                              DisplayMemberPath="Label"
+                                              SelectedValuePath="Index"
+                                              SelectedValue="{Binding BoxStartIndex}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,16">
+                                    <TextBlock Text="End vertex:" VerticalAlignment="Center" Width="110"/>
+                                    <ComboBox Width="240"
+                                              ItemsSource="{Binding VertexOptions}"
+                                              DisplayMemberPath="Label"
+                                              SelectedValuePath="Index"
+                                              SelectedValue="{Binding BoxEndIndex}"/>
+                                    <Button Content="Clear" Width="80" Margin="16,0,0,0" Command="{Binding ClearBoxSelectionCommand}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Margin="0,0,0,16">
+                                    <TextBlock Text="Manual radius adjustment (hold buttons to repeat)." />
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <RepeatButton Content="-"
+                                                      Width="36"
+                                                      Height="28"
+                                                      Delay="350"
+                                                      Interval="120"
+                                                      Command="{Binding DecreaseBoxMethodRadiusCommand}"
+                                                      IsEnabled="{Binding GeometryDefinition.IsBoxMethodCircleDefined}"/>
+                                        <TextBlock Margin="12,0,12,0" VerticalAlignment="Center" Text="{Binding BoxMethodRadiusDisplay}"/>
+                                        <RepeatButton Content="+"
+                                                      Width="36"
+                                                      Height="28"
+                                                      Delay="350"
+                                                      Interval="120"
+                                                      Command="{Binding IncreaseBoxMethodRadiusCommand}"
+                                                      IsEnabled="{Binding GeometryDefinition.IsBoxMethodCircleDefined}"/>
+                                        <TextBlock Text="Step:" VerticalAlignment="Center" Margin="16,0,6,0"/>
+                                        <TextBox Width="70"
+                                                 Text="{Binding BoxMethodRadiusStep, UpdateSourceTrigger=LostFocus}"
+                                                HorizontalContentAlignment="Center"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <Button Content="Add to Min Radius"
+                                                Width="150"
+                                                Command="{Binding ApplyRadiusToMinCommand}"
+                                                IsEnabled="{Binding GeometryDefinition.IsBoxMethodCircleDefined}"/>
+                                        <Button Content="Add to Max Radius"
+                                                Width="150"
+                                                Margin="12,0,0,0"
+                                                Command="{Binding ApplyRadiusToMaxCommand}"
+                                                IsEnabled="{Binding GeometryDefinition.IsBoxMethodCircleDefined}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <StackPanel Width="180">
+                                            <TextBlock Text="Minimum Radius" FontWeight="SemiBold"/>
+                                            <TextBox Text="{Binding SlipSurface.MinRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.###}}"
+                                                     IsReadOnly="True"
+                                                     Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Width="180" Margin="16,0,0,0">
+                                            <TextBlock Text="Maximum Radius" FontWeight="SemiBold"/>
+                                            <TextBox Text="{Binding SlipSurface.MaxRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.###}}"
+                                                     IsReadOnly="True"
+                                                     Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <TextBlock Margin="0,8,0,0"
+                                               Text="Radius increment = (Maximum Radius - Minimum Radius) / Number of circles."/>
+                                </StackPanel>
+                                <TabControl Grid.Row="4">
+                                    <TabItem Header="Slice Generation">
+                                        <StackPanel Margin="8">
+                                            <TextBlock Text="Divide the current slip circle into evenly spaced vertical slices. Generated slice boundaries are shown directly on the canvas."
+                                                       TextWrapping="Wrap"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                                <TextBlock Text="Slip circle number:"
+                                                           VerticalAlignment="Center"
+                                                           Width="150"/>
+                                                <ComboBox Width="120"
+                                                          ItemsSource="{Binding CircleNumberOptions}"
+                                                          SelectedItem="{Binding SelectedCircleNumber}">
+                                                    <ComboBox.Style>
+                                                        <Style TargetType="ComboBox">
+                                                            <Setter Property="IsEnabled" Value="True"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CircleNumberOptions.Count}" Value="0">
+                                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ComboBox.Style>
+                                                </ComboBox>
+                                                <Button Content="Show"
+                                                        Width="90"
+                                                        Margin="12,0,0,0"
+                                                        Command="{Binding ShowSelectedCircleSlicesCommand}"/>
+                                                <TextBlock Text="(optional)"
+                                                           Margin="12,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="#FF475569"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                                <TextBlock Text="Number of slices:"
+                                                           VerticalAlignment="Center"
+                                                           Width="150"/>
+                                                <TextBox Width="80"
+                                                         Text="{Binding SliceGenerationCount, UpdateSourceTrigger=PropertyChanged}"
+                                                         HorizontalContentAlignment="Center"/>
+                                                <Button Content="Generate"
+                                                        Width="100"
+                                                        Margin="12,0,0,0"
+                                                        Command="{Binding GenerateSliceBoundariesCommand}"/>
+                                                <Button Content="Clear"
+                                                        Width="90"
+                                                        Margin="8,0,0,0"
+                                                        Command="{Binding ClearGeneratedSlicesCommand}"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding SliceGenerationMessage}"
+                                                       Margin="0,12,0,0"
+                                                       TextWrapping="Wrap"
+                                                       Foreground="#FF0F6A00">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <Trigger Property="Text" Value="">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding GeometryDefinition.LastRequestedSliceCount, StringFormat='Requested slices: {0}'}"
+                                                       Margin="0,8,0,0"/>
+                                            <TextBlock Text="{Binding GeometryDefinition.LastGeneratedSliceCount, StringFormat='Generated slices: {0}'}"/>
+                                            <TextBlock Text="The slice count is automatically adjusted when the available slip arc cannot accommodate the requested spacing."
+                                                       Margin="0,4,0,0"
+                                                       Foreground="#FFB45309"
+                                                       TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Slice Information">
+                                        <Grid Margin="8">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Row="0"
+                                                       Grid.ColumnSpan="2"
+                                                       Text="Click the Show button next to the slip circle selector to regenerate slices, then review the detailed slice properties below."
+                                                       TextWrapping="Wrap"
+                                                       Margin="0,0,0,12"/>
+
+                                            <DataGrid x:Name="SliceInfoGrid"
+                                                      Grid.Row="1"
+                                                      Grid.Column="0"
+                                                      ItemsSource="{Binding GeometryDefinition.BoxMethodSliceDetails}"
+                                                      SelectedItem="{Binding SelectedSliceDetail, Mode=TwoWay}"
+                                                      AutoGenerateColumns="False"
+                                                      IsReadOnly="True"
+                                                      CanUserAddRows="False"
+                                                      CanUserDeleteRows="False"
+                                                      HeadersVisibility="Column"
+                                                      RowHeaderWidth="0"
+                                                      AlternationCount="2"
+                                                      MinWidth="600"
+                                                      Loaded="SliceInfoGrid_OnLoaded"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Slice" Binding="{Binding SliceNumber}" Width="60"/>
+                                                    <DataGridTextColumn Header="Layer" Binding="{Binding LayerName}" Width="150"/>
+                                                    <DataGridTextColumn Header="Width" Binding="{Binding Width, StringFormat={}{0:F2}}" Width="90"/>
+                                                    <DataGridTextColumn Header="Height" Binding="{Binding Height, StringFormat={}{0:F2}}" Width="90"/>
+                                                    <DataGridTextColumn Header="Base Angle (°)" Binding="{Binding BaseAngleDegrees, StringFormat={}{0:F1}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Weight" Binding="{Binding Weight, StringFormat={}{0:F2}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Normal" Binding="{Binding NormalForce, StringFormat={}{0:F2}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Shear" Binding="{Binding ShearForce, StringFormat={}{0:F2}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Cohesion" Binding="{Binding Cohesion, StringFormat={}{0:F2}}" Width="100"/>
+                                                    <DataGridTextColumn Header="Unit Weight" Binding="{Binding UnitWeight, StringFormat={}{0:F2}}" Width="120"/>
+                                                    <DataGridTextColumn Header="Friction (°)" Binding="{Binding FrictionAngleDegrees, StringFormat={}{0:F1}}" Width="110"/>
+                                                </DataGrid.Columns>
+                                                <DataGrid.Style>
+                                                    <Style TargetType="DataGrid">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="HasItems" Value="False">
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate TargetType="DataGrid">
+                                                                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                                                                <TextBlock Text="No slice data available. Select a slip circle and click Show to generate slice information."
+                                                                                           HorizontalAlignment="Center"
+                                                                                           VerticalAlignment="Center"
+                                                                                           Foreground="#FF64748B"
+                                                                                           TextWrapping="Wrap"
+                                                                                           Margin="24"/>
+                                                                            </Border>
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGrid.Style>
+                                            </DataGrid>
+
+                                            <Slider x:Name="SliceInfoVerticalSlider"
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Margin="8,0,0,0"
+                                                    Minimum="0"
+                                                    Orientation="Vertical"
+                                                    IsSnapToTickEnabled="False"
+                                                    ValueChanged="SliceInfoVerticalSlider_OnValueChanged"/>
+
+                                            <Slider x:Name="SliceInfoHorizontalSlider"
+                                                    Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Margin="0,8,0,0"
+                                                    Minimum="0"
+                                                    Orientation="Horizontal"
+                                                    IsSnapToTickEnabled="False"
+                                                    ValueChanged="SliceInfoHorizontalSlider_OnValueChanged"/>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Show All Circles">
+                                        <StackPanel Margin="8">
+                                            <TextBlock Text="Display all generated circles simultaneously, each rendered with a unique color."
+                                                       TextWrapping="Wrap"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                                <Button Content="Show All"
+                                                        Width="110"
+                                                        Command="{Binding ShowAllCirclesCommand}"/>
+                                                <Button Content="Clear"
+                                                        Width="90"
+                                                        Margin="12,0,0,0"
+                                                        Command="{Binding ClearCirclePreviewCommand}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Generated Radii">
+                                        <Grid Margin="8">
+                                            <DataGrid ItemsSource="{Binding GeneratedRadii}"
+                                                      AutoGenerateColumns="False"
+                                                      CanUserAddRows="False"
+                                                      CanUserDeleteRows="False"
+                                                      IsReadOnly="True"
+                                                      HeadersVisibility="Column"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="80"/>
+                                                    <DataGridTextColumn Header="k Value" Binding="{Binding KValue, StringFormat={}{0:F4}}" Width="120"/>
+                                                    <DataGridTextColumn Header="Radius" Binding="{Binding Radius, StringFormat={}{0:F2}}" Width="120"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </Grid>
+                                    </TabItem>
+                                </TabControl>
+                                <Border Grid.Row="6" Padding="12" Background="#FFF1F5F9" BorderBrush="#FFCBD5E1" BorderThickness="1">
+                                    <TextBlock Text="{Binding BoxMethodSummary}" TextWrapping="Wrap"/>
+                                </Border>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Manual_Hbased scaling">
+                            <TabItem.Style>
+                                <Style TargetType="TabItem">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsHBasedScalingSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TabItem.Style>
+                            <Grid Margin="12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="Select two vertices along the slope boundary to define the diameter of a slip circle. The chosen points are highlighted in red on the canvas."
+                                           TextWrapping="Wrap"/>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,16,0,8">
+                                    <TextBlock Text="Start vertex:" VerticalAlignment="Center" Width="110"/>
+                                    <ComboBox Width="240"
+                                              ItemsSource="{Binding VertexOptions}"
+                                              DisplayMemberPath="Label"
+                                              SelectedValuePath="Index"
+                                              SelectedValue="{Binding BoxStartIndex}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,16">
+                                    <TextBlock Text="End vertex:" VerticalAlignment="Center" Width="110"/>
+                                    <ComboBox Width="240"
+                                              ItemsSource="{Binding VertexOptions}"
+                                              DisplayMemberPath="Label"
+                                              SelectedValuePath="Index"
+                                              SelectedValue="{Binding BoxEndIndex}"/>
+                                    <Button Content="Clear" Width="80" Margin="16,0,0,0" Command="{Binding ClearBoxSelectionCommand}"/>
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Margin="0,0,0,16">
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <Button Content="Add to Min Radius"
+                                                Width="150"
+                                                Command="{Binding ApplyRadiusToMinHBasedCommand}"
+                                                IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                                        <Button Content="Add to Max Radius"
+                                                Width="150"
+                                                Margin="12,0,0,0"
+                                                Command="{Binding ApplyRadiusToMaxHBasedCommand}"
+                                                IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                        <StackPanel Width="180">
+                                            <TextBlock Text="Minimum Radius" FontWeight="SemiBold"/>
+                                            <TextBox Text="{Binding SlipSurface.MinRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.###}}"
+                                                     IsReadOnly="True"
+                                                     Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Width="180" Margin="16,0,0,0">
+                                            <TextBlock Text="Maximum Radius" FontWeight="SemiBold"/>
+                                            <TextBox Text="{Binding SlipSurface.MaxRadius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:0.###}}"
+                                                     IsReadOnly="True"
+                                                     Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Content="Generate Radii"
+                                            Width="180"
+                                            HorizontalAlignment="Left"
+                                            Margin="0,8,0,8"
+                                            Command="{Binding GenerateRadiiCommand}"
+                                            IsEnabled="{Binding IsHBasedScalingSelected}"/>
+                                    <TextBlock Margin="0,8,0,0"
+                                               Text="Radius increment = (Maximum Radius - Minimum Radius) / Number of circles."/>
+                                </StackPanel>
+                                <TabControl Grid.Row="4">
+                                    <TabItem Header="Slice Generation">
+                                        <StackPanel Margin="8">
+                                            <TextBlock Text="Divide the current slip circle into evenly spaced vertical slices. Generated slice boundaries are shown directly on the canvas."
+                                                       TextWrapping="Wrap"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                                <TextBlock Text="Slip circle number:"
+                                                           VerticalAlignment="Center"
+                                                           Width="150"/>
+                                                <ComboBox Width="120"
+                                                          ItemsSource="{Binding CircleNumberOptions}"
+                                                          SelectedItem="{Binding SelectedCircleNumber}">
+                                                    <ComboBox.Style>
+                                                        <Style TargetType="ComboBox">
+                                                            <Setter Property="IsEnabled" Value="True"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding CircleNumberOptions.Count}" Value="0">
+                                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ComboBox.Style>
+                                                </ComboBox>
+                                                <Button Content="Show"
+                                                        Width="90"
+                                                        Margin="12,0,0,0"
+                                                        Command="{Binding ShowSelectedCircleSlicesCommand}"/>
+                                                <TextBlock Text="(optional)"
+                                                           Margin="12,0,0,0"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="#FF475569"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                                <TextBlock Text="Number of slices:"
+                                                           VerticalAlignment="Center"
+                                                           Width="150"/>
+                                                <TextBox Width="80"
+                                                         Text="{Binding SliceGenerationCount, UpdateSourceTrigger=PropertyChanged}"
+                                                         HorizontalContentAlignment="Center"/>
+                                                <Button Content="Generate"
+                                                        Width="100"
+                                                        Margin="12,0,0,0"
+                                                        Command="{Binding GenerateSliceBoundariesCommand}"/>
+                                                <Button Content="Clear"
+                                                        Width="90"
+                                                        Margin="8,0,0,0"
+                                                        Command="{Binding ClearGeneratedSlicesCommand}"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding SliceGenerationMessage}"
+                                                       Margin="0,12,0,0"
+                                                       TextWrapping="Wrap"
+                                                       Foreground="#FF0F6A00">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <Trigger Property="Text" Value="">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding GeometryDefinition.LastRequestedSliceCount, StringFormat='Requested slices: {0}'}"
+                                                       Margin="0,8,0,0"/>
+                                            <TextBlock Text="{Binding GeometryDefinition.LastGeneratedSliceCount, StringFormat='Generated slices: {0}'}"/>
+                                            <TextBlock Text="The slice count is automatically adjusted when the available slip arc cannot accommodate the requested spacing."
+                                                       Margin="0,4,0,0"
+                                                       Foreground="#FFB45309"
+                                                       TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Slice Information">
+                                        <Grid Margin="8">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Row="0"
+                                                       Grid.ColumnSpan="2"
+                                                       Text="Click the Show button next to the slip circle selector to regenerate slices, then review the detailed slice properties below."
+                                                       TextWrapping="Wrap"
+                                                       Margin="0,0,0,12"/>
+
+                                            <DataGrid x:Name="SliceInfoGrid_HBased"
+                                                      Grid.Row="1"
+                                                      Grid.Column="0"
+                                                      ItemsSource="{Binding GeometryDefinition.BoxMethodSliceDetails}"
+                                                      SelectedItem="{Binding SelectedSliceDetail, Mode=TwoWay}"
+                                                      AutoGenerateColumns="False"
+                                                      IsReadOnly="True"
+                                                      CanUserAddRows="False"
+                                                      CanUserDeleteRows="False"
+                                                      HeadersVisibility="Column"
+                                                      RowHeaderWidth="0"
+                                                      AlternationCount="2"
+                                                      MinWidth="600"
+                                                      Loaded="SliceInfoGrid_HBased_OnLoaded"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Slice" Binding="{Binding SliceNumber}" Width="60"/>
+                                                    <DataGridTextColumn Header="Layer" Binding="{Binding LayerName}" Width="150"/>
+                                                    <DataGridTextColumn Header="Width" Binding="{Binding Width, StringFormat={}{0:F2}}" Width="90"/>
+                                                    <DataGridTextColumn Header="Height" Binding="{Binding Height, StringFormat={}{0:F2}}" Width="90"/>
+                                                    <DataGridTextColumn Header="Base Angle (°)" Binding="{Binding BaseAngleDegrees, StringFormat={}{0:F1}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Weight" Binding="{Binding Weight, StringFormat={}{0:F2}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Normal" Binding="{Binding NormalForce, StringFormat={}{0:F2}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Shear" Binding="{Binding ShearForce, StringFormat={}{0:F2}}" Width="110"/>
+                                                    <DataGridTextColumn Header="Cohesion" Binding="{Binding Cohesion, StringFormat={}{0:F2}}" Width="100"/>
+                                                    <DataGridTextColumn Header="Unit Weight" Binding="{Binding UnitWeight, StringFormat={}{0:F2}}" Width="120"/>
+                                                    <DataGridTextColumn Header="Friction (°)" Binding="{Binding FrictionAngleDegrees, StringFormat={}{0:F1}}" Width="110"/>
+                                                </DataGrid.Columns>
+                                                <DataGrid.Style>
+                                                    <Style TargetType="DataGrid">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="HasItems" Value="False">
+                                                                <Setter Property="Template">
+                                                                    <Setter.Value>
+                                                                        <ControlTemplate TargetType="DataGrid">
+                                                                            <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                                                                <TextBlock Text="No slice data available. Select a slip circle and click Show to generate slice information."
+                                                                                           HorizontalAlignment="Center"
+                                                                                           VerticalAlignment="Center"
+                                                                                           Foreground="#FF64748B"
+                                                                                           TextWrapping="Wrap"
+                                                                                           Margin="24"/>
+                                                                            </Border>
+                                                                        </ControlTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </DataGrid.Style>
+                                            </DataGrid>
+
+                                            <Slider x:Name="SliceInfoVerticalSlider_HBased"
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Margin="8,0,0,0"
+                                                    Minimum="0"
+                                                    Orientation="Vertical"
+                                                    IsSnapToTickEnabled="False"
+                                                    ValueChanged="SliceInfoVerticalSlider_HBased_OnValueChanged"/>
+
+                                            <Slider x:Name="SliceInfoHorizontalSlider_HBased"
+                                                    Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Margin="0,8,0,0"
+                                                    Minimum="0"
+                                                    Orientation="Horizontal"
+                                                    IsSnapToTickEnabled="False"
+                                                    ValueChanged="SliceInfoHorizontalSlider_HBased_OnValueChanged"/>
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Show All Circles">
+                                        <StackPanel Margin="8">
+                                            <TextBlock Text="Display all generated circles simultaneously, each rendered with a unique color."
+                                                       TextWrapping="Wrap"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                                <Button Content="Show All"
+                                                        Width="110"
+                                                        Command="{Binding ShowAllCirclesCommand}"/>
+                                                <Button Content="Clear"
+                                                        Width="90"
+                                                        Margin="12,0,0,0"
+                                                        Command="{Binding ClearCirclePreviewCommand}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Generated Radii">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                            <DataGrid ItemsSource="{Binding GeneratedRadii}"
+                                                      AutoGenerateColumns="False"
+                                                      CanUserAddRows="False"
+                                                      CanUserDeleteRows="False"
+                                                      IsReadOnly="True"
+                                                      HeadersVisibility="Column"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Index" Binding="{Binding Index}" Width="80"/>
+                                                    <DataGridTextColumn Header="k Value" Binding="{Binding KValue, StringFormat={}{0:F4}}" Width="120"/>
+                                                    <DataGridTextColumn Header="Radius" Binding="{Binding Radius, StringFormat={}{0:F2}}" Width="120"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </ScrollViewer>
+                                    </TabItem>
+                                </TabControl>
+                                <Border Grid.Row="6" Padding="12" Background="#FFF1F5F9" BorderBrush="#FFCBD5E1" BorderThickness="1">
+                                    <TextBlock Text="{Binding BoxMethodSummary}" TextWrapping="Wrap"/>
+                                </Border>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Regular Grid Search">
+                            <Grid Margin="12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                                           Text="Automatically evaluate slip circles on a regular grid. Adjust the span and resolution, then generate circle previews or run the auto-refinement search to locate promising slip circles."
+                                           TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                                <GroupBox Grid.Row="1" Grid.ColumnSpan="2" Header="Linear spacing control" Margin="0,12,0,0" Padding="10">
+                                    <StackPanel>
+                                        <CheckBox Content="Linear increase"
+                                                  IsChecked="{Binding UseLinearRadiusStepControl2, Mode=TwoWay}"
+                                                  Margin="0,0,0,8"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Radius Steps (circle count):" VerticalAlignment="Center" Width="150"/>
+                                            <TextBox Width="80"
+                                                     Text="{Binding GridSearchRadiusSteps, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"
+                                                     IsEnabled="{Binding UseLinearRadiusStepControl2}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <Button Content="Generate Grid"
+                                                    Width="140"
+                                                    Command="{Binding GenerateCircleSeriesCommand}"
+                                                    IsEnabled="{Binding GeometryDefinition.IsBoxMethodCircleDefined}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Header="Grid extents &amp; spacing" Margin="0,12,0,0" Padding="10">
+                                    <StackPanel>
+                                        <CheckBox Content="Manual spacing"
+                                                  IsChecked="{Binding ManualSpacingEnabled, Mode=TwoWay}"
+                                                  IsEnabled="{Binding UseLinearRadiusStepControl2, Converter={StaticResource BooleanNegationConverter}}"
+                                                  Margin="0,0,0,8"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Horizontal span:" VerticalAlignment="Center" Width="150"/>
+                                            <TextBox Width="90"
+                                                     Text="{Binding GridSearchHorizontalSpan, Mode=OneWay}"
+                                                     HorizontalContentAlignment="Center"
+                                                     Margin="0,0,12,0">
+                                                <TextBox.Style>
+                                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding UseLinearRadiusStepControl}" Value="True">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                            <TextBlock Text="Vertical span:" VerticalAlignment="Center" Width="120"/>
+                                            <TextBox Width="90"
+                                                     Text="{Binding GridSearchVerticalSpan, Mode=OneWay}"
+                                                     HorizontalContentAlignment="Center"
+                                                     Margin="0,0,12,0">
+                                                <TextBox.Style>
+                                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding UseLinearRadiusStepControl}" Value="True">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <TextBlock Text="Grid corners (axis):" VerticalAlignment="Center" Width="150"/>
+                                            <TextBox Width="260"
+                                                     Text="{Binding GridSearchSpanCorners, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Left"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <GroupBox Grid.Row="3" Grid.ColumnSpan="2" Header="Spacing control" Margin="0,12,0,0" Padding="10"
+                                          IsEnabled="{Binding UseLinearRadiusStepControl2, Converter={StaticResource BooleanNegationConverter}}">
+                                    <StackPanel>
+                                        <CheckBox Content="Linear increase"
+                                                  IsChecked="{Binding UseLinearRadiusStepControl, Mode=TwoWay}"
+                                                  Margin="0,0,0,8"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Initial spacing:" VerticalAlignment="Center" Width="150"/>
+                                            <TextBox Width="90"
+                                                     Text="{Binding GridSearchInitialSpacing, Mode=OneWay}"
+                                                     HorizontalContentAlignment="Center"
+                                                     Margin="0,0,12,0">
+                                                <TextBox.Style>
+                                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding UseLinearRadiusStepControl}" Value="True">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                            <TextBlock Text="Minimum spacing:" VerticalAlignment="Center" Width="130"/>
+                                            <TextBox Width="90"
+                                                     Text="{Binding GridSearchMinimumSpacing, Mode=OneWay}"
+                                                     HorizontalContentAlignment="Center">
+                                                <TextBox.Style>
+                                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                                        <Setter Property="IsEnabled" Value="True"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding UseLinearRadiusStepControl}" Value="True">
+                                                                <Setter Property="IsEnabled" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <TextBlock Text="Radius Steps (circle count):" VerticalAlignment="Center" Width="150"/>
+                                            <TextBox Width="80"
+                                                     Text="{Binding GridSearchRadiusSteps, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"
+                                                     IsEnabled="{Binding UseLinearRadiusStepControl}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <TextBlock Text="Number of centers in X:" VerticalAlignment="Center" Width="160"/>
+                                            <TextBox Width="90"
+                                                     Text="{Binding GridSearchCenterCountX, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"/>
+                                            <TextBlock Text="Number of centers in Y:" VerticalAlignment="Center" Width="160" Margin="12,0,0,0"/>
+                                            <TextBox Width="90"
+                                                     Text="{Binding GridSearchCenterCountY, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <Button Content="Generate Grid"
+                                                    Width="140"
+                                                    Command="{Binding GenerateCircleSeriesCommand}"
+                                                    IsEnabled="{Binding GeometryDefinition.IsBoxMethodCircleDefined}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <GroupBox Grid.Row="4" Grid.ColumnSpan="2" Header="Hierarchical grid search (preview only)" Margin="0,12,0,0" Padding="8">
+                                    <StackPanel>
+                                        <CheckBox Content="Enable hierarchical grid search"
+                                                  IsChecked="{Binding UseHierarchicalGridSearch, Mode=TwoWay}"
+                                                  Margin="0,0,0,8"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Levels:" Width="120" VerticalAlignment="Center"/>
+                                            <TextBox Width="60"
+                                                     Text="{Binding HierarchicalRefinementLevels, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"/>
+                                            <TextBlock Text="Zoom factor:" Width="110" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                            <TextBox Width="80"
+                                                     Text="{Binding HierarchicalZoomFactor, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"/>
+                                            <TextBlock Text="Radius zoom:" Width="110" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                            <TextBox Width="80"
+                                                     Text="{Binding HierarchicalRadiusZoomFactor, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                            <TextBlock Text="Level 0 divisions (X/Y/R):" Width="170" VerticalAlignment="Center"/>
+                                            <TextBox Width="60" Text="{Binding Level0CenterXDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                            <TextBox Width="60" Margin="6,0,0,0" Text="{Binding Level0CenterYDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                            <TextBox Width="60" Margin="6,0,0,0" Text="{Binding Level0RadiusDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                            <TextBlock Text="Level 1 divisions (X/Y/R):" Width="170" VerticalAlignment="Center"/>
+                                            <TextBox Width="60" Text="{Binding Level1CenterXDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                            <TextBox Width="60" Margin="6,0,0,0" Text="{Binding Level1CenterYDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                            <TextBox Width="60" Margin="6,0,0,0" Text="{Binding Level1RadiusDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                            <TextBlock Text="Level 2 divisions (X/Y/R):" Width="170" VerticalAlignment="Center"/>
+                                            <TextBox Width="60" Text="{Binding Level2CenterXDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                            <TextBox Width="60" Margin="6,0,0,0" Text="{Binding Level2CenterYDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                            <TextBox Width="60" Margin="6,0,0,0" Text="{Binding Level2RadiusDivisions, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                            <CheckBox Content="Refine radius" IsChecked="{Binding HierarchicalRefineRadius}"/>
+                                            <CheckBox Content="Use parallel" Margin="16,0,0,0" IsChecked="{Binding HierarchicalUseParallel}"/>
+                                            <CheckBox Content="Stop when dFoS &lt; epsilon" Margin="16,0,0,0" IsChecked="{Binding HierarchicalStopOnDeltaFos}"/>
+                                            <TextBox Width="80" Margin="6,0,0,0"
+                                                     Text="{Binding HierarchicalDeltaFosThreshold, UpdateSourceTrigger=PropertyChanged}"
+                                                     HorizontalContentAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Margin="0,6,0,0"
+                                                   Text="{Binding HierarchicalEstimatedEvaluations, StringFormat='Estimated evals: {0}'}"
+                                                   Foreground="#FF0F172A"/>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Margin="0,12,0,0">
+                                    <Button Content="Run Auto-Refinement"
+                                            Width="180"
+                                            Command="{Binding RunGridSearchAutoRefinementCommand}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Margin="0,12,0,0">
+                                    <TextBlock Text="{Binding GenerateCirclesMessage}"
+                                               TextWrapping="Wrap"
+                                               Foreground="#FF0F6A00"/>
+                                    <TextBlock Text="{Binding GridSearchStatusMessage}"
+                                               Margin="0,4,0,0"
+                                               TextWrapping="Wrap"
+                                               Foreground="#FF475569"/>
+                                    <TextBlock Text="{Binding GridSearchDiagnostics}"
+                                               Margin="0,4,0,0"
+                                               TextWrapping="Wrap"
+                                               Foreground="#FF6B7280"/>
+                                </StackPanel>
+
+                                <Slider Grid.Row="8"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,12,0,0"
+                                        Minimum="-10"
+                                        Maximum="10"
+                                        SmallChange="0.5"
+                                        LargeChange="1"
+                                        Value="0"
+                                        IsHitTestVisible="False"
+                                        Visibility="Collapsed"/>
+
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Grid search + auto-refinement">
+                            <Grid Margin="12">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Text="Run auto-refinement from the current slip circle using the existing grid search settings."
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,8"/>
+                                <StackPanel Grid.Row="1" Margin="0,0,0,8">
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <Button Content="Run Auto-Refinement"
+                                                Width="180"
+                                                Command="{Binding RunGridSearchAutoRefinementCommand}"/>
+                                        <Button Content="Clear Grid"
+                                                Width="120"
+                                                Margin="8,0,0,0"
+                                                Command="{Binding ClearGridSearchCommand}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                        <TextBlock Text="Entry base angle:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <TextBox Text="{Binding GridSearchEntryBaseAngleMin, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Width="60" Margin="0,0,4,0" VerticalContentAlignment="Center"/>
+                                        <TextBlock Text="to" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <TextBox Text="{Binding GridSearchEntryBaseAngleMax, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Width="60" Margin="0,0,16,0" VerticalContentAlignment="Center"/>
+                                        <TextBlock Text="Exit base angle:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <TextBox Text="{Binding GridSearchExitBaseAngleMin, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Width="60" Margin="0,0,4,0" VerticalContentAlignment="Center"/>
+                                        <TextBlock Text="to" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <TextBox Text="{Binding GridSearchExitBaseAngleMax, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Width="60" Margin="0,0,16,0" VerticalContentAlignment="Center"/>
+                                        <TextBlock Text="(degrees)" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="#FF6B7280"/>
+                                        <Button Content="Accept"
+                                                Width="100"
+                                                Margin="16,0,0,0"
+                                                Command="{Binding AcceptBaseAngleFilterCommand}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                        <Button Content="circleintersectingleft"
+                                                Width="180"
+                                                Margin="0,0,0,0"
+                                                Command="{Binding RemoveCirclesIntersectingLeftCommand}"/>
+                                        <Button Content="circleintersectingbottom"
+                                                Width="200"
+                                                Margin="8,0,0,0"
+                                                Command="{Binding RemoveCirclesIntersectingBottomCommand}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding GridSearchStatusMessage}"
+                                               TextWrapping="Wrap"
+                                               Foreground="#FF475569"/>
+                                    <TextBlock Text="{Binding GridSearchDiagnostics}"
+                                               TextWrapping="Wrap"
+                                               Foreground="#FF6B7280"
+                                               Margin="0,4,0,0"/>
+                                </StackPanel>
+                                <DataGrid Grid.Row="3"
+                                          ItemsSource="{Binding GridSearchEvaluations}"
+                                          SelectedItem="{Binding SelectedGridSearchEvaluation, Mode=TwoWay}"
+                                          AutoGenerateColumns="False"
+                                          CanUserAddRows="False"
+                                          IsReadOnly="False"
+                                          HeadersVisibility="Column">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="#" Binding="{Binding Serial}" Width="50" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Stage" Binding="{Binding Stage}" Width="140" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Center X" Binding="{Binding AxisCenterX, StringFormat={}{0:F2}}" Width="100" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Center Y" Binding="{Binding AxisCenterY, StringFormat={}{0:F2}}" Width="100" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Radius" Binding="{Binding Radius, StringFormat={}{0:F2}}" Width="90" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Score" Binding="{Binding Score, StringFormat={}{0:F3}}" Width="90" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Accepted" Binding="{Binding Accepted}" Width="80" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Chord/R" Binding="{Binding ChordRadiusRatio, StringFormat={}{0:F3}}" Width="90" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Accepted Info" Binding="{Binding Notes}" Width="200" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Rejected Reason" Binding="{Binding Reason}" Width="220" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Notes" Binding="{Binding NotesWithBoundary}" Width="*" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="circleintersectingleftslope" Binding="{Binding CircleIntersectingLeftSlope}" Width="220" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="circleintersectingbottom" Binding="{Binding TouchesBottomBoundary}" Width="200" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Base angle" Binding="{Binding BaseAngleSummary}" Width="260" IsReadOnly="True"/>
+                                        <DataGridCheckBoxColumn Header="Show"
+                                                                Binding="{Binding ShowPreview, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Width="70"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="AI">
+                            <StackPanel Margin="12">
+                                <TextBlock Text="Use AI assistance to propose slip circles based on the current slope geometry."
+                                           TextWrapping="Wrap"/>
+                                <Border Padding="12" Margin="0,12,0,0" Background="#FFF1F5F9" BorderBrush="#FFCBD5E1" BorderThickness="1">
+                                    <StackPanel>
+                                        <TextBlock Text="AI suggestions coming soon." Foreground="#FF475569"/>
+                                        <TextBlock Text="In the meantime, continue using the Manual tab to define the slip circle."
+                                                   Margin="0,8,0,0"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

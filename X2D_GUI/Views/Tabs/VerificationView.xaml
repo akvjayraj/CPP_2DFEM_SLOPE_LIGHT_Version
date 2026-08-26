@@ -1,0 +1,372 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.VerificationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:InvertedBooleanConverter x:Key="InvertedBooleanConverter"/>
+        <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+        <converters:VerdictKindToBrushConverter x:Key="VerdictKindToBrushConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="PassStatusStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Passed}" Value="True">
+                    <Setter Property="Foreground" Value="#FF059669"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Passed}" Value="False">
+                    <Setter Property="Foreground" Value="#FFDC2626"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Padding="16,12" Margin="0,0,0,16"
+                Background="#FFF1F5F9" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="6">
+            <StackPanel>
+                <TextBlock Text="FEM Verification"
+                           FontSize="22" FontWeight="Bold" Foreground="#FF0F172A"/>
+                <TextBlock Text="Compare finite element (numerical) results with analytical solutions to validate the implementation. Run individual benchmarks or all at once."
+                           TextWrapping="Wrap" Margin="0,6,0,0" Foreground="#FF64748B" FontSize="13"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Controls -->
+        <GroupBox Grid.Row="1" Header="Run Verification" Margin="0,0,0,12">
+            <Grid Margin="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Problem:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+                <ComboBox Grid.Row="0" Grid.Column="1"
+                          ItemsSource="{Binding ProblemOptions}"
+                          SelectedItem="{Binding SelectedProblem, Mode=TwoWay}"
+                          Margin="0,0,0,8"
+                          IsEnabled="{Binding IsRunning, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="Tolerance (%):" VerticalAlignment="Center" Margin="16,0,8,8"/>
+                <TextBox Grid.Row="0" Grid.Column="3"
+                         Text="{Binding TolerancePercent, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,0,0,8"
+                         IsEnabled="{Binding IsRunning, Converter={StaticResource InvertedBooleanConverter}}"
+                         ToolTip="Maximum acceptable relative error (e.g. 5 = 5%)"/>
+
+                <Button Grid.Row="0" Grid.Column="5"
+                        Content="Run Verification"
+                        Command="{Binding RunVerificationCommand}"
+                        IsEnabled="{Binding IsRunning, Converter={StaticResource InvertedBooleanConverter}}"
+                        Padding="16,8" FontWeight="SemiBold"
+                        ToolTip="Run selected problem(s) and compare analytical vs numerical results"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6"
+                           Text="{Binding StatusMessage}"
+                           TextWrapping="Wrap" Margin="0,4,0,0" Foreground="#FF64748B" FontSize="12"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Analytical input overrides (auto-prefilled from FE meta) -->
+        <Expander Grid.Row="2" Header="{Binding InputsHeaderText}"
+                  IsExpanded="True" Margin="0,0,0,12">
+            <Border Padding="12" Background="#FFF8FAFC"
+                    BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4">
+                <StackPanel>
+                    <!-- NAFEMS patch: header-driven, no GUI inputs needed -->
+                    <TextBlock Visibility="{Binding IsNafemsPatchSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               Text="The NAFEMS constant-stress patch comparison reads its expected stresses (sigma_xx, sigma_yy, tau_xy, sigma_zz) and tolerance directly from the .dat AnalysisOptions header (! expected_*_kPa, ! tolerance_kPa). Click Run Verification to re-evaluate the loaded run, or click Execute Script on a NAFEMS .dat in the Script tab to auto-populate this grid."
+                               Foreground="#FF334155" FontSize="12" TextWrapping="Wrap"
+                               Margin="0,0,0,4"/>
+                    <CheckBox Content="Auto-prefill from FE meta block"
+                              Visibility="{Binding IsTunnelProblemSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                              IsChecked="{Binding AutoFromMeta, Mode=TwoWay}"
+                              ToolTip="When ON, inputs follow the latest p610_t3-family JSON meta block. Turn OFF to type custom values."
+                              Margin="0,0,0,6"/>
+                    <TextBlock Visibility="{Binding IsTunnelProblemSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               Text="{Binding PrefillBannerText}"
+                               Foreground="#FF334155" FontSize="12" TextWrapping="Wrap"
+                               Margin="0,0,0,8"/>
+                    <Grid Visibility="{Binding IsTunnelProblemSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="E (kPa):" VerticalAlignment="Center" Margin="0,0,6,4"/>
+                        <TextBox   Grid.Row="0" Grid.Column="1" Margin="0,0,12,4"
+                                   Text="{Binding E_kPa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G6}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="ν:" VerticalAlignment="Center" Margin="0,0,6,4"/>
+                        <TextBox   Grid.Row="0" Grid.Column="3" Margin="0,0,12,4"
+                                   Text="{Binding Nu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G4}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="4" Text="σv (kPa, comp+):" VerticalAlignment="Center" Margin="0,0,6,4"/>
+                        <TextBox   Grid.Row="0" Grid.Column="5" Margin="0,0,12,4"
+                                   Text="{Binding Sigma_v_kPa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G6}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="6" Text="K₀:" VerticalAlignment="Center" Margin="0,0,6,4"/>
+                        <TextBox   Grid.Row="0" Grid.Column="7" Margin="0,0,0,4"
+                                   Text="{Binding K0, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G4}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="a (m):" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBox   Grid.Row="1" Grid.Column="1" Margin="0,0,12,0"
+                                   Text="{Binding A, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G6}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="cx (m):" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBox   Grid.Row="1" Grid.Column="3" Margin="0,0,12,0"
+                                   Text="{Binding Cx, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G6}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="cy (m):" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBox   Grid.Row="1" Grid.Column="5" Margin="0,0,12,0"
+                                   Text="{Binding Cy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G6}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Pi (kPa, comp+):" VerticalAlignment="Center" Margin="0,6,6,0"/>
+                        <TextBox   Grid.Row="2" Grid.Column="1" Margin="0,6,12,0"
+                                   Text="{Binding Pi_kPa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G6}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"
+                                   ToolTip="Salencon internal support pressure. Use 0 for the mc_tunnel excavation benchmark."/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="φ (deg):" VerticalAlignment="Center" Margin="0,6,6,0"/>
+                        <TextBox   Grid.Row="2" Grid.Column="3" Margin="0,6,12,0"
+                                   Text="{Binding PhiDeg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G4}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="c (kPa):" VerticalAlignment="Center" Margin="0,6,6,0"/>
+                        <TextBox   Grid.Row="2" Grid.Column="5" Margin="0,6,12,0"
+                                   Text="{Binding C_kPa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G6}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="6" Text="ψ (deg):" VerticalAlignment="Center" Margin="0,6,6,0"/>
+                        <TextBox   Grid.Row="2" Grid.Column="7" Margin="0,6,0,0"
+                                   Text="{Binding PsiDeg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=G4}"
+                                   IsEnabled="{Binding AutoFromMeta, Converter={StaticResource InvertedBooleanConverter}}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Expander>
+
+        <!-- Summary -->
+        <Border Grid.Row="3" Padding="12,10" Margin="0,0,0,12"
+                Background="#FFF8FAFC" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4"
+                Visibility="{Binding Results.Count, Converter={StaticResource CountToVisibilityConverter}, FallbackValue=Collapsed}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Summary: " FontWeight="SemiBold" Margin="0,0,4,0"/>
+                <TextBlock Text="{Binding SummaryText, Mode=OneWay}"/>
+            </StackPanel>
+        </Border>
+
+        <!--
+            Verification Suite Browser. Reads Verification\_index.csv (the master
+            summary written by tools\build_all_*_packages.ps1) and shows every
+            benchmark case with its PASS / REVIEW / FAIL verdict. Read-only by
+            design: rerunning a suite still goes through the orchestrator scripts
+            so the index stays the single source of truth. A per-row Open folder
+            button lets the user inspect a case's .dat / .res / .json artifacts.
+        -->
+        <Expander Grid.Row="4" Header="Verification Suite Browser (Verification\_index.csv)"
+                  IsExpanded="True" Margin="0,0,0,12">
+            <Border Padding="12" Background="#FFF8FAFC"
+                    BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="320"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{Binding SuiteSummaryText}"
+                                       FontWeight="SemiBold" Foreground="#FF0F172A" FontSize="13"/>
+                            <TextBlock Text="{Binding SuiteStatusMessage}"
+                                       Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap"
+                                       Margin="0,2,0,0"/>
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="Refresh"
+                                Command="{Binding RefreshSuitesCommand}"
+                                Padding="12,4" VerticalAlignment="Center"
+                                ToolTip="Re-read Verification\_index.csv from disk."/>
+                    </Grid>
+
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding SuiteIndexPath}"
+                               FontSize="11" FontFamily="Consolas" Foreground="#FF94A3B8"
+                               TextTrimming="CharacterEllipsis" Margin="0,0,0,6"/>
+
+                    <DataGrid Grid.Row="2"
+                              ItemsSource="{Binding Suites}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserResizeColumns="True"
+                              CanUserReorderColumns="True"
+                              CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal"
+                              ColumnWidth="SizeToCells"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto"
+                              RowHeight="28">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                <Setter Property="Padding" Value="6,4"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Style>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Padding" Value="6,2"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Suite" Binding="{Binding Suite}"
+                                                Width="Auto" MinWidth="80"/>
+                            <DataGridTextColumn Header="Case / Folder" Binding="{Binding DisplayName}"
+                                                Width="*" MinWidth="160"/>
+                            <DataGridTextColumn Header="Mesh" Binding="{Binding MeshLabel}"
+                                                Width="Auto" MinWidth="50"/>
+                            <DataGridTextColumn Header="Criterion" Binding="{Binding CriterionLabel}"
+                                                Width="Auto" MinWidth="80"/>
+                            <DataGridTemplateColumn Header="Verdict" Width="Auto" MinWidth="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Verdict}"
+                                                   FontWeight="SemiBold" Margin="6,2"
+                                                   Foreground="{Binding VerdictKind, Converter={StaticResource VerdictKindToBrushConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Notes" Binding="{Binding Notes}"
+                                                Width="*" MinWidth="120"/>
+                            <DataGridTemplateColumn Header="" Width="Auto" MinWidth="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Open folder"
+                                                Padding="8,2" Margin="4,2"
+                                                Command="{Binding DataContext.OpenSuiteFolderCommand,
+                                                          RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding HasCaseFolder}"
+                                                ToolTip="{Binding CaseFolderPath}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Expander>
+
+        <!-- Results Table -->
+        <GroupBox Grid.Row="5" Header="Results: Analytical vs Numerical Comparison">
+            <Grid Margin="8">
+                <DataGrid x:Name="ResultsGrid"
+                          ItemsSource="{Binding Results}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          CanUserResizeColumns="True"
+                          CanUserReorderColumns="True"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          ColumnWidth="SizeToCells"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto"
+                          RowHeight="36">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="Padding" Value="6,4"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Padding" Value="6,2"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                        <Style x:Key="WrapTextCellStyle" TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="6,2"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Problem" Width="Auto" MinWidth="80" CanUserResize="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ProblemName}" Style="{StaticResource WrapTextCellStyle}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Description" Width="*" MinWidth="100" CanUserResize="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Description}" Style="{StaticResource WrapTextCellStyle}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Analytical" Binding="{Binding AnalyticalValueFormatted}" Width="Auto" MinWidth="70" CanUserResize="True"/>
+                        <DataGridTextColumn Header="FEM (Numerical)" Binding="{Binding FEMValueFormatted}" Width="Auto" MinWidth="80" CanUserResize="True"/>
+                        <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="Auto" MinWidth="40" CanUserResize="True"/>
+                        <DataGridTextColumn Header="Error %" Binding="{Binding RelativeErrorPercent, StringFormat=F2}" Width="Auto" MinWidth="60" CanUserResize="True"/>
+                        <DataGridTemplateColumn Header="Status" Width="Auto" MinWidth="60" CanUserResize="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding StatusText}" Style="{StaticResource PassStatusStyle}" Margin="6,2"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Border Background="#FFF8FAFC" CornerRadius="4" Padding="24"
+                        Visibility="{Binding IsResultsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="No results yet. Select a problem and click 'Run Verification' to compare analytical and numerical solutions."
+                               Foreground="#FF94A3B8" FontStyle="Italic" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

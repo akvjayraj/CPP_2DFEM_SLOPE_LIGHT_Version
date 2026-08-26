@@ -1,0 +1,63 @@
+! <solver:p610_t3>
+! Kirsch elastic, pure shear
+! <BEGIN:AnalysisOptions>
+! failure_criterion Elastic
+! material_type Isotropic
+! mesh_type Q8
+! solver_executable p610_t3_elastic
+! expected_sxx_kPa 47.6666666666667
+! expected_syy_kPa 2.33333333333334
+! expected_txy_kPa -6.12499999999999
+! expected_szz_kPa 10
+! tolerance_kPa 1
+! <END:AnalysisOptions>
+! Mesh size block:
+! nels nn np_types
+! nels = number of elements
+! nn = number of nodes
+! np_types = number of material/property types
+1  8  1
+! Material/property block:
+! phi   c     psi  gamma  E        nu    K0
+! One row per material/property type declared by np_types.
+! Values are consumed by the selected solver in solver-specific order.
+0  0  0  0  10000000  0.20  1
+! Nodal coordinate block:
+! One row per node in node-number order.
+! Each row is: x y
+0  0
+1  0
+1  1
+0  1
+0.5  0
+1  0.5
+0.5  1
+0  0.5
+! Element connectivity block:
+! One row per element in element-number order.
+! The node count per row identifies the element type; first row appears to be Q8 quadratic quadrilateral.
+1  2  3  4  5  6  7  8
+! Boundary condition block:
+! First line is nr = number of restrained nodes.
+! Each following row is: node_id fix_x fix_y
+! 0 = fixed/restrained, 1 = free.
+4
+1  0  0
+2  1  0
+4  0  1
+8  0  1
+! Output/watch node block:
+! First line is nouts = number of nodes requested for output.
+! Following row(s) list the node IDs.
+4
+1  2  3  4
+! Traction loading block:
+! First line is number of traction groups.
+! Each group then contains:
+! mode row: mode and stress/traction parameters
+! edge count: number of loaded edges
+! edge rows: node IDs defining each loaded boundary edge
+1
+0  100  -100  0
+1
+2  6

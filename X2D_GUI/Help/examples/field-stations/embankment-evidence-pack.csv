@@ -1,0 +1,15 @@
+# Field Stations Evidence Pack — three-layer embankment (SI metres)
+# Leave Reference elevation = 0 for the Method A / B / C slope tutorials.
+# (Optional) Set Reference elevation = 100 to shift all Y onto a project datum; then add 100 to every Y in those tutorials.
+# Create soil block (margin 5) → rectangle (3,-5) (45,-5) (45,25) (3,25).
+# Ground through collars: Crest (8,20) · Mid-slope (25,15) · Toe (40,10).
+# After Commit: Layer 1 = SAND (bottom), Layer 2 = CLAY, Layer 3 = FILL.
+StationId,X,TopY,BottomY,UnitCode,Note,Label
+BH-C,8.0,20.0,14.0,FILL,Compacted fill,Crest
+BH-C,8.0,14.0,8.0,CLAY,Firm clay,Crest
+BH-C,8.0,8.0,0.0,SAND,Foundation sand,Crest
+BH-M,25.0,15.0,14.0,FILL,Thin fill on face,Mid-slope
+BH-M,25.0,14.0,8.0,CLAY,Firm clay,Mid-slope
+BH-M,25.0,8.0,0.0,SAND,Foundation sand,Mid-slope
+BH-T,40.0,10.0,8.0,CLAY,Clay at toe (no fill),Toe
+BH-T,40.0,8.0,0.0,SAND,Foundation sand,Toe

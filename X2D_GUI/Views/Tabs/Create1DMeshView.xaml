@@ -1,0 +1,79 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.Create1DMeshView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Loaded="OnLoaded">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Parameters -->
+            <GroupBox Header="1D Mesh (Length, n)" Grid.Row="0" Margin="0,0,0,16" Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Length is read from the geometry in the Geometry Definition tab. Creating mesh does not change that tab or any other; the 1D mesh is defined by the current geometry (nodes and elements follow your line)."
+                               TextWrapping="Wrap" Margin="0,0,0,12" Foreground="#374151" FontSize="11"/>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Length (from geometry):" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" 
+                                 Text="{Binding OneDMeshLength, Mode=OneWay}" 
+                                 Width="120" HorizontalAlignment="Left" IsReadOnly="True"
+                                 Background="#FFF1F5F5" ToolTip="Total path length from Geometry Definition tab. Create at least 2 points there first."/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="n (number of elements):" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" 
+                                 Text="{Binding OneDMeshN, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="120" HorizontalAlignment="Left"
+                                 ToolTip="Number of rod elements (e.g. 5 → 6 nodes)"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Generate Button -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+                <Button Content="Generate 1D Mesh"
+                        Command="{Binding Generate1DMeshCommand}"
+                        Padding="16,8"
+                        FontWeight="SemiBold"
+                        ToolTip="Use current geometry as 1D mesh. Does not change Geometry Definition or any other tab."/>
+            </StackPanel>
+
+            <!-- Status -->
+            <Border Grid.Row="2" Padding="12,10" Margin="0,0,0,16"
+                    Background="#FFF8FAFC" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4">
+                <TextBlock Text="{Binding OneDMeshStatus, Mode=OneWay}"
+                           Foreground="#64748B" FontSize="12" TextWrapping="Wrap"/>
+            </Border>
+
+            <!-- Info -->
+            <GroupBox Grid.Row="3" Header="Info" Padding="12">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,8">
+                        <Run Text="• Length comes from the current geometry (Geometry Definition tab); create a line with 2+ points there"/>
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,8">
+                        <Run Text="• This tab does not modify other tabs. To change the mesh, add or remove points in Geometry Definition"/>
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,8">
+                        <Run Text="• The current geometry drives the Script/.dat (p41) content"/>
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap">
+                        <Run Text="• Use Load Conditions and Material Properties for loads and EA per segment"/>
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

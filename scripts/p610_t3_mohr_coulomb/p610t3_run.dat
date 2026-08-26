@@ -1,0 +1,57 @@
+! solver:p610_t3
+! p610_t3 — elasto-plastic Mohr-Coulomb excavation (T3 plane-strain)
+! Unit system: lengths m | stresses & moduli kPa | unit weight kN/m³ | angles °
+! Skeleton created 2026-05-13 14:41:26
+! Click the numbered buttons (1..7) above the editor to emit each section.
+! Hand-edits outside the sentinel markers are preserved when re-emitting.
+
+! <BEGIN:Header>
+! (awaiting: click "1. Header" above the editor)
+! <END:Header>
+
+! <BEGIN:Materials>
+! phi(°)  c(kPa)  psi(°)  gamma(kN/m³)  E(kPa)  v(-)  K0(-)  — one row per property, one value per material
+22.5
+30
+0
+19.5
+60000
+0.3
+0.6173165676
+! <BEGIN:MaterialModelOptions>
+! material_index 1
+! failure_criterion MohrCoulomb
+! material_type Isotropic
+! ti Eh=100000 Ev=50000 nuhh=0.3 nuvh=0.2 Gvh=20000
+! hb ucs=50 mi=10 gsi=50 disturbance=0 mr=400
+! dp alpha=0 k=0
+! strength tensile_cutoff=0
+! <END:MaterialModelOptions>
+! <END:Materials>
+! <BEGIN:Mesh>
+! (awaiting: click "3. Mesh" above the editor)
+! <END:Mesh>
+
+! <BEGIN:Bcs>
+! (awaiting: click "4. BCs" above the editor)
+! <END:Bcs>
+
+! <BEGIN:OutputNodes>
+! (awaiting: click "5. Output nodes" above the editor)
+! <END:OutputNodes>
+
+! <BEGIN:SolverControl>
+! tol  limit  incs  layers
+1E-05  250  5  3
+! <END:SolverControl>
+! <BEGIN:Layers>
+! Excavation layer 1 — 10 elements
+10
+57  58  59  60  61  62  71  72  73  74
+! Excavation layer 2 — 6 elements
+6
+43  44  45  46  47  48
+! Excavation layer 3 — 4 elements
+4
+29  30  31  32
+! <END:Layers>

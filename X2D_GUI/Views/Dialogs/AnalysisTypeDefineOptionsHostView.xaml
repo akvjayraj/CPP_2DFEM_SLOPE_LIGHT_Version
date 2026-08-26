@@ -1,0 +1,1150 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Dialogs.AnalysisTypeDefineOptionsHostView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BoolVis"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Margin" Value="0,1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="MinHeight" Value="22"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="MinHeight" Value="22"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="OptionLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+        <Style x:Key="OptionHeader" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,3"/>
+        </Style>
+        <Style x:Key="OptionRow" TargetType="Grid">
+            <Setter Property="Margin" Value="0,0,0,2"/>
+        </Style>
+        <Style x:Key="GatedNote" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,2,0,0"/>
+        </Style>
+        <Style x:Key="OptionPanel" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource ViewportPaperBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="6,5"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        </Style>
+        <Style x:Key="OptionPanelFill" TargetType="Border" BasedOn="{StaticResource OptionPanel}">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style x:Key="DescCol" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+            <!-- Seepage: 7 boxes + Description -->
+            <UniformGrid Columns="3"
+                         Visibility="{Binding ShowSeepageDefineOptions, Converter={StaticResource BoolVis}}"
+                         MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="1. Formulation" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Flow Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding SeepageFlowTypes}" SelectedItem="{Binding GatedSeepageFlowType, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Pore Fluid" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PoreFluids}" SelectedItem="{Binding GatedPoreFluid, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Analysis Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PhysicsTypeChoices}" SelectedItem="{Binding PendingIntentDisplayName, Mode=OneWay}"/>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Pore Pressure" IsChecked="{Binding IsSeepagePorePressureFormulation}"/>
+                            <RadioButton Content="Hydraulic Head" IsChecked="{Binding IsSeepageHydraulicHead}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="Method" Style="{StaticResource OptionHeader}"/>
+                        <StackPanel Visibility="{Binding ShowSeepageStaticMethod, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Static" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBlock Style="{StaticResource DescCol}" Text="Prescribed pore pressure (water table, Ru, B-bar, or grid) is applied as Terzaghi effective stress σ′ = σ + u. This is not a seepage solve and not two-way solid–fluid coupling."/>
+                            <Grid Style="{StaticResource OptionRow}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/><ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Method:" Style="{StaticResource OptionLabel}"/>
+                                <TextBox Grid.Column="1" Text="Prescribed pore pressure" IsReadOnly="True"/>
+                            </Grid>
+                            <GroupBox Header="Options" Margin="0,4,0,0" Padding="6,4"
+                                      Foreground="{DynamicResource WindowForegroundBrush}">
+                                <StackPanel>
+                                    <CheckBox Content="Water Surfaces"
+                                              IsChecked="{Binding ProjectSettingsVM.GroundwaterStaticSettings.IncludeWaterSurfaces}"/>
+                                    <CheckBox Content="Ponded free-water pressures" Margin="18,0,0,0"
+                                              IsChecked="{Binding ProjectSettingsVM.GroundwaterStaticSettings.IncludePondedFreeWater}"
+                                              IsEnabled="{Binding ProjectSettingsVM.GroundwaterStaticSettings.IncludeWaterSurfaces}"/>
+                                    <CheckBox Content="Ru / B-bar Coefficients"
+                                              IsChecked="{Binding ProjectSettingsVM.GroundwaterStaticSettings.IncludeRuCoefficients}"/>
+                                    <CheckBox Content="Water Pressure Grid (Total Head)"
+                                              IsChecked="{Binding ProjectSettingsVM.GroundwaterStaticSettings.IncludeWaterPressureGridTotalHead}"/>
+                                    <CheckBox Content="Water Pressure Grid (Pressure Head)"
+                                              IsChecked="{Binding ProjectSettingsVM.GroundwaterStaticSettings.IncludeWaterPressureGridPressureHead}"/>
+                                    <CheckBox Content="Water Pressure Grid (Pore Pressure)"
+                                              IsChecked="{Binding ProjectSettingsVM.GroundwaterStaticSettings.IncludeWaterPressureGridPorePressure}"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <TextBlock Style="{StaticResource GatedNote}" Text="Water Surfaces and Ru Coefficients control which pore-pressure inputs appear on the Groundwater tab. Ponded free-water pressures is a sub-option of Water Surfaces. Water Pressure Grid options define an internal pore-pressure field. Water Head BCs for seepage are under Steady State."/>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding ShowSeepageSteadyMethod, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Steady State" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBlock Style="{StaticResource DescCol}" Text="FE seepage computes heads, then pore pressure u. When SRF is also ON, one-way seepage transfer installs that u in the mechanical run. This is not two-way solid–fluid coupling."/>
+                            <TextBlock Style="{StaticResource GatedNote}" Text="{Binding ProjectSettingsVM.SeepageSolverNote}"/>
+                            <GroupBox Header="Steady seepage solver" Margin="0,4,0,0" Padding="6,4"
+                                      Foreground="{DynamicResource WindowForegroundBrush}">
+                                <StackPanel>
+                                    <CheckBox Content="Free-surface seepage (unconfined)"
+                                              IsChecked="{Binding ProjectSettingsVM.IsSteadyStateFreeSurfaceChecked}"/>
+                                    <CheckBox Content="Water Head" Margin="18,0,0,0"
+                                              IsChecked="{Binding ProjectSettingsVM.SeepageSettings.IncludeWaterHeadFreeSurface}"/>
+                                    <CheckBox Content="General-mesh seepage"
+                                              IsChecked="{Binding ProjectSettingsVM.IsSteadyStateGeneral2DChecked}"/>
+                                    <CheckBox Content="Water Head" Margin="18,0,0,0"
+                                              IsChecked="{Binding ProjectSettingsVM.SeepageSettings.IncludeWaterHeadGeneral2D}"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <TextBlock Style="{StaticResource GatedNote}" Text="Check one solver to activate it. Enable Water Head under that solver, then define Upstream/Downstream (and custom) total-head BCs on the Groundwater tab."/>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding ShowSeepageTransientMethod, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Transient State" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBlock Style="{StaticResource DescCol}" Text="Transient dissipation of excess pore pressure using the θ-method (p84 / p88). This is not two-way solid–fluid coupling."/>
+                            <TextBlock Style="{StaticResource GatedNote}" Text="{Binding ProjectSettingsVM.TransientSolverNote}"/>
+                            <GroupBox Header="Transient solver" Margin="0,4,0,0" Padding="6,4"
+                                      Foreground="{DynamicResource WindowForegroundBrush}">
+                                <StackPanel>
+                                    <CheckBox Content="Structured Q4 (p84)"
+                                              IsChecked="{Binding ProjectSettingsVM.IsTransientP84Checked}"/>
+                                    <CheckBox Content="Axisymmetric (p84 structured Q4 only)" Margin="18,0,0,0"
+                                              IsChecked="{Binding ProjectSettingsVM.TransientSettings.Axisymmetric}"
+                                              IsEnabled="{Binding ProjectSettingsVM.IsTransientP84Selected}"/>
+                                    <CheckBox Content="General mesh (p88)"
+                                              IsChecked="{Binding ProjectSettingsVM.IsTransientP88Checked}"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Time integration" Margin="0,4,0,0" Padding="6,4"
+                                      Foreground="{DynamicResource WindowForegroundBrush}">
+                                <StackPanel>
+                                    <Grid Style="{StaticResource OptionRow}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Δt (dtim)" Style="{StaticResource OptionLabel}"/>
+                                        <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.TimeStep}"/>
+                                    </Grid>
+                                    <Grid Style="{StaticResource OptionRow}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Steps (nstep)" Style="{StaticResource OptionLabel}"/>
+                                        <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.NumberOfSteps}"/>
+                                    </Grid>
+                                    <Grid Style="{StaticResource OptionRow}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Theta (θ)" Style="{StaticResource OptionLabel}"/>
+                                        <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.Theta}"/>
+                                    </Grid>
+                                    <Grid Style="{StaticResource OptionRow}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Print interval" Style="{StaticResource OptionLabel}"/>
+                                        <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.PrintInterval}"/>
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="2. Material Permeability" Style="{StaticResource OptionHeader}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Isotropic" IsChecked="{Binding IsPermeabilityIsotropic}"/>
+                            <RadioButton Content="Anisotropic" IsChecked="{Binding IsPermeabilityAnisotropic}"/>
+                        </StackPanel>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="k / kx (m/s)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedPermeabilityX}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ky (m/s)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedPermeabilityY}"/>
+                        </Grid>
+                        <CheckBox Content="Spatially Varying Permeability" IsChecked="{Binding SpatiallyVaryingPermeability}"/>
+                        <Button Content="Define Zones..." HorizontalAlignment="Left" Margin="0,2,0,0" Padding="8,2"
+                                Command="{Binding DefineZonesCommand}"/>
+                        <TextBlock Text="{Binding FeatureNotAvailable}" Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="3. Fluid Properties" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Unit Weight γw" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GroundwaterVM.GammaW}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Viscosity μ" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedViscosity, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Density ρ" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedFluidDensity, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Cw (1/Pa)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedWaterCompressibility, Mode=TwoWay}"/>
+                        </Grid>
+                        <TextBlock Text="μ, ρ, and Cw are display-only. The p73/p74 deck uses γw." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="4. Boundary Condition Behavior" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Incompatible Modes" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding GatedIncompatibleModes}" SelectedItem="{Binding GatedIncompatibleMode, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Boundary Conductance" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding BoundaryConductanceChoices}" SelectedItem="{Binding GatedBoundaryConductance, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Conductance Factor" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedConductanceFactor, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Upstream H₁" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SeepageUpstreamHead}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Downstream H₂" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SeepageDownstreamHead}"/>
+                        </Grid>
+                        <Button Content="Edit Water Heads…" HorizontalAlignment="Left" Margin="0,2,0,0" Padding="8,2"
+                                Command="{Binding EditWaterHeadsCommand}"/>
+                        <TextBlock Text="Incompatible modes and conductance are not in this engine. Water Heads live on the Groundwater tab." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="5. Initial Condition" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding InitialConditionTypes}" SelectedItem="{Binding GatedInitialConditionType, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Reference Level" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedReferenceLevel, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="u at Reference" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedPorePressureAtReference, Mode=TwoWay}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="6. Analysis Options" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Include Gravity" IsChecked="{Binding FEAnalysisVM.GravityEnabled}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Gravity Dir" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding GatedGravityDirections}" SelectedItem="{Binding GatedGravityDirection, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Gravity (m/s²)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding FEAnalysisVM.GravityAcceleration}"/>
+                        </Grid>
+                        <CheckBox Content="Check Seepage Force" IsChecked="{Binding CheckSeepageForce}"/>
+                        <CheckBox Content="Include Temperature Effect" IsChecked="{Binding IncludeTemperatureEffect}"/>
+                        <CheckBox Content="Include Time Dependency (Transient)" IsChecked="{Binding IncludeTimeDependency}"/>
+                        <TextBlock Text="Seepage force and temperature are not in this engine. Time Dependency is Flow Type = Transient." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="7. Seepage Outputs" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Pore Pressure / Hydraulic Head" IsChecked="{Binding OutputPorePressureHead}"/>
+                        <CheckBox Content="Seepage Velocity" IsChecked="{Binding OutputSeepageVelocity}"/>
+                        <CheckBox Content="Seepage Flux" IsChecked="{Binding OutputSeepageFlux}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Location" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding OutputLocations}" SelectedItem="{Binding GatedOutputLocation, Mode=TwoWay}"/>
+                        </Grid>
+                        <TextBlock Text="Preview uses the main 2D view." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="Description" Style="{StaticResource OptionHeader}"/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="Finish turns Flow-Seepage/Groundwater ON. Hydraulic Head + Steady uses p73/p74; Transient uses p84/p88; Pore Pressure uses the Static leaf. Water Heads and kx/ky stay on the existing Groundwater / Materials tabs."/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="{Binding CapabilityBanner}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Consolidation: 8 boxes + Description -->
+            <UniformGrid Columns="3"
+                         Visibility="{Binding ShowConsolidationDefineOptions, Converter={StaticResource BoolVis}}"
+                         MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="1. Formulation" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Consolidation Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding ConsolidationTypes}" SelectedItem="{Binding GatedConsolidationType, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Pore Fluid" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PoreFluids}" SelectedItem="{Binding GatedPoreFluid, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Analysis Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PhysicsTypeChoices}" SelectedItem="{Binding PendingIntentDisplayName, Mode=OneWay}"/>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Pore Pressure" IsChecked="{Binding IsConsolidationPorePressureFormulation}"/>
+                            <RadioButton Content="Total Stress" IsChecked="{Binding IsConsolidationTotalStressFormulation}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="2. Material Compressibility" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Compression Model" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding CompressionModels}" SelectedItem="{Binding GatedCompressionModel, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Cc" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedCompressionCc, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Cr" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedCompressionCr, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Cs" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedCompressionCs, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Pc (kPa)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedPreconsolidationPc, Mode=TwoWay}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="3. Permeability" Style="{StaticResource OptionHeader}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Isotropic" IsChecked="{Binding IsPermeabilityIsotropic}"/>
+                            <RadioButton Content="Anisotropic" IsChecked="{Binding IsPermeabilityAnisotropic}"/>
+                        </StackPanel>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="kx" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedPermeabilityX}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ky" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedPermeabilityY}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="kz" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedKzEcho, Mode=TwoWay}"/>
+                        </Grid>
+                        <CheckBox Content="Permeability Varies with Void Ratio" IsChecked="{Binding PermeabilityVariesWithVoidRatio}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="4. Initial Condition" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding InitialConditionTypes}" SelectedItem="{Binding GatedInitialConditionType, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Reference Level" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedReferenceLevel, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Initial Pore Pressure" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.InitialPressure}"/>
+                        </Grid>
+                        <CheckBox Content="Generate Initial Pore Pressure" IsChecked="{Binding GenerateInitialPorePressure}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="5. Time / Loading" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Time Unit" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding TimeUnits}" SelectedItem="{Binding GatedTimeUnit, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Total Time" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding ConsolidationTotalTime}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Incrementation" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding TimeIncrementationChoices}" SelectedItem="{Binding GatedTimeIncrementation, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Max Time Step" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.TimeStep}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Number of Steps" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.NumberOfSteps}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Min Time Step" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedMinTimeStep, Mode=TwoWay}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="6. Analysis Options" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Include Gravity" IsChecked="{Binding FEAnalysisVM.GravityEnabled}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Gravity Dir" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding GatedGravityDirections}" SelectedItem="{Binding GatedGravityDirection, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Gravity (m/s²)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding FEAnalysisVM.GravityAcceleration}"/>
+                        </Grid>
+                        <CheckBox Content="Include Temperature Effect" IsChecked="{Binding IncludeTemperatureEffect}"/>
+                        <CheckBox Content="Include Secondary Compression (Cα)" IsChecked="{Binding IncludeSecondaryCompression}"/>
+                        <CheckBox Content="Large Deformation" IsChecked="{Binding IncludeLargeDeformation}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="7. Boundary Condition Behavior" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Incompatible Modes" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding GatedIncompatibleModes}" SelectedItem="{Binding GatedIncompatibleMode, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Boundary Conductance" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding BoundaryConductanceChoices}" SelectedItem="{Binding GatedBoundaryConductance, Mode=TwoWay}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="8. Consolidation Outputs" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Pore Pressure / Excess Pore Pressure" IsChecked="{Binding OutputExcessPorePressure}"/>
+                        <CheckBox Content="Vertical Displacement / Settlement" IsChecked="{Binding OutputSettlement}"/>
+                        <CheckBox Content="Effective Stress" IsChecked="{Binding OutputEffectiveStress}"/>
+                        <CheckBox Content="Degree of Consolidation (U)" IsChecked="{Binding OutputDegreeOfConsolidation}"/>
+                        <TextBlock Text="Preview uses the main 2D view." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="Description" Style="{StaticResource OptionHeader}"/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="Consolidation uses the existing p84/p88 time-step block. Total Time is TimeStep × NumberOfSteps."/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="{Binding CapabilityBanner}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Dynamic: 10 boxes + Description -->
+            <UniformGrid Columns="3"
+                         Visibility="{Binding ShowDynamicDefineOptions, Converter={StaticResource BoolVis}}"
+                         MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="1. Formulation" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Analysis Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PhysicsTypeChoices}" SelectedItem="{Binding PendingIntentDisplayName, Mode=OneWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Formulation" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding FormulationChoices}" SelectedItem="{Binding SelectedFormulation}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Pore Fluid" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PoreFluids}" SelectedItem="{Binding GatedPoreFluid, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Damping" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding DynamicDampingTypes}" SelectedItem="{Binding GatedDynamicDamping, Mode=TwoWay}"/>
+                        </Grid>
+                        <CheckBox Content="Use Mass Scaling" IsChecked="{Binding UseMassScaling}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="2. Material Damping (Rayleigh)" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Use Rayleigh Damping" IsChecked="{Binding UseRayleighDamping}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="α (1/s)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedRayleighAlpha, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="β (s)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedRayleighBeta, Mode=TwoWay}"/>
+                        </Grid>
+                        <CheckBox Content="Use Hysteretic Damping (βh)" IsChecked="{Binding UseHystereticDamping}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="3. Time Integration" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Method" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding IntegrationMethods}" SelectedItem="{Binding GatedIntegrationMethod, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="γ / β" Style="{StaticResource OptionLabel}"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <TextBox Width="48" Text="{Binding GatedNewmarkGamma, Mode=TwoWay}"/>
+                                <TextBox Width="48" Margin="6,0,0,0" Text="{Binding GatedNewmarkBeta, Mode=TwoWay}"/>
+                            </StackPanel>
+                        </Grid>
+                        <CheckBox Content="Hilber-Hughes-Taylor (HHT)" IsChecked="{Binding UseHht}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="4. Mass Matrix" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding MassFormulations}" SelectedItem="{Binding GatedMassFormulation, Mode=TwoWay}"/>
+                        <CheckBox Content="Lumped Mass" IsChecked="{Binding LumpedMass}"/>
+                        <CheckBox Content="Rotary Inertia" IsChecked="{Binding RotaryInertia}"/>
+                        <CheckBox Content="Include Added Mass" IsChecked="{Binding IncludeAddedMass}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="5. Dynamic Loading" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding DynamicLoadTypes}" SelectedItem="{Binding GatedDynamicLoadType, Mode=TwoWay}"/>
+                        <ComboBox Margin="0,2,0,0" ItemsSource="{Binding SeismicDirections}" SelectedItem="{Binding GatedSeismicDirection, Mode=TwoWay}"/>
+                        <CheckBox Content="Seismic / inertia (live kh/kv)" IsChecked="{Binding LoadConditionsVM.SeismicAnalysisEnabled}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/><ColumnDefinition Width="*"/><ColumnDefinition Width="40"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="kh" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding DynamicSeismicKh}"/>
+                            <TextBlock Grid.Column="2" Text="kv" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="3" Text="{Binding DynamicSeismicKv}"/>
+                        </Grid>
+                        <CheckBox Content="Apply in All Activated Stages" IsChecked="{Binding ApplyInAllActivatedStages}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="6. Seismic Input" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding SeismicInputTypes}" SelectedItem="{Binding GatedSeismicInputType, Mode=TwoWay}"/>
+                        <ComboBox Margin="0,2,0,0" ItemsSource="{Binding SeismicFunctions}" SelectedItem="{Binding GatedSeismicFunction, Mode=TwoWay}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Time Step (s)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedSeismicTimeStep, Mode=TwoWay}"/>
+                        </Grid>
+                        <TextBlock Text="Preview uses the main 2D view." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="7. Initial Conditions" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding InitialConditionTypes}" SelectedItem="{Binding GatedAtRestInitial, Mode=TwoWay}"/>
+                        <CheckBox Content="Generate Initial Stress" IsChecked="{Binding GenerateInitialStress}"/>
+                        <CheckBox Content="Include Initial Pore Pressure" IsChecked="{Binding GroundwaterVM.IsEnabled}"/>
+                        <CheckBox Content="Initial Velocity" IsChecked="{Binding InitialVelocityEnabled}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="8. Boundary Condition Behavior" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding GatedIncompatibleModes}" SelectedItem="{Binding GatedIncompatibleMode, Mode=TwoWay}"/>
+                        <ComboBox Margin="0,2,0,0" ItemsSource="{Binding BoundaryDampingChoices}" SelectedItem="{Binding GatedBoundaryDamping, Mode=TwoWay}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="9. Output Controls" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Acceleration" IsChecked="{Binding OutputAcceleration}"/>
+                        <CheckBox Content="Velocity" IsChecked="{Binding OutputVelocity}"/>
+                        <CheckBox Content="Displacement" IsChecked="{Binding OutputDisplacement}"/>
+                        <CheckBox Content="Stress / Strain" IsChecked="{Binding OutputStressStrain}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="10. Analysis Options" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Include Gravity" IsChecked="{Binding FEAnalysisVM.GravityEnabled}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Gravity (m/s²)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding FEAnalysisVM.GravityAcceleration}"/>
+                        </Grid>
+                        <CheckBox Content="Include Temperature Effect" IsChecked="{Binding IncludeTemperatureEffect}"/>
+                        <CheckBox Content="Couple With Seepage (Dynamic)" IsChecked="{Binding GroundwaterVM.IsEnabled}"/>
+                        <CheckBox Content="Large Deformation" IsChecked="{Binding IncludeLargeDeformation}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="Description" Style="{StaticResource OptionHeader}"/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="Time-history dynamics are not in this engine. Live path is pseudo-static kh / kv on Loads."/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="{Binding CapabilityBanner}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}"/>
+            </UniformGrid>
+
+            <!-- Thermal: 5 boxes + Description -->
+            <UniformGrid Columns="3"
+                         Visibility="{Binding ShowThermalDefineOptions, Converter={StaticResource BoolVis}}"
+                         MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="1. Formulation" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Analysis Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PhysicsTypeChoices}" SelectedItem="{Binding PendingIntentDisplayName, Mode=OneWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Problem Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding ThermalProblemTypes}" SelectedItem="{Binding GatedThermalProblemType, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Formulation" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding ThermalFormulations}" SelectedItem="{Binding GatedThermalFormulation, Mode=TwoWay}"/>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="SI" IsChecked="{Binding IsSiUnits}"/>
+                            <RadioButton Content="US" IsChecked="{Binding IsUsUnits}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="2. Thermal Properties" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="k (W/m·K)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedThermalConductivityX}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="c (J/kg·K)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedHeatCapacity}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ρ (kg/m³)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedDensity}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="3. Heat Generation" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Include Heat Generation" IsChecked="{Binding IncludeHeatGeneration}"/>
+                        <TextBox Text="{Binding GatedHeatGeneration, Mode=TwoWay}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="5. Initial Condition" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Initial Temperature" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedInitialTemperature, Mode=TwoWay}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="6. Thermal Outputs" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Temperature" IsChecked="{Binding OutputTemperature}"/>
+                        <CheckBox Content="Heat Flux" IsChecked="{Binding OutputHeatFlux}"/>
+                        <CheckBox Content="Isotherms" IsChecked="{Binding OutputIsotherms}"/>
+                        <TextBlock Text="Preview uses the main 2D view." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="Description" Style="{StaticResource OptionHeader}"/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="Thermal and THM coupling are not in this engine. k, c, and ρ write the selected material fields only."/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="{Binding ThermalUnavailableReason}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Coupled THM: 7 boxes + Description -->
+            <UniformGrid Columns="3"
+                         Visibility="{Binding ShowCoupledDefineOptions, Converter={StaticResource BoolVis}}"
+                         MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="1. Coupling" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding CoupledSchemes}" SelectedItem="{Binding GatedCoupledScheme, Mode=TwoWay}"/>
+                        <CheckBox Content="Couple with Seepage" IsChecked="{Binding GroundwaterVM.IsEnabled}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="2. Thermal Properties" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="k (W/m·K)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedThermalConductivityX}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="c (J/kg·K)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedHeatCapacity}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ρ (kg/m³)" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedDensity}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="3. Fluid Properties" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding PoreFluids}" SelectedItem="{Binding GatedPoreFluid, Mode=TwoWay}"/>
+                        <TextBox Margin="0,2,0,0" Text="{Binding GatedViscosity, Mode=TwoWay}"/>
+                        <TextBox Margin="0,2,0,0" Text="{Binding GatedFluidDensity, Mode=TwoWay}"/>
+                        <TextBox Margin="0,2,0,0" Text="{Binding GatedWaterCompressibility, Mode=TwoWay}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="4. Hydraulic Properties" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="kx" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedPermeabilityX}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="ky" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding SelectedPermeabilityY}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="kz" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedKzEcho, Mode=TwoWay}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="5. Mechanical Properties" Style="{StaticResource OptionHeader}"/>
+                        <ComboBox ItemsSource="{Binding FormulationChoices}" SelectedItem="{Binding SelectedFormulation}"/>
+                        <TextBlock Text="{Binding MaterialNonlinearityLabel, StringFormat=Constitutive: {0}}" Margin="0,4,0,0"/>
+                        <CheckBox Content="Pore Pressure Coupling" IsChecked="{Binding Workspace.Settings.UpdatePorePressure}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="6. Analysis Options" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Include Gravity" IsChecked="{Binding FEAnalysisVM.GravityEnabled}"/>
+                        <TextBox Text="{Binding FEAnalysisVM.GravityAcceleration}"/>
+                        <CheckBox Content="Include Temperature Effect" IsChecked="{Binding IncludeTemperatureEffect}"/>
+                        <CheckBox Content="Large Deformation" IsChecked="{Binding IncludeLargeDeformation}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="7. Initial Conditions" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Temperature" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding GatedInitialTemperature, Mode=TwoWay}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Pore Pressure" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding ProjectSettingsVM.TransientSettings.InitialPressure}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="K0 / Kx" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding LoadConditionsVM.FieldStress.Global.Kx}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="Description" Style="{StaticResource OptionHeader}"/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="Fully coupled Biot is not available. Live paths are seepage→SRF and prescribed-u→SRF."/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="{Binding CapabilityBanner}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- SSR: 5 boxes + Description -->
+            <UniformGrid Columns="3"
+                         Visibility="{Binding ShowSrfDefineOptions, Converter={StaticResource BoolVis}}"
+                         MinHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="1. Strength Reduction Method" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Method" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding Workspace.MethodChoices}" SelectedItem="{Binding Workspace.Settings.Method}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="SSR Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding Workspace.SsrTypeChoices}" SelectedItem="{Binding Workspace.Settings.SsrType}"/>
+                        </Grid>
+                        <CheckBox Content="Non-convergence" IsChecked="{Binding Workspace.Settings.CheckNonConvergence}"/>
+                        <CheckBox Content="Displacement Divergence" IsChecked="{Binding Workspace.Settings.CheckDisplacementJump}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Initial RF" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding Workspace.Settings.InitialStrengthReductionFactor}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Increment" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding Workspace.Settings.StrengthReductionIncrement}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="F min / max" Style="{StaticResource OptionLabel}"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <TextBox Width="56" Text="{Binding FEAnalysisVM.SrfFoSMin}"/>
+                                <TextBox Width="56" Margin="6,0,0,0" Text="{Binding FEAnalysisVM.SrfFoSMax}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="2. Convergence Controls" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Tolerance" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding FEAnalysisVM.ConvergenceToleranceText}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Max Iters" Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding FEAnalysisVM.MaxIterations}"/>
+                        </Grid>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Load incr." Style="{StaticResource OptionLabel}"/>
+                            <TextBox Grid.Column="1" Text="{Binding FEAnalysisVM.LoadIncrements}"/>
+                        </Grid>
+                        <CheckBox Content="Load stepping" IsChecked="{Binding FEAnalysisVM.LoadSteppingEnabled}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="3. Analysis Options" Style="{StaticResource OptionHeader}"/>
+                        <Grid Style="{StaticResource OptionRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/><ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Analysis Type" Style="{StaticResource OptionLabel}"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding PhysicsTypeChoices}" SelectedItem="{Binding PendingIntentDisplayName, Mode=OneWay}"/>
+                        </Grid>
+                        <ComboBox ItemsSource="{Binding PorePressureChoices}" SelectedItem="{Binding Workspace.Settings.PorePressureOption}"/>
+                        <CheckBox Content="Use Pore Pressure" IsChecked="{Binding GroundwaterVM.IsEnabled}"/>
+                        <CheckBox Content="Include Gravity" IsChecked="{Binding FEAnalysisVM.GravityEnabled}"/>
+                        <TextBox Text="{Binding FEAnalysisVM.GravityAcceleration}"/>
+                        <CheckBox Content="Include Temperature Effect" IsChecked="{Binding IncludeTemperatureEffect}"/>
+                        <CheckBox Content="Large Deformation" IsChecked="{Binding IncludeLargeDeformation}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="4. Failure Criterion" Style="{StaticResource OptionHeader}"/>
+                        <TextBlock Text="{Binding MaterialNonlinearityLabel}"/>
+                        <ComboBox ItemsSource="{Binding FEAnalysisVM.SrfInsituModeChoices}" SelectedItem="{Binding FEAnalysisVM.SelectedSrfInsituMode}"/>
+                        <CheckBox Content="Tension cutoff" IsChecked="{Binding TensionCutoff}"/>
+                        <CheckBox Content="Shear Strain Limit" IsChecked="{Binding Workspace.Settings.CheckPlasticZoneConnect}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="5. Output Controls" Style="{StaticResource OptionHeader}"/>
+                        <CheckBox Content="Strength Reduction Factor" IsChecked="{Binding OutputSrf}"/>
+                        <CheckBox Content="Displacement" IsChecked="{Binding OutputSrfDisplacement}"/>
+                        <CheckBox Content="Plastic Zone" IsChecked="{Binding OutputPlasticZone}"/>
+                        <TextBlock Text="Preview uses the main 2D view." Style="{StaticResource GatedNote}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource OptionPanelFill}">
+                    <StackPanel>
+                        <TextBlock Text="Description" Style="{StaticResource OptionHeader}"/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="SSR reduces strength until non-convergence. Bracket bounds and increment write the existing FE / workspace SRF settings."/>
+                        <TextBlock Style="{StaticResource DescCol}" Text="{Binding CapabilityBanner}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

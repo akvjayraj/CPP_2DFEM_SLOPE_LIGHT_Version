@@ -1,0 +1,614 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.JointWizardDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Joint"
+        Width="860" Height="640"
+        MinWidth="760" MinHeight="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        ShowInTaskbar="False">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis"/>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF475569"/>
+            <Setter Property="Margin" Value="0,0,8,4"/>
+        </Style>
+        <Style x:Key="Chip" TargetType="Button">
+            <Setter Property="Padding" Value="8,3"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Background" Value="#FFEFF6FF"/>
+            <Setter Property="BorderBrush" Value="#FFBFDBFE"/>
+            <Setter Property="Foreground" Value="#FF1D4ED8"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Background="#FFF8FAFC">
+        <Border DockPanel.Dock="Top" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="0,0,0,1" Padding="14,10">
+            <StackPanel>
+                <TextBlock Text="Place joints at a suitable location"
+                           FontWeight="Bold" FontSize="14" Foreground="#FF1E3A8A"/>
+                <TextBlock Text="{Binding Status}" Foreground="#FF64748B" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                <ItemsControl ItemsSource="{Binding Suggestions}" Margin="0,8,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource Chip}"
+                                    Content="{Binding Label}"
+                                    ToolTip="{Binding Hint}"
+                                    Command="{Binding DataContext.ApplySuggestionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="0,1,0,0" Padding="14,10">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Content="Cancel" Width="88" Margin="0,0,8,0" IsCancel="True" Command="{Binding CancelCommand}"/>
+                    <Button Content="OK" Width="88" IsDefault="True" Command="{Binding ApplyCommand}"/>
+                </StackPanel>
+                <TextBlock Text="OK places the joint with the selected property set, end condition, and install stage."
+                           Foreground="#FF94A3B8" FontSize="11" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            </DockPanel>
+        </Border>
+
+        <Grid Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320" MinWidth="280"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*" MinWidth="240"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Type" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <ComboBox ItemsSource="{Binding AvailableKinds}"
+                              SelectedItem="{Binding Kind, Mode=TwoWay}"
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="Name" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+                    <TextBlock Text="Placement" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <RadioButton Content="Crest–toe plane" IsChecked="{Binding IsCrestToe, Mode=TwoWay}" Margin="0,0,0,3"/>
+                    <RadioButton Content="Layer contact" IsChecked="{Binding IsLayerContact, Mode=TwoWay}" Margin="0,0,0,3"/>
+                    <RadioButton Content="Tension crack at crest" IsChecked="{Binding IsTensionCrack, Mode=TwoWay}" Margin="0,0,0,3"/>
+                    <RadioButton Content="Through-point at dip" IsChecked="{Binding IsThroughPoint, Mode=TwoWay}" Margin="0,0,0,3"/>
+                    <RadioButton Content="Parallel set" IsChecked="{Binding IsParallelSet, Mode=TwoWay}" Margin="0,0,0,3"/>
+                    <RadioButton Content="Manual draw on canvas" IsChecked="{Binding IsManualDraw, Mode=TwoWay}" Margin="0,0,0,3"/>
+                    <RadioButton Content="Joint network" IsChecked="{Binding IsJointNetwork, Mode=TwoWay}" Margin="0,0,0,10"/>
+
+                    <StackPanel Visibility="{Binding IsJointNetwork, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="Networks" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <ListBox ItemsSource="{Binding JointNetworks}"
+                                 SelectedItem="{Binding SelectedNetwork, Mode=TwoWay}"
+                                 DisplayMemberPath="Name"
+                                 Height="72" Margin="0,0,0,4"/>
+                        <DockPanel Margin="0,0,0,8">
+                            <TextBox Text="{Binding SelectedNetwork.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,6,0"/>
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <Button Content="Add" Width="56" Margin="0,0,6,0" Command="{Binding AddNetworkCommand}"/>
+                            <Button Content="Delete" Width="56" Margin="0,0,6,0" Command="{Binding DeleteNetworkCommand}"/>
+                            <Button Content="Randomize" Width="80" Command="{Binding RandomizeNetworkCommand}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Apply to regions" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <TextBlock Text="Select one or more surfaces. Different networks can target different regions."
+                                   Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                        <ItemsControl ItemsSource="{Binding NetworkRegions}" Margin="0,0,0,10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding DisplayName}"
+                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              Margin="0,0,0,3"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="Joint Model" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                        <TextBlock Text="Select the Joint Model first; it determines which parameters can be entered."
+                                   Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding AvailableJointModels}"
+                                  SelectedValuePath="Model"
+                                  SelectedValue="{Binding SelectedJointModel, Mode=TwoWay}"
+                                  DisplayMemberPath="DisplayName"
+                                  Margin="0,0,0,10"/>
+
+                        <StackPanel Visibility="{Binding ShowParallelDeterministic, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Parallel Deterministic" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Inclination (deg)"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.DipDeg, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Spacing"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Spacing.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,4"
+                                          Content="Infinite length"
+                                          IsChecked="{Binding SelectedNetwork.Set1.InfiniteLength, Mode=TwoWay}"/>
+                                <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,4"
+                                          Content="Random location"
+                                          IsChecked="{Binding SelectedNetwork.RandomLocation, Mode=TwoWay}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="First-joint offset"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Margin="0,0,0,6"
+                                         Text="{Binding SelectedNetwork.Set1.FirstJointOffset, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                            <Grid Visibility="{Binding ShowDeterministicLengthParams, Converter={StaticResource BoolVis}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Length.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Persistence (0–1)"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Persistence.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,4"
+                                          Content="Random offset"
+                                          IsChecked="{Binding SelectedNetwork.Set1.RandomOffset, Mode=TwoWay}"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Offset length"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,6"
+                                         Text="{Binding SelectedNetwork.Set1.OffsetLength, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                            <Grid Visibility="{Binding ShowThroughLocation, Converter={StaticResource BoolVis}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Through X"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.ThroughX, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Through Y"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,6"
+                                         Text="{Binding SelectedNetwork.ThroughY, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding ShowParallelStatistical, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Parallel Statistical" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Inclination (deg)"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.DipDeg, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Spacing mean"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Spacing.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Spacing dist."/>
+                                <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Set1.Spacing.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Spacing std"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Spacing.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                                <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,4"
+                                          Content="Auto min/max 3× std. dev."
+                                          IsChecked="{Binding SelectedNetwork.Set1.Spacing.AutoMinMax3Std, Mode=TwoWay}"/>
+                                <CheckBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,6"
+                                          Content="Infinite length"
+                                          IsChecked="{Binding SelectedNetwork.Set1.InfiniteLength, Mode=TwoWay}"/>
+                            </Grid>
+                            <Grid Visibility="{Binding ShowStatisticalLengthParams, Converter={StaticResource BoolVis}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length mean"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Length.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length dist."/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Set1.Length.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length std"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Length.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Persistence mean"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Persistence.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Persistence dist."/>
+                                <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Set1.Persistence.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Persistence std"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Margin="0,0,0,6"
+                                         Text="{Binding SelectedNetwork.Set1.Persistence.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding ShowCrossJointed, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Cross Jointed" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBlock Text="Bedding planes are continuous. Cross joints intersect them at the spacing measured along the bedding."
+                                       Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Bedding incl. (deg)"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.DipDeg, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Bedding spacing"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Spacing.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Bedding dist."/>
+                                <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Set1.Spacing.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Bedding std"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set1.Spacing.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Cross incl. (deg)"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set2.DipDeg, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Cross spacing"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Set2.Spacing.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Cross dist."/>
+                                <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Set2.Spacing.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Cross std"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Margin="0,0,0,6"
+                                         Text="{Binding SelectedNetwork.Set2.Spacing.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding ShowBaecher, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Baecher" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBlock Text="Poisson centers, finite traces. Intensity P21 = traces per unit area."
+                                       Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Intensity P21"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Intensity, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Inclination mean"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Orientation.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Orientation dist."/>
+                                <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Orientation.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Orientation std"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Orientation.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length mean"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Length.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length dist."/>
+                                <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Length.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length std"/>
+                                <TextBox Grid.Row="6" Grid.Column="1" Margin="0,0,0,6"
+                                         Text="{Binding SelectedNetwork.Length.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding ShowVeneziano, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Veneziano" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBlock Text="Poisson lines with finite persistence segments (coplanar traces)."
+                                       Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Line intensity"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Intensity, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Inclination mean"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Orientation.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Orientation dist."/>
+                                <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Orientation.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length mean"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Length.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Length dist."/>
+                                <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Length.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Persistence mean"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Margin="0,0,0,4"
+                                         Text="{Binding SelectedNetwork.Persistence.Mean, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Persistence dist."/>
+                                <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableDistributions}"
+                                          SelectedValuePath="Kind"
+                                          SelectedValue="{Binding SelectedNetwork.Persistence.Kind, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Persistence std"/>
+                                <TextBox Grid.Row="7" Grid.Column="1" Margin="0,0,0,6"
+                                         Text="{Binding SelectedNetwork.Persistence.StdDev, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding ShowVoronoi, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Voronoi" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBlock Text="Cell edges become joints. Density is Voronoi cells per unit area (RS2)."
+                                       Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,6"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Density method"/>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableVoronoiDensityMethods}"
+                                          SelectedValuePath="Method"
+                                          SelectedValue="{Binding SelectedNetwork.VoronoiDensityMethod, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Density / length"
+                                           Visibility="{Binding ShowVoronoiDensityValue, Converter={StaticResource BoolVis}}"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,4"
+                                         Visibility="{Binding ShowVoronoiDensityValue, Converter={StaticResource BoolVis}}"
+                                         Text="{Binding SelectedNetwork.Intensity, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Site count"
+                                           Visibility="{Binding ShowVoronoiSiteCount, Converter={StaticResource BoolVis}}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,4"
+                                         Visibility="{Binding ShowVoronoiSiteCount, Converter={StaticResource BoolVis}}"
+                                         Text="{Binding SelectedNetwork.SiteCount, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Regularity"/>
+                                <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,4"
+                                          ItemsSource="{Binding AvailableVoronoiRegularities}"
+                                          SelectedValuePath="Regularity"
+                                          SelectedValue="{Binding SelectedNetwork.VoronoiRegularity, Mode=TwoWay}"
+                                          DisplayMemberPath="DisplayName"/>
+                                <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,4"
+                                          Content="Hexagon long axis horizontal"
+                                          Visibility="{Binding ShowVoronoiHexagonAxis, Converter={StaticResource BoolVis}}"
+                                          IsChecked="{Binding SelectedNetwork.HexagonHorizontal, Mode=TwoWay}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Anisotropy X, Y"/>
+                                <DockPanel Grid.Row="5" Grid.Column="1" Margin="0,0,0,6">
+                                    <TextBox Width="56" Margin="0,0,6,0"
+                                             Text="{Binding SelectedNetwork.AnisotropyX, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Text="{Binding SelectedNetwork.AnisotropyY, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DockPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <DockPanel Margin="0,0,0,10" Visibility="{Binding IsJointNetwork, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Random seed" Style="{StaticResource FieldLabel}" Width="130"/>
+                            <TextBox Text="{Binding SelectedNetwork.RandomSeed, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DockPanel>
+                    </StackPanel>
+
+                    <Grid Visibility="{Binding ShowDip, Converter={StaticResource BoolVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                  Content="Override dip (deg from +X)"
+                                  IsChecked="{Binding UseDipOverride, Mode=TwoWay}"
+                                  Margin="0,0,0,4"
+                                  Visibility="{Binding IsCrestToe, Converter={StaticResource BoolVis}}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Dip (deg)"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,6"
+                                 Text="{Binding DipAngleDeg, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <Grid Visibility="{Binding ShowThroughPoint, Converter={StaticResource BoolVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Through X"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                 Text="{Binding ThroughX, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Through Y"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,6"
+                                 Text="{Binding ThroughY, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <Grid Visibility="{Binding ShowTensionDepth, Converter={StaticResource BoolVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Depth"/>
+                        <TextBox Grid.Column="1" Margin="0,0,0,6"
+                                 Text="{Binding TensionCrackDepth, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <Grid Visibility="{Binding ShowParallel, Converter={StaticResource BoolVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Count"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,0,4"
+                                 Text="{Binding ParallelCount, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldLabel}" Text="Spacing"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,8"
+                                 Text="{Binding ParallelSpacing, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+
+                    <TextBlock Text="Joint Property" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                    <DockPanel Margin="0,0,0,8">
+                        <Button DockPanel.Dock="Right" Content="Define..." Padding="8,3" Margin="6,0,0,0"
+                                Command="{Binding DefinePropertiesCommand}"/>
+                        <ComboBox ItemsSource="{Binding JointPropertySets}"
+                                  SelectedItem="{Binding SelectedPropertySet, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Width="12" Height="12" Margin="0,0,6,0"
+                                                Background="{Binding ColourBrush}" BorderBrush="#FFCBD5E1" BorderThickness="1"/>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </DockPanel>
+
+                    <GroupBox Header="Joint End Condition" Padding="8" Margin="0,0,0,8">
+                        <StackPanel>
+                            <RadioButton Content="Both ends closed" IsChecked="{Binding IsBothClosed, Mode=TwoWay}" Margin="0,0,0,3"/>
+                            <RadioButton Content="Both ends open" IsChecked="{Binding IsBothOpen, Mode=TwoWay}" Margin="0,0,0,3"/>
+                            <RadioButton Content="First point closed / last point open" IsChecked="{Binding IsFirstClosedLastOpen, Mode=TwoWay}" Margin="0,0,0,3"/>
+                            <RadioButton Content="First point open / last point closed" IsChecked="{Binding IsFirstOpenLastClosed, Mode=TwoWay}" Margin="0,0,0,6"/>
+                            <TextBlock Text="Note: an open joint end should be used if the joint end point intersects a free surface or another joint."
+                                       Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Staging" Padding="8" Margin="0,0,0,8">
+                        <StackPanel>
+                            <DockPanel Margin="0,0,0,6">
+                                <TextBlock Text="Install at stage" Style="{StaticResource FieldLabel}" Width="110"/>
+                                <TextBox Text="{Binding InstallStage, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+                            <TextBlock Text="Note: a joint removal stage cannot be defined; a joint is automatically removed if at least one side is excavated."
+                                       Foreground="#FF64748B" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <TextBlock Text="Existing joints" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                    <ListBox ItemsSource="{Binding ExistingJoints}"
+                             SelectedItem="{Binding SelectedExisting, Mode=TwoWay}"
+                             DisplayMemberPath="Name"
+                             Height="72" Margin="0,0,0,6"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Load" Width="64" Margin="0,0,6,0" Command="{Binding SelectExistingCommand}"/>
+                        <Button Content="Delete" Width="64" Command="{Binding DeleteExistingCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <GridSplitter Grid.Column="1" Width="6" HorizontalAlignment="Center" Background="Transparent"/>
+
+            <Border Grid.Column="2" Background="White" BorderBrush="#FFCBD5E1" BorderThickness="1" CornerRadius="4">
+                <Grid>
+                    <Canvas x:Name="PreviewCanvas" ClipToBounds="True" Background="#FFF8FAFC"/>
+                    <TextBlock Text="Preview"
+                               Foreground="#FF94A3B8" FontSize="11"
+                               Margin="8" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>

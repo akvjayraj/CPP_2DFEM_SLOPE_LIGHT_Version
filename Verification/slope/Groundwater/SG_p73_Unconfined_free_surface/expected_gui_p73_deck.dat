@@ -1,0 +1,16 @@
+p73
+! Free-surface (unconfined) seepage ? S&G Program 7.3 (GUI-equivalent for this .xfem)
+! physical upstream face: min-x
+8 7 0.01 20 1 -1 0
+0.001  0.001
+! bottom widths then top widths
+0  1  2  3  4  5  6  7  8
+0  1  2  3  4  5  6  7  8
+! initial free-surface height
+7
+! canonical internal upstream nodes; solver maps output back to physical min-x
+7 8
+9  18  27  36  45  54  63  72
+! canonical internal downstream nodes; solver maps output back to physical max-x
+2 3
+46  55  64

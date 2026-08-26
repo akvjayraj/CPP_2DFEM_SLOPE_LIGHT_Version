@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>p610_t3 — Cylindrical Hole Verification</title>
+  <style>
+    :root {
+      --bg: #0f172a; --card: #1e293b; --text: #e2e8f0;
+      --muted: #94a3b8; --accent: #38bdf8; --border: #334155;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:system-ui,Segoe UI,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; line-height:1.45; }
+    header { padding:1rem 1.5rem; border-bottom:1px solid var(--border); display:flex; flex-wrap:wrap; align-items:center; gap:1rem; }
+    h1 { margin:0; font-size:1.15rem; font-weight:600; }
+    .panel { max-width:1200px; margin:0 auto; padding:1rem 1.5rem 2rem; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.25rem; }
+    .card h2 { margin:0 0 .75rem; font-size:.95rem; color:var(--accent); }
+    .hint { color:var(--muted); font-size:.88rem; margin-bottom:.75rem; }
+    label.btn { display:inline-block; padding:.4rem .9rem; background:#334155; border-radius:6px; cursor:pointer; font-size:.9rem; margin-right:.5rem; }
+    label.btn:hover { background:#475569; }
+    input[type="file"] { display:none; }
+    .row { display:flex; flex-wrap:wrap; gap:.75rem; align-items:center; }
+    select, button { background:#334155; color:var(--text); border:1px solid var(--border); padding:.4rem .75rem; border-radius:6px; font-size:.9rem; cursor:pointer; }
+    select:focus, button:focus { outline:2px solid var(--accent); }
+    canvas { display:block; width:100%; max-width:1000px; height:auto; background:#0c1222; border-radius:8px; border:1px solid var(--border); }
+    .legend { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin-top:.75rem; font-size:.85rem; color:var(--muted); }
+    .bar { width:200px; height:10px; border-radius:4px; background:linear-gradient(90deg,#1e3a5f,#0ea5e9,#fbbf24,#f97316,#b91c1c); }
+    table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    th,td { padding:.35rem .5rem; text-align:left; border-bottom:1px solid var(--border); }
+    th { color:var(--muted); font-weight:500; }
+    .mono { font-family:ui-monospace,Consolas,monospace; font-size:.8rem; }
+    pre { background:#0c1222; padding:.75rem; border-radius:8px; overflow:auto; max-height:220px; font-size:.75rem; line-height:1.4; color:#cbd5e1; }
+    .ok { color:#4ade80; } .err { color:#f87171; }
+    .analytic-row { display:flex; flex-wrap:wrap; gap:1.5rem; margin-top:.5rem; }
+    .analytic-box { background:#0c1222; border-radius:8px; padding:.75rem 1rem; flex:1; min-width:220px; }
+    .analytic-box h3 { margin:0 0 .5rem; font-size:.88rem; color:#f0abfc; }
+    .analytic-box table { font-size:.78rem; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>p610_t3 — Verification: Cylindrical Hole in Infinite Elastic Medium</h1>
+  <span class="mono" id="status">Loading…</span>
+</header>
+<div class="panel">
+
+  <div class="card">
+    <h2>Problem description</h2>
+    <p class="hint" style="margin:0">
+      Plane-strain excavation of a circular tunnel (radius <em>a</em>) in a linearly elastic infinite medium
+      with far-field isotropic stress <em>p</em>.  Analytical solution (Kirsch, 1898):
+      u<sub>r</sub>(r) = <em>p·a²</em> / (2G·r).  Compare FEM radial displacement at the tunnel wall
+      against this closed-form result.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Load files</h2>
+    <div class="row">
+      <label class="btn">cylindrical hole.json <input type="file" id="fJson" accept=".json,application/json" /></label>
+      <label class="btn">cylindrical hole.res  <input type="file" id="fRes"  accept=".res,.txt" /></label>
+      <button type="button" id="tryFetch" title="Works when served over HTTP (python -m http.server)">Try auto-load (same folder)</button>
+    </div>
+    <p class="hint" style="margin-top:.5rem">
+      Over <code>file://</code> use the pickers above. To auto-load run:
+      <code>python -m http.server 8080</code> in this folder, then open
+      <code>http://localhost:8080/visualize.html</code>.
+    </p>
+  </div>
+
+  <!-- Contour plot -->
+  <div class="card" id="jsonBlock" style="display:none">
+    <h2>Contour plot</h2>
+    <div class="row" style="margin-bottom:.75rem">
+      <label>Stage
+        <select id="stageSelect"></select>
+      </label>
+      <label>Quantity
+        <select id="plotType">
+          <option value="disp" selected>Displacement</option>
+          <option value="stress" id="optStress">Stress (T3 centroid)</option>
+        </select>
+      </label>
+      <span id="dispFields">
+        <label>Field
+          <select id="field">
+            <option value="mag" selected>|u| magnitude (m)</option>
+            <option value="ux">u_x (m)</option>
+            <option value="uy">u_y (m)</option>
+          </select>
+        </label>
+      </span>
+      <span id="stressFields" style="display:none">
+        <label>Component
+          <select id="stressField">
+            <option value="sxx" selected>σ_xx</option>
+            <option value="syy">σ_yy</option>
+            <option value="txy">τ_xy</option>
+            <option value="szz">σ_zz</option>
+            <option value="s1">σ₁ (max in-plane principal)</option>
+            <option value="s2">σ₂ (min in-plane principal)</option>
+            <option value="svm">von Mises</option>
+          </select>
+        </label>
+      </span>
+      <label><input type="checkbox" id="showInactive" checked /> Dim excavated elements</label>
+    </div>
+    <h3 style="margin:0 0 .2rem; font-size:.95rem; color:#f0abfc" id="plotTitle"></h3>
+    <p class="mono" style="margin:0 0 .5rem; color:var(--muted)" id="plotSub"></p>
+    <div id="plotHost" style="max-width:1000px"></div>
+  </div>
+
+  <!-- Analytical comparison -->
+  <div class="card" id="analyticBlock" style="display:none">
+    <h2>Analytical comparison — Kirsch solution</h2>
+    <p class="hint" style="margin:0 0 .75rem">
+      Plane-strain Kirsch wall displacement (compression+, inward+):
+      u<sub>r</sub>(a, θ) = a / (4G) · [ 2(1−ν)·(σ<sub>h</sub>+σ<sub>v</sub>) + (3−4ν)·(σ<sub>h</sub>−σ<sub>v</sub>)·cos2θ ],
+      with σ<sub>h</sub> = K₀·σ<sub>v</sub>, G = E / (2(1+ν)). Set the tunnel centre (c<sub>x</sub>, c<sub>y</sub>) and
+      radius a to match your mesh; K₀ = 1 reduces to u<sub>r</sub>(a) = p·a·(1−ν)/G.
+    </p>
+    <p class="mono" id="metaStatus" style="margin:0 0 .5rem; color:var(--muted); font-size:.78rem">Using form defaults (no JSON metadata).</p>
+    <div class="row" style="gap:1rem; flex-wrap:wrap; margin-bottom:.75rem">
+      <label>E (kPa) <input type="number" id="inE" value="10000" style="width:110px; background:#0c1222; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem;"></label>
+      <label>ν <input type="number" id="inNu" value="0.2" step="0.01" style="width:70px; background:#0c1222; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem;"></label>
+      <label>σ<sub>v</sub> far-field (kPa) <input type="number" id="inP" value="200" style="width:90px; background:#0c1222; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem;"></label>
+      <label>K₀ <input type="number" id="inK0" value="0.5" step="0.05" style="width:70px; background:#0c1222; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem;"></label>
+      <label>a tunnel radius (m) <input type="number" id="inA" value="1" step="0.1" style="width:90px; background:#0c1222; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem;"></label>
+      <label>c<sub>x</sub> (m) <input type="number" id="inCx" value="20" step="0.5" style="width:80px; background:#0c1222; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem;"></label>
+      <label>c<sub>y</sub> (m) <input type="number" id="inCy" value="10" step="0.5" style="width:80px; background:#0c1222; color:var(--text); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem;"></label>
+      <button type="button" id="calcAnalytic">Calculate</button>
+    </div>
+    <div class="analytic-row" id="analyticOut"></div>
+  </div>
+
+  <!-- .res parsed -->
+  <div class="card" id="resBlock" style="display:none">
+    <h2>cylindrical hole.res — parsed</h2>
+    <p class="mono" id="resMeta"></p>
+    <div id="resTables"></div>
+  </div>
+  <div class="card" id="resRawBlock" style="display:none">
+    <h2>cylindrical hole.res — raw (last 60 lines)</h2>
+    <pre id="resRaw" class="mono"></pre>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  let data = null;
+
+  // ── colour map ────────────────────────────────────────────────────────────
+  function lerpColor(t) {
+    t = Math.max(0, Math.min(1, t));
+    const stops = [[.15,.3,.45],[0,.65,.9],[1,.75,.2],[.95,.35,.1],[.55,.1,.1]];
+    const n = stops.length - 1, f = t * n, i = Math.min(n-1, Math.floor(f)), u = f - i;
+    const a = stops[i], b = stops[i+1];
+    return 'rgb('+[0,1,2].map(k=>Math.round((a[k]+(b[k]-a[k])*u)*255)).join(',')+')';
+  }
+
+  // ── value accessors ───────────────────────────────────────────────────────
+  function dispValue(n, field) {
+    if (field==='ux') return n.ux;
+    if (field==='uy') return n.uy;
+    return Math.hypot(n.ux, n.uy);
+  }
+  function vonMises(sxx,syy,txy,szz) {
+    return Math.sqrt(.5*(Math.pow(sxx-syy,2)+Math.pow(syy-szz,2)+Math.pow(szz-sxx,2))+3*txy*txy);
+  }
+  function stressVal(es, comp) {
+    if (!es) return 0;
+    if (comp==='svm') return vonMises(es.sxx,es.syy,es.txy,es.szz);
+    // In-plane principals from Mohr's circle (tension-positive, matches solver output).
+    // sigma1 = c + r (most tensile / least compressive), sigma2 = c - r (most compressive).
+    if (comp==='s1' || comp==='s2') {
+      const c = 0.5*(es.sxx + es.syy);
+      const r = Math.sqrt(Math.pow(0.5*(es.sxx - es.syy), 2) + es.txy*es.txy);
+      return comp==='s1' ? (c + r) : (c - r);
+    }
+    return +es[comp]||0;
+  }
+
+  // ── generic draw ──────────────────────────────────────────────────────────
+  function projectFn(nodes, w, h, margin) {
+    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+    nodes.forEach(n=>{ minX=Math.min(minX,n.x); maxX=Math.max(maxX,n.x); minY=Math.min(minY,n.y); maxY=Math.max(maxY,n.y); });
+    const pad = .04*Math.max(maxX-minX, maxY-minY, 1);
+    minX-=pad; maxX+=pad; minY-=pad; maxY+=pad;
+    return (x,y) => [
+      (x-minX)/(maxX-minX)*(w-2*margin)+margin,
+      h-margin-(y-minY)/(maxY-minY)*(h-2*margin)
+    ];
+  }
+
+  function drawDisp(ctx, stage, elements, field, showInactive) {
+    const {width:w, height:h} = ctx.canvas;
+    const nodes = stage.nodes;
+    const byId = new Map(); nodes.forEach(n=>byId.set(n.id,n));
+    const inSitu = (stage.index|0) === 0;
+    let vMin=Infinity, vMax=-Infinity;
+    nodes.forEach(n=>{ const v=dispValue(n,field); if(isFinite(v)){vMin=Math.min(vMin,v);vMax=Math.max(vMax,v);} });
+    if (vMax-vMin < 1e-20) vMax=vMin+1;
+    const proj = projectFn(nodes, w, h, 20);
+    ctx.fillStyle='#0c1222'; ctx.fillRect(0,0,w,h);
+    elements.forEach(el=>{
+      const a=byId.get(el.n1), b=byId.get(el.n2), c=byId.get(el.n3);
+      if (!a||!b||!c) return;
+      const active = inSitu||(el.active!==0);
+      const t = (dispValue(a,field)+dispValue(b,field)+dispValue(c,field))/3;
+      ctx.beginPath(); ctx.moveTo(...proj(a.x,a.y)); ctx.lineTo(...proj(b.x,b.y)); ctx.lineTo(...proj(c.x,c.y)); ctx.closePath();
+      ctx.fillStyle = active ? lerpColor((t-vMin)/(vMax-vMin)) : (showInactive?'rgba(40,50,70,.25)':'rgba(20,30,50,.08)');
+      ctx.fill();
+      ctx.strokeStyle = active?'rgba(12,18,34,.35)':'rgba(100,100,120,.2)'; ctx.lineWidth=0.3; ctx.stroke();
+    });
+    axes(ctx, w, h);
+    const dispLabel = {mag:'|u|',ux:'u_x',uy:'u_y'}[field]||field;
+    return dispLabel+' (m)  min='+vMin.toExponential(4)+' m  max='+vMax.toExponential(4)+' m';
+  }
+
+  function drawStress(ctx, stage, elements, comp, showInactive) {
+    const {width:w, height:h} = ctx.canvas;
+    const nodes = stage.nodes;
+    const est = stage.element_stresses;
+    if (!est||!est.length) return 'no element_stresses';
+    const sMap = new Map(); est.forEach(e=>sMap.set(e.id,e));
+    const byId = new Map(); nodes.forEach(n=>byId.set(n.id,n));
+    const inSitu = (stage.index|0) === 0;
+    let vMin=Infinity, vMax=-Infinity;
+    est.forEach(e=>{ const v=stressVal(e,comp); if(isFinite(v)){vMin=Math.min(vMin,v);vMax=Math.max(vMax,v);} });
+    if (vMax-vMin < 1e-20) vMax=vMin+1;
+    const proj = projectFn(nodes, w, h, 20);
+    ctx.fillStyle='#0c1222'; ctx.fillRect(0,0,w,h);
+    elements.forEach(el=>{
+      const a=byId.get(el.n1), b=byId.get(el.n2), c=byId.get(el.n3);
+      if (!a||!b||!c) return;
+      const se = sMap.get(el.id);
+      const isVoid = !se||(Math.abs(se.sxx)+Math.abs(se.syy)+Math.abs(se.txy)+Math.abs(se.szz)<1e-20);
+      const active = inSitu||!isVoid;
+      const val = stressVal(se, comp);
+      ctx.beginPath(); ctx.moveTo(...proj(a.x,a.y)); ctx.lineTo(...proj(b.x,b.y)); ctx.lineTo(...proj(c.x,c.y)); ctx.closePath();
+      ctx.fillStyle = active ? lerpColor((val-vMin)/(vMax-vMin)) : (showInactive?'rgba(40,50,70,.2)':'rgba(20,30,50,.08)');
+      ctx.fill();
+      ctx.strokeStyle = active?'rgba(12,18,34,.3)':'rgba(100,100,120,.2)'; ctx.lineWidth=0.3; ctx.stroke();
+    });
+    axes(ctx, w, h);
+    const stressLabel = {sxx:'σ_xx',syy:'σ_yy',txy:'τ_xy',szz:'σ_zz',svm:'VM',
+                         s1:'σ₁',s2:'σ₂'}[comp]||comp;
+    return stressLabel+' (kPa)  min='+vMin.toExponential(4)+' kPa  max='+vMax.toExponential(4)+' kPa';
+  }
+
+  function axes(ctx, w, h) {
+    ctx.fillStyle='#64748b'; ctx.font='12px system-ui';
+    ctx.fillText('x', w-12, h-8);
+    ctx.save(); ctx.translate(10,24); ctx.fillText('y',0,0); ctx.restore();
+  }
+
+  // ── stage helpers ─────────────────────────────────────────────────────────
+  function getStage() {
+    if (!data) return null;
+    const st = data.stages;
+    if (st&&st.length) { const i=+$('stageSelect').value; return (i>=0&&i<st.length)?st[i]:st[st.length-1]; }
+    return {index:0, nodes:data.nodes, neq:null, element_stresses:null};
+  }
+
+  function refreshStageList() {
+    const sel=$('stageSelect'); sel.innerHTML='';
+    if (data&&data.stages&&data.stages.length) {
+      data.stages.forEach((st,i)=>{
+        const o=document.createElement('option'); o.value=String(i);
+        o.textContent='Stage '+(st.index!=null?st.index:i)+' — '+(st.name||('stage '+(st.index!=null?st.index:i)));
+        sel.appendChild(o);
+      });
+      sel.value=String(Math.max(0,data.stages.length-1));
+    } else {
+      const o=document.createElement('option'); o.value='0'; o.textContent='Final'; sel.appendChild(o);
+    }
+  }
+
+  function drawAll() {
+    if (!data||!data.nodes||!data.nodes.length) return;
+    const els = data.elements;
+    if (!els||!els.length) { setStatus('JSON missing elements',true); return; }
+    const plotType=$('plotType').value;
+    const st=getStage(); if (!st) return;
+    const si = st.index!=null?st.index:0;
+    $('plotTitle').textContent=(st.name||('Stage '+si))+(plotType==='disp'?' — displacement':' — stress');
+    $('plotSub').textContent=(st.neq!=null?'neq='+st.neq+' · ':'')+
+      (st.elements_solid!=null?'solid T3='+st.elements_solid:'')+
+      (st.removed!=null?' · removed='+st.removed:'');
+    const showInactive=$('showInactive').checked;
+    $('plotHost').innerHTML='';
+    const cv=document.createElement('canvas'); cv.width=1000; cv.height=640;
+    const ctx=cv.getContext('2d');
+    let range='';
+    if (plotType==='disp') { range=drawDisp(ctx,st,els,$('field').value,showInactive); }
+    else { range=drawStress(ctx,st,els,$('stressField').value,showInactive); }
+    const leg=document.createElement('div'); leg.className='legend';
+    leg.innerHTML='<span>Low</span><div class="bar"></div><span>High</span> <span class="mono">'+range+'</span>';
+    $('plotHost').appendChild(cv); $('plotHost').appendChild(leg);
+  }
+
+  function onPlotTypeChange() {
+    const t=$('plotType').value;
+    $('dispFields').style.display=t==='disp'?'inline':'none';
+    $('stressFields').style.display=t==='stress'?'inline':'none';
+    drawAll();
+  }
+
+  // ── analytical comparison ─────────────────────────────────────────────────
+  // Plane-strain Kirsch wall displacement, compression-positive, inward-positive
+  // (Jaeger/Cook/Zimmerman, "Fundamentals of Rock Mechanics", 4th ed., §8.5):
+  //   u_r(a, θ) = a/(4G) · [ 2(1−ν)·(σh + σv) + (3 − 4ν)·(σh − σv)·cos(2θ) ]
+  // Sanity: K0 = 1, σh = σv = p reduces to u_r(a) = p·a·(1 − ν)/G (the
+  // plane-strain hydrostatic answer, NOT p·a/(2G) which is plane stress).
+  // σh acts along +x, σv along +y, θ measured CCW from +x about (cx, cy).
+  function calcAnalytic() {
+    const E=+$('inE').value, nu=+$('inNu').value, p=+$('inP').value, a=+$('inA').value;
+    const K0=+$('inK0').value, cx=+$('inCx').value, cy=+$('inCy').value;
+    const G = E/(2*(1+nu));
+    const sigV = p, sigH = K0*p;
+    const sigSum = sigH + sigV, sigDiff = sigH - sigV;
+    const urAnalytic = theta => (a/(4*G)) * (2*(1-nu)*sigSum + (3-4*nu)*sigDiff*Math.cos(2*theta));
+    const urIso = p*a*(1-nu)/G;
+
+    let femAvg=null, anAvg=null, wallCount=0;
+    let femMin=Infinity, femMax=-Infinity;
+    let perTheta=[];
+
+    if (data && data.stages && data.stages.length>1) {
+      const last = data.stages[data.stages.length-1];
+      const walls = [];
+      for (const n of last.nodes) {
+        const dx = n.x-cx, dy = n.y-cy;
+        const r  = Math.hypot(dx, dy);
+        if (r > 1e-12 && Math.abs(r-a)/a < 0.05) walls.push({n, dx, dy, r});
+      }
+      if (walls.length) {
+        let fSum=0, aSum=0;
+        for (const o of walls) {
+          const rx = o.dx/o.r, ry = o.dy/o.r;
+          // Inward radial displacement: positive = wall moves into the void.
+          const urFem = -(o.n.ux*rx + o.n.uy*ry);
+          const th    = Math.atan2(o.dy, o.dx);
+          fSum += urFem; aSum += urAnalytic(th);
+          if (urFem < femMin) femMin = urFem;
+          if (urFem > femMax) femMax = urFem;
+        }
+        wallCount = walls.length;
+        femAvg = fSum/wallCount;
+        anAvg  = aSum/wallCount;
+
+        const targets = [0, 45, 90, 135, 180, 225, 270, 315].map(d => d*Math.PI/180);
+        perTheta = targets.map(t => {
+          let best=null, bestD=Infinity;
+          for (const o of walls) {
+            const th = Math.atan2(o.dy, o.dx);
+            const dAng = Math.abs(((th - t + 3*Math.PI) % (2*Math.PI)) - Math.PI);
+            if (dAng < bestD) { bestD = dAng; best = {...o, th}; }
+          }
+          if (!best) return null;
+          const rx = best.dx/best.r, ry = best.dy/best.r;
+          const urFem = -(best.n.ux*rx + best.n.uy*ry);
+          const urAn  = urAnalytic(best.th);
+          return {
+            targetDeg: Math.round(t*180/Math.PI),
+            actualDeg: best.th*180/Math.PI,
+            urAn, urFem,
+            err: (Math.abs(urAn) > 1e-15) ? Math.abs(urFem-urAn)/Math.abs(urAn)*100 : null,
+          };
+        }).filter(Boolean);
+      }
+    }
+
+    const fmtMm  = v => (v==null) ? '—' : (v*1000).toFixed(4)+' mm';
+    const fmtPct = v => (v==null) ? '—' : v.toFixed(2)+' %';
+    const errAvg = (femAvg!=null && anAvg!=null && Math.abs(anAvg) > 1e-15)
+      ? Math.abs(femAvg-anAvg)/Math.abs(anAvg)*100 : null;
+    const isAniso = Math.abs(K0-1) > 1e-9;
+
+    const out = $('analyticOut');
+    out.innerHTML = '';
+
+    const box1 = document.createElement('div'); box1.className='analytic-box';
+    box1.innerHTML='<h3>Parameters</h3><table>'+
+      '<tr><td>E</td><td>'+E+' kPa</td></tr>'+
+      '<tr><td>ν</td><td>'+nu+'</td></tr>'+
+      '<tr><td>G = E/2(1+ν)</td><td>'+G.toFixed(1)+' kPa</td></tr>'+
+      '<tr><td>σ<sub>v</sub> far-field</td><td>'+sigV+' kPa</td></tr>'+
+      '<tr><td>K₀</td><td>'+K0+'</td></tr>'+
+      '<tr><td>σ<sub>h</sub> = K₀·σ<sub>v</sub></td><td>'+sigH+' kPa</td></tr>'+
+      '<tr><td>a (radius)</td><td>'+a+' m</td></tr>'+
+      '<tr><td>centre (c<sub>x</sub>, c<sub>y</sub>)</td><td>('+cx+', '+cy+') m</td></tr>'+
+      '</table>';
+
+    const box2 = document.createElement('div'); box2.className='analytic-box';
+    box2.innerHTML='<h3>Kirsch analytical (plane strain)</h3><table>'+
+      (isAniso
+        ? '<tr><td>u<sub>r</sub>(a, θ=0°)</td><td>'+fmtMm(urAnalytic(0))+'</td></tr>'+
+          '<tr><td>u<sub>r</sub>(a, θ=90°)</td><td>'+fmtMm(urAnalytic(Math.PI/2))+'</td></tr>'+
+          '<tr><td>u<sub>r</sub> (avg over wall nodes used)</td><td>'+fmtMm(anAvg)+'</td></tr>'
+        : '<tr><td>u<sub>r</sub>(a) = p·a·(1−ν)/G</td><td>'+fmtMm(urIso)+'</td></tr>'+
+          '<tr><td>u<sub>r</sub>(a)</td><td>'+urIso.toExponential(4)+' m</td></tr>')+
+      '</table>';
+
+    const box3 = document.createElement('div'); box3.className='analytic-box';
+    box3.innerHTML='<h3>FEM (last stage, wall avg)</h3><table>'+
+      '<tr><td>wall nodes used</td><td>'+(wallCount||'—')+'</td></tr>'+
+      '<tr><td>u<sub>r</sub> avg (inward)</td><td>'+fmtMm(femAvg)+'</td></tr>'+
+      '<tr><td>u<sub>r</sub> min / max</td><td>'+
+        (wallCount>0 ? (fmtMm(femMin)+' / '+fmtMm(femMax)) : '—')+'</td></tr>'+
+      '<tr><td>error vs analytical (avg)</td><td>'+fmtPct(errAvg)+'</td></tr>'+
+      '</table>';
+
+    [box1, box2, box3].forEach(b => out.appendChild(b));
+
+    if (perTheta.length) {
+      const box4 = document.createElement('div'); box4.className='analytic-box';
+      box4.style.flexBasis='100%';
+      box4.innerHTML='<h3>Per-θ comparison (nearest wall node)</h3>'+
+        '<table><tr><th>θ target</th><th>θ actual</th><th>u_r analytic</th><th>u_r FEM</th><th>error</th></tr>'+
+        perTheta.map(r => '<tr>'+
+          '<td>'+r.targetDeg+'°</td>'+
+          '<td>'+r.actualDeg.toFixed(1)+'°</td>'+
+          '<td>'+fmtMm(r.urAn)+'</td>'+
+          '<td>'+fmtMm(r.urFem)+'</td>'+
+          '<td>'+(r.err==null ? '—' : r.err.toFixed(2)+' %')+'</td>'+
+        '</tr>').join('')+'</table>';
+      out.appendChild(box4);
+    }
+
+    if (wallCount === 0) {
+      const warn = document.createElement('div'); warn.className='analytic-box';
+      warn.style.flexBasis='100%';
+      warn.style.borderLeft='3px solid #f87171';
+      warn.innerHTML='<h3 style="color:#f87171">No wall nodes matched</h3>'+
+        '<p class="hint" style="margin:0">No mesh node satisfies |r − a| / a &lt; 5 % about (c<sub>x</sub>, c<sub>y</sub>). '+
+        'Set c<sub>x</sub>, c<sub>y</sub> to your tunnel centre and a to its physical radius, '+
+        'then click <em>Calculate</em>. Also requires the JSON to contain at least one excavation stage.</p>';
+      out.appendChild(warn);
+    }
+  }
+
+  // ── .res parser ───────────────────────────────────────────────────────────
+  function parseRes(text) {
+    const lines=text.split(/\r?\n/), out={header:[],excavations:[]};
+    for (const l of lines) {
+      const t=l.trim();
+      if (/^Initial (elements|freedoms):/i.test(t)) out.header.push(t);
+    }
+    let cur=null;
+    for (const l of lines) {
+      const t=l.trim();
+      const mE=t.match(/Excavation number\s+(\d+)/i);
+      if (mE) { cur={n:+mE[1],freedoms:null,elementsRemaining:null,removed:null,incs:[],nodes:[]}; out.excavations.push(cur); continue; }
+      if (!cur) continue;
+      const mF=t.match(/Freedoms:\s*(\d+)/i); if (mF) { cur.freedoms=+mF[1]; continue; }
+      const mR=t.match(/Elements remaining:\s*(\d+)\s*\(removed\s*(\d+)\)/i);
+      if (mR) { cur.elementsRemaining=+mR[1]; cur.removed=+mR[2]; continue; }
+      const mI=t.match(/Inc\s+(\d+)\s+took\s+(\d+)\s+iterations/i);
+      if (mI) { cur.incs.push({inc:+mI[1],iters:+mI[2]}); continue; }
+      const mN=t.match(/^\s*(\d+)\s+([-+eE0-9.]+)\s+([-+eE0-9.]+)\s*$/);
+      if (mN&&t.indexOf('Node')<0) cur.nodes.push({id:+mN[1],ux:+mN[2],uy:+mN[3]});
+    }
+    return out;
+  }
+
+  function renderRes(text) {
+    if (!text||!text.trim()) { $('resBlock').style.display='none'; $('resRawBlock').style.display='none'; return; }
+    const parsed=parseRes(text);
+    const meta=[]; parsed.header.forEach(h=>meta.push(h));
+    meta.unshift('Excavations: '+(parsed.excavations.length||'—'));
+    $('resMeta').textContent=meta.join(' | ');
+    const host=$('resTables'); host.innerHTML='';
+    parsed.excavations.forEach(ex=>{
+      const d=document.createElement('div'); d.style.marginBottom='1rem';
+      d.innerHTML='<strong>Excavation '+ex.n+'</strong> — Freedoms: '+(ex.freedoms??'—')+
+        ', elements left: '+(ex.elementsRemaining??'—')+(ex.removed!=null?' (removed '+ex.removed+')':'');
+      if (ex.incs&&ex.incs.length) {
+        const t=document.createElement('table');
+        t.innerHTML='<tr><th>Inc</th><th>Iterations</th></tr>'+ex.incs.map(i=>'<tr><td>'+i.inc+'</td><td>'+i.iters+'</td></tr>').join('');
+        d.appendChild(t);
+      }
+      if (ex.nodes&&ex.nodes.length) {
+        const cap=document.createElement('p'); cap.className='mono'; cap.style.color='var(--muted)'; cap.style.fontSize='.8rem';
+        cap.textContent='Output nodes (from .res):'; d.appendChild(cap);
+        const t2=document.createElement('table');
+        t2.innerHTML='<tr><th>Node</th><th>u_x (m)</th><th>u_y (m)</th><th>|u| (m)</th></tr>'+
+          ex.nodes.slice(0,20).map(n=>'<tr><td>'+n.id+'</td><td>'+n.ux+'</td><td>'+n.uy+'</td><td>'+Math.hypot(n.ux,n.uy).toExponential(4)+'</td></tr>').join('');
+        d.appendChild(t2);
+      }
+      host.appendChild(d);
+    });
+    $('resBlock').style.display='block';
+    $('resRaw').textContent=text.split(/\r?\n/).slice(-60).join('\n');
+    $('resRawBlock').style.display='block';
+  }
+
+  function setStatus(msg, isErr) {
+    const s=$('status'); s.textContent=msg; s.className=isErr?'mono err':'mono ok';
+  }
+
+  function applyJson(j) {
+    if (!j||!j.nodes) { setStatus('Invalid JSON',true); return; }
+    data=j;
+    $('jsonBlock').style.display='block';
+    $('analyticBlock').style.display='block';
+    const nSt=(j.n_stages!=null?j.n_stages:(j.stages&&j.stages.length)||0);
+    setStatus('OK: '+(j.solver||'solver')+' | '+nSt+' stage(s) | '+j.nodes.length+' nodes | '+(j.elements&&j.elements.length)+' elements', false);
+    refreshStageList();
+    const canStress=j.stages&&j.stages.some(s=>s.element_stresses&&s.element_stresses.length);
+    const so=$('optStress'); if (so) { so.disabled=!canStress; if(so.disabled&&$('plotType').value==='stress') $('plotType').value='disp'; }
+    onPlotTypeChange();
+    prefillFromMeta(j);
+    calcAnalytic();
+  }
+
+  // Prefill the analytical-comparison form from j.meta when available.
+  // Each sub-block (material / loading / tunnel) is independent — solvers may
+  // emit any subset. Missing fields keep their existing form values.
+  function prefillFromMeta(j) {
+    const ms = $('metaStatus');
+    const meta = j && j.meta;
+    if (!meta || typeof meta !== 'object') {
+      if (ms) { ms.textContent = 'Using form defaults (no JSON metadata).'; ms.style.color = 'var(--muted)'; }
+      return;
+    }
+    const filled = [];
+    if (meta.material) {
+      if (meta.material.E_kPa != null) { $('inE').value  = meta.material.E_kPa; filled.push('E'); }
+      if (meta.material.nu    != null) { $('inNu').value = meta.material.nu;    filled.push('ν'); }
+    }
+    if (meta.loading) {
+      if (meta.loading.sigma_v_kPa != null) { $('inP').value  = meta.loading.sigma_v_kPa; filled.push('σv'); }
+      if (meta.loading.K0          != null) { $('inK0').value = meta.loading.K0;          filled.push('K₀'); }
+    }
+    if (meta.tunnel) {
+      if (meta.tunnel.a  != null) { $('inA').value  = meta.tunnel.a;  filled.push('a'); }
+      if (meta.tunnel.cx != null) { $('inCx').value = meta.tunnel.cx; filled.push('cx'); }
+      if (meta.tunnel.cy != null) { $('inCy').value = meta.tunnel.cy; filled.push('cy'); }
+    }
+    if (ms) {
+      if (filled.length) {
+        ms.textContent = 'Auto-filled from JSON meta: ' + filled.join(', ') + '.';
+        ms.style.color = '#4ade80';
+      } else {
+        ms.textContent = 'JSON has meta block but no recognised fields.';
+        ms.style.color = 'var(--muted)';
+      }
+    }
+  }
+
+  async function tryFetch() {
+    try {
+      const r=await fetch('cylindrical hole.json',{cache:'no-store'});
+      if (!r.ok) throw new Error(r.status+' '+r.statusText);
+      applyJson(await r.json());
+    } catch(e) {
+      setStatus('Auto-load failed: '+e.message+' — use file pickers or serve via HTTP', true);
+    }
+    try {
+      const r2=await fetch('cylindrical hole.res',{cache:'no-store'});
+      if (r2.ok) renderRes(await r2.text());
+    } catch(e) { /* optional */ }
+  }
+
+  // ── events ────────────────────────────────────────────────────────────────
+  $('field').onchange = drawAll;
+  $('showInactive').onchange = drawAll;
+  $('stageSelect').onchange = drawAll;
+  $('plotType').onchange = onPlotTypeChange;
+  $('stressField').onchange = drawAll;
+  $('tryFetch').onclick = tryFetch;
+  $('calcAnalytic').onclick = calcAnalytic;
+  ['inE','inNu','inP','inA','inK0','inCx','inCy'].forEach(id => $(id).addEventListener('change', calcAnalytic));
+
+  $('fJson').onchange = function(e) {
+    const f=e.target.files[0]; if (!f) return;
+    const r=new FileReader(); r.onload=()=>{ try { applyJson(JSON.parse(r.result)); } catch(err) { setStatus('JSON parse error: '+err.message,true); } };
+    r.readAsText(f);
+  };
+  $('fRes').onchange = function(e) {
+    const f=e.target.files[0]; if (!f) return;
+    const r=new FileReader(); r.onload=()=>{ renderRes(r.result); };
+    r.readAsText(f);
+  };
+
+  tryFetch();
+})();
+</script>
+</body>
+</html>

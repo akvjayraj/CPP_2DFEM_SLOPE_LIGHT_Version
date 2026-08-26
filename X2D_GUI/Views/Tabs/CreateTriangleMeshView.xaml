@@ -1,0 +1,77 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.CreateTriangleMeshView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Loaded="CreateTriangleMeshView_OnLoaded">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                <TextBlock FontSize="12" Margin="0,0,0,8">
+                    <Run Text="Node order (saved with project): "/>
+                    <Run FontWeight="SemiBold" Text="{Binding SelectedTwoDNodeOption, Mode=OneWay}"/>
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap" Foreground="#374151" FontSize="11">
+                    This subtab is shown for <Run FontWeight="SemiBold">2D Problem</Run> when the mesh model uses
+                    <Run FontWeight="SemiBold">triangles</Run>. Structured and unstructured generation here uses
+                    <Run FontWeight="SemiBold">3-node</Run> linear triangles only.
+                    <LineBreak/><LineBreak/>
+                    Numbering direction (dir = x, y, r) applies to structured meshes and matches the value stored for Program 5.1 output.
+                </TextBlock>
+            </StackPanel>
+
+            <GroupBox Grid.Row="1" Header="Structured triangular mesh (rectangle)" Margin="0,0,0,12" Padding="12">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,10" FontSize="11" Foreground="#475569">
+                        Rectangle extent <Run FontWeight="SemiBold">L</Run> and <Run FontWeight="SemiBold">H</Run> are taken from the geometry on the mesh canvas (surface polygon when available, otherwise vertex bounds), not from manual L/h fields.
+                        Set <Run FontWeight="SemiBold">nx</Run> and <Run FontWeight="SemiBold">ny</Run> below for subdivision. Same topology as geom_rect / p51 (two linear triangles per cell).
+                    </TextBlock>
+                    <TextBlock Text="{Binding TriangleMeshStructuredExtentHint, Mode=OneWay}"
+                               TextWrapping="Wrap" Margin="0,0,0,12" FontSize="11" Foreground="#0F172A" FontStyle="Italic"/>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="nx (elements in x):" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" Text="{Binding RectangularMeshNx, UpdateSourceTrigger=PropertyChanged}" Width="120" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="ny (elements in y):" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" Text="{Binding RectangularMeshNy, UpdateSourceTrigger=PropertyChanged}" Width="120" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <Button Content="Generate structured mesh"
+                            Command="{Binding GenerateTriangleMeshStructuredCommand}"
+                            Padding="14,8" HorizontalAlignment="Left" FontWeight="SemiBold"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Row="2" Header="Unstructured triangular mesh (polygon)" Margin="0,0,0,12" Padding="12">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,10" FontSize="11" Foreground="#475569">
+                        Ear-clipping triangulation of a closed surface polygon from Geometry Definition (selected surface, or smallest closed surface polygon).
+                        Requires Node: 3-node.
+                    </TextBlock>
+                    <Button Content="Generate unstructured mesh"
+                            Command="{Binding GenerateTriangleMeshUnstructuredCommand}"
+                            Padding="14,8" HorizontalAlignment="Left" FontWeight="SemiBold"/>
+                </StackPanel>
+            </GroupBox>
+
+            <Border Grid.Row="3" Padding="12,10" VerticalAlignment="Top"
+                    Background="#FFF8FAFC" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4">
+                <TextBlock Text="{Binding TriangleMeshStatus, Mode=OneWay}"
+                           Foreground="#64748B" FontSize="12" TextWrapping="Wrap"/>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

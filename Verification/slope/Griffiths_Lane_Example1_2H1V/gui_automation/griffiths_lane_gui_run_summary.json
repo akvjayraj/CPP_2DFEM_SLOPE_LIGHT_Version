@@ -1,0 +1,278 @@
+{
+  "GeneratedAt": "2026-07-05T04:16:21.2473612\u002B05:30",
+  "LiteratureFoS": 1.4,
+  "Cases": [
+    {
+      "MeshType": "T3",
+      "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\griffiths_lane_example1_2h1v_t3.xfem",
+      "Program": "slope_stability_T3_SRF",
+      "BrandedProgram": "slope_stability_T3_SRF",
+      "SolverCore": "CoreA",
+      "DeckFormat": "P610",
+      "ScriptSyncedFromMesh": true,
+      "EstimatedFoS": 1.4810386312836308,
+      "DeviationFromLiterature": 0.08103863128363087,
+      "DeviationPercent": 5.788473663116491,
+      "StatusMessage": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+      "FosNote": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+      "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  3.3841E-002     55\r\n   1.50  6.9378E-002   1000\r\n   1.25  3.9811E-002     52\r\n   1.38  4.3634E-002    132\r\n   1.44  4.6144E-002    409\r\n   1.47  5.3388E-002    837\r\n   1.48  5.9884E-002   1000\r\n   1.48  5.6415E-002    929\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+      "MeshRowCount": 981,
+      "NodeCount": 553,
+      "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\gui_automation\\t3",
+      "TrialRows": [
+        {
+          "Srf": 1,
+          "MaxDisplacement": 0.03384085184961203,
+          "Iterations": 55,
+          "Converged": true
+        },
+        {
+          "Srf": 1.25,
+          "MaxDisplacement": 0.039811375629801186,
+          "Iterations": 52,
+          "Converged": true
+        },
+        {
+          "Srf": 1.375,
+          "MaxDisplacement": 0.04363447897417835,
+          "Iterations": 132,
+          "Converged": true
+        },
+        {
+          "Srf": 1.4375,
+          "MaxDisplacement": 0.04614434305197128,
+          "Iterations": 409,
+          "Converged": true
+        },
+        {
+          "Srf": 1.46875,
+          "MaxDisplacement": 0.05338781145025082,
+          "Iterations": 837,
+          "Converged": true
+        },
+        {
+          "Srf": 1.4765625,
+          "MaxDisplacement": 0.05641521825857528,
+          "Iterations": 929,
+          "Converged": true
+        },
+        {
+          "Srf": 1.484375,
+          "MaxDisplacement": 0.05988429226126792,
+          "Iterations": 1000,
+          "Converged": false
+        },
+        {
+          "Srf": 1.5,
+          "MaxDisplacement": 0.0693778485715898,
+          "Iterations": 1000,
+          "Converged": false
+        }
+      ]
+    },
+    {
+      "MeshType": "T6",
+      "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\griffiths_lane_example1_2h1v_t6.xfem",
+      "Program": "slope_stability_T6_SRF",
+      "BrandedProgram": "slope_stability_T6_SRF",
+      "SolverCore": "CoreA",
+      "DeckFormat": "P610",
+      "ScriptSyncedFromMesh": true,
+      "EstimatedFoS": 1.4278101852280114,
+      "DeviationFromLiterature": 0.027810185228011486,
+      "DeviationPercent": 1.9864418020008205,
+      "StatusMessage": "Critical FoS \u2248 1.428 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.422, 1.43])",
+      "FosNote": "Critical FoS \u2248 1.428 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.422, 1.43])",
+      "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  3.3707E-002     59\r\n   1.50  5.4764E-002   1000\r\n   1.25  3.9923E-002     74\r\n   1.38  4.3652E-002    216\r\n   1.44  5.3762E-002   1000\r\n   1.41  4.4938E-002    601\r\n   1.42  4.8228E-002    890\r\n   1.43  5.0728E-002   1000\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T6_SRF_script\\p610t3_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T6_SRF_script\\p610t3_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T6_SRF_script\\p610t3_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T6_SRF_script\\p610t3_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T6_SRF_script\\p610t3_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.428 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.422, 1.43])",
+      "MeshRowCount": 981,
+      "NodeCount": 2086,
+      "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\gui_automation\\t6",
+      "TrialRows": [
+        {
+          "Srf": 1,
+          "MaxDisplacement": 0.03370670777381483,
+          "Iterations": 59,
+          "Converged": true
+        },
+        {
+          "Srf": 1.25,
+          "MaxDisplacement": 0.03992309668972086,
+          "Iterations": 74,
+          "Converged": true
+        },
+        {
+          "Srf": 1.375,
+          "MaxDisplacement": 0.04365246292731696,
+          "Iterations": 216,
+          "Converged": true
+        },
+        {
+          "Srf": 1.40625,
+          "MaxDisplacement": 0.04493771927672849,
+          "Iterations": 601,
+          "Converged": true
+        },
+        {
+          "Srf": 1.421875,
+          "MaxDisplacement": 0.0482284557295831,
+          "Iterations": 890,
+          "Converged": true
+        },
+        {
+          "Srf": 1.4296875,
+          "MaxDisplacement": 0.05072844041876857,
+          "Iterations": 1000,
+          "Converged": false
+        },
+        {
+          "Srf": 1.4375,
+          "MaxDisplacement": 0.053762366518552804,
+          "Iterations": 1000,
+          "Converged": false
+        },
+        {
+          "Srf": 1.5,
+          "MaxDisplacement": 0.05476437594369381,
+          "Iterations": 1000,
+          "Converged": false
+        }
+      ]
+    },
+    {
+      "MeshType": "Q4",
+      "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\griffiths_lane_example1_2h1v_Q4.xfem",
+      "Program": "slope_stability_Q8_SRF",
+      "BrandedProgram": "slope_stability_Q4_SRF",
+      "SolverCore": "CoreB",
+      "DeckFormat": "P64Explicit",
+      "ScriptSyncedFromMesh": true,
+      "EstimatedFoS": 1.481088029450745,
+      "DeviationFromLiterature": 0.081088029450745,
+      "DeviationPercent": 5.792002103624644,
+      "StatusMessage": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+      "FosNote": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+      "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  3.3828E-002     14\r\n   1.50  5.5169E-002   1000\r\n   1.25  3.9663E-002     20\r\n   1.38  4.2695E-002     88\r\n   1.44  4.4763E-002    228\r\n   1.47  4.8425E-002    368\r\n   1.48  5.1386E-002   1000\r\n   1.48  4.9797E-002    395\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+      "MeshRowCount": 220,
+      "NodeCount": 253,
+      "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\gui_automation\\q4",
+      "TrialRows": [
+        {
+          "Srf": 1,
+          "MaxDisplacement": 0.033828,
+          "Iterations": 14,
+          "Converged": true
+        },
+        {
+          "Srf": 1.25,
+          "MaxDisplacement": 0.03966311093439834,
+          "Iterations": 20,
+          "Converged": true
+        },
+        {
+          "Srf": 1.375,
+          "MaxDisplacement": 0.04269536515145626,
+          "Iterations": 88,
+          "Converged": true
+        },
+        {
+          "Srf": 1.4375,
+          "MaxDisplacement": 0.044763,
+          "Iterations": 228,
+          "Converged": true
+        },
+        {
+          "Srf": 1.46875,
+          "MaxDisplacement": 0.048425241199652205,
+          "Iterations": 368,
+          "Converged": true
+        },
+        {
+          "Srf": 1.4765625,
+          "MaxDisplacement": 0.049797,
+          "Iterations": 395,
+          "Converged": true
+        },
+        {
+          "Srf": 1.484375,
+          "MaxDisplacement": 0.05138623132167486,
+          "Iterations": 1000,
+          "Converged": false
+        },
+        {
+          "Srf": 1.5,
+          "MaxDisplacement": 0.05516908446074511,
+          "Iterations": 1000,
+          "Converged": false
+        }
+      ]
+    },
+    {
+      "MeshType": "Q8",
+      "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\griffiths_lane_example1_2h1v_Q8.xfem",
+      "Program": "slope_stability_Q8_SRF",
+      "BrandedProgram": "slope_stability_Q8_SRF",
+      "SolverCore": "CoreB",
+      "DeckFormat": "P64Explicit",
+      "ScriptSyncedFromMesh": true,
+      "EstimatedFoS": 1.3515625,
+      "DeviationFromLiterature": -0.04843749999999991,
+      "DeviationPercent": -3.4598214285714226,
+      "StatusMessage": "Critical FoS \u2248 1.352 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.344, 1.352])",
+      "FosNote": "Critical FoS \u2248 1.352 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.344, 1.352])",
+      "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  3.3815E-002     24\r\n   1.50  2.9486E-001   1000\r\n   1.25  3.9638E-002     48\r\n   1.38  6.6138E-002   1000\r\n   1.31  4.1286E-002    141\r\n   1.34  4.2297E-002    879\r\n   1.36  4.9906E-002   1000\r\n   1.35  4.4345E-002   1000\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.352 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.344, 1.352])",
+      "MeshRowCount": 220,
+      "NodeCount": 725,
+      "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\gui_automation\\q8",
+      "TrialRows": [
+        {
+          "Srf": 1,
+          "MaxDisplacement": 0.033815113869864064,
+          "Iterations": 24,
+          "Converged": true
+        },
+        {
+          "Srf": 1.25,
+          "MaxDisplacement": 0.03963807518448119,
+          "Iterations": 48,
+          "Converged": true
+        },
+        {
+          "Srf": 1.3125,
+          "MaxDisplacement": 0.04128628843789823,
+          "Iterations": 141,
+          "Converged": true
+        },
+        {
+          "Srf": 1.34375,
+          "MaxDisplacement": 0.042297,
+          "Iterations": 879,
+          "Converged": true
+        },
+        {
+          "Srf": 1.3515625,
+          "MaxDisplacement": 0.044345,
+          "Iterations": 1000,
+          "Converged": false
+        },
+        {
+          "Srf": 1.359375,
+          "MaxDisplacement": 0.04990604658435244,
+          "Iterations": 1000,
+          "Converged": false
+        },
+        {
+          "Srf": 1.375,
+          "MaxDisplacement": 0.06613818477308837,
+          "Iterations": 1000,
+          "Converged": false
+        },
+        {
+          "Srf": 1.5,
+          "MaxDisplacement": 0.29486,
+          "Iterations": 1000,
+          "Converged": false
+        }
+      ]
+    }
+  ]
+}

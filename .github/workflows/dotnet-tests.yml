@@ -1,0 +1,43 @@
+name: .NET Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  unit-tests:
+    name: Unit & ViewModel tests (no solver)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore tests/GeotechSlopeApp.Tests.sln
+
+      - name: Build
+        run: dotnet build tests/GeotechSlopeApp.Tests.sln --configuration Debug --no-restore
+
+      # Excludes the Integration category, which depends on on-disk verification
+      # fixtures and the native C++ solver binaries. Those run in a separate job.
+      - name: Test (logic only)
+        run: >
+          dotnet test tests/GeotechSlopeApp.Tests.sln
+          --configuration Debug --no-build
+          --filter "Category!=Integration"
+          --collect:"XPlat Code Coverage"
+          --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: "**/TestResults/**"
+          if-no-files-found: ignore

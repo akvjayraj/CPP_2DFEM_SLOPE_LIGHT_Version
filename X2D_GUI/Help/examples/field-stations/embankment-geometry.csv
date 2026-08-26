@@ -1,0 +1,8 @@
+# Optional finished slope outline (SI metres, y-up) if you skip Methods A–C.
+# File → Import → Geometry…  Reference elevation = 0.
+0,0
+50,0
+50,10
+32,10
+18,20
+0,20

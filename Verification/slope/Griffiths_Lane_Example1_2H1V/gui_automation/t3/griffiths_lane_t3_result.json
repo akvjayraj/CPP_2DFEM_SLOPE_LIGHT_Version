@@ -1,0 +1,68 @@
+{
+  "MeshType": "T3",
+  "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\griffiths_lane_example1_2h1v_t3.xfem",
+  "Program": "slope_stability_T3_SRF",
+  "BrandedProgram": "slope_stability_T3_SRF",
+  "SolverCore": "CoreA",
+  "DeckFormat": "P610",
+  "ScriptSyncedFromMesh": true,
+  "EstimatedFoS": 1.4810386312836308,
+  "DeviationFromLiterature": 0.08103863128363087,
+  "DeviationPercent": 5.788473663116491,
+  "StatusMessage": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "FosNote": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  3.3841E-002     55\r\n   1.50  6.9378E-002   1000\r\n   1.25  3.9811E-002     52\r\n   1.38  4.3634E-002    132\r\n   1.44  4.6144E-002    409\r\n   1.47  5.3388E-002    837\r\n   1.48  5.9884E-002   1000\r\n   1.48  5.6415E-002    929\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "MeshRowCount": 981,
+  "NodeCount": 553,
+  "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\gui_automation\\t3",
+  "TrialRows": [
+    {
+      "Srf": 1,
+      "MaxDisplacement": 0.03384085184961203,
+      "Iterations": 55,
+      "Converged": true
+    },
+    {
+      "Srf": 1.25,
+      "MaxDisplacement": 0.039811375629801186,
+      "Iterations": 52,
+      "Converged": true
+    },
+    {
+      "Srf": 1.375,
+      "MaxDisplacement": 0.04363447897417835,
+      "Iterations": 132,
+      "Converged": true
+    },
+    {
+      "Srf": 1.4375,
+      "MaxDisplacement": 0.04614434305197128,
+      "Iterations": 409,
+      "Converged": true
+    },
+    {
+      "Srf": 1.46875,
+      "MaxDisplacement": 0.05338781145025082,
+      "Iterations": 837,
+      "Converged": true
+    },
+    {
+      "Srf": 1.4765625,
+      "MaxDisplacement": 0.05641521825857528,
+      "Iterations": 929,
+      "Converged": true
+    },
+    {
+      "Srf": 1.484375,
+      "MaxDisplacement": 0.05988429226126792,
+      "Iterations": 1000,
+      "Converged": false
+    },
+    {
+      "Srf": 1.5,
+      "MaxDisplacement": 0.0693778485715898,
+      "Iterations": 1000,
+      "Converged": false
+    }
+  ]
+}

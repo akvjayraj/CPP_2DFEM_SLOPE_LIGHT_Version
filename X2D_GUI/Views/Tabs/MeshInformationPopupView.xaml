@@ -1,0 +1,134 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.MeshInformationPopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="12">
+        <GroupBox Header="Mesh elements" Padding="12">
+            <DataGrid ItemsSource="{Binding MeshInformationRows}"
+                      SelectedItem="{Binding SelectedMeshInformationRow, Mode=TwoWay}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      EnableRowVirtualization="True"
+                      EnableColumnVirtualization="True"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="All"
+                      CanUserResizeColumns="True"
+                      CanUserSortColumns="True"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.CanContentScroll="True"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling"
+                      SelectionMode="Single"
+                      ToolTip="Select a row to highlight that element on the Mesh tab canvas.">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Element ID" Binding="{Binding ElementId}" Width="72"/>
+                    <DataGridTextColumn Header="Kind" Binding="{Binding Kind}" Width="44">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="T6" Binding="{Binding IsT6}" Width="40">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 1" Binding="{Binding Node1}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 2" Binding="{Binding Node2}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 3" Binding="{Binding Node3}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 4" Binding="{Binding Node4}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 5" Binding="{Binding Node5}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 6" Binding="{Binding Node6}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 7" Binding="{Binding Node7}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Node 8" Binding="{Binding Node8}" Width="56">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Etype" Binding="{Binding Etype}" Width="52">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="N1X" Binding="{Binding N1X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N1Y" Binding="{Binding N1Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N2X" Binding="{Binding N2X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N2Y" Binding="{Binding N2Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N3X" Binding="{Binding N3X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N3Y" Binding="{Binding N3Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N4X" Binding="{Binding N4X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N4Y" Binding="{Binding N4Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N5X" Binding="{Binding N5X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N5Y" Binding="{Binding N5Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N6X" Binding="{Binding N6X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N6Y" Binding="{Binding N6Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N7X" Binding="{Binding N7X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N7Y" Binding="{Binding N7Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N8X" Binding="{Binding N8X, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="N8Y" Binding="{Binding N8Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Foreground" Value="{Binding Status, Converter={StaticResource StatusToColorConverter}}"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
+</UserControl>

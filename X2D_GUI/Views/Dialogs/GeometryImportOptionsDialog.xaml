@@ -1,0 +1,68 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.GeometryImportOptionsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DXF Import Options"
+        Width="440"
+        MinHeight="320"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Select which DXF entities to import. Coincident vertices within the merge tolerance are combined."
+                   TextWrapping="Wrap"
+                   Foreground="#FF334155"
+                   Margin="0,0,0,12"/>
+        <StackPanel Grid.Row="1">
+            <CheckBox Content="Import points"
+                      IsChecked="{Binding ImportPoints, Mode=TwoWay}"
+                      Margin="0,0,0,8"/>
+            <CheckBox Content="Import lines and polylines"
+                      IsChecked="{Binding ImportLines, Mode=TwoWay}"
+                      Margin="0,0,0,8"/>
+            <CheckBox Content="Import closed regions as surfaces"
+                      IsChecked="{Binding ImportSurfaces, Mode=TwoWay}"
+                      Margin="0,0,0,8"/>
+            <CheckBox Content="Replace existing geometry"
+                      IsChecked="{Binding ReplaceExisting, Mode=TwoWay}"
+                      Margin="0,0,0,12"/>
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Merge tolerance" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" Text="{Binding MergeToleranceText, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Arc segment count" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" Text="{Binding ArcSegmentCountText, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,16,0,0">
+            <Button Content="Import"
+                    Width="92"
+                    Height="28"
+                    IsDefault="True"
+                    IsEnabled="{Binding HasAnyImportType}"
+                    Click="ImportButton_Click"
+                    Margin="0,0,8,0"/>
+            <Button Content="Cancel"
+                    Width="92"
+                    Height="28"
+                    IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,247 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.ScriptView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:DoneToColorConverter x:Key="DoneToColorConverter"/>
+
+        <Style x:Key="WizardStepButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,2,0"/>
+            <Setter Property="MinWidth" Value="96"/>
+            <Setter Property="Background" Value="#F9FAFB"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="180"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,8">
+            <TextBlock Text="Script Editor"
+                       FontSize="20"
+                       FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                <RadioButton Content="Solver .dat" IsChecked="{Binding IsDatMode, Mode=TwoWay}" Margin="0,0,16,0"/>
+                <RadioButton Content="Python" IsChecked="{Binding IsPythonMode, Mode=TwoWay}"/>
+                <CheckBox Content="SSR on"
+                          IsChecked="{Binding IsSsrOn, Mode=TwoWay}"
+                          Margin="20,0,0,0"
+                          VerticalAlignment="Center"
+                          ToolTip="Turn Slope stability – strength reduction (SRF/SSR) ON or OFF. Same flag as Project Settings → Analysis. In Python: project.fe.set_ssr(True)."/>
+            </StackPanel>
+            <TextBlock Text="Solver .dat is the FEM input deck (p41 / p51 / p610). Python drives the live GUI over JSON-RPC; Run FE still uses the generated .dat."
+                       Margin="0,4,0,0"
+                       Foreground="Gray"
+                       TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- p610_t3 wizard toolbar (visible only in p610_t3 mode) -->
+        <Border Grid.Row="1"
+                Visibility="{Binding ShowP610Wizard, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Background="#F3F4F6"
+                BorderBrush="#E5E7EB"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="8,6"
+                Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal">
+                <Border Background="#DBEAFE"
+                        BorderBrush="#93C5FD"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Padding="6,2"
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center">
+                    <TextBlock Text="p610_t3"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="#1D4ED8"/>
+                </Border>
+                <TextBlock Text="Wizard:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"
+                           Foreground="#374151"
+                           FontWeight="SemiBold"/>
+
+                <Button Style="{StaticResource WizardStepButtonStyle}"
+                        Content="1. Header"
+                        Command="{Binding EmitHeaderCommand}"
+                        ToolTip="Write nels, nn, np_types (Line 1 of the p610_t3 .dat)"/>
+                <Ellipse Width="8" Height="8" Margin="2,0,8,0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding SectionHeaderDone, Converter={StaticResource DoneToColorConverter}}"
+                         ToolTip="Filled when this section has been emitted"/>
+
+                <Button Style="{StaticResource WizardStepButtonStyle}"
+                        Content="2. Materials"
+                        Command="{Binding EmitMaterialsCommand}"
+                        ToolTip="Write material property table (phi, c, psi, gamma, E, v, K0)"/>
+                <Ellipse Width="8" Height="8" Margin="2,0,8,0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding SectionMaterialsDone, Converter={StaticResource DoneToColorConverter}}"/>
+
+                <Button Style="{StaticResource WizardStepButtonStyle}"
+                        Content="3. Mesh"
+                        Command="{Binding EmitMeshCommand}"
+                        ToolTip="Write etype (if multi-material), nodal coordinates, and T3 connectivity"/>
+                <Ellipse Width="8" Height="8" Margin="2,0,8,0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding SectionMeshDone, Converter={StaticResource DoneToColorConverter}}"/>
+
+                <Button Style="{StaticResource WizardStepButtonStyle}"
+                        Content="4. BCs"
+                        Command="{Binding EmitBcsCommand}"
+                        ToolTip="Write restrained nodes (node fix_x fix_y; 0=restrained, 1=free)"/>
+                <Ellipse Width="8" Height="8" Margin="2,0,8,0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding SectionBcsDone, Converter={StaticResource DoneToColorConverter}}"/>
+
+                <Button Style="{StaticResource WizardStepButtonStyle}"
+                        Content="5. Output nodes"
+                        Command="{Binding EmitOutputNodesCommand}"
+                        ToolTip="Write nouts and the list of output nodes (monitoring points)"/>
+                <Ellipse Width="8" Height="8" Margin="2,0,8,0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding SectionOutputNodesDone, Converter={StaticResource DoneToColorConverter}}"/>
+
+                <Button Style="{StaticResource WizardStepButtonStyle}"
+                        Content="6. Solver"
+                        Command="{Binding EmitSolverControlCommand}"
+                        ToolTip="Write tol, limit, incs, layers"/>
+                <Ellipse Width="8" Height="8" Margin="2,0,8,0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding SectionSolverControlDone, Converter={StaticResource DoneToColorConverter}}"/>
+
+                <Button Style="{StaticResource WizardStepButtonStyle}"
+                        Content="7. Layers"
+                        Command="{Binding EmitLayersCommand}"
+                        ToolTip="Write excavation layers (element lists, one block per layer)"/>
+                <Ellipse Width="8" Height="8" Margin="2,0,12,0"
+                         VerticalAlignment="Center"
+                         Fill="{Binding SectionLayersDone, Converter={StaticResource DoneToColorConverter}}"/>
+
+                <Border Width="1" Background="#D1D5DB" Margin="4,2,10,2"/>
+
+                <Button Content="Emit All"
+                        Command="{Binding EmitAllP610T3Command}"
+                        Padding="12,5"
+                        Background="#2563EB"
+                        Foreground="White"
+                        BorderBrush="#1D4ED8"
+                        BorderThickness="1"
+                        FontWeight="SemiBold"
+                        ToolTip="Emit every section in order (1..7) — replaces current block contents"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Toolbar -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="Execute Script"
+                    Command="{Binding ExecuteScriptCommand}"
+                    IsEnabled="{Binding IsExecuting, Converter={StaticResource InverseBooleanConverter}}"
+                    Padding="12,6"
+                    Margin="0,0,8,0"
+                    ToolTip="Dat mode: write .dat and run the solver. Python mode: run CPython against the live GUI."/>
+            <Button Content="Load Script"
+                    Command="{Binding LoadScriptCommand}"
+                    Padding="12,6"
+                    Margin="0,0,8,0"/>
+            <Button Content="Example: SLOPE64 Ex1"
+                    Command="{Binding LoadSlope64Ex1Command}"
+                    Padding="12,6"
+                    Margin="0,0,8,0"
+                    ToolTip="Load SLOPE64 Example 1 (homogeneous embankment): structured T3 mesh (nx1=32, nx2=12, ny1=10, ny2=10), gravity + strength reduction. Regenerate with tools/gen_slope64_ex1.ps1 -SrfF if needed."/>
+            <Button Content="Save Script"
+                    Command="{Binding SaveScriptCommand}"
+                    Padding="12,6"
+                    Margin="0,0,8,0"/>
+            <Button Content="Reset"
+                    Command="{Binding ClearScriptCommand}"
+                    Padding="12,6"
+                    Margin="0,0,8,0"
+                    ToolTip="Reset content (in p610_t3 mode: rewinds to the empty skeleton)"/>
+            <Button Content="Browse Python"
+                    Command="{Binding BrowsePythonCommand}"
+                    Padding="12,6"
+                    Margin="0,0,8,0"
+                    Visibility="{Binding IsPythonMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    ToolTip="Choose python.exe (CPython 3.11+). Saved for the next session."/>
+            <TextBlock Text="{Binding StatusMessage}"
+                       VerticalAlignment="Center"
+                       Margin="16,0,0,0"
+                       Foreground="Gray"/>
+        </StackPanel>
+        
+        <GroupBox Grid.Row="3" Header=".dat file content" Margin="0,0,0,8"
+                  Visibility="{Binding IsDatMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBox Text="{Binding ScriptContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     FontFamily="Consolas"
+                     FontSize="12"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     TextWrapping="NoWrap"/>
+        </GroupBox>
+        <GroupBox Grid.Row="3" Header="Python (drives the live GUI)" Margin="0,0,0,8"
+                  Visibility="{Binding IsPythonMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TextBox Text="{Binding PythonScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     FontFamily="Consolas"
+                     FontSize="12"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     TextWrapping="NoWrap"/>
+        </GroupBox>
+
+        <!-- Output -->
+        <GroupBox Grid.Row="4" Header="Execution Output">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="4,4,4,4" HorizontalAlignment="Right">
+                    <Button Content="Copy Output" 
+                            Command="{Binding CopyOutputCommand}"
+                            Padding="8,4"
+                            Margin="0,0,4,0"
+                            ToolTip="Copy all output text to clipboard"/>
+                    <Button Content="Clear Output" 
+                            Command="{Binding ClearOutputCommand}"
+                            Padding="8,4"
+                            ToolTip="Clear the output text"/>
+                </StackPanel>
+                <TextBox Grid.Row="1"
+                         Text="{Binding OutputText}"
+                         IsReadOnly="True"
+                         FontFamily="Consolas"
+                         FontSize="11"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Auto"
+                         Margin="4"
+                         Background="White"
+                         BorderThickness="1">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Copy" Command="ApplicationCommands.Copy"/>
+                            <MenuItem Header="Select All" Command="ApplicationCommands.SelectAll"/>
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

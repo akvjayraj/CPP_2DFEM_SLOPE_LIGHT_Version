@@ -1,0 +1,63 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.ProjectSettingsView"
+             x:Name="ProjectSettingsRoot"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs"
+             xmlns:ws="clr-namespace:GeotechSlopeApp.Views.Workspace">
+    <UserControl.Resources>
+        <DataTemplate x:Key="GeneralTabContent">
+            <tabs:ProjectSettingsGeneralView
+                DataContext="{Binding DataContext, ElementName=ProjectSettingsRoot}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="AnalysisTypeTabContent">
+            <tabs:ProjectSettingsAnalysisTypeView
+                DataContext="{Binding DataContext, ElementName=ProjectSettingsRoot}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="AppearanceTabContent">
+            <ws:AppearanceOptionsView
+                DataContext="{Binding DataContext.AppearanceVM, RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="GridAxesTabContent">
+            <tabs:ProjectSettingsGridAxesView
+                DataContext="{Binding DataContext, ElementName=ProjectSettingsRoot}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="FieldStationsTabContent">
+            <tabs:FieldStationsView
+                DataContext="{Binding DataContext, ElementName=ProjectSettingsRoot}"/>
+        </DataTemplate>
+        <tabs:ProjectSettingsTabTemplateSelector x:Key="ProjectSettingsTabTemplateSelector"
+                                                 GeneralTemplate="{StaticResource GeneralTabContent}"
+                                                 AnalysisTypeTemplate="{StaticResource AnalysisTypeTabContent}"
+                                                 AppearanceTemplate="{StaticResource AppearanceTabContent}"
+                                                 GridAxesTemplate="{StaticResource GridAxesTabContent}"
+                                                 FieldStationsTemplate="{StaticResource FieldStationsTabContent}"/>
+    </UserControl.Resources>
+    <Border Margin="12"
+            BorderBrush="#FFCBD5E1"
+            BorderThickness="1"
+            CornerRadius="6"
+            Background="#FFF8FAFC">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TabControl Grid.Row="0"
+                        Margin="12"
+                        ItemsSource="{Binding SettingsTabs}"
+                        SelectedIndex="{Binding SelectedSettingsTabIndex, Mode=TwoWay}"
+                        Background="#FFF8FAFC">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Header}" TextTrimming="CharacterEllipsis" MaxWidth="220"/>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <ContentControl Content="{Binding}"
+                                        ContentTemplateSelector="{StaticResource ProjectSettingsTabTemplateSelector}"/>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+        </Grid>
+    </Border>
+</UserControl>

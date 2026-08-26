@@ -1,0 +1,2013 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Controls.SlopeCanvasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:SliceSelectionMatchConverter x:Key="SliceSelectionMatchConverter" />
+        <converters:BooleanToDoubleConverter x:Key="BooleanToDoubleConverter" TrueValue="1.0" FalseValue="0.7" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Border BorderBrush="#FFCBD5E1"
+            BorderThickness="1"
+            CornerRadius="4"
+            Padding="8"
+            Background="#FFF7FAFC"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+        <!-- Fill the host panel. Do not resize CanvasWidth/Height to the host — that remaps
+             geometry and fights the zoom matrix (looks like automatic zoom-out). -->
+        <Viewbox Stretch="Fill">
+            <Canvas x:Name="GeometryCanvas"
+                    Width="{Binding CanvasWidth}"
+                    Height="{Binding CanvasHeight}"
+                    Background="#FFFFFF"
+                    Cursor="Arrow"
+                    ClipToBounds="True"
+                    SnapsToDevicePixels="True"
+                    SizeChanged="GeometryCanvas_SizeChanged"
+                    PreviewMouseWheel="GeometryCanvas_OnMouseWheel"
+                    MouseDown="GeometryCanvas_OnMouseDown"
+                    MouseLeftButtonDown="GeometryCanvas_OnMouseLeftButtonDown"
+                    MouseMove="GeometryCanvas_OnMouseMove"
+                    MouseUp="GeometryCanvas_OnMouseUp"
+                    MouseLeave="GeometryCanvas_OnMouseLeave"
+                    ContextMenuOpening="GeometryCanvas_OnContextMenuOpening">
+                <Canvas.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="CanvasFinishMenuItem" Header="Finish" Click="CanvasFinish_Click"/>
+                        <MenuItem x:Name="CanvasPanDoneMenuItem" Header="Done" Click="PanModeDone_Click"/>
+                    </ContextMenu>
+                </Canvas.ContextMenu>
+                <Canvas.Style>
+                    <Style TargetType="Canvas">
+                        <Setter Property="Cursor" Value="Arrow"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ZoomPanModeEnabled, RelativeSource={RelativeSource AncestorType=controls:SlopeCanvasView}}" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsElementExcavationModeActive, RelativeSource={RelativeSource AncestorType=controls:SlopeCanvasView}}" Value="True">
+                                <Setter Property="Cursor" Value="Cross"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Canvas.Style>
+                <Line X1="0"
+                      Y1="{Binding ElementName=GeometryCanvas, Path=ActualHeight}"
+                      X2="{Binding ElementName=GeometryCanvas, Path=ActualWidth}"
+                      Y2="{Binding ElementName=GeometryCanvas, Path=ActualHeight}"
+                      Stroke="#FF475569"
+                      StrokeThickness="1"
+                      Panel.ZIndex="0"/>
+                <Line X1="0"
+                      Y1="0"
+                      X2="0"
+                      Y2="{Binding ElementName=GeometryCanvas, Path=ActualHeight}"
+                      Stroke="#FF475569"
+                      StrokeThickness="1"
+                      Panel.ZIndex="0"/>
+                <ItemsControl ItemsSource="{Binding GridLines}"
+                              Panel.ZIndex="0"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding ShowGrid, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}"
+                                      Stroke="#FFD1D5DB" StrokeThickness="0.75"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding XAxisMinorTicks}"
+                              Panel.ZIndex="1"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="#FF94A3B8" StrokeThickness="0.85"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding XAxisTicks}"
+                              Panel.ZIndex="1"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="#FF334155" StrokeThickness="1"/>
+                                <TextBlock Text="{Binding Label}" Canvas.Left="{Binding LabelX}" Canvas.Top="{Binding LabelY}"
+                                           FontSize="10" FontWeight="SemiBold" Foreground="#FF1E293B"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding YAxisMinorTicks}"
+                              Panel.ZIndex="1"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="#FF94A3B8" StrokeThickness="0.85"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding YAxisTicks}"
+                              Panel.ZIndex="1"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Line X1="{Binding X1}" Y1="{Binding Y1}" X2="{Binding X2}" Y2="{Binding Y2}" Stroke="#FF334155" StrokeThickness="1"/>
+                                <TextBlock Text="{Binding Label}" Canvas.Left="{Binding LabelX}" Canvas.Top="{Binding LabelY}"
+                                           FontSize="10" FontWeight="SemiBold" Foreground="#FF1E293B"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Canvas Canvas.Left="{Binding OriginAxisOriginCanvasX}"
+                        Canvas.Top="{Binding OriginAxisOriginCanvasY}"
+                        Panel.ZIndex="2"
+                        IsHitTestVisible="False"
+                        Visibility="{Binding ShowAxes, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Ellipse Canvas.Left="-3"
+                             Canvas.Top="-3"
+                             Width="6"
+                             Height="6"
+                             Fill="#FF475569"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="{Binding OriginAxisArrowLengthPx}"
+                          Y2="0"
+                          Stroke="#FFDC2626"
+                          StrokeThickness="2"
+                          StrokeEndLineCap="Triangle"/>
+                    <Line X1="0"
+                          Y1="0"
+                          X2="0"
+                          Y2="{Binding OriginAxisYTipOffset}"
+                          Stroke="#FF16A34A"
+                          StrokeThickness="2"
+                          StrokeEndLineCap="Triangle"/>
+                    <TextBlock Text="X"
+                               Canvas.Left="{Binding OriginAxisArrowLengthPx}"
+                               Canvas.Top="-8"
+                               Margin="4,0,0,0"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Foreground="#FFDC2626"/>
+                    <TextBlock Text="Y"
+                               Canvas.Left="-8"
+                               Canvas.Top="{Binding OriginAxisYTipOffset}"
+                               Margin="0,0,0,4"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Foreground="#FF16A34A"/>
+                </Canvas>
+                <!-- Axis of symmetry (r = 0) when seepage Axisymmetric is enabled -->
+                <Canvas Panel.ZIndex="2"
+                        IsHitTestVisible="False"
+                        Visibility="{Binding ShowAxisOfSymmetry, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Line X1="{Binding AxisOfSymmetryX1}"
+                          Y1="{Binding AxisOfSymmetryY1}"
+                          X2="{Binding AxisOfSymmetryX2}"
+                          Y2="{Binding AxisOfSymmetryY2}"
+                          Stroke="#FF7C3AED"
+                          StrokeThickness="2"
+                          StrokeDashArray="8 4"
+                          StrokeStartLineCap="Round"
+                          StrokeEndLineCap="Round"/>
+                    <TextBlock Text="Axis of symmetry"
+                               Canvas.Left="{Binding AxisOfSymmetryLabelX}"
+                               Canvas.Top="{Binding AxisOfSymmetryLabelY}"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Foreground="#FF6D28D9"
+                               Background="#E6FFFFFF"
+                               Padding="2,0"/>
+                </Canvas>
+                <Canvas x:Name="ScaledGeometryLayer"
+                        Width="{Binding CanvasWidth}"
+                        Height="{Binding CanvasHeight}"
+                        Panel.ZIndex="2">
+                    <Canvas.RenderTransform>
+                        <MatrixTransform x:Name="WorldTransform"/>
+                    </Canvas.RenderTransform>
+
+                    <!-- Slope image underlay (georeferenced); digitize tools paint above this. -->
+                    <Image Source="{Binding SlopeImageBitmap}"
+                           Width="{Binding SlopeImagePixelWidth}"
+                           Height="{Binding SlopeImagePixelHeight}"
+                           Opacity="{Binding SlopeImageOpacity}"
+                           Stretch="Fill"
+                           Canvas.Left="0"
+                           Canvas.Top="0"
+                           Panel.ZIndex="1"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           IsHitTestVisible="False"
+                           Visibility="{Binding ShowSlopeImageUnderlay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image.RenderTransform>
+                            <MatrixTransform Matrix="{Binding SlopeImageCanvasTransform}"/>
+                        </Image.RenderTransform>
+                    </Image>
+
+                    <!-- Geological features: committed weak plane / bedding / tension crack -->
+                    <ItemsControl ItemsSource="{Binding GeologicalFeatureOverlays}"
+                                  Panel.ZIndex="24"
+                                  IsHitTestVisible="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas>
+                                    <Polyline Points="{Binding Points}"
+                                              Stroke="{Binding Stroke}"
+                                              StrokeThickness="2.5"
+                                              StrokeDashArray="8 3"
+                                              Fill="Transparent"
+                                              IsHitTestVisible="False"
+                                              SnapsToDevicePixels="True"/>
+                                    <TextBlock Canvas.Left="{Binding LabelLeft}"
+                                               Canvas.Top="{Binding LabelTop}"
+                                               Text="{Binding Name}"
+                                               FontSize="10"
+                                               FontWeight="SemiBold"
+                                               Foreground="{Binding Stroke}"
+                                               Background="#F2FFFFFF"
+                                               Padding="3,1"
+                                               Visibility="{Binding ShowLabel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform X="6" Y="-16"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Field Stations: borehole stems + unit-stack columns + collar pins -->
+                    <ItemsControl ItemsSource="{Binding FieldStationOverlays}"
+                                  Panel.ZIndex="25"
+                                  IsHitTestVisible="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas>
+                                    <Line X1="{Binding StemX1}"
+                                          Y1="{Binding StemY1}"
+                                          X2="{Binding StemX2}"
+                                          Y2="{Binding StemY2}"
+                                          Stroke="#FF334155"
+                                          StrokeThickness="1.2"
+                                          IsHitTestVisible="False"
+                                          Visibility="{Binding ShowStem, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    <ItemsControl ItemsSource="{Binding Bands}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Canvas/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Canvas>
+                                                    <Rectangle Canvas.Left="{Binding Left}"
+                                                               Canvas.Top="{Binding Top}"
+                                                               Width="{Binding Width}"
+                                                               Height="{Binding Height}"
+                                                               Fill="{Binding Fill}"
+                                                               Stroke="#FF1E293B"
+                                                               StrokeThickness="{Binding StrokeThickness}"
+                                                               IsHitTestVisible="False"/>
+                                                    <TextBlock Canvas.Left="{Binding Left}"
+                                                               Canvas.Top="{Binding Top}"
+                                                               Text="{Binding UnitCode}"
+                                                               FontSize="8"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="#FF0F172A"
+                                                               Background="#CCFFFFFF"
+                                                               Padding="1,0"
+                                                               IsHitTestVisible="False"
+                                                               Visibility="{Binding ShowUnitLabel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <TextBlock.RenderTransform>
+                                                            <TranslateTransform X="18" Y="2"/>
+                                                        </TextBlock.RenderTransform>
+                                                    </TextBlock>
+                                                </Canvas>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Ellipse Canvas.Left="{Binding PinLeft}"
+                                             Canvas.Top="{Binding PinTop}"
+                                             Width="{Binding PinSize}" Height="{Binding PinSize}"
+                                             Fill="{Binding PinFill}"
+                                             Stroke="White"
+                                             StrokeThickness="1.5"
+                                             IsHitTestVisible="False"/>
+                                    <TextBlock Canvas.Left="{Binding PinLeft}"
+                                               Canvas.Top="{Binding PinTop}"
+                                               Text="{Binding Label}"
+                                               FontSize="10"
+                                               FontWeight="SemiBold"
+                                               Foreground="#FF0F172A"
+                                               Background="#F2FFFFFF"
+                                               Padding="3,1">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform X="12" Y="-14"/>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Geological draw mode: live draft polyline + vertex markers -->
+                    <Polyline Points="{Binding GeologicalDraftPreviewPoints}"
+                              Stroke="#FFEA580C"
+                              StrokeThickness="2.5"
+                              StrokeDashArray="5 3"
+                              Fill="Transparent"
+                              Panel.ZIndex="26"
+                              IsHitTestVisible="False"
+                              SnapsToDevicePixels="True"
+                              Visibility="{Binding IsGeologicalDraftPreviewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <ItemsControl ItemsSource="{Binding GeologicalDraftMarkers}"
+                                  Panel.ZIndex="27"
+                                  IsHitTestVisible="False"
+                                  Visibility="{Binding IsDrawingGeologicalFeature, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Ellipse Width="9" Height="9"
+                                         Canvas.Left="{Binding X}"
+                                         Canvas.Top="{Binding Y}"
+                                         Fill="#FFEA580C"
+                                         Stroke="#FFFFFFFF"
+                                         StrokeThickness="1"
+                                         IsHitTestVisible="False"
+                                         RenderTransformOrigin="0.5,0.5">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform X="-4.5" Y="-4.5"/>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Rectangle Canvas.Left="{Binding SnapIndicatorX}"
+                               Canvas.Top="{Binding SnapIndicatorY}"
+                               Width="22"
+                               Height="22"
+                               Fill="#33F59E0B"
+                               Stroke="#FFB45309"
+                               StrokeThickness="1.5"
+                               Panel.ZIndex="40"
+                               Visibility="{Binding HasSnapIndicator, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               IsHitTestVisible="False"/>
+
+                    <ItemsControl ItemsSource="{Binding MeasureOverlays}"
+                                  Panel.ZIndex="41"
+                                  IsHitTestVisible="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas>
+                                    <Line X1="{Binding X1}" Y1="{Binding Y1}"
+                                          X2="{Binding X2}" Y2="{Binding Y2}"
+                                          Stroke="#FFB45309"
+                                          StrokeThickness="1.6"
+                                          StrokeDashArray="5 3"/>
+                                    <TextBlock Canvas.Left="{Binding LabelX}"
+                                               Canvas.Top="{Binding LabelY}"
+                                               Text="{Binding Label}"
+                                               FontSize="10"
+                                               FontWeight="SemiBold"
+                                               Foreground="#FF7C2D12"
+                                               Background="#F2FFFFFF"
+                                               Padding="3,1"/>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Vertices are drawn via GeometryVertices; boundary ring from mesh import uses ordered vertex walk. -->
+                    <Polyline Points="{Binding BoundaryOutlinePoints}"
+                              Stroke="#FF0F172A"
+                              StrokeThickness="1.5"
+                              Fill="Transparent"
+                              Panel.ZIndex="2"
+                              IsHitTestVisible="False"
+                              SnapsToDevicePixels="True">
+                        <Polyline.Style>
+                            <Style TargetType="Polyline">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowBoundaryPolylineOutline}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Polyline.Style>
+                    </Polyline>
+                    <!-- Shared/internal edges (dashed blue); Material Properties tab only -->
+                    <ItemsControl ItemsSource="{Binding InternalEdgeCanvasLines}"
+                                  Panel.ZIndex="3"
+                                  IsHitTestVisible="False"
+                                  Visibility="{Binding ShowInternalEdgeLinesOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Polyline Points="{Binding Points}"
+                                          Stroke="#FF2563EB" StrokeThickness="1.5" StrokeDashArray="4 3"
+                                          Fill="Transparent"
+                                          SnapsToDevicePixels="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- Add Layer cut chords (_materialLayerCutElevations); Material Properties tab only -->
+                    <ItemsControl ItemsSource="{Binding HorizontalLayerCanvasLines}"
+                                  Panel.ZIndex="4"
+                                  IsHitTestVisible="False"
+                                  Visibility="{Binding ShowMaterialLayerCutLinesOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Polyline Points="{Binding Points}"
+                                          Stroke="#FFE67E22" StrokeThickness="1.5"
+                                          Fill="Transparent"
+                                          SnapsToDevicePixels="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- Non-horizontal layer cut polylines (teal); Material Properties tab only -->
+                    <ItemsControl ItemsSource="{Binding NonHorizontalLayerCanvasLines}"
+                                  Panel.ZIndex="4"
+                                  IsHitTestVisible="False"
+                                  Visibility="{Binding ShowMaterialLayerCutLinesOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Polyline Points="{Binding Points}"
+                                          Stroke="#FF0D9488" StrokeThickness="1.5"
+                                          Fill="Transparent"
+                                          SnapsToDevicePixels="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- In-progress non-horizontal layer preview (dashed teal) -->
+                    <Polyline Points="{Binding NonHorizontalLayerPreviewPoints}"
+                              Panel.ZIndex="5"
+                              IsHitTestVisible="False"
+                              Stroke="#FF0D9488" StrokeThickness="1.5" StrokeDashArray="5 3"
+                              Fill="Transparent"
+                              SnapsToDevicePixels="True"
+                              Visibility="{Binding IsNonHorizontalLayerDrawMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <!-- Clicked-point markers for the in-progress non-horizontal layer (teal dots) -->
+                    <ItemsControl ItemsSource="{Binding NonHorizontalLayerPreviewVertexMarkers}"
+                                  Panel.ZIndex="6"
+                                  IsHitTestVisible="False"
+                                  Visibility="{Binding IsNonHorizontalLayerDrawMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate><Canvas /></ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Ellipse Width="8" Height="8" Margin="-4,-4,0,0"
+                                         Fill="#FF0D9488" Stroke="White" StrokeThickness="1"
+                                         SnapsToDevicePixels="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- User-defined surface regions (Surface grid): multiple named polygons, distinct colors; selected region on top -->
+                    <ItemsControl ItemsSource="{Binding SurfaceRegionOverlays}"
+                                  Panel.ZIndex="9"
+                                  IsHitTestVisible="False"
+                                  Visibility="{Binding ShowGeometrySurfaceFillsOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas>
+                                    <Polygon Points="{Binding PolygonPoints}"
+                                             Fill="{Binding Fill}"
+                                             SnapsToDevicePixels="True"
+                                             RenderOptions.EdgeMode="Aliased"
+                                             IsHitTestVisible="False"
+                                             Opacity="{Binding DataContext.MaterialLayerOverlayOpacity, RelativeSource={RelativeSource AncestorType=ItemsControl}, FallbackValue=1.0}">
+                                        <Polygon.Style>
+                                            <Style TargetType="Polygon">
+                                                <Setter Property="Stroke" Value="#FF334155"/>
+                                                <Setter Property="StrokeThickness" Value="1"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasFillGeometry}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Stroke" Value="#FF0F172A"/>
+                                                        <Setter Property="StrokeThickness" Value="2.5"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Polygon.Style>
+                                    </Polygon>
+                                    <Path Data="{Binding FillGeometry}"
+                                          Fill="{Binding Fill}"
+                                          SnapsToDevicePixels="True"
+                                          IsHitTestVisible="False"
+                                          Opacity="{Binding DataContext.MaterialLayerOverlayOpacity, RelativeSource={RelativeSource AncestorType=ItemsControl}, FallbackValue=1.0}">
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Stroke" Value="#FF334155"/>
+                                                <Setter Property="StrokeThickness" Value="1"/>
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasFillGeometry}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                        <Setter Property="Stroke" Value="#FF0F172A"/>
+                                                        <Setter Property="StrokeThickness" Value="2.5"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                    </Path>
+                                    <TextBlock Text="{Binding DisplayName}"
+                                               Canvas.Left="{Binding LabelLeft}"
+                                               Canvas.Top="{Binding LabelTop}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               Foreground="#FF0F172A"
+                                               IsHitTestVisible="False">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding ShowLabel}" Value="True"/>
+                                                            <Condition Binding="{Binding DataContext.ShowMaterialLayerLabelsOnCanvas, RelativeSource={RelativeSource AncestorType=ItemsControl}, FallbackValue=True}" Value="True"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect BlurRadius="2" ShadowDepth="0" Color="White" Opacity="0.92"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Polyline Points="{Binding HighlightedSegmentPoints}"
+                              Stroke="#22C55E"
+                              StrokeThickness="4"
+                              Panel.ZIndex="10"
+                              IsHitTestVisible="False"
+                              SnapsToDevicePixels="True"/>
+                    <ItemsControl ItemsSource="{Binding ExplorerHighlightPolylines}"
+                                  Panel.ZIndex="11"
+                                  IsHitTestVisible="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Polyline Points="{Binding}"
+                                          Stroke="#F97316"
+                                          StrokeThickness="3.5"
+                                          IsHitTestVisible="False"
+                                          SnapsToDevicePixels="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- Surface line-pick mode: amber highlight for each segment picked for the active surface -->
+                    <ItemsControl ItemsSource="{Binding PickedSurfaceLineHighlightPolylines}"
+                                  Panel.ZIndex="12"
+                                  IsHitTestVisible="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Polyline Points="{Binding}"
+                                          Stroke="#F59E0B"
+                                          StrokeThickness="5"
+                                          IsHitTestVisible="False"
+                                          SnapsToDevicePixels="True"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!-- Draw-line mode: live preview from first vertex to cursor -->
+                    <Line X1="{Binding DrawLinePreviewX1}"
+                          Y1="{Binding DrawLinePreviewY1}"
+                          X2="{Binding DrawLinePreviewX2}"
+                          Y2="{Binding DrawLinePreviewY2}"
+                          Stroke="#FFEF4444"
+                          StrokeThickness="2"
+                          StrokeDashArray="6 3"
+                          Panel.ZIndex="25"
+                          IsHitTestVisible="False"
+                          SnapsToDevicePixels="True">
+                        <Line.Style>
+                            <Style TargetType="Line">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDrawLinePreviewVisible}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Line.Style>
+                    </Line>
+                    <!-- First vertex selection dot -->
+                    <Ellipse Width="10" Height="10"
+                             Canvas.Left="{Binding DrawLinePreviewX1}"
+                             Canvas.Top="{Binding DrawLinePreviewY1}"
+                             Fill="#FFEF4444"
+                             Panel.ZIndex="26"
+                             IsHitTestVisible="False"
+                             RenderTransformOrigin="0.5,0.5">
+                        <Ellipse.RenderTransform>
+                            <TranslateTransform X="-5" Y="-5"/>
+                        </Ellipse.RenderTransform>
+                        <Ellipse.Style>
+                            <Style TargetType="Ellipse">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDrawLinePreviewVisible}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Ellipse.Style>
+                    </Ellipse>
+                    <!-- Draw-arc mode: live arc preview polyline -->
+                    <Polyline Points="{Binding DrawArcPreviewPoints}"
+                              Stroke="#FFEF4444"
+                              StrokeThickness="2"
+                              StrokeDashArray="6 3"
+                              Fill="Transparent"
+                              Panel.ZIndex="25"
+                              IsHitTestVisible="False"
+                              SnapsToDevicePixels="True">
+                        <Polyline.Style>
+                            <Style TargetType="Polyline">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDrawArcPreviewVisible}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Polyline.Style>
+                    </Polyline>
+                    <!-- Draw-circle mode: center + drag radius → line segments -->
+                    <Ellipse Canvas.Left="{Binding DrawCirclePreviewCenterX}"
+                             Canvas.Top="{Binding DrawCirclePreviewCenterY}"
+                             Width="{Binding DrawCirclePreviewDiameter}"
+                             Height="{Binding DrawCirclePreviewDiameter}"
+                             Fill="#260D9488"
+                             Stroke="#FF0D9488"
+                             StrokeThickness="2"
+                             StrokeDashArray="4,2"
+                             Opacity="0.85"
+                             Panel.ZIndex="25"
+                             Visibility="{Binding IsDrawCirclePreviewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                             IsHitTestVisible="False">
+                        <Ellipse.RenderTransform>
+                            <TranslateTransform X="{Binding DrawCirclePreviewNegativeRadius}"
+                                               Y="{Binding DrawCirclePreviewNegativeRadius}"/>
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+                    <Border Canvas.Left="{Binding DrawCirclePreviewCenterX}"
+                            Canvas.Top="{Binding DrawCirclePreviewCenterY}"
+                            Background="#F0FFFFFF"
+                            BorderBrush="#FF0D9488"
+                            BorderThickness="1"
+                            Padding="4,2"
+                            CornerRadius="2"
+                            Panel.ZIndex="26"
+                            Visibility="{Binding IsDrawCirclePreviewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            IsHitTestVisible="False">
+                        <Border.RenderTransform>
+                            <TranslateTransform X="10" Y="-20"/>
+                        </Border.RenderTransform>
+                        <TextBlock Text="{Binding DrawCirclePreviewRadiusText}"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Foreground="#FF0D9488"/>
+                    </Border>
+                <ItemsControl ItemsSource="{Binding Layers}"
+                              Panel.ZIndex="3"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Polygon Points="{Binding Polygon}"
+                                         Fill="{Binding Fill}"
+                                         Stroke="{Binding Stroke}"
+                                         StrokeThickness="{Binding StrokeThickness}"
+                                         Opacity="{Binding DataContext.MaterialLayerOverlayOpacity, RelativeSource={RelativeSource AncestorType=ItemsControl}, FallbackValue=0.65}"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding ExcavationPolygons}"
+                              Panel.ZIndex="3"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Polygon Points="{Binding}"
+                                     Fill="#98daf2"
+                                     Stroke="#333333"
+                                     StrokeThickness="1"
+                                     Opacity="0.9"
+                                     SnapsToDevicePixels="True"
+                                     RenderOptions.EdgeMode="Aliased"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- ══ Staged excavation zones: solid white fill + stage label ══ -->
+                <ItemsControl ItemsSource="{Binding ExcavatedStageZones}"
+                              Panel.ZIndex="12"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Polygon Points="{Binding CanvasPolygon}"
+                                         Fill="White"
+                                         Stroke="#FF334155"
+                                         StrokeThickness="2"
+                                         StrokeDashArray="6 3"
+                                         Opacity="1.0"
+                                         SnapsToDevicePixels="True"
+                                         RenderOptions.EdgeMode="Aliased"/>
+                                <!-- Stage label at centroid -->
+                                <Border Canvas.Left="{Binding CentroidX}"
+                                        Canvas.Top="{Binding CentroidY}"
+                                        Background="#E0FFFFFF"
+                                        BorderBrush="#FF334155"
+                                        BorderThickness="1"
+                                        CornerRadius="3"
+                                        Padding="4,2"
+                                        IsHitTestVisible="False">
+                                    <Border.RenderTransform>
+                                        <TranslateTransform X="-24" Y="-10"/>
+                                    </Border.RenderTransform>
+                                    <TextBlock Text="{Binding DisplayLabel}"
+                                               FontSize="10"
+                                               FontWeight="SemiBold"
+                                               Foreground="#FF1E293B"/>
+                                </Border>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding RegionBPolygons}"
+                              Panel.ZIndex="8"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding ShowGeometrySurfaceFillsOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Polygon Points="{Binding}"
+                                     Fill="White"
+                                     Stroke="Black"
+                                     StrokeThickness="2"
+                                     Opacity="1.0"
+                                     SnapsToDevicePixels="True"
+                                     RenderOptions.EdgeMode="Aliased"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding UnionFillPolygons}"
+                              Panel.ZIndex="9"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding ShowGeometrySurfaceFillsOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Polygon Points="{Binding}"
+                                     Fill="Red"
+                                     Stroke="DarkRed"
+                                     StrokeThickness="1.5"
+                                     FillRule="NonZero"
+                                     Opacity="1.0"
+                                     SnapsToDevicePixels="True"
+                                     RenderOptions.EdgeMode="Aliased"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding GeometryVertices}"
+                              Panel.ZIndex="4"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding ShowGeometryPointsOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Ellipse Canvas.Left="{Binding X}"
+                                         Canvas.Top="{Binding Y}">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <TranslateTransform X="-3" Y="-3"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Width" Value="6"/>
+                                            <Setter Property="Height" Value="6"/>
+                                            <Setter Property="Fill" Value="#FF0F6A00"/>
+                                            <Setter Property="Stroke" Value="White"/>
+                                            <Setter Property="StrokeThickness" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                    <Setter Property="Width" Value="8"/>
+                                                    <Setter Property="Height" Value="8"/>
+                                                    <Setter Property="Fill" Value="#FFFF3B3B"/>
+                                                    <Setter Property="StrokeThickness" Value="2"/>
+                                                    <Setter Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <TranslateTransform X="-4" Y="-4"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Canvas.Left="{Binding X}"
+                                           Canvas.Top="{Binding Y}"
+                                           Text="{Binding PointNumber}"
+                                           FontSize="7"
+                                           FontWeight="SemiBold"
+                                           Foreground="#FF0F172A"
+                                           Background="#F9FFFFFF"
+                                           Padding="1,0.5"
+                                           Panel.ZIndex="1"
+                                           Visibility="{Binding DataContext.ShowGeometryLabelsOnCanvas, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform X="6" Y="-12"/>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Rectangle Canvas.Left="{Binding BulkPointDeleteSelectionLeft}"
+                           Canvas.Top="{Binding BulkPointDeleteSelectionTop}"
+                           Width="{Binding BulkPointDeleteSelectionWidth}"
+                           Height="{Binding BulkPointDeleteSelectionHeight}"
+                           Fill="#22EF4444"
+                           Stroke="#FFDC2626"
+                           StrokeThickness="1.5"
+                           StrokeDashArray="4 2"
+                           Panel.ZIndex="24"
+                           Visibility="{Binding IsBulkPointDeleteSelectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           IsHitTestVisible="False"/>
+                <Rectangle Canvas.Left="{Binding BcImportSelectionLeft}"
+                           Canvas.Top="{Binding BcImportSelectionTop}"
+                           Width="{Binding BcImportSelectionWidth}"
+                           Height="{Binding BcImportSelectionHeight}"
+                           Fill="#222563EB"
+                           Stroke="#FF2563EB"
+                           StrokeThickness="1.5"
+                           StrokeDashArray="4 2"
+                           Panel.ZIndex="24"
+                           Visibility="{Binding IsBcImportSelectionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           IsHitTestVisible="False"/>
+                <Rectangle Canvas.Left="{Binding TransientNodeSelectionLeft}"
+                           Canvas.Top="{Binding TransientNodeSelectionTop}"
+                           Width="{Binding TransientNodeSelectionWidth}"
+                           Height="{Binding TransientNodeSelectionHeight}"
+                           Fill="#22BE123C"
+                           Stroke="#FFBE123C"
+                           StrokeThickness="1.5"
+                           StrokeDashArray="4 2"
+                           Panel.ZIndex="24"
+                           Visibility="{Binding IsTransientNodeSelectionRectVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           IsHitTestVisible="False"/>
+                <ItemsControl ItemsSource="{Binding CirclePreviews}"
+                              Panel.ZIndex="5"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Polyline Points="{Binding Points}"
+                                      Stroke="{Binding Stroke}"
+                                      StrokeThickness="{Binding StrokeThickness}"
+                                      StrokeDashArray="{Binding StrokeDashArray}"
+                                      Opacity="{Binding Opacity}"
+                                      Fill="Transparent"
+                                      SnapsToDevicePixels="True"
+                                      RenderOptions.EdgeMode="Aliased"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Tunnel Circle Preview -->
+                <Ellipse Canvas.Left="{Binding TunnelCirclePreviewCenterX}"
+                         Canvas.Top="{Binding TunnelCirclePreviewCenterY}"
+                         Width="{Binding TunnelCirclePreviewDiameter}"
+                         Height="{Binding TunnelCirclePreviewDiameter}"
+                         Fill="Red"
+                         Stroke="DarkRed"
+                         StrokeThickness="2"
+                         StrokeDashArray="4,2"
+                         Opacity="0.5"
+                         Panel.ZIndex="6"
+                         Visibility="{Binding IsTunnelCirclePreviewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         IsHitTestVisible="False">
+                    <Ellipse.RenderTransform>
+                        <TranslateTransform X="{Binding TunnelCirclePreviewNegativeRadius}"
+                                           Y="{Binding TunnelCirclePreviewNegativeRadius}"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <!-- Tunnel Circle Radius Text -->
+                <Border Canvas.Left="{Binding TunnelCirclePreviewCenterX}"
+                        Canvas.Top="{Binding TunnelCirclePreviewCenterY}"
+                        Background="#F0FFFFFF"
+                        BorderBrush="DarkRed"
+                        BorderThickness="1"
+                        Padding="4,2"
+                        CornerRadius="2"
+                        Panel.ZIndex="7"
+                        Visibility="{Binding IsTunnelCirclePreviewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        IsHitTestVisible="False">
+                    <Border.RenderTransform>
+                        <TranslateTransform X="10" Y="-20"/>
+                    </Border.RenderTransform>
+                    <TextBlock Text="{Binding TunnelCirclePreviewRadiusText}"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Foreground="DarkRed"/>
+                </Border>
+                <ItemsControl ItemsSource="{Binding FilteredTunnelExcavationCircles}"
+                              Panel.ZIndex="7"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ItemsControl ItemsSource="{Binding ClippedSegments}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Polygon Points="{Binding}"
+                                                 Fill="Red"
+                                                 Stroke="DarkRed"
+                                                 StrokeThickness="1"
+                                                 FillRule="NonZero"
+                                                 RenderOptions.EdgeMode="Aliased">
+                                            <Polygon.Opacity>
+                                                <Binding Path="DataContext.IsRestored" 
+                                                         RelativeSource="{RelativeSource AncestorType=ItemsControl, AncestorLevel=1}"
+                                                         Converter="{StaticResource BooleanToDoubleConverter}"/>
+                                            </Polygon.Opacity>
+                                        </Polygon>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Ellipse Canvas.Left="{Binding BoxMethodCircleCenter.X}"
+                         Canvas.Top="{Binding BoxMethodCircleCenter.Y}"
+                         Width="6"
+                         Height="6"
+                         Fill="#FFFF3B3B"
+                         Stroke="White"
+                         StrokeThickness="1.5"
+                         Canvas.ZIndex="6"
+                         Cursor="SizeAll"
+                         MouseLeftButtonDown="BoxMethodCircleCenter_OnMouseLeftButtonDown">
+                    <Ellipse.Style>
+                        <Style TargetType="Ellipse">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform X="-3" Y="-3"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding BoxMethodCircleSegments.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsBoxMethodCircleVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Ellipse.Style>
+                </Ellipse>
+                <ItemsControl ItemsSource="{Binding BoxMethodCircleSegments}"
+                              Panel.ZIndex="6"
+                              IsHitTestVisible="False">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding HasItems, RelativeSource={RelativeSource Self}}" Value="True"/>
+                                        <Condition Binding="{Binding IsBoxMethodCircleVisible}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Polyline Points="{Binding}"
+                                      Stroke="#FFFF3B3B"
+                                      StrokeThickness="2"
+                                      StrokeDashArray="4 2"
+                                      Fill="Transparent"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding SelectedSliceRegions}"
+                              Panel.ZIndex="6"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Polygon Points="{Binding}"
+                                     Fill="Red"
+                                     Stroke="DarkRed"
+                                     StrokeThickness="1.5"
+                                     FillRule="NonZero"
+                                     Opacity="1.0"
+                                     RenderOptions.EdgeMode="Aliased"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding CircleCandidateCenters}"
+                              Panel.ZIndex="6"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Ellipse Width="6" Height="6"
+                                     Fill="#FFF97316"
+                                     Stroke="#FFEA580C"
+                                     StrokeThickness="1"
+                                     Canvas.Left="{Binding X}"
+                                     Canvas.Top="{Binding Y}">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform X="-3" Y="-3"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding ColoredCenterMarkers}"
+                              Panel.ZIndex="7"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Ellipse Width="{Binding Size}"
+                                         Height="{Binding Size}"
+                                         Fill="{Binding Fill}"
+                                         Stroke="{Binding Stroke}"
+                                         StrokeThickness="1.2"
+                                         Canvas.Left="{Binding Left}"
+                                         Canvas.Top="{Binding Top}"/>
+                                <TextBlock Text="{Binding Label}"
+                                           Foreground="{Binding Stroke}"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Canvas.Left="{Binding LabelX}"
+                                           Canvas.Top="{Binding LabelY}"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Border Canvas.Left="12"
+                        Canvas.Bottom="12"
+                        Padding="6"
+                        Background="#CCF8FAFC"
+                        BorderBrush="#FFCBD5E1"
+                        BorderThickness="1"
+                        Panel.ZIndex="25">
+                    <TextBlock Text="{Binding SlipSurfaceContext.GridSearchSummary, RelativeSource={RelativeSource AncestorType=controls:SlopeCanvasView}}"
+                               FontSize="11"
+                               Foreground="#FF0F172A"
+                               TextWrapping="Wrap"
+                               MaxWidth="260"/>
+                </Border>
+                <ItemsControl ItemsSource="{Binding SlipCircleSlices}"
+                              Panel.ZIndex="7"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Line X1="{Binding Start.X}"
+                                      Y1="{Binding Start.Y}"
+                                      X2="{Binding End.X}"
+                                      Y2="{Binding End.Y}"
+                                      StrokeDashArray="2 2">
+                                    <Line.Style>
+                                        <Style TargetType="Line">
+                                            <Setter Property="Stroke" Value="#FF0369A1"/>
+                                            <Setter Property="StrokeThickness" Value="1.5"/>
+                                            <Setter Property="Opacity" Value="0.85"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{StaticResource SliceSelectionMatchConverter}" ConverterParameter="ZeroBased">
+                                                            <Binding Path="Index"/>
+                                                            <Binding Path="DataContext.SelectedSliceNumber" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="Stroke" Value="#FFEA580C"/>
+                                                    <Setter Property="StrokeThickness" Value="3"/>
+                                                    <Setter Property="Opacity" Value="1"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Line.Style>
+                                </Line>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding BoxMethodSliceLabels}"
+                              Panel.ZIndex="9"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding SliceNumber}"
+                                       Canvas.Left="{Binding Position.X}"
+                                       Canvas.Top="{Binding Position.Y}"
+                                       FontSize="9"
+                                       FontWeight="Bold"
+                                       Padding="2"
+                                       TextAlignment="Center"
+                                       RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#FF1F2937"/>
+                                        <Setter Property="Background" Value="#CCF8FAFC"/>
+                                        <Setter Property="Opacity" Value="0.9"/>
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect ShadowDepth="0" BlurRadius="4" Opacity="0.3"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource SliceSelectionMatchConverter}">
+                                                        <Binding Path="SliceNumber"/>
+                                                        <Binding Path="DataContext.SelectedSliceNumber" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="Background" Value="#FFF97316"/>
+                                                <Setter Property="Opacity" Value="1"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform X="-12" Y="-10"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- In-soil saturated/dry washes (Z10); ponded free-water depth field is Z10.5 -->
+                <ItemsControl ItemsSource="{Binding GroundwaterZoneOverlays}"
+                              Panel.ZIndex="10"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsGroundwaterZoneOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Fill only: stroking the boolean result outlines the jagged
+                                 coincident-edge sawtooth when WT lies on the ground surface.
+                                 The phreatic Polyline below is the clean WT boundary. -->
+                            <Polygon Points="{Binding Polygon}"
+                                     Fill="{Binding Fill}"
+                                     Stroke="Transparent"
+                                     StrokeThickness="0"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Ponded free-water hydrostatic depth field (exterior above ground) -->
+                <ItemsControl ItemsSource="{Binding PondedWaterOverlays}"
+                              Panel.ZIndex="10"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsPondedFreeWaterOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Polygon Points="{Binding Polygon}"
+                                     Fill="{Binding Fill}"
+                                     Stroke="Transparent"
+                                     StrokeThickness="0"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding PondedWaterIsobars}"
+                              Panel.ZIndex="10"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsPondedHeadIsobarsVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Line X1="{Binding X1}" Y1="{Binding Y1}"
+                                  X2="{Binding X2}" Y2="{Binding Y2}"
+                                  Stroke="#990F766E"
+                                  StrokeThickness="1"
+                                  StrokeDashArray="4 3"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Auto-assigned ponded face pressures (DistributedEdgeLoads) as load arrows -->
+                <controls:LineLoadOverlayView ItemsSource="{Binding PondedFacePressureOverlays}"
+                                              Panel.ZIndex="17"
+                                              IsHitTestVisible="False"
+                                              Visibility="{Binding IsPondedFacePressureArrowsVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"/>
+                <!-- Transient p84/p88 prescribed-pressure bbox faces -->
+                <ItemsControl ItemsSource="{Binding TransientPressureBoundaryOverlays}"
+                              Width="{Binding CanvasWidth}"
+                              Height="{Binding CanvasHeight}"
+                              Panel.ZIndex="18"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsTransientPressureOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas ClipToBounds="False"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas ClipToBounds="False">
+                                <Polyline Points="{Binding EdgePoints}"
+                                          Stroke="{Binding Stroke, TargetNullValue=#FFBE123C}"
+                                          StrokeThickness="{Binding StrokeThickness}"
+                                          StrokeDashArray="7 3"
+                                          StrokeLineJoin="Round"
+                                          Fill="Transparent"/>
+                                <ItemsControl ItemsSource="{Binding Labels}" IsHitTestVisible="False">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Text}"
+                                                       FontSize="{Binding FontSize}"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#FF9F1239"
+                                                       Background="#F2FFF1F2"
+                                                       Padding="3,1">
+                                                <TextBlock.RenderTransform>
+                                                    <TranslateTransform X="{Binding OffsetX}" Y="{Binding OffsetY}"/>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Groundwater Add Water Head → Mouse select line segments -->
+                <ItemsControl ItemsSource="{Binding WaterHeadOverlays}"
+                              Width="{Binding CanvasWidth}"
+                              Height="{Binding CanvasHeight}"
+                              Panel.ZIndex="19"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsWaterHeadOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas ClipToBounds="False"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas ClipToBounds="False">
+                                <Polyline Points="{Binding EdgePoints}"
+                                          Stroke="{Binding Stroke, TargetNullValue=#FF1D4ED8}"
+                                          StrokeThickness="{Binding StrokeThickness}"
+                                          StrokeLineJoin="Round"
+                                          Fill="Transparent"/>
+                                <Line X1="{Binding BracketStart.X}"
+                                      Y1="{Binding BracketStart.Y}"
+                                      X2="{Binding BracketEnd.X}"
+                                      Y2="{Binding BracketEnd.Y}"
+                                      Stroke="{Binding Stroke, TargetNullValue=#FF2563EB}"
+                                      StrokeThickness="{Binding StrokeThickness}"/>
+                                <ItemsControl ItemsSource="{Binding Labels}" IsHitTestVisible="False">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Canvas.Left" Value="{Binding X}" />
+                                            <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Text}"
+                                                       FontSize="{Binding FontSize}"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#FF1E3A8A"
+                                                       Background="#E6FFFFFF"
+                                                       Padding="2,0">
+                                                <TextBlock.RenderTransform>
+                                                    <TranslateTransform X="{Binding OffsetX}" Y="{Binding OffsetY}"/>
+                                                </TextBlock.RenderTransform>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding PondedWaterCallouts}"
+                              Panel.ZIndex="12"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsPondedFreeWaterOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Canvas.Left="{Binding X}"
+                                       Canvas.Top="{Binding Y}"
+                                       Text="{Binding Text}"
+                                       FontSize="9"
+                                       FontWeight="SemiBold"
+                                       Foreground="#FF134E4A"
+                                       Background="#E0F0FDFA"
+                                       Padding="3,1"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Transient initial pressure is a domain initial condition, not a fixed face. -->
+                <ItemsControl ItemsSource="{Binding TransientPressureCallouts}"
+                              Panel.ZIndex="18"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsTransientPressureOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Canvas.Left="{Binding X}"
+                                       Canvas.Top="{Binding Y}"
+                                       Text="{Binding Text}"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Foreground="#FF7C2D12"
+                                       Background="#F2FFF7ED"
+                                       Padding="4,2"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding TransientFixedPressureNodeOverlays}"
+                              Panel.ZIndex="20"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsTransientPressureOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas ClipToBounds="False"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Ellipse Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}"
+                                         Width="12" Height="12">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform X="-6" Y="-6"/>
+                                    </Ellipse.RenderTransform>
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="#FFFDA4AF"/>
+                                            <Setter Property="Stroke" Value="#FFBE123C"/>
+                                            <Setter Property="StrokeThickness" Value="2"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="Fill" Value="#FFFFEDD5"/>
+                                                    <Setter Property="Stroke" Value="#FFEA580C"/>
+                                                    <Setter Property="StrokeThickness" Value="3"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}"
+                                           Text="{Binding Text}"
+                                           FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="#FF9F1239"
+                                           Background="#F2FFFFFF"
+                                           Padding="3,1">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform X="8" Y="-18"/>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Polyline Points="{Binding PondedWaterLevelPolyline}"
+                          Panel.ZIndex="11"
+                          Stroke="#FF0F766E"
+                          StrokeThickness="2"
+                          StrokeDashArray="6 3"
+                          Fill="Transparent"
+                          IsHitTestVisible="False"
+                          Visibility="{Binding IsPondedFreeWaterOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"/>
+                <Polyline Points="{Binding GroundwaterPhreaticPolyline}"
+                          Panel.ZIndex="11"
+                          Stroke="#FF0284C7"
+                          StrokeThickness="2.5"
+                          Fill="Transparent"
+                          IsHitTestVisible="False"
+                          Visibility="{Binding IsGroundwaterPhreaticVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"/>
+                <ItemsControl ItemsSource="{Binding GroundwaterSurfPointMarkers}"
+                              Panel.ZIndex="12"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding IsGroundwaterPhreaticVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Ellipse Canvas.Left="{Binding X}"
+                                         Canvas.Top="{Binding Y}">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <TranslateTransform X="-4" Y="-4"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="Width" Value="8"/>
+                                            <Setter Property="Height" Value="8"/>
+                                            <Setter Property="Fill" Value="#FF1D4ED8"/>
+                                            <Setter Property="Stroke" Value="White"/>
+                                            <Setter Property="StrokeThickness" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                    <Setter Property="Width" Value="10"/>
+                                                    <Setter Property="Height" Value="10"/>
+                                                    <Setter Property="Fill" Value="#FFF97316"/>
+                                                    <Setter Property="StrokeThickness" Value="2"/>
+                                                    <Setter Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <TranslateTransform X="-5" Y="-5"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Canvas.Left="{Binding X}"
+                                           Canvas.Top="{Binding Y}"
+                                           Text="{Binding Index}"
+                                           FontSize="7"
+                                           FontWeight="SemiBold"
+                                           Foreground="#FF0F172A"
+                                           Background="#F9FFFFFF"
+                                           Padding="1,0.5"
+                                           Panel.ZIndex="1">
+                                    <TextBlock.RenderTransform>
+                                        <TranslateTransform X="6" Y="-12"/>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- Mesh discretization nodes: tiny red + (RS2D boundary preview) -->
+                <ItemsControl ItemsSource="{Binding MeshDiscretizationNodes}"
+                              Panel.ZIndex="15"
+                              IsHitTestVisible="False"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              Visibility="{Binding ShowMeshDiscretizationMarkers, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding Location.X}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding Location.Y}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Line X1="-2" Y1="0" X2="2" Y2="0" Stroke="Red" StrokeThickness="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                <Line X1="0" Y1="-2" X2="0" Y2="2" Stroke="Red" StrokeThickness="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                <Line X1="-1.5" Y1="0" X2="1.5" Y2="0" Stroke="#FFEF4444" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      Visibility="{Binding IsHighlighted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <Line X1="0" Y1="-1.5" X2="0" Y2="1.5" Stroke="#FFEF4444" StrokeThickness="1.25" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      Visibility="{Binding IsHighlighted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- User-defined / table-selected node (visible even when discretization markers are off) -->
+                <ItemsControl ItemsSource="{Binding HighlightedMeshDiscretizationNodes}"
+                              Panel.ZIndex="17"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding ShowHighlightedMeshNodeOverlay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding Location.X}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding Location.Y}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas>
+                                <Ellipse Width="7" Height="7" Canvas.Left="-3.5" Canvas.Top="-3.5"
+                                         Fill="#40EF4444" Stroke="#FFEF4444" StrokeThickness="1"/>
+                                <Line X1="-2" Y1="0" X2="2" Y2="0" Stroke="#FFEF4444" StrokeThickness="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                <Line X1="0" Y1="-2" X2="0" Y2="2" Stroke="#FFEF4444" StrokeThickness="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- Mesh Node Numbers (Red) - 0-based, matches FE solver / BC DataGrid -->
+                <ItemsControl ItemsSource="{Binding MeshNodeLabelItems}"
+                              Panel.ZIndex="16"
+                              IsHitTestVisible="False"
+                              Visibility="{Binding ShowMeshNodes, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Counter-scale label so it stays roughly constant on-screen pixel size at any
+                                 world-zoom level, preventing overlapping when the user zooms tight on the mesh. -->
+                            <TextBlock Text="{Binding NodeId}"
+                                       FontFamily="Segoe UI"
+                                       FontSize="7"
+                                       FontWeight="Normal"
+                                       RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform X="6" Y="-12"/>
+                                </TextBlock.RenderTransform>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#FFDC2626"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DataContext.ShowMeshNodes, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                <Setter Property="Foreground" Value="#FFEF4444"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- Mesh Elements - Smith / textbook style: thick black quad outlines (always shown when discretized) -->
+                <ItemsControl ItemsSource="{Binding MeshElements}"
+                              Panel.ZIndex="11"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas IsHitTestVisible="False"
+                                    Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Polygon Points="{Binding Nodes}"
+                                         Stretch="None"
+                                         FillRule="NonZero"
+                                         SnapsToDevicePixels="True"
+                                         RenderOptions.EdgeMode="Aliased">
+                                    <Polygon.Style>
+                                        <Style TargetType="Polygon">
+                                            <Setter Property="Stroke" Value="#FF000000"/>
+                                            <Setter Property="StrokeThickness" Value="1.25"/>
+                                            <Setter Property="StrokeLineJoin" Value="Miter"/>
+                                            <Setter Property="Fill" Value="{Binding Fill, TargetNullValue={x:Static Brushes.Transparent}, FallbackValue={x:Static Brushes.Transparent}}"/>
+                                            <Setter Property="Opacity" Value="1.0"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                    <Setter Property="Stroke" Value="#FFEF4444"/>
+                                                    <Setter Property="StrokeThickness" Value="1.75"/>
+                                                    <Setter Property="Fill" Value="#40EF4444"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Polygon.Style>
+                                </Polygon>
+                                <ItemsControl ItemsSource="{Binding MidsideMarkerPoints}"
+                                              IsHitTestVisible="False"
+                                              Visibility="Collapsed">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Ellipse Width="2.5"
+                                                     Height="2.5"
+                                                     Fill="#FFE9D5FF"
+                                                     Stroke="#FF6D28D9"
+                                                     StrokeThickness="0.5"
+                                                     Opacity="0.95"
+                                                     SnapsToDevicePixels="True"
+                                                     RenderTransformOrigin="0.5,0.5">
+                                                <Ellipse.RenderTransform>
+                                                    <TranslateTransform X="-1.25" Y="-1.25"/>
+                                                </Ellipse.RenderTransform>
+                                            </Ellipse>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- Element Numbers (blue, shown only when element checkbox is checked) -->
+                <ItemsControl ItemsSource="{Binding MeshElementLabelItems}"
+                              Panel.ZIndex="12"
+                              IsHitTestVisible="False"
+                              VirtualizingPanel.IsVirtualizing="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              Visibility="{Binding ShowMeshElements, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding CenterX}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding CenterY}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Counter-scale label so it stays roughly constant on-screen pixel size at any
+                                 world-zoom level, preventing overlapping when the user zooms tight on excavations. -->
+                            <TextBlock Text="{Binding DisplayId}"
+                                       FontFamily="Segoe UI"
+                                       FontSize="8"
+                                       FontWeight="Normal"
+                                       Width="{Binding LabelWidth}"
+                                       TextAlignment="Center"
+                                       RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform X="{Binding LabelOffsetX}" Y="{Binding LabelOffsetY}"/>
+                                </TextBlock.RenderTransform>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#FF1D4ED8"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsActive}" Value="True"/>
+                                                    <Condition Binding="{Binding DataContext.ShowMeshElements, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+                <!-- ══ Boundary Condition markers (BC tab only) ══
+                     RS2-style color-coded glyphs per BC type / analysis family.
+                     Visibility is gated by ShowBcMarkers (Boundary Conditions canvas wrapper only). -->
+                <ItemsControl ItemsSource="{Binding BcCanvasMarkers}"
+                              Panel.ZIndex="16"
+                              IsHitTestVisible="True"
+                              Visibility="{Binding ShowBcMarkers, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:BcSymbolGlyph Kind="{Binding Kind}"
+                                                    Width="8" Height="8"
+                                                    ToolTip="{Binding ToolTipText}"
+                                                    IsHitTestVisible="True"
+                                                    RenderTransformOrigin="0.5,0.5"
+                                                    Opacity="0.95">
+                                <controls:BcSymbolGlyph.RenderTransform>
+                                    <TranslateTransform X="-4" Y="-4"/>
+                                </controls:BcSymbolGlyph.RenderTransform>
+                            </controls:BcSymbolGlyph>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- RS2D-style distributed line loads (Load / BC / Groundwater tabs) -->
+                <controls:LineLoadOverlayView ItemsSource="{Binding LineLoadOverlays}"
+                                              Panel.ZIndex="18"
+                                              IsHitTestVisible="False"
+                                              Visibility="{Binding ShowLineLoadOverlaysOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <controls:PointLoadOverlayView ItemsSource="{Binding PointLoadOverlays}"
+                                               Panel.ZIndex="18"
+                                               IsHitTestVisible="False"
+                                               Visibility="{Binding ShowPointLoadOverlaysOnCanvas, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <!-- Boundary Edges - Inside ScaledGeometryLayer -->
+                <ItemsControl ItemsSource="{Binding BoundaryEdgeNodes}"
+                              Panel.ZIndex="12"
+                              IsHitTestVisible="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Line X1="{Binding NodeAPosition.X}"
+                                  Y1="{Binding NodeAPosition.Y}"
+                                  X2="{Binding NodeBPosition.X}"
+                                  Y2="{Binding NodeBPosition.Y}"
+                                  SnapsToDevicePixels="True"
+                                  RenderOptions.EdgeMode="Aliased">
+                                <Line.Style>
+                                    <Style TargetType="Line">
+                                        <Setter Property="Stroke" Value="#FF3B82F6"/>
+                                        <Setter Property="StrokeThickness" Value="1.5"/>
+                                        <Setter Property="Opacity" Value="0.8"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                <Setter Property="Stroke" Value="#FFEF4444"/>
+                                                <Setter Property="StrokeThickness" Value="4"/>
+                                                <Setter Property="Opacity" Value="1.0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Line.Style>
+                            </Line>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
+</Canvas>
+                <!-- End of ScaledGeometryLayer -->
+                <Border Canvas.Left="{Binding GeometryHudCanvasPosition.X}"
+                        Canvas.Top="{Binding GeometryHudCanvasPosition.Y}"
+                        Background="#CC0F172A"
+                        CornerRadius="3"
+                        Padding="4,1"
+                        Panel.ZIndex="500"
+                        Visibility="{Binding GeometryHudVisibility}">
+                    <TextBlock Text="{Binding GeometryCanvasCoordinates}"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Foreground="White"/>
+                </Border>
+                <Border Canvas.Left="12"
+                        Canvas.Top="12"
+                        Padding="6,3"
+                        Background="#CCFEF3C7"
+                        BorderBrush="#FFF59E0B"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Panel.ZIndex="510"
+                        Visibility="{Binding IsElementExcavationModeActive, RelativeSource={RelativeSource AncestorType=controls:SlopeCanvasView}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="Excavate Elements mode: click an active element"
+                               Foreground="#FF92400E"
+                               FontSize="10"
+                               FontWeight="SemiBold"/>
+                </Border>
+                <Rectangle x:Name="ZoomRect"
+                           Visibility="Collapsed"
+                           Stroke="#FF0EA5E9"
+                           StrokeThickness="1.5"
+                           StrokeDashArray="3 3"
+                           Fill="#4010B981"
+                           IsHitTestVisible="False"
+                           Panel.ZIndex="600"/>
+            </Canvas>
+        </Viewbox>
+    </Border>
+</UserControl>
+
+

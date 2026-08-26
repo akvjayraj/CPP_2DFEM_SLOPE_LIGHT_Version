@@ -1,0 +1,19 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.SensitivityProbabilisticView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs">
+    <TabControl Margin="12">
+        <TabItem Header="Sensitivity Analysis">
+            <tabs:SensitivityAnalysisView DataContext="{Binding SensitivityAnalysisVM}" />
+        </TabItem>
+        <TabItem Header="Probabilistic Analysis">
+            <tabs:AnalysisMethodsView DataContext="{Binding ProbabilisticAnalysisVM}" />
+        </TabItem>
+        <TabItem Header="Back Analysis">
+            <tabs:BackAnalysisView DataContext="{Binding BackAnalysisVM}" />
+        </TabItem>
+        <TabItem Header="Analysis Cases">
+            <tabs:AnalysisCasesView DataContext="{Binding AnalysisCasesVM}" />
+        </TabItem>
+    </TabControl>
+</UserControl>

@@ -1,0 +1,60 @@
+! <solver:p610_t3>
+! Generalized Hoek Brown Q4 smoke verification
+! <BEGIN:AnalysisOptions>
+! failure_criterion GeneralizedHoekBrown
+! material_type Isotropic
+! mesh_type Q4
+! solver_executable p610_t3_generalized_hoek_brown
+! <END:AnalysisOptions>
+! Mesh size block:
+! nels nn np_types
+! nels = number of elements
+! nn = number of nodes
+! np_types = number of material/property types
+1  4  1
+! Material/property block:
+! phi   c     psi  gamma  E        nu    K0
+! One row per material/property type declared by np_types.
+! Values are consumed by the selected solver in solver-specific order.
+35  4000  8  0  1000000  0.25  1
+! Nodal coordinate block:
+! One row per node in node-number order.
+! Each row is: x y
+0  0
+1  0
+1  1
+0  1
+! Element connectivity block:
+! One row per element in element-number order.
+! The node count per row identifies the element type; first row appears to be Q4 quadrilateral.
+1  2  3  4
+! Boundary condition block:
+! First line is nr = number of restrained nodes.
+! Each following row is: node_id fix_x fix_y
+! 0 = fixed/restrained, 1 = free.
+3
+1  0  0
+2  1  0
+4  0  1
+! Output/watch node block:
+! First line is nouts = number of nodes requested for output.
+! Following row(s) list the node IDs.
+4
+1  2  3  4
+! Solver control block:
+! tol limit incs layers
+! tol = convergence tolerance
+! limit = maximum iterations
+! incs = load increments
+! layers = solver path/layer selector
+0.0001  80  3  0
+! Traction loading block:
+! First line is number of traction groups.
+! Each group then contains:
+! mode row: mode and stress/traction parameters
+! edge count: number of loaded edges
+! edge rows: node IDs defining each loaded boundary edge
+1
+0  -100  -100  0
+1
+2  3

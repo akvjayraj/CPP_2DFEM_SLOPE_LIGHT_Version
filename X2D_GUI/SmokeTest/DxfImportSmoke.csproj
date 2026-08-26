@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>false</UseWPF>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="GeotechSlopeApp">
+      <HintPath>..\..\obj\buildcheck-dxf2b\Debug\net8.0-windows\GeotechSlopeApp.dll</HintPath>
+    </Reference>
+    <PackageReference Include="netDxf" Version="2023.11.10" />
+  </ItemGroup>
+</Project>

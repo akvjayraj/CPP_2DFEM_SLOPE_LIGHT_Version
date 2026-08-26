@@ -1,0 +1,198 @@
+{
+  "formatVersion": "1.0",
+  "main": {
+    "selectedTabIndex": 1,
+    "zoomPanModeEnabled": false
+  },
+  "projectSettings": {
+    "selectedDimension": "twoD",
+    "selectedSettingsTabIndex": 2,
+    "isDeterministicAnalysis": true,
+    "isProbabilisticAnalysis": false,
+    "numberOfStages": 0,
+    "stageFooterTabs": [],
+    "projectName": "",
+    "author": "",
+    "createdOn": "2026-03-29T00:00:00+05:30",
+    "units": "SI",
+    "bishopMaxIterations": 100,
+    "bishopConvergenceTolerance": 1E-06,
+    "bishopInitialFactor": 1,
+    "numberOfStagesModel": 1,
+    "axisXMin": 0,
+    "axisXMax": 4,
+    "axisYMin": 0,
+    "axisYMax": 4,
+    "gridSpacingMeters": 1
+  },
+  "geometry": {
+    "canvasWidth": 600,
+    "canvasHeight": 400,
+    "axisXMin": 0,
+    "axisXMax": 4,
+    "axisYMin": 0,
+    "axisYMax": 4,
+    "layerElevationInput": "",
+    "hasAddedElevationLayer": false,
+    "tunnelCenterXInput": "",
+    "tunnelCenterYInput": "",
+    "tunnelRadiusInput": "",
+    "geometryXInput": "",
+    "geometryYInput": "",
+    "vertices": [
+      {
+        "x": 1,
+        "y": 1,
+        "stablePointId": 1
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "stablePointId": 2
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "stablePointId": 3
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "stablePointId": 4
+      }
+    ],
+    "lineSegments": [
+      {
+        "lineNumber": 1,
+        "fromPoint": "Point 1",
+        "toPoint": "Point 2",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 2,
+        "fromPoint": "Point 2",
+        "toPoint": "Point 3",
+        "isBoundaryEdge": true,
+        "tag": "",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 3,
+        "fromPoint": "Point 3",
+        "toPoint": "Point 4",
+        "isBoundaryEdge": true,
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 4,
+        "fromPoint": "Point 4",
+        "toPoint": "Point 1",
+        "isBoundaryEdge": true,
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      }
+    ],
+    "internalEdges": [],
+    "tunnelRows": [],
+    "groundwaterLines": [],
+    "excavationPolygonsAxis": []
+  },
+  "materials": {
+    "selectedFailureCriterion": "elastic",
+    "selectedMaterialType": "isotropic",
+    "selectedAnalysisCategory": "Structural \u2013 static elasticity",
+    "selectedDetailedAnalysisType": "Plane strain",
+    "showDeterministicTab": true,
+    "showProbabilisticTab": true
+  },
+  "mesh": {
+    "oneDMeshLength": "",
+    "oneDMeshN": "5",
+    "oneDMeshStatus": "",
+    "isDiscretized": false,
+    "showMeshElements": true,
+    "showMeshNodes": true,
+    "selectedTwoDElementFamily": "Triangles",
+    "selectedTwoDNodeOption": "3-node",
+    "selectedMeshNumberingDirection": "dir = x",
+    "discretizationNodes": [],
+    "elements": [],
+    "informationRows": []
+  },
+  "loads": [
+    {
+      "type": "point",
+      "direction": "axial",
+      "magnitude": 10,
+      "startX": 0,
+      "startY": 0,
+      "endX": 0,
+      "endY": 0
+    }
+  ],
+  "boundaryConditions": {
+    "rows": [],
+    "statusMessage": "Import boundaries from Geometry Definition (Geometry Line Segments), then select a boundary and Apply BC.",
+    "nodesText": "",
+    "selectedBCTypeForBoundary": "Fixed",
+    "bcValueForBoundary": "0"
+  },
+  "feAnalysis": {
+    "statusMessage": "Load mesh data or run analysis.",
+    "stagedExcavationEnabled": false,
+    "gravityEnabled": true,
+    "gravityAcceleration": 9.81,
+    "loadSteppingEnabled": false,
+    "numberOfLoadSteps": 1,
+    "cppExecutableDirectory": ""
+  },
+  "results": {
+    "vectorOutputType": "Displacement Vectors",
+    "vectorScale": 1,
+    "showMesh": true,
+    "selectedOutputType": "Displacement Magnitude",
+    "visualizationMode": "Contour",
+    "feStatusMessage": "Run FE Analysis to view results."
+  },
+  "script": {
+    "scriptContent": "type_2d\r\n\u0027Plane\u0027\r\n\u0027triangle\u0027   3   \u0027x\u0027\r\n2  2  1  1\r\n1.000000E\u002B006  0.3\r\n0  0.5  1\r\n-0  -0.5  -1\r\n5\r\n1 0 1\r\n4 0 1\r\n7 0 0\r\n8 1 0\r\n9 1 0\r\n3\r\n1  0 -0.25\r\n2  0 -0.5\r\n3  0 -0.25\r\n0\r\n",
+    "outputText": ""
+  }
+}

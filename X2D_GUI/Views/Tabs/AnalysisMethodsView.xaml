@@ -1,0 +1,51 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.AnalysisMethodsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sampling engine:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" Width="220" HorizontalAlignment="Left"
+                  ItemsSource="{Binding AvailableEngines}"
+                  SelectedItem="{Binding SelectedEngine}"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Sample count:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Width="120" HorizontalAlignment="Left"
+                 Text="{Binding Settings.SampleCount, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Design factor of safety:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Width="120" HorizontalAlignment="Left"
+                 Text="{Binding Settings.DesignFactorOfSafety, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Random seed:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Width="120" Text="{Binding Settings.RandomSeed, UpdateSourceTrigger=PropertyChanged}"/>
+            <CheckBox Content="Fixed seed" Margin="12,0,0,0" VerticalAlignment="Center"
+                      IsChecked="{Binding Settings.UseFixedSeed}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Margin="0,8,0,8" TextWrapping="Wrap"
+                   Text="Samples material random variables (c, φ, γ, …) and re-evaluates SRF from the last FE run. Enable Project Settings → Probabilistic and mark RVs on each material."/>
+
+        <TextBox Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding SummaryText, Mode=OneWay}" IsReadOnly="True"
+                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="0,0,0,8"/>
+
+        <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Button Content="Run Probabilistic" Command="{Binding RunProbabilisticCommand}" Width="160" Margin="0,0,8,0"/>
+            <Button Content="Export Samples CSV" Command="{Binding ExportCsvCommand}" Width="160"/>
+            <TextBlock Text="{Binding StatusMessage}" Margin="16,0,0,0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

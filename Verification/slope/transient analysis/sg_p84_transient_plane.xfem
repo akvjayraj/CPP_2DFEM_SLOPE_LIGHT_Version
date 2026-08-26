@@ -1,0 +1,2032 @@
+{
+  "formatVersion": "1.3",
+  "main": {
+    "zoomPanModeEnabled": false,
+    "selectedTabIndex": 9
+  },
+  "projectSettings": {
+    "selectedDimension": "twoD",
+    "selectedSettingsTabIndex": 1,
+    "isDeterministicAnalysis": true,
+    "isProbabilisticAnalysis": false,
+    "numberOfStages": 0,
+    "stageFooterTabs": [],
+    "gwStaticIncludeWaterSurfaces": false,
+    "gwStaticIncludePondedFreeWater": false,
+    "gwStaticIncludeRuCoefficients": false,
+    "gwStaticIncludeWaterPressureGridTotalHead": false,
+    "gwStaticIncludeWaterPressureGridPressureHead": false,
+    "gwStaticIncludeWaterPressureGridPorePressure": false,
+    "seepageUpstreamHead": 50.0,
+    "seepageDownstreamHead": 0.0,
+    "seepageAxisymmetric": false,
+    "seepageFreeSurfaceTolerance": 0.01,
+    "seepageFreeSurfaceMaxIterations": 20,
+    "seepageIncludeWaterHeadPlaneAxisym": false,
+    "seepageIncludeWaterHeadFreeSurface": false,
+    "seepageIncludeWaterHeadGeneral2D": false,
+    "seepageIncludeWaterHeadGeneral3D": false,
+    "transientAxisymmetric": false,
+    "transientTimeStep": 0.01,
+    "transientNumberOfSteps": 150,
+    "transientTheta": 0.5,
+    "transientPrintInterval": 10,
+    "transientMonitorNode": 31,
+    "transientContourStep": 100,
+    "transientContourIntervals": 10,
+    "transientInitialPressure": 100.0,
+    "transientFixedPressure": 0.0,
+    "transientFixTopFace": true,
+    "transientFixBottomFace": false,
+    "transientFixMinXFace": false,
+    "transientFixMaxXFace": true,
+    "analysisCategoryOnFlags": [
+      {
+        "category": "Structural – static elasticity",
+        "isOn": false
+      },
+      {
+        "category": "Slope stability – strength reduction (SRF)",
+        "isOn": false
+      },
+      {
+        "category": "Flow-Seepage/Groundwater",
+        "isOn": true
+      },
+      {
+        "category": "Consolidation / diffusion / transient",
+        "isOn": false
+      },
+      {
+        "category": "Coupled / fluid–structure",
+        "isOn": false
+      },
+      {
+        "category": "Eigenvalue (natural frequencies / buckling)",
+        "isOn": false
+      },
+      {
+        "category": "Dynamics – forced vibration",
+        "isOn": false
+      }
+    ],
+    "projectName": "S&G Program 8.4 — Transient consolidation plane (p84)",
+    "author": "",
+    "createdOn": "2026-07-30T11:45:00+05:30",
+    "units": "SI",
+    "bishopMaxIterations": 100,
+    "bishopConvergenceTolerance": 1E-06,
+    "bishopInitialFactor": 1,
+    "numberOfStagesModel": 0,
+    "axisXMin": -0.2,
+    "axisXMax": 1.2,
+    "axisYMin": -1.2,
+    "axisYMax": 0.2,
+    "gridSpacingMeters": 0.2,
+    "showGrid": true,
+    "showAxes": true
+  },
+  "geometry": {
+    "canvasWidth": 600,
+    "canvasHeight": 400,
+    "axisXMin": -0.2,
+    "axisXMax": 1.2,
+    "axisYMin": -1.2,
+    "axisYMax": 0.2,
+    "layerElevationInput": "",
+    "hasAddedElevationLayer": false,
+    "surfaceMaterialFills": [
+      {
+        "surfaceNumber": 1,
+        "materialId": 1,
+        "argb": 2865935500
+      }
+    ],
+    "tunnelCenterXInput": "",
+    "tunnelCenterYInput": "",
+    "tunnelRadiusInput": "",
+    "geometryXInput": "",
+    "geometryYInput": "",
+    "vertices": [
+      {
+        "y": -1.0,
+        "x": 0.0,
+        "stablePointId": 1
+      },
+      {
+        "y": 0.0,
+        "x": 0.0,
+        "stablePointId": 2
+      },
+      {
+        "y": 0.0,
+        "x": 1.0,
+        "stablePointId": 3
+      },
+      {
+        "y": -1.0,
+        "x": 1.0,
+        "stablePointId": 4
+      }
+    ],
+    "lineSegments": [
+      {
+        "lineNumber": 1,
+        "fromPoint": "Point 1",
+        "toPoint": "Point 2",
+        "isBoundaryEdge": true,
+        "isArc": false,
+        "throughPoint": "",
+        "arcRadius": 0,
+        "isApplied": false,
+        "tag": "L1",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 2,
+        "fromPoint": "Point 2",
+        "toPoint": "Point 3",
+        "isBoundaryEdge": true,
+        "isArc": false,
+        "throughPoint": "",
+        "arcRadius": 0,
+        "isApplied": false,
+        "tag": "L2",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 3,
+        "fromPoint": "Point 3",
+        "toPoint": "Point 4",
+        "isBoundaryEdge": true,
+        "isArc": false,
+        "throughPoint": "",
+        "arcRadius": 0,
+        "isApplied": false,
+        "tag": "L3",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      },
+      {
+        "lineNumber": 4,
+        "fromPoint": "Point 4",
+        "toPoint": "Point 1",
+        "isBoundaryEdge": true,
+        "isArc": false,
+        "throughPoint": "",
+        "arcRadius": 0,
+        "isApplied": false,
+        "tag": "L4",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      }
+    ],
+    "internalEdges": [],
+    "geometryCircles": [],
+    "surfaces": [
+      {
+        "surfaceNumber": 1,
+        "surfaceName": "Homogeneous rectangle (p84_1)",
+        "isPolygonLocked": true,
+        "lockedPolygonVertexLabels": [
+          "Point 1",
+          "Point 2",
+          "Point 3",
+          "Point 4"
+        ],
+        "colorIndex": -1
+      }
+    ],
+    "selectedSurfaceNumber": 1,
+    "tunnelRows": [],
+    "groundwaterLines": [],
+    "groundwaterEnabled": true,
+    "groundwaterGammaW": 9.81,
+    "groundwaterSurfPoints": [],
+    "excavationPolygonsAxis": [],
+    "surfaceExcavationOperations": []
+  },
+  "materials": {
+    "selectedFailureCriterion": "mohrCoulomb",
+    "selectedMaterialType": "isotropic",
+    "selectedAnalysisCategory": "Flow-Seepage/Groundwater",
+    "selectedDetailedAnalysisType": "Transient (plane/axisymmetric)",
+    "lastGroundwaterTreeMode": "Transient State",
+    "lastSteadyStateSolverType": "2D Plane/axisymmetric",
+    "lastTransientSolverType": "Transient (plane/axisymmetric)",
+    "showDeterministicTab": true,
+    "showProbabilisticTab": true,
+    "selectedMaterialLibraryId": 1,
+    "materialLibrary": [
+      {
+        "id": 1,
+        "name": "Homogeneous isotropic (kx=ky=1)",
+        "description": "Smith & Griffiths Program 8.4 style transient consolidation; permeability kx=ky=1.",
+        "colourArgb": 4291998860,
+        "failureCriterion": "mohrCoulomb",
+        "materialType": "isotropic",
+        "youngsModulus": 100000,
+        "poissonsRatio": 0.3,
+        "youngsModulusH": 0,
+        "youngsModulusV": 0,
+        "poissonsRatioHH": 0,
+        "poissonsRatioVH": 0,
+        "shearModulusVH": 0,
+        "unitWeight": 20,
+        "saturatedUnitWeight": 20,
+        "isSaturatedEnabled": false,
+        "cohesion": 10,
+        "frictionAngle": 30,
+        "dilationAngle": 0,
+        "tensileCutoff": 0,
+        "ucs": 50,
+        "hoekBrownMi": 0,
+        "gsi": 0,
+        "disturbance": 0,
+        "modulusRatio": 0,
+        "dpAlpha": 0,
+        "dpK": 0,
+        "permeabilityX": 1.0,
+        "permeabilityY": 1.0,
+        "porosity": 0.3,
+        "initialVoidRatio": 0,
+        "specificStorage": 0,
+        "thermalConductivityX": 0,
+        "thermalConductivityY": 0,
+        "heatCapacity": 0,
+        "thermalExpansion": 0,
+        "density": 2000,
+        "dampingRatio": 0
+      }
+    ]
+  },
+  "mesh": {
+    "oneDMeshLength": "1",
+    "oneDMeshN": "5",
+    "oneDMeshStatus": "Structured Q4 rectangular mesh for p84_1 (5x5).",
+    "isDiscretized": true,
+    "showMeshElements": true,
+    "showMeshNodes": false,
+    "selectedTwoDElementFamily": "Quadrilaterals",
+    "selectedTwoDNodeOption": "4-node",
+    "selectedMeshNumberingDirection": "dir = x",
+    "discretizationNodes": [
+      {
+        "x": 0.0,
+        "y": -1.0
+      },
+      {
+        "x": 0.2,
+        "y": -1.0
+      },
+      {
+        "x": 0.4,
+        "y": -1.0
+      },
+      {
+        "x": 0.6000000000000001,
+        "y": -1.0
+      },
+      {
+        "x": 0.8,
+        "y": -1.0
+      },
+      {
+        "x": 1.0,
+        "y": -1.0
+      },
+      {
+        "x": 0.0,
+        "y": -0.8
+      },
+      {
+        "x": 0.2,
+        "y": -0.8
+      },
+      {
+        "x": 0.4,
+        "y": -0.8
+      },
+      {
+        "x": 0.6000000000000001,
+        "y": -0.8
+      },
+      {
+        "x": 0.8,
+        "y": -0.8
+      },
+      {
+        "x": 1.0,
+        "y": -0.8
+      },
+      {
+        "x": 0.0,
+        "y": -0.6
+      },
+      {
+        "x": 0.2,
+        "y": -0.6
+      },
+      {
+        "x": 0.4,
+        "y": -0.6
+      },
+      {
+        "x": 0.6000000000000001,
+        "y": -0.6
+      },
+      {
+        "x": 0.8,
+        "y": -0.6
+      },
+      {
+        "x": 1.0,
+        "y": -0.6
+      },
+      {
+        "x": 0.0,
+        "y": -0.3999999999999999
+      },
+      {
+        "x": 0.2,
+        "y": -0.3999999999999999
+      },
+      {
+        "x": 0.4,
+        "y": -0.3999999999999999
+      },
+      {
+        "x": 0.6000000000000001,
+        "y": -0.3999999999999999
+      },
+      {
+        "x": 0.8,
+        "y": -0.3999999999999999
+      },
+      {
+        "x": 1.0,
+        "y": -0.3999999999999999
+      },
+      {
+        "x": 0.0,
+        "y": -0.19999999999999996
+      },
+      {
+        "x": 0.2,
+        "y": -0.19999999999999996
+      },
+      {
+        "x": 0.4,
+        "y": -0.19999999999999996
+      },
+      {
+        "x": 0.6000000000000001,
+        "y": -0.19999999999999996
+      },
+      {
+        "x": 0.8,
+        "y": -0.19999999999999996
+      },
+      {
+        "x": 1.0,
+        "y": -0.19999999999999996
+      },
+      {
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "x": 0.2,
+        "y": 0.0
+      },
+      {
+        "x": 0.4,
+        "y": 0.0
+      },
+      {
+        "x": 0.6000000000000001,
+        "y": 0.0
+      },
+      {
+        "x": 0.8,
+        "y": 0.0
+      },
+      {
+        "x": 1.0,
+        "y": 0.0
+      }
+    ],
+    "elements": [
+      {
+        "displayId": 1,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.1,
+        "centerY": -0.8999999999999999,
+        "nodePoints": [
+          {
+            "y": -1.0,
+            "x": 0.0
+          },
+          {
+            "y": -1.0,
+            "x": 0.2
+          },
+          {
+            "y": -0.8,
+            "x": 0.2
+          },
+          {
+            "y": -0.8,
+            "x": 0.0
+          }
+        ]
+      },
+      {
+        "displayId": 2,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.3,
+        "centerY": -0.8999999999999999,
+        "nodePoints": [
+          {
+            "y": -1.0,
+            "x": 0.2
+          },
+          {
+            "y": -1.0,
+            "x": 0.4
+          },
+          {
+            "y": -0.8,
+            "x": 0.4
+          },
+          {
+            "y": -0.8,
+            "x": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 3,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.5,
+        "centerY": -0.8999999999999999,
+        "nodePoints": [
+          {
+            "y": -1.0,
+            "x": 0.4
+          },
+          {
+            "y": -1.0,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.8,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.8,
+            "x": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 4,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.7000000000000001,
+        "centerY": -0.8999999999999999,
+        "nodePoints": [
+          {
+            "y": -1.0,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -1.0,
+            "x": 0.8
+          },
+          {
+            "y": -0.8,
+            "x": 0.8
+          },
+          {
+            "y": -0.8,
+            "x": 0.6000000000000001
+          }
+        ]
+      },
+      {
+        "displayId": 5,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.8999999999999999,
+        "centerY": -0.8999999999999999,
+        "nodePoints": [
+          {
+            "y": -1.0,
+            "x": 0.8
+          },
+          {
+            "y": -1.0,
+            "x": 1.0
+          },
+          {
+            "y": -0.8,
+            "x": 1.0
+          },
+          {
+            "y": -0.8,
+            "x": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 6,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.1,
+        "centerY": -0.7000000000000001,
+        "nodePoints": [
+          {
+            "y": -0.8,
+            "x": 0.0
+          },
+          {
+            "y": -0.8,
+            "x": 0.2
+          },
+          {
+            "y": -0.6,
+            "x": 0.2
+          },
+          {
+            "y": -0.6,
+            "x": 0.0
+          }
+        ]
+      },
+      {
+        "displayId": 7,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.3,
+        "centerY": -0.7000000000000001,
+        "nodePoints": [
+          {
+            "y": -0.8,
+            "x": 0.2
+          },
+          {
+            "y": -0.8,
+            "x": 0.4
+          },
+          {
+            "y": -0.6,
+            "x": 0.4
+          },
+          {
+            "y": -0.6,
+            "x": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 8,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.5,
+        "centerY": -0.7000000000000001,
+        "nodePoints": [
+          {
+            "y": -0.8,
+            "x": 0.4
+          },
+          {
+            "y": -0.8,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.6,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.6,
+            "x": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 9,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.7000000000000001,
+        "centerY": -0.7000000000000001,
+        "nodePoints": [
+          {
+            "y": -0.8,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.8,
+            "x": 0.8
+          },
+          {
+            "y": -0.6,
+            "x": 0.8
+          },
+          {
+            "y": -0.6,
+            "x": 0.6000000000000001
+          }
+        ]
+      },
+      {
+        "displayId": 10,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.8999999999999999,
+        "centerY": -0.7000000000000001,
+        "nodePoints": [
+          {
+            "y": -0.8,
+            "x": 0.8
+          },
+          {
+            "y": -0.8,
+            "x": 1.0
+          },
+          {
+            "y": -0.6,
+            "x": 1.0
+          },
+          {
+            "y": -0.6,
+            "x": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 11,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.1,
+        "centerY": -0.49999999999999994,
+        "nodePoints": [
+          {
+            "y": -0.6,
+            "x": 0.0
+          },
+          {
+            "y": -0.6,
+            "x": 0.2
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.2
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.0
+          }
+        ]
+      },
+      {
+        "displayId": 12,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.3,
+        "centerY": -0.49999999999999994,
+        "nodePoints": [
+          {
+            "y": -0.6,
+            "x": 0.2
+          },
+          {
+            "y": -0.6,
+            "x": 0.4
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.4
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 13,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.5,
+        "centerY": -0.49999999999999994,
+        "nodePoints": [
+          {
+            "y": -0.6,
+            "x": 0.4
+          },
+          {
+            "y": -0.6,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 14,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.7000000000000001,
+        "centerY": -0.49999999999999994,
+        "nodePoints": [
+          {
+            "y": -0.6,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.6,
+            "x": 0.8
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.8
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.6000000000000001
+          }
+        ]
+      },
+      {
+        "displayId": 15,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.8999999999999999,
+        "centerY": -0.49999999999999994,
+        "nodePoints": [
+          {
+            "y": -0.6,
+            "x": 0.8
+          },
+          {
+            "y": -0.6,
+            "x": 1.0
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 1.0
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 16,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.1,
+        "centerY": -0.29999999999999993,
+        "nodePoints": [
+          {
+            "y": -0.3999999999999999,
+            "x": 0.0
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.2
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.2
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.0
+          }
+        ]
+      },
+      {
+        "displayId": 17,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.3,
+        "centerY": -0.29999999999999993,
+        "nodePoints": [
+          {
+            "y": -0.3999999999999999,
+            "x": 0.2
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.4
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.4
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 18,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.5,
+        "centerY": -0.29999999999999993,
+        "nodePoints": [
+          {
+            "y": -0.3999999999999999,
+            "x": 0.4
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 19,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.7000000000000001,
+        "centerY": -0.29999999999999993,
+        "nodePoints": [
+          {
+            "y": -0.3999999999999999,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 0.8
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.8
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.6000000000000001
+          }
+        ]
+      },
+      {
+        "displayId": 20,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.8999999999999999,
+        "centerY": -0.29999999999999993,
+        "nodePoints": [
+          {
+            "y": -0.3999999999999999,
+            "x": 0.8
+          },
+          {
+            "y": -0.3999999999999999,
+            "x": 1.0
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 1.0
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.8
+          }
+        ]
+      },
+      {
+        "displayId": 21,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.1,
+        "centerY": -0.09999999999999998,
+        "nodePoints": [
+          {
+            "y": -0.19999999999999996,
+            "x": 0.0
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.2
+          },
+          {
+            "y": 0.0,
+            "x": 0.2
+          },
+          {
+            "y": 0.0,
+            "x": 0.0
+          }
+        ]
+      },
+      {
+        "displayId": 22,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.3,
+        "centerY": -0.09999999999999998,
+        "nodePoints": [
+          {
+            "y": -0.19999999999999996,
+            "x": 0.2
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.4
+          },
+          {
+            "y": 0.0,
+            "x": 0.4
+          },
+          {
+            "y": 0.0,
+            "x": 0.2
+          }
+        ]
+      },
+      {
+        "displayId": 23,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.5,
+        "centerY": -0.09999999999999998,
+        "nodePoints": [
+          {
+            "y": -0.19999999999999996,
+            "x": 0.4
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": 0.0,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": 0.0,
+            "x": 0.4
+          }
+        ]
+      },
+      {
+        "displayId": 24,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.7000000000000001,
+        "centerY": -0.09999999999999998,
+        "nodePoints": [
+          {
+            "y": -0.19999999999999996,
+            "x": 0.6000000000000001
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 0.8
+          },
+          {
+            "y": 0.0,
+            "x": 0.8
+          },
+          {
+            "y": 0.0,
+            "x": 0.6000000000000001
+          }
+        ]
+      },
+      {
+        "displayId": 25,
+        "isActive": true,
+        "isHighlighted": false,
+        "isQuadraticTriangle": false,
+        "isQuadrilateral": true,
+        "isQuadraticQuad": false,
+        "isUnmatchedTriangle": false,
+        "centerX": 0.8999999999999999,
+        "centerY": -0.09999999999999998,
+        "nodePoints": [
+          {
+            "y": -0.19999999999999996,
+            "x": 0.8
+          },
+          {
+            "y": -0.19999999999999996,
+            "x": 1.0
+          },
+          {
+            "y": 0.0,
+            "x": 1.0
+          },
+          {
+            "y": 0.0,
+            "x": 0.8
+          }
+        ]
+      }
+    ],
+    "informationRows": [
+      {
+        "elementId": 1,
+        "node1": 1,
+        "node2": 2,
+        "node3": 8,
+        "node4": 7,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.0,
+        "n1Y": -1.0,
+        "n2X": 0.2,
+        "n2Y": -1.0,
+        "n3X": 0.2,
+        "n3Y": -0.8,
+        "n4X": 0.0,
+        "n4Y": -0.8,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 2,
+        "node1": 2,
+        "node2": 3,
+        "node3": 9,
+        "node4": 8,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.2,
+        "n1Y": -1.0,
+        "n2X": 0.4,
+        "n2Y": -1.0,
+        "n3X": 0.4,
+        "n3Y": -0.8,
+        "n4X": 0.2,
+        "n4Y": -0.8,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 3,
+        "node1": 3,
+        "node2": 4,
+        "node3": 10,
+        "node4": 9,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.4,
+        "n1Y": -1.0,
+        "n2X": 0.6000000000000001,
+        "n2Y": -1.0,
+        "n3X": 0.6000000000000001,
+        "n3Y": -0.8,
+        "n4X": 0.4,
+        "n4Y": -0.8,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 4,
+        "node1": 4,
+        "node2": 5,
+        "node3": 11,
+        "node4": 10,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.6000000000000001,
+        "n1Y": -1.0,
+        "n2X": 0.8,
+        "n2Y": -1.0,
+        "n3X": 0.8,
+        "n3Y": -0.8,
+        "n4X": 0.6000000000000001,
+        "n4Y": -0.8,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 5,
+        "node1": 5,
+        "node2": 6,
+        "node3": 12,
+        "node4": 11,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.8,
+        "n1Y": -1.0,
+        "n2X": 1.0,
+        "n2Y": -1.0,
+        "n3X": 1.0,
+        "n3Y": -0.8,
+        "n4X": 0.8,
+        "n4Y": -0.8,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 6,
+        "node1": 7,
+        "node2": 8,
+        "node3": 14,
+        "node4": 13,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.0,
+        "n1Y": -0.8,
+        "n2X": 0.2,
+        "n2Y": -0.8,
+        "n3X": 0.2,
+        "n3Y": -0.6,
+        "n4X": 0.0,
+        "n4Y": -0.6,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 7,
+        "node1": 8,
+        "node2": 9,
+        "node3": 15,
+        "node4": 14,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.2,
+        "n1Y": -0.8,
+        "n2X": 0.4,
+        "n2Y": -0.8,
+        "n3X": 0.4,
+        "n3Y": -0.6,
+        "n4X": 0.2,
+        "n4Y": -0.6,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 8,
+        "node1": 9,
+        "node2": 10,
+        "node3": 16,
+        "node4": 15,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.4,
+        "n1Y": -0.8,
+        "n2X": 0.6000000000000001,
+        "n2Y": -0.8,
+        "n3X": 0.6000000000000001,
+        "n3Y": -0.6,
+        "n4X": 0.4,
+        "n4Y": -0.6,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 9,
+        "node1": 10,
+        "node2": 11,
+        "node3": 17,
+        "node4": 16,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.6000000000000001,
+        "n1Y": -0.8,
+        "n2X": 0.8,
+        "n2Y": -0.8,
+        "n3X": 0.8,
+        "n3Y": -0.6,
+        "n4X": 0.6000000000000001,
+        "n4Y": -0.6,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 10,
+        "node1": 11,
+        "node2": 12,
+        "node3": 18,
+        "node4": 17,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.8,
+        "n1Y": -0.8,
+        "n2X": 1.0,
+        "n2Y": -0.8,
+        "n3X": 1.0,
+        "n3Y": -0.6,
+        "n4X": 0.8,
+        "n4Y": -0.6,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 11,
+        "node1": 13,
+        "node2": 14,
+        "node3": 20,
+        "node4": 19,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.0,
+        "n1Y": -0.6,
+        "n2X": 0.2,
+        "n2Y": -0.6,
+        "n3X": 0.2,
+        "n3Y": -0.3999999999999999,
+        "n4X": 0.0,
+        "n4Y": -0.3999999999999999,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 12,
+        "node1": 14,
+        "node2": 15,
+        "node3": 21,
+        "node4": 20,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.2,
+        "n1Y": -0.6,
+        "n2X": 0.4,
+        "n2Y": -0.6,
+        "n3X": 0.4,
+        "n3Y": -0.3999999999999999,
+        "n4X": 0.2,
+        "n4Y": -0.3999999999999999,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 13,
+        "node1": 15,
+        "node2": 16,
+        "node3": 22,
+        "node4": 21,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.4,
+        "n1Y": -0.6,
+        "n2X": 0.6000000000000001,
+        "n2Y": -0.6,
+        "n3X": 0.6000000000000001,
+        "n3Y": -0.3999999999999999,
+        "n4X": 0.4,
+        "n4Y": -0.3999999999999999,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 14,
+        "node1": 16,
+        "node2": 17,
+        "node3": 23,
+        "node4": 22,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.6000000000000001,
+        "n1Y": -0.6,
+        "n2X": 0.8,
+        "n2Y": -0.6,
+        "n3X": 0.8,
+        "n3Y": -0.3999999999999999,
+        "n4X": 0.6000000000000001,
+        "n4Y": -0.3999999999999999,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 15,
+        "node1": 17,
+        "node2": 18,
+        "node3": 24,
+        "node4": 23,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.8,
+        "n1Y": -0.6,
+        "n2X": 1.0,
+        "n2Y": -0.6,
+        "n3X": 1.0,
+        "n3Y": -0.3999999999999999,
+        "n4X": 0.8,
+        "n4Y": -0.3999999999999999,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 16,
+        "node1": 19,
+        "node2": 20,
+        "node3": 26,
+        "node4": 25,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.0,
+        "n1Y": -0.3999999999999999,
+        "n2X": 0.2,
+        "n2Y": -0.3999999999999999,
+        "n3X": 0.2,
+        "n3Y": -0.19999999999999996,
+        "n4X": 0.0,
+        "n4Y": -0.19999999999999996,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 17,
+        "node1": 20,
+        "node2": 21,
+        "node3": 27,
+        "node4": 26,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.2,
+        "n1Y": -0.3999999999999999,
+        "n2X": 0.4,
+        "n2Y": -0.3999999999999999,
+        "n3X": 0.4,
+        "n3Y": -0.19999999999999996,
+        "n4X": 0.2,
+        "n4Y": -0.19999999999999996,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 18,
+        "node1": 21,
+        "node2": 22,
+        "node3": 28,
+        "node4": 27,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.4,
+        "n1Y": -0.3999999999999999,
+        "n2X": 0.6000000000000001,
+        "n2Y": -0.3999999999999999,
+        "n3X": 0.6000000000000001,
+        "n3Y": -0.19999999999999996,
+        "n4X": 0.4,
+        "n4Y": -0.19999999999999996,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 19,
+        "node1": 22,
+        "node2": 23,
+        "node3": 29,
+        "node4": 28,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.6000000000000001,
+        "n1Y": -0.3999999999999999,
+        "n2X": 0.8,
+        "n2Y": -0.3999999999999999,
+        "n3X": 0.8,
+        "n3Y": -0.19999999999999996,
+        "n4X": 0.6000000000000001,
+        "n4Y": -0.19999999999999996,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 20,
+        "node1": 23,
+        "node2": 24,
+        "node3": 30,
+        "node4": 29,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.8,
+        "n1Y": -0.3999999999999999,
+        "n2X": 1.0,
+        "n2Y": -0.3999999999999999,
+        "n3X": 1.0,
+        "n3Y": -0.19999999999999996,
+        "n4X": 0.8,
+        "n4Y": -0.19999999999999996,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 21,
+        "node1": 25,
+        "node2": 26,
+        "node3": 32,
+        "node4": 31,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.0,
+        "n1Y": -0.19999999999999996,
+        "n2X": 0.2,
+        "n2Y": -0.19999999999999996,
+        "n3X": 0.2,
+        "n3Y": 0.0,
+        "n4X": 0.0,
+        "n4Y": 0.0,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 22,
+        "node1": 26,
+        "node2": 27,
+        "node3": 33,
+        "node4": 32,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.2,
+        "n1Y": -0.19999999999999996,
+        "n2X": 0.4,
+        "n2Y": -0.19999999999999996,
+        "n3X": 0.4,
+        "n3Y": 0.0,
+        "n4X": 0.2,
+        "n4Y": 0.0,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 23,
+        "node1": 27,
+        "node2": 28,
+        "node3": 34,
+        "node4": 33,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.4,
+        "n1Y": -0.19999999999999996,
+        "n2X": 0.6000000000000001,
+        "n2Y": -0.19999999999999996,
+        "n3X": 0.6000000000000001,
+        "n3Y": 0.0,
+        "n4X": 0.4,
+        "n4Y": 0.0,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 24,
+        "node1": 28,
+        "node2": 29,
+        "node3": 35,
+        "node4": 34,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.6000000000000001,
+        "n1Y": -0.19999999999999996,
+        "n2X": 0.8,
+        "n2Y": -0.19999999999999996,
+        "n3X": 0.8,
+        "n3Y": 0.0,
+        "n4X": 0.6000000000000001,
+        "n4Y": 0.0,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      },
+      {
+        "elementId": 25,
+        "node1": 29,
+        "node2": 30,
+        "node3": 36,
+        "node4": 35,
+        "node5": 0,
+        "node6": 0,
+        "node7": 0,
+        "node8": 0,
+        "etype": 1,
+        "n1X": 0.8,
+        "n1Y": -0.19999999999999996,
+        "n2X": 1.0,
+        "n2Y": -0.19999999999999996,
+        "n3X": 1.0,
+        "n3Y": 0.0,
+        "n4X": 0.8,
+        "n4Y": 0.0,
+        "n5X": 0.0,
+        "n5Y": 0.0,
+        "n6X": 0.0,
+        "n6Y": 0.0,
+        "n7X": 0.0,
+        "n7Y": 0.0,
+        "n8X": 0.0,
+        "n8Y": 0.0,
+        "kind": "Q4",
+        "status": "Active",
+        "smithEmb2dLocalOrder": false
+      }
+    ]
+  },
+  "loads": [],
+  "boundaryConditions": {
+    "rows": [],
+    "statusMessage": "",
+    "nodesText": "",
+    "selectedBCTypeForBoundary": "Fixed",
+    "bcValueForBoundary": "0"
+  },
+  "feAnalysis": {
+    "statusMessage": "Ready — Flow-Seepage Transient State → Transient (plane/axisymmetric) (p84). Δt=0.01, nstep=150, θ=0.5; drains on top + max-x faces."
+  },
+  "script": {
+    "scriptContent": "",
+    "outputText": "",
+    "statusMessage": "",
+    "isManualContent": false
+  },
+  "fieldStress": {
+    "global": {
+      "mode": "gravity",
+      "sigma1": -1000,
+      "sigma3": -500,
+      "sigmaZ": -750,
+      "angleDeg": 0,
+      "directSxx": -100,
+      "directSyy": -100,
+      "directTxy": 0,
+      "kx": 0.5,
+      "kz": 0.5,
+      "autoSurface": true,
+      "ySurface": 0,
+      "useEffectiveStressRatio": false
+    }
+  },
+  "userDefinedMesh": {
+    "elementType": "Q4",
+    "q8MeshMode": "Embankment",
+    "q8MeshDensity": "1",
+    "p64Nx1": "5",
+    "p64Nx2": "0",
+    "p64Ny1": "5",
+    "p64Ny2": "0",
+    "p64W1": "1",
+    "p64S1": "0",
+    "p64W2": "0",
+    "p64H1": "1",
+    "p64H2": "0",
+    "rectUseGeometryExtent": true,
+    "rectXMin": "0",
+    "rectXMax": "1",
+    "rectYMin": "-1",
+    "rectYMax": "0",
+    "rectElementsX": "5",
+    "rectElementsY": "5",
+    "nodes": [],
+    "elements": []
+  },
+  "verification": {
+    "selectedProblem": "S&G Program 8.4 plane transient consolidation (p84)",
+    "tolerancePercent": 10,
+    "autoFromMeta": false,
+    "e_kPa": 0,
+    "nu": 0,
+    "sigma_v_kPa": 0,
+    "k0": 0,
+    "a": 0,
+    "cx": 0,
+    "cy": 0,
+    "pi_kPa": 0,
+    "phiDeg": 0,
+    "c_kPa": 0,
+    "psiDeg": 0,
+    "gamma": 0
+  }
+}

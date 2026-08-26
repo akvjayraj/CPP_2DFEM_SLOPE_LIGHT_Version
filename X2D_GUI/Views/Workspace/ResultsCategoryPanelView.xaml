@@ -1,0 +1,27 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.ResultsCategoryPanelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel Background="{DynamicResource PanelBackgroundBrush}">
+        <TextBlock DockPanel.Dock="Top" Text="Results" FontWeight="SemiBold" Margin="8,8,8,4"
+                   Foreground="{DynamicResource WindowForegroundBrush}"/>
+        <TextBlock DockPanel.Dock="Top" Margin="8,0,8,6" TextWrapping="Wrap"
+                   Foreground="{DynamicResource SecondaryTextBrush}"
+                   Text="Categories bind the existing contour / vector / deformed fields. No invented SRF values."/>
+        <ListBox ItemsSource="{Binding Workspace.ResultCategories}"
+                 BorderThickness="0"
+                 Background="Transparent"
+                 Foreground="{DynamicResource WindowForegroundBrush}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Title}"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Margin="0,1"
+                            Padding="6,3"
+                            Command="{Binding DataContext.Workspace.SelectResultCategoryCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>

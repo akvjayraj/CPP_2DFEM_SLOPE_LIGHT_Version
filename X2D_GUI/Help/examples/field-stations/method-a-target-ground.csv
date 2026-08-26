@@ -1,0 +1,11 @@
+# Method A — finished outer ring after dragging the soil-block top through the collars.
+# Start from Create soil block (margin 5): (3,-5) (45,-5) (45,25) (3,25).
+# Drag / add vertices on the TOP edge to these ground points, then Verify Geometry.
+# File → Import → Geometry… can load this ring as a check (replaces the rectangle).
+3,-5
+45,-5
+45,10
+40,10
+25,15
+8,20
+3,20

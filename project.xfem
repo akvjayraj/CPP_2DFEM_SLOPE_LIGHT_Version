@@ -1,0 +1,330 @@
+{
+  "formatVersion": "1.0",
+  "main": {
+    "selectedTabIndex": 3,
+    "zoomPanModeEnabled": false
+  },
+  "projectSettings": {
+    "selectedDimension": "oneD",
+    "selectedSettingsTabIndex": 2,
+    "isDeterministicAnalysis": true,
+    "isProbabilisticAnalysis": false,
+    "numberOfStages": 0,
+    "stageFooterTabs": [],
+    "projectName": "",
+    "author": "",
+    "createdOn": "2026-03-21T00:00:00+05:30",
+    "units": "SI",
+    "bishopMaxIterations": 100,
+    "bishopConvergenceTolerance": 1E-06,
+    "bishopInitialFactor": 1,
+    "numberOfStagesModel": 1,
+    "axisXMin": 0,
+    "axisXMax": 10,
+    "axisYMin": 0,
+    "axisYMax": 10,
+    "gridSpacingMeters": 1
+  },
+  "geometry": {
+    "canvasWidth": 600,
+    "canvasHeight": 400,
+    "axisXMin": 0,
+    "axisXMax": 10,
+    "axisYMin": 0,
+    "axisYMax": 10,
+    "layerElevationInput": "",
+    "hasAddedElevationLayer": false,
+    "tunnelCenterXInput": "",
+    "tunnelCenterYInput": "",
+    "tunnelRadiusInput": "",
+    "geometryXInput": "",
+    "geometryYInput": "",
+    "vertices": [
+      {
+        "x": 2.5,
+        "y": 2.5
+      },
+      {
+        "x": 3.5,
+        "y": 2.5
+      }
+    ],
+    "lineSegments": [
+      {
+        "lineNumber": 1,
+        "fromPoint": "Point 1",
+        "toPoint": "Point 2",
+        "tag": "rod",
+        "unitWeight": "",
+        "isSaturatedUnitWeightEnabled": false,
+        "saturatedUnitWeight": "",
+        "cohesion": "",
+        "frictionAngle": "",
+        "youngsModulus": "100000",
+        "poissonsRatio": "",
+        "density": "",
+        "considerDensityForFE": false,
+        "planeStrain": false
+      }
+    ],
+    "tunnelRows": [],
+    "groundwaterLines": [],
+    "excavationPolygonsAxis": []
+  },
+  "materials": {
+    "selectedFailureCriterion": "elastic",
+    "selectedMaterialType": "isotropic",
+    "selectedAnalysisCategory": "Structural \u2013 static elasticity",
+    "selectedDetailedAnalysisType": "1D axial rod",
+    "showDeterministicTab": true,
+    "showProbabilisticTab": true
+  },
+  "mesh": {
+    "oneDMeshLength": "1",
+    "oneDMeshN": "4",
+    "oneDMeshStatus": "1D mesh created: length = 1, 4 elements, 5 nodes. Geometry Definition tab unchanged.",
+    "isDiscretized": true,
+    "showMeshElements": false,
+    "showMeshNodes": true,
+    "selectedTwoDElementFamily": "2-node rod",
+    "selectedTwoDNodeOption": "2-node",
+    "discretizationNodes": [
+      {
+        "x": 2.5,
+        "y": 2.5
+      },
+      {
+        "x": 2.75,
+        "y": 2.5
+      },
+      {
+        "x": 3,
+        "y": 2.5
+      },
+      {
+        "x": 3.25,
+        "y": 2.5
+      },
+      {
+        "x": 3.5,
+        "y": 2.5
+      }
+    ],
+    "elements": [
+      {
+        "displayId": 1,
+        "isActive": true,
+        "isHighlighted": false,
+        "centerX": 2.625,
+        "centerY": 2.5,
+        "nodePoints": [
+          {
+            "x": 2.5,
+            "y": 2.5
+          },
+          {
+            "x": 2.75,
+            "y": 2.5
+          }
+        ]
+      },
+      {
+        "displayId": 2,
+        "isActive": true,
+        "isHighlighted": false,
+        "centerX": 2.875,
+        "centerY": 2.5,
+        "nodePoints": [
+          {
+            "x": 2.75,
+            "y": 2.5
+          },
+          {
+            "x": 3,
+            "y": 2.5
+          }
+        ]
+      },
+      {
+        "displayId": 3,
+        "isActive": true,
+        "isHighlighted": false,
+        "centerX": 3.125,
+        "centerY": 2.5,
+        "nodePoints": [
+          {
+            "x": 3,
+            "y": 2.5
+          },
+          {
+            "x": 3.25,
+            "y": 2.5
+          }
+        ]
+      },
+      {
+        "displayId": 4,
+        "isActive": true,
+        "isHighlighted": false,
+        "centerX": 3.375,
+        "centerY": 2.5,
+        "nodePoints": [
+          {
+            "x": 3.25,
+            "y": 2.5
+          },
+          {
+            "x": 3.5,
+            "y": 2.5
+          }
+        ]
+      }
+    ],
+    "informationRows": [
+      {
+        "elementId": 1,
+        "node1": 1,
+        "node2": 2,
+        "node3": 0,
+        "etype": 1,
+        "n1X": 2.5,
+        "n1Y": 2.5,
+        "n2X": 2.75,
+        "n2Y": 2.5,
+        "n3X": 0,
+        "n3Y": 0,
+        "status": "Active"
+      },
+      {
+        "elementId": 2,
+        "node1": 2,
+        "node2": 3,
+        "node3": 0,
+        "etype": 1,
+        "n1X": 2.75,
+        "n1Y": 2.5,
+        "n2X": 3,
+        "n2Y": 2.5,
+        "n3X": 0,
+        "n3Y": 0,
+        "status": "Active"
+      },
+      {
+        "elementId": 3,
+        "node1": 3,
+        "node2": 4,
+        "node3": 0,
+        "etype": 1,
+        "n1X": 3,
+        "n1Y": 2.5,
+        "n2X": 3.25,
+        "n2Y": 2.5,
+        "n3X": 0,
+        "n3Y": 0,
+        "status": "Active"
+      },
+      {
+        "elementId": 4,
+        "node1": 4,
+        "node2": 5,
+        "node3": 0,
+        "etype": 1,
+        "n1X": 3.25,
+        "n1Y": 2.5,
+        "n2X": 3.5,
+        "n2Y": 2.5,
+        "n3X": 0,
+        "n3Y": 0,
+        "status": "Active"
+      }
+    ]
+  },
+  "loads": [
+    {
+      "type": "point",
+      "direction": "axial",
+      "magnitude": -0.625,
+      "startX": 210,
+      "startY": 300,
+      "endX": 0,
+      "endY": 0,
+      "appliedToNodeId": 5
+    },
+    {
+      "type": "point",
+      "direction": "axial",
+      "magnitude": -1.25,
+      "startX": 195,
+      "startY": 300,
+      "endX": 0,
+      "endY": 0,
+      "appliedToNodeId": 4
+    },
+    {
+      "type": "point",
+      "direction": "axial",
+      "magnitude": -1.25,
+      "startX": 180,
+      "startY": 300,
+      "endX": 0,
+      "endY": 0,
+      "appliedToNodeId": 3
+    },
+    {
+      "type": "point",
+      "direction": "axial",
+      "magnitude": -1.25,
+      "startX": 165,
+      "startY": 300,
+      "endX": 0,
+      "endY": 0,
+      "appliedToNodeId": 2
+    },
+    {
+      "type": "point",
+      "direction": "axial",
+      "magnitude": -0.625,
+      "startX": 150,
+      "startY": 300,
+      "endX": 0,
+      "endY": 0,
+      "appliedToNodeId": 1
+    }
+  ],
+  "boundaryConditions": {
+    "rows": [
+      {
+        "nodeId": 5,
+        "boundaryName": "Manual",
+        "bcType": "Fixed",
+        "degreeOfFreedom": 0,
+        "value": "0",
+        "description": "Fixed = 0"
+      }
+    ],
+    "statusMessage": "Applied Fixed to 1 node(s) (boundary: Manual).",
+    "nodesText": "5",
+    "selectedBCTypeForBoundary": "Fixed",
+    "bcValueForBoundary": "0"
+  },
+  "feAnalysis": {
+    "statusMessage": "Load mesh from Mesh tab (CDT\u002BRing Refinement). For Phase 1, use Run FE Analysis with default mesh.",
+    "stagedExcavationEnabled": false,
+    "gravityEnabled": true,
+    "gravityAcceleration": 9.81,
+    "loadSteppingEnabled": false,
+    "numberOfLoadSteps": 1,
+    "cppExecutableDirectory": ""
+  },
+  "results": {
+    "vectorOutputType": "Displacement Vectors",
+    "vectorScale": 1,
+    "showMesh": true,
+    "selectedOutputType": "Displacement Magnitude",
+    "feStatusMessage": "Run FE Analysis to view results."
+  },
+  "script": {
+    "scriptContent": "4  1\r\n100000.0\r\n0.25  0.25  0.25  0.25\r\n1\r\n5  0\r\n5\r\n 1 -0.625 2 -1.25 3 -1.25 4 -1.25 5 -0.625\r\n0\r\n",
+    "outputText": ""
+  }
+}

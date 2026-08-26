@@ -1,0 +1,97 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.CreateRectangularMeshView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Parameters -->
+            <GroupBox Header="CreateRectangularMesh(L, h, nx, ny)" Grid.Row="0" Margin="0,0,0,16" Padding="12">
+                <StackPanel>
+                    <TextBlock Text="Creates a structured rectangular mesh of triangular elements. Same algorithm used for Cantilever Beam and other verification problems."
+                               TextWrapping="Wrap" Margin="0,0,0,12" Foreground="#374151" FontSize="11"/>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="L (Length in x):" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" 
+                                 Text="{Binding RectangularMeshL, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="120" HorizontalAlignment="Left"
+                                 ToolTip="Width of rectangle in x direction (e.g. 1.0 for 1 m)"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="h (Height in y):" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" 
+                                 Text="{Binding RectangularMeshH, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="120" HorizontalAlignment="Left"
+                                 ToolTip="Height of rectangle in y direction (e.g. 0.2 for 0.2 m)"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="nx (Segments in x):" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" 
+                                 Text="{Binding RectangularMeshNx, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="120" HorizontalAlignment="Left"
+                                 ToolTip="Number of segments along x (e.g. 10)"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="ny (Segments in y):" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Grid.Column="1" 
+                                 Text="{Binding RectangularMeshNy, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="120" HorizontalAlignment="Left"
+                                 ToolTip="Number of segments along y (e.g. 2)"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Generate Button -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+                <Button Content="Generate Mesh"
+                        Command="{Binding GenerateRectangularMeshCommand}"
+                        Padding="16,8"
+                        FontWeight="SemiBold"
+                        ToolTip="Create rectangular mesh with L (length), h (height), nx (x segments), ny (y segments)"/>
+            </StackPanel>
+
+            <!-- Status -->
+            <Border Grid.Row="2" Padding="12,10" Margin="0,0,0,16"
+                    Background="#FFF8FAFC" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4">
+                <TextBlock Text="{Binding RectangularMeshStatus, Mode=OneWay}"
+                           Foreground="#64748B" FontSize="12" TextWrapping="Wrap"/>
+            </Border>
+
+            <!-- Info -->
+            <GroupBox Grid.Row="3" Header="Info" Padding="12">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,8">
+                        <Run Text="• Creates (nx+1)×(ny+1) nodes and 2×nx×ny triangular elements"/>
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" Margin="0,0,0,8">
+                        <Run Text="• Default L=1, h=0.2, nx=10, ny=2 matches Cantilever Beam verification"/>
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap">
+                        <Run Text="• Axis bounds are set to fit the rectangle with 20% padding"/>
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

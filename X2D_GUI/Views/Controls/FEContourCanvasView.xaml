@@ -1,0 +1,33 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Controls.FEContourCanvasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border x:Name="ZoomPanBorder" Background="White" ClipToBounds="True"
+            PreviewMouseWheel="ContourCanvas_PreviewMouseWheel"
+            MouseLeftButtonDown="ContourCanvas_MouseLeftButtonDown"
+            MouseDown="ContourCanvas_MouseDown"
+            MouseMove="ContourCanvas_MouseMove"
+            MouseLeftButtonUp="ContourCanvas_MouseLeftButtonUp"
+            MouseUp="ContourCanvas_MouseUp"
+            MouseLeave="ContourCanvas_MouseLeave">
+        <Grid>
+            <Canvas x:Name="ContourCanvas">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="ZoomScaleTransform" ScaleX="1" ScaleY="1"/>
+                        <TranslateTransform x:Name="ZoomTranslateTransform" X="0" Y="0"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+                <!-- Contour polygons will be rendered here -->
+            </Canvas>
+            <Canvas x:Name="AxisOverlayCanvas" IsHitTestVisible="False"/>
+            <Canvas IsHitTestVisible="False">
+                <Rectangle x:Name="ZoomRect"
+                           Visibility="Collapsed"
+                           Stroke="#FF0EA5E9"
+                           StrokeThickness="1.5"
+                           StrokeDashArray="3 3"
+                           Fill="#4010B981"/>
+            </Canvas>
+        </Grid>
+    </Border>
+</UserControl>

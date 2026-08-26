@@ -1,0 +1,120 @@
+! P51 plane-strain rectangular-grid reference file.
+! This file demonstrates the commented input style for p51.
+! It is a readable reference template; generated runtime p51 files may be
+! stripped of full-line comments before the legacy Fortran reader executes.
+
+! type_2d - plane strain analysis; displacements are ux and uy, epsilon_z = 0.
+! P51 analysis type block:
+! 'plane' = plane strain; 'axisymmetric' = radial/z axisymmetric strain.
+'plane'
+
+! element nod dir - triangular elements, 3 nodes per triangle, x-direction mesh numbering.
+! P51 element definition block:
+! element nod dir
+! element = triangle or quadrilateral family
+! nod = nodes per element
+! dir = mesh numbering direction
+'triangle'   3   'x'
+
+! nxe nye nip np_types - 10 x cells, 10 y cells, 1 integration point, 2 material types.
+! P51 grid/material-count block:
+! nxe nye nip np_types
+! nxe = number of x-direction element divisions
+! nye = number of y-direction element divisions
+! nip = number of integration points
+! np_types = number of material/property types
+10  10  1  2
+
+! Material 1 - Soil host (E = 50000 kPa, nu = 0.30).
+! P51 material/property block:
+! One row per material type: Young's modulus E and Poisson ratio nu.
+5.0e+04  0.30
+
+! Material 2 - Excavated zone with near-zero stiffness.
+1.0e-03  0.30
+
+! etype - 200 values, one material ID per triangular element.
+! 1 = soil host; 2 = excavated tunnel elements.
+! P51 element material-type block:
+! etype values assign one material ID to each element.
+! 1 = first material row, 2 = second material row, and so on.
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+! x_coords - 11 x coordinates from 0 m to 20 m.
+! P51 x-coordinate block:
+! x_coords = grid x coordinates in model units.
+0.0  2.0  4.0  6.0  8.0  10.0  12.0  14.0  16.0  18.0  20.0
+
+! y_coords - 11 y coordinates from ground surface to 20 m depth.
+! P51 y-coordinate block:
+! y_coords = grid y coordinates in model units.
+0.0  -2.0  -4.0  -6.0  -8.0  -10.0  -12.0  -14.0  -16.0  -18.0  -20.0
+
+! Boundary conditions - 31 restrained nodes.
+! Each row is node_id nf_x nf_y where 0=fixed and 1=free.
+! P51 boundary condition block:
+! First line is nr = number of restrained nodes.
+! Each following row is: node_id nf_x nf_y
+! 0 = fixed/restrained, 1 = free.
+31
+  1  0  1
+ 12  0  1
+ 23  0  1
+ 34  0  1
+ 45  0  1
+ 56  0  1
+ 67  0  1
+ 78  0  1
+ 89  0  1
+100  0  1
+111  0  0
+ 11  0  1
+ 22  0  1
+ 33  0  1
+ 44  0  1
+ 55  0  1
+ 66  0  1
+ 77  0  1
+ 88  0  1
+ 99  0  1
+110  0  1
+121  0  0
+112  1  0
+113  1  0
+114  1  0
+115  1  0
+116  1  0
+117  1  0
+118  1  0
+119  1  0
+120  1  0
+
+! Nodal loads - in-situ stress release at tunnel perimeter.
+! sigma_v0 = 200 kPa, 8 nodes, tributary length = 2 m.
+! P51 nodal load block:
+! First line is loaded_nodes = number of nodal load rows.
+! Each following row is: node_id load_x load_y.
+8
+ 50   -141.0   141.0
+ 51      0.0   200.0
+ 52    141.0   141.0
+ 61   -200.0     0.0
+ 63    200.0     0.0
+ 72   -141.0  -141.0
+ 73      0.0  -200.0
+ 74    141.0  -141.0
+
+! Fixed freedoms - optional prescribed displacement rows; 0 means none.
+! P51 fixed freedom block:
+! fixed_freedoms = number of prescribed displacement rows.
+! Each following row is: node_id sense value, where sense 1=x and 2=y.
+0

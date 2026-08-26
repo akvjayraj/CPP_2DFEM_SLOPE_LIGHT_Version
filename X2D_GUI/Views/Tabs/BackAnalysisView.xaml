@@ -1,0 +1,42 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.BackAnalysisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Target factor of safety:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Width="120" HorizontalAlignment="Left"
+                 Text="{Binding Settings.TargetFs, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="FS tolerance:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Width="120" HorizontalAlignment="Left"
+                 Text="{Binding Settings.FsTolerance, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <DataGrid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,12,0,8"
+                  ItemsSource="{Binding MaterialRows}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Material" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="c before" Binding="{Binding CohesionBefore, StringFormat=F3}" Width="80"/>
+                <DataGridTextColumn Header="φ before" Binding="{Binding PhiBefore, StringFormat=F2}" Width="80"/>
+                <DataGridTextColumn Header="c after" Binding="{Binding CohesionAfter, StringFormat=F3}" Width="80"/>
+                <DataGridTextColumn Header="φ after" Binding="{Binding PhiAfter, StringFormat=F2}" Width="80"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Button Content="Run Back Analysis" Command="{Binding RunBackAnalysisCommand}" Width="160" Margin="0,0,8,0"/>
+            <Button Content="Apply to Materials" Command="{Binding ApplyToMaterialsCommand}" Width="160" Margin="0,0,8,0"/>
+            <Button Content="Export CSV" Command="{Binding ExportCsvCommand}" Width="120"/>
+            <TextBlock Text="{Binding StatusMessage}" Margin="16,0,0,0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

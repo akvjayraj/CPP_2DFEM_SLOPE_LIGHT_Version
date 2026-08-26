@@ -1,0 +1,15 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.MeshView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls">
+    <Grid Margin="12">
+        <!-- Zoom/pan always enabled on Mesh tab: left-drag=zoom box, middle=pan, wheel=zoom -->
+        <controls:SlopeCanvasView HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  IsGeometryEditable="True"
+                                  DataContext="{Binding MeshTabCanvasContext}"
+                                  IsElementExcavationModeActive="{Binding MeshTabCanvasContext.IsExcavateElementsMode}"
+                                  ZoomPanModeEnabled="True"
+                                  ZoomAreaModeEnabled="{Binding DataContext.ZoomAreaModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"/>
+    </Grid>
+</UserControl>

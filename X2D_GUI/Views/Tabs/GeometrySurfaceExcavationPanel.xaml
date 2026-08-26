@@ -1,0 +1,266 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.GeometrySurfaceExcavationPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
+        <Style x:Key="SurfaceToolBtn" TargetType="Button">
+            <Setter Property="MinWidth" Value="72"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ExplorerSelectionBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SurfaceCellText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+        <Style x:Key="SurfaceCellEdit" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="4,2"/>
+        </Style>
+        <Style x:Key="SurfaceCombo" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Setter Property="ItemsSource" Value="{Binding DataContext.SurfaceColorOptions, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="MinHeight" Value="28"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ExplorerSelectionBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ExplorerSelectionBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="8,4,8,6">
+            <TextBlock Text="Click line segments on the canvas to select them for this surface. Right-click Finish or click Add when the boundary is closed."
+                       Visibility="{Binding IsSurfacePolygonPickMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       Foreground="{DynamicResource WindowForegroundBrush}"
+                       FontStyle="Italic"
+                       FontSize="12"
+                       Margin="0,0,0,6"
+                       TextWrapping="Wrap"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Add Surface"
+                        Style="{StaticResource SurfaceToolBtn}"
+                        Command="{Binding AddSurfaceCommand}"
+                        MinWidth="100"
+                        ToolTip="Add a new surface"/>
+                <Button Content="Excavate"
+                        Style="{StaticResource SurfaceToolBtn}"
+                        Command="{Binding StartExcavationModeCommand}"
+                        MinWidth="88"
+                        ToolTip="Open dialog to subtract Region B from Region A and display the result"/>
+                <Button Content="Fill"
+                        Style="{StaticResource SurfaceToolBtn}"
+                        Command="{Binding StartFillModeCommand}"
+                        ToolTip="Click inside an excavated tunnel (white region) to restore it"/>
+                <Button Content="Delete"
+                        Style="{StaticResource SurfaceToolBtn}"
+                        Command="{Binding DeleteSelectedSurfaceCommand}"
+                        Margin="0"
+                        ToolTip="Delete the selected surface"/>
+            </StackPanel>
+        </StackPanel>
+
+        <GroupBox Header="Excavation Operations"
+                  DockPanel.Dock="Bottom"
+                  Margin="8,8,8,4"
+                  Visibility="{Binding CompactWorkspaceMode, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+            <StackPanel Margin="8">
+                <Button Content="Delete"
+                        Style="{StaticResource SurfaceToolBtn}"
+                        Click="DeleteExcavationOperationButton_Click"
+                        Width="100"
+                        Height="24"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,8"
+                        ToolTip="Delete the selected excavation operation"/>
+                <DataGrid x:Name="ExcavationOperationsGrid"
+                          ItemsSource="{Binding ExcavationOperations}"
+                          SelectedItem="{Binding SelectedExcavationOperation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          HeadersVisibility="Column"
+                          Height="150"
+                          Background="{DynamicResource PanelBackgroundBrush}"
+                          Foreground="{DynamicResource WindowForegroundBrush}"
+                          RowBackground="{DynamicResource PanelBackgroundBrush}"
+                          HorizontalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                          VerticalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                          GridLinesVisibility="All"
+                          BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Operation" Binding="{Binding OperationType}" Width="80" IsReadOnly="True"
+                                            ElementStyle="{StaticResource SurfaceCellText}"/>
+                        <DataGridTextColumn Header="Region A" Binding="{Binding RegionAName}" Width="120" IsReadOnly="True"
+                                            ElementStyle="{StaticResource SurfaceCellText}"/>
+                        <DataGridTextColumn Header="Region B" Binding="{Binding RegionBName}" Width="120" IsReadOnly="True"
+                                            ElementStyle="{StaticResource SurfaceCellText}"/>
+                        <DataGridTextColumn Header="Stage" Binding="{Binding AppliedInStageNumber, UpdateSourceTrigger=PropertyChanged}" Width="55"
+                                            ElementStyle="{StaticResource SurfaceCellText}"
+                                            EditingElementStyle="{StaticResource SurfaceCellEdit}"/>
+                        <DataGridTextColumn Header="Region A Area" Binding="{Binding RegionAAreaDisplay}" Width="100" IsReadOnly="True"
+                                            ElementStyle="{StaticResource SurfaceCellText}"/>
+                        <DataGridTextColumn Header="Region B Area" Binding="{Binding RegionBAreaDisplay}" Width="100" IsReadOnly="True"
+                                            ElementStyle="{StaticResource SurfaceCellText}"/>
+                        <DataGridTextColumn Header="Result Area" Binding="{Binding ResultAreaDisplay}" Width="120" IsReadOnly="True"
+                                            ElementStyle="{StaticResource SurfaceCellText}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </GroupBox>
+
+        <DataGrid x:Name="SurfaceGrid"
+                  ItemsSource="{Binding GeometrySurfaces}"
+                  SelectedItem="{Binding SelectedGeometrySurface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  HeadersVisibility="Column"
+                  ColumnHeaderHeight="30"
+                  RowHeight="30"
+                  FontSize="12"
+                  Margin="8,0,8,4"
+                  EnableRowVirtualization="False"
+                  VirtualizingPanel.IsVirtualizingWhenGrouping="False"
+                  Background="{DynamicResource PanelBackgroundBrush}"
+                  Foreground="{DynamicResource WindowForegroundBrush}"
+                  RowBackground="{DynamicResource PanelBackgroundBrush}"
+                  AlternatingRowBackground="{DynamicResource PanelBackgroundBrush}"
+                  HorizontalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                  VerticalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                  GridLinesVisibility="All"
+                  BorderThickness="0"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="MinHeight" Value="160"/>
+                    <Setter Property="Height" Value="200"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CompactWorkspaceMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Height" Value="Auto"/>
+                            <Setter Property="MinHeight" Value="72"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Surface"
+                                    Binding="{Binding SurfaceNumberDisplay}"
+                                    Width="80"
+                                    MinWidth="70"
+                                    IsReadOnly="True"
+                                    ElementStyle="{StaticResource SurfaceCellText}"/>
+                <DataGridTextColumn Header="Tag"
+                                    Binding="{Binding Tag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="120"
+                                    MinWidth="80"
+                                    ElementStyle="{StaticResource SurfaceCellText}"
+                                    EditingElementStyle="{StaticResource SurfaceCellEdit}"/>
+                <DataGridComboBoxColumn Header="Color"
+                                        SelectedValueBinding="{Binding ColorIndex, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                        SelectedValuePath="Index"
+                                        DisplayMemberPath="DisplayName"
+                                        Width="160"
+                                        MinWidth="140"
+                                        ElementStyle="{StaticResource SurfaceCombo}"
+                                        EditingElementStyle="{StaticResource SurfaceCombo}"/>
+                <DataGridTextColumn Header="Line Segments"
+                                    Binding="{Binding LineLabelsDisplay}"
+                                    Width="*"
+                                    MinWidth="100"
+                                    IsReadOnly="True"
+                                    ElementStyle="{StaticResource SurfaceCellText}"/>
+                <DataGridTemplateColumn Header="Action" Width="80" MinWidth="70" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Add"
+                                    Style="{StaticResource SurfaceToolBtn}"
+                                    Click="AddSurfaceToCanvasButton_Click"
+                                    MinWidth="56"
+                                    Height="22"
+                                    Margin="4,0"
+                                    IsEnabled="{Binding IsPolygonLocked, Converter={StaticResource BooleanNegationConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

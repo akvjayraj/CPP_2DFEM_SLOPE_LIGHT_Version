@@ -1,0 +1,153 @@
+! ============================================================
+! Circular tunnel excavation — 5 m diameter (r = 2.5 m)
+! Plane strain, 2D FE analysis (p51 solver)
+! ============================================================
+!
+! Problem description
+! -------------------
+! A 5 m diameter circular tunnel is excavated in a uniform
+! elastic soil mass.  The domain is a 20 m x 20 m square
+! (X: 0..20 m, Y: -20..0 m) with the tunnel centre at
+! (10, -10).  Roller BCs on all four outer edges.
+!
+! The tunnel cavity is modelled by:
+!   - Setting material type 2 (excavated) to near-zero stiffness
+!     (E = 1 Pa, nu = 0.3) for the elements inside r < 2.5 m.
+!   - Applying internal release loads at the tunnel perimeter nodes
+!     equal and opposite to the in-situ stress resultants.
+!
+! Mesh layout (Nxe x Nye = 10 x 10, dir = 'x')
+! -----------------------------------------------
+! 11 x 11 = 121 nodes, numbered row-by-row left→right, top→bottom
+! 200 triangular elements (2 per quad cell, upper-left diagonal split)
+!
+! Material properties
+! --------------------
+!   Type 1 – Soil host mass
+!     E  = 50 000 kPa   (50 MPa — stiff clay / soft rock)
+!     nu = 0.30
+!     gamma = 20 kN/m³  (self-weight — not used by p51 directly)
+!
+!   Type 2 – Excavated zone (near-zero stiffness)
+!     E  = 1e-3 kPa
+!     nu = 0.30
+!
+! Boundary conditions (rollers on all outer edges)
+! ------------------------------------------------
+!   Bottom row  (Y = -20): fixed in Y (nf_y = 0), free in X (nf_x = 1)
+!   Left column (X =  0):  fixed in X (nf_x = 0), free in Y (nf_y = 1)
+!   Right column(X = 20):  fixed in X (nf_x = 0), free in Y (nf_y = 1)
+!   Top row     (Y =  0):  free (surface — no fixity)
+!
+! Loads
+! -----
+!   In-situ vertical stress release at tunnel boundary nodes:
+!   σ_v0 = gamma * H = 20 * 10 = 200 kPa  (at tunnel centre depth 10 m)
+!   Release force on each perimeter node = σ_v0 * tributary_length (outward normal)
+!   8 perimeter nodes used; load applied as equivalent nodal forces.
+!
+! Coordinate system: X right, Y up (geotechnical: Y = 0 at surface, negative down)
+! ============================================================
+
+'plane'
+'triangle'   3   'x'
+10  10  1  2
+
+! Material 1 — Soil host (E = 50000 kPa, nu = 0.30)
+5.0e+04  0.30
+
+! Material 2 — Excavated zone (near-zero stiffness, E = 1e-3 kPa, nu = 0.30)
+1.0e-03  0.30
+
+! etype — element material assignment (1=soil, 2=excavated)
+! Elements inside the 2.5 m radius tunnel are type 2.
+! 10x10 quad grid → 200 triangles.  Tunnel centre at node row 5, col 5 (0-indexed).
+! Cells (i,j) where sqrt((xi-10)^2+(yj+10)^2) < 2.5 → type 2
+! Row j=4,5 (Y=-8..-12), col i=4,5 (X=8..12) → roughly 4 quad cells = 8 triangles excavated.
+! Full etype line (200 values, 1-based element order, row-major, two triangles per cell):
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 2 2 2 2 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+! x_coords — 11 values, 0 to 20 m (uniform 2 m spacing)
+0.0  2.0  4.0  6.0  8.0  10.0  12.0  14.0  16.0  18.0  20.0
+
+! y_coords — 11 values, 0 to -20 m (uniform 2 m spacing, Y down)
+0.0  -2.0  -4.0  -6.0  -8.0  -10.0  -12.0  -14.0  -16.0  -18.0  -20.0
+
+! ── Boundary conditions ────────────────────────────────────────────────────
+! Format: node_id  nf_x  nf_y    (0 = fixed, 1 = free)
+! Node numbering: row-by-row, left→right, top→bottom.
+! Node (i,j) = j*11 + i + 1  (i=col 0..10, j=row 0..10)
+!
+! Left edge  (col 0, nodes 1,12,23,34,45,56,67,78,89,100,111): fix X
+! Right edge (col 10, nodes 11,22,33,44,55,66,77,88,99,110,121): fix X
+! Bottom row (row 10, nodes 111..121): fix Y
+! Top surface (row 0, nodes 1..11): free (no fixity needed, surface)
+!
+! Total restrained nodes = left(11) + right(11) + bottom(11) - corners already in left/right(2) = 31
+31
+  1  0  1
+ 12  0  1
+ 23  0  1
+ 34  0  1
+ 45  0  1
+ 56  0  1
+ 67  0  1
+ 78  0  1
+ 89  0  1
+100  0  1
+111  0  0
+ 11  0  1
+ 22  0  1
+ 33  0  1
+ 44  0  1
+ 55  0  1
+ 66  0  1
+ 77  0  1
+ 88  0  1
+ 99  0  1
+110  0  1
+121  0  0
+112  1  0
+113  1  0
+114  1  0
+115  1  0
+116  1  0
+117  1  0
+118  1  0
+119  1  0
+120  1  0
+
+! ── Nodal loads ────────────────────────────────────────────────────────────
+! Release loads at tunnel perimeter (σ_v0 = 200 kPa, outward normal).
+! Tunnel centre at node 61 (col 5, row 5, X=10, Y=-10).
+! 8 perimeter nodes on the r=2 m ring (nearest grid nodes to r=2.5 m):
+!   Node 50 (X= 8, Y= -8):  upper-left  45°  Fx=-Fy= 141 kN/m
+!   Node 51 (X=10, Y= -8):  top         90°  Fy = 200 kN/m
+!   Node 52 (X=12, Y= -8):  upper-right 45°  Fx=+Fy= 141 kN/m
+!   Node 61 (X= 8, Y=-10):  left         0°  Fx = 200 kN/m  (west)
+!   Node 63 (X=12, Y=-10):  right      180°  Fx =-200 kN/m  (east)
+!   Node 72 (X= 8, Y=-12):  lower-left 225°  Fx=-Fy=-141 kN/m
+!   Node 73 (X=10, Y=-12):  bottom     270°  Fy =-200 kN/m
+!   Node 74 (X=12, Y=-12):  lower-right315°  Fx=+Fy=-141 kN/m
+! Tributary length ≈ 2.0 m (grid spacing); load = σ_v0 × trib × outward_n
+8
+ 50   -141.0   141.0
+ 51      0.0   200.0
+ 52    141.0   141.0
+ 61   -200.0     0.0
+ 63    200.0     0.0
+ 72   -141.0  -141.0
+ 73      0.0  -200.0
+ 74    141.0  -141.0
+
+! ── Fixed freedoms ─────────────────────────────────────────────────────────
+0

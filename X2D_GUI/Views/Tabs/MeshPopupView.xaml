@@ -1,0 +1,453 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.MeshPopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewmodels="clr-namespace:GeotechSlopeApp.ViewModels"
+             xmlns:models="clr-namespace:GeotechSlopeApp.Models"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:views="clr-namespace:GeotechSlopeApp.Views.Tabs">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"/>
+        <converters:MeshTypeToVisibilityConverter x:Key="MeshTypeToVisibilityConverter"/>
+        <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!-- Mesh Canvas Display: common for all subtabs -->
+            <GroupBox Header="Mesh Canvas Display" Grid.Row="0" Margin="0,0,0,12" Padding="12">
+                <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="Show elements"
+                              IsChecked="{Binding ShowMeshElements, Mode=TwoWay, FallbackValue=False, TargetNullValue=False}"
+                              Margin="0,0,24,0"
+                              ToolTip="Show element numbers (blue) in the mesh canvas"/>
+                    <CheckBox Content="Show nodes"
+                              IsChecked="{Binding ShowMeshNodes, Mode=TwoWay, FallbackValue=False, TargetNullValue=False}"
+                              ToolTip="Show mesh discretization nodes (red crosses) in the mesh canvas"/>
+                </StackPanel>
+                <Button Content="Import boundary to Geometry Definition"
+                        Command="{Binding ImportBoundaryToGeometryCommand}"
+                        Margin="0,10,0,0"
+                        Padding="8,4"
+                        HorizontalAlignment="Left"
+                        ToolTip="Create corner points and L1..Ln line segments on the Geometry Definition tab from this mesh outer boundary."/>
+                <TextBlock Text="{Binding ImportBoundaryStatusMessage}"
+                           Margin="0,6,0,0"
+                           Foreground="#FF475569"
+                           FontSize="11"
+                           TextWrapping="Wrap"
+                           MaxWidth="420"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Mesh elements" Grid.Row="1" Margin="0,0,0,12" Padding="12">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button Content="{Binding ExcavateElementsButtonLabel}"
+                                Command="{Binding ToggleExcavateElementsModeCommand}"
+                                Padding="12,4"
+                                Margin="0,0,10,0"
+                                ToolTip="Click this, then click an active element in the mesh canvas to excavate it in the active stage."/>
+                        <TextBlock VerticalAlignment="Center" Foreground="#FF475569"
+                                   Text="Uses footer active stage. Click mesh elements on canvas to excavate."/>
+                    </StackPanel>
+                    <Border DockPanel.Dock="Top"
+                            Margin="0,0,0,8"
+                            Padding="6,3"
+                            Background="#FFF8FAFC"
+                            BorderBrush="#FFE2E8F0"
+                            BorderThickness="1"
+                            CornerRadius="3">
+                        <TextBlock Text="{Binding ExcavateElementsStatusMessage}"
+                                   Foreground="#FF334155"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+                <DataGrid ItemsSource="{Binding MeshInformationRows}"
+                          SelectedItem="{Binding SelectedMeshInformationRow, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          EnableRowVirtualization="True"
+                          EnableColumnVirtualization="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="All"
+                          CanUserResizeColumns="True"
+                          CanUserSortColumns="True"
+                          MaxHeight="280"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.CanContentScroll="True"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
+                          SelectionMode="Single"
+                          ToolTip="Select a row to highlight that element on the Mesh tab canvas. Show elements / Show nodes are turned off; the chosen element is drawn with a red outline.">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Element ID" Binding="{Binding ElementId}" Width="72"/>
+                        <DataGridTextColumn Header="Kind" Binding="{Binding Kind}" Width="44">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="T6" Binding="{Binding IsT6}" Width="40">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 1" Binding="{Binding Node1}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 2" Binding="{Binding Node2}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 3" Binding="{Binding Node3}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 4" Binding="{Binding Node4}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 5" Binding="{Binding Node5}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 6" Binding="{Binding Node6}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 7" Binding="{Binding Node7}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 8" Binding="{Binding Node8}" Width="56">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Etype" Binding="{Binding Etype}" Width="52">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="N1X" Binding="{Binding N1X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N1Y" Binding="{Binding N1Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N2X" Binding="{Binding N2X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N2Y" Binding="{Binding N2Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N3X" Binding="{Binding N3X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N3Y" Binding="{Binding N3Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N4X" Binding="{Binding N4X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N4Y" Binding="{Binding N4Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N5X" Binding="{Binding N5X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N5Y" Binding="{Binding N5Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N6X" Binding="{Binding N6X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N6Y" Binding="{Binding N6Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N7X" Binding="{Binding N7X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N7Y" Binding="{Binding N7Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N8X" Binding="{Binding N8X, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="N8Y" Binding="{Binding N8Y, StringFormat='{}{0:F4}'}" Width="72"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Foreground">
+                                        <Setter.Value>
+                                            <Binding Path="Status">
+                                                <Binding.Converter>
+                                                    <converters:StatusToColorConverter/>
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                </DockPanel>
+            </GroupBox>
+            <TabControl Grid.Row="2"
+                        SelectedIndex="{Binding MeshPopupSelectedTabIndex, Mode=TwoWay}">
+                    <!-- Standard/Create Triangle/Create Rectangular flows are intentionally deactivated. -->
+                    <TabItem Header="Standard Meshing"
+                             Visibility="Collapsed">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <Grid Margin="12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+            <!-- Mesh Setup -->
+            <GroupBox Header="Mesh Setup" Grid.Row="0" Margin="0,0,0,16" Padding="12">
+                <StackPanel>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Mesh Type:" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox Grid.Column="1" 
+                                  ItemsSource="{Binding MeshTypeOptions}" 
+                                  SelectedItem="{Binding MeshType, Mode=TwoWay}"
+                                  Width="200" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Element Type:" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox Grid.Column="1" 
+                                  ItemsSource="{Binding ElementTypeOptions}" 
+                                  SelectedItem="{Binding ElementType, Mode=TwoWay}"
+                                  Width="200" HorizontalAlignment="Left"/>
+                    </Grid>
+                    
+                    <!-- Graded Mesh Settings -->
+                    <StackPanel Visibility="{Binding MeshType, Converter={StaticResource MeshTypeToVisibilityConverter}, ConverterParameter=Graded}">
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Gradation Factor:" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1" 
+                                     Text="{Binding GradationFactor, UpdateSourceTrigger=PropertyChanged}" 
+                                     Width="120" HorizontalAlignment="Left"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Number of Excavation Nodes:" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0" TextWrapping="Wrap"/>
+                            <TextBox Grid.Column="1" 
+                                     Text="{Binding NumberOfExcavationNodes, UpdateSourceTrigger=PropertyChanged}" 
+                                     Width="120" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,16">
+                <Button Content="Help" 
+                        Click="ShowStandardMeshingHelp_Click"
+                        Width="80" 
+                        Height="36"
+                        Margin="0,0,8,0"
+                        ToolTip="Show instructions for Standard Meshing"/>
+                <Button Content="Discretize" 
+                        Command="{Binding DiscretizeCommand}"
+                        Width="120" 
+                        Height="36"
+                        Margin="0,0,8,0"
+                        ToolTip="Discretize all boundaries according to mesh settings"/>
+                <Button Content="Mesh" 
+                        Command="{Binding GenerateMeshCommand}"
+                        Width="120" 
+                        Height="36"
+                        Margin="0,0,8,0"
+                        ToolTip="Generate finite element mesh based on discretization"
+                        FontWeight="SemiBold"/>
+                <Button Content="Clear" 
+                        Command="{Binding ClearMeshCommand}"
+                        Width="100" 
+                        Height="36"
+                        ToolTip="Clear discretization and mesh"/>
+            </StackPanel>
+
+            <!-- Status -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,16">
+                <TextBlock>
+                    <Run Text="Status: "/>
+                </TextBlock>
+                <TextBlock FontWeight="Bold" Foreground="Orange" Visibility="{Binding IsDiscretized, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                    <Run Text="Not Discretized"/>
+                </TextBlock>
+                <TextBlock FontWeight="Bold" Foreground="Green" Visibility="{Binding IsDiscretized, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Run Text="Discretized"/>
+                </TextBlock>
+            </StackPanel>
+
+            <!-- Mesh Statistics -->
+            <GroupBox Header="Mesh Statistics" Grid.Row="3" Padding="12" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock>
+                        <Run Text="Discretization Nodes: "/>
+                        <Run Text="{Binding DiscretizationNodes.Count, Mode=OneWay}" FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0">
+                        <Run Text="Total Mesh Elements: "/>
+                        <Run Text="{Binding MeshElements.Count, Mode=OneWay}" FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0">
+                        <Run Text="Active Elements: "/>
+                        <Run Text="{Binding ActiveElementCount, Mode=OneWay}" FontWeight="Bold" Foreground="Green"/>
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0">
+                        <Run Text="Deactivated Elements: "/>
+                        <Run Text="{Binding DeactivatedElementCount, Mode=OneWay}" FontWeight="Bold" Foreground="Red"/>
+                    </TextBlock>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Boundary Edges Statistics -->
+            <GroupBox Header="Boundary Edges" Grid.Row="4" Padding="12" Margin="0,0,0,16">
+                <StackPanel>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Total Boundary Edges:" Grid.Column="0" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding BoundaryEdgeNodes.Count, Mode=OneWay}" 
+                                   Grid.Column="1" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Outer Boundary Edges:" Grid.Column="0" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding OuterBoundaryEdgeCount, Mode=OneWay}" 
+                                   Grid.Column="1" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Tunnel Boundary Edges:" Grid.Column="0" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding TunnelBoundaryEdgeCount, Mode=OneWay}" 
+                                   Grid.Column="1" FontWeight="Bold"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Total Boundary Length:" Grid.Column="0" Margin="0,0,8,0"/>
+                        <TextBlock Text="{Binding TotalBoundaryLength, Mode=OneWay, StringFormat='{}{0:F2}'}" 
+                                   Grid.Column="1" FontWeight="Bold"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Boundary Edge Details -->
+            <Expander Header="Boundary Edge Details" Grid.Row="5" Margin="0,0,0,16" IsExpanded="False">
+                <DataGrid ItemsSource="{Binding BoundaryEdgeNodes}"
+                          SelectedItem="{Binding SelectedBoundaryEdge, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="All"
+                          CanUserResizeColumns="True"
+                          CanUserSortColumns="True"
+                          MaxHeight="300"
+                          VerticalScrollBarVisibility="Auto"
+                          SelectionMode="Single"
+                          Margin="0,8,0,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Edge ID" Binding="{Binding EdgeId}" Width="70">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 1" Binding="{Binding NodeAId}" Width="80">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 2" Binding="{Binding NodeBId}" Width="80">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Boundary Type" Binding="{Binding BoundaryType}" Width="100"/>
+                        <DataGridTextColumn Header="Excavation Index" Binding="{Binding ExcavationIndex}" Width="120">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Node 1 X" Binding="{Binding NodeAPosition.X, StringFormat='{}{0:F4}'}" Width="90"/>
+                        <DataGridTextColumn Header="Node 1 Y" Binding="{Binding NodeAPosition.Y, StringFormat='{}{0:F4}'}" Width="90"/>
+                        <DataGridTextColumn Header="Node 2 X" Binding="{Binding NodeBPosition.X, StringFormat='{}{0:F4}'}" Width="90"/>
+                        <DataGridTextColumn Header="Node 2 Y" Binding="{Binding NodeBPosition.Y, StringFormat='{}{0:F4}'}" Width="90"/>
+                        <DataGridTextColumn Header="Length" Binding="{Binding Length, StringFormat='{}{0:F4}'}" Width="90"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Expander>
+
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Unstructured Mesh"
+                         Visibility="{Binding Is1DProblem, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                    <views:Rs2dMeshSetupView DataContext="{Binding}"/>
+                </TabItem>
+                <TabItem Header="Create triangle mesh"
+                         Visibility="Collapsed">
+                    <views:CreateTriangleMeshView DataContext="{Binding}"/>
+                </TabItem>
+                <TabItem Header="CreateRectangularMesh"
+                         Visibility="Collapsed">
+                    <views:CreateRectangularMeshView DataContext="{Binding}"/>
+                </TabItem>
+                <TabItem Header="1D Mesh"
+                         Visibility="{Binding Is1DProblem, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <views:Create1DMeshView DataContext="{Binding}"/>
+                </TabItem>
+                <TabItem Header="Structured Mesh">
+                    <views:UserDefinedMeshView DataContext="{Binding UserDefinedMeshVM}"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

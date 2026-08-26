@@ -1,0 +1,10 @@
+path,sigma_MPa,closure_m
+load,1,0.010
+load,2,0.020
+load,5,0.050
+load,10,0.100
+unload,10,0.100
+unload,5,0.050
+unload,2,0.020
+unload,1,0.010
+unload,0,0.000

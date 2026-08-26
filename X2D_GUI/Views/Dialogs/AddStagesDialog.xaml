@@ -1,0 +1,123 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.AddStagesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Stage Settings" 
+        Height="600" 
+        Width="700"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Text="Specify the number of stages and enter stage information for each:"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,16"
+                   TextWrapping="Wrap"/>
+        
+        <GroupBox Header="Number of Stages" Grid.Row="1" Margin="0,0,0,16">
+            <Grid Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Number of Stages:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"
+                           Grid.Column="0"/>
+                <TextBox Grid.Column="1"
+                         Text="{Binding NumberOfStages, UpdateSourceTrigger=PropertyChanged}"
+                         Width="100"
+                         Height="28"
+                         HorizontalAlignment="Left"
+                         ToolTip="Enter the number of stages to add"/>
+            </Grid>
+        </GroupBox>
+        
+        <GroupBox Header="Stage Information" Grid.Row="2" Margin="0,0,0,16">
+            <DataGrid ItemsSource="{Binding StageEntries}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="False"
+                      GridLinesVisibility="All"
+                      HeadersVisibility="Column"
+                      SelectionMode="Single"
+                      SelectionUnit="Cell">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Stage Number"
+                                       Binding="{Binding StageNumber, UpdateSourceTrigger=PropertyChanged}"
+                                       Width="*"/>
+                    <DataGridTextColumn Header="Stage Name"
+                                       Binding="{Binding StageName, UpdateSourceTrigger=PropertyChanged}"
+                                       Width="2*"/>
+                    <DataGridTemplateColumn Header="Delete" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="&#xD7;" 
+                                        Command="{Binding DeleteCommand}"
+                                        CommandParameter="{Binding}"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Foreground="Red"
+                                        FontWeight="Bold"
+                                        FontSize="16"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        ToolTip="Delete this stage">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#FFE0E0E0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button Content="Clear"
+                    Command="{Binding ClearCommand}"
+                    Width="100"
+                    Height="32"
+                    Margin="0,0,8,0"/>
+            <Button Content="Cancel"
+                    Click="CancelButton_Click"
+                    Width="100"
+                    Height="32"
+                    Margin="0,0,8,0"/>
+            <Button Content="Save"
+                    Command="{Binding SaveCommand}"
+                    Width="120"
+                    Height="32"
+                    IsDefault="True"
+                    IsEnabled="{Binding CanExecute}"/>
+        </StackPanel>
+    </Grid>
+</Window>

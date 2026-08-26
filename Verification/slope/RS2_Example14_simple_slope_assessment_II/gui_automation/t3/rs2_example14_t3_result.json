@@ -1,0 +1,69 @@
+{
+  "MeshType": "T3",
+  "ProjectPath": "c:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\RS2_Example14_simple_slope_assessment_II\\rs2_example14_simple_slope_assessment_II.xfem",
+  "Program": "slope_stability_T3_SRF",
+  "BrandedProgram": "slope_stability_T3_SRF",
+  "SolverCore": "CoreA",
+  "DeckFormat": "P610",
+  "ScriptSyncedFromMesh": true,
+  "EstimatedFoS": 1.481523917851114,
+  "DeviationFromLiterature": 0.08152391785111401,
+  "DeviationPercent": 5.823136989365287,
+  "StatusMessage": "Critical FoS \u2248 1.482 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "FosNote": "Critical FoS \u2248 1.482 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  1.0218E-001     23\r\n   1.50  2.4074E-001   1000\r\n   1.25  1.2601E-001     36\r\n   1.38  1.4179E-001    110\r\n   1.44  1.5243E-001    266\r\n   1.47  1.7190E-001    772\r\n   1.48  1.9915E-001   1000\r\n   1.48  1.8391E-001    905\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_T3_SRF_script\\p610t3_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.482 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "MeshRowCount": 3161,
+  "NodeCount": 1816,
+  "ElementCount": 3161,
+  "ArtifactDirectory": "c:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\RS2_Example14_simple_slope_assessment_II\\gui_automation\\t3",
+  "TrialRows": [
+    {
+      "Srf": 1,
+      "MaxDisplacement": 0.10218350956880508,
+      "Iterations": 23,
+      "Converged": true
+    },
+    {
+      "Srf": 1.25,
+      "MaxDisplacement": 0.1260095982645582,
+      "Iterations": 36,
+      "Converged": true
+    },
+    {
+      "Srf": 1.375,
+      "MaxDisplacement": 0.14179439028683244,
+      "Iterations": 110,
+      "Converged": true
+    },
+    {
+      "Srf": 1.4375,
+      "MaxDisplacement": 0.1524328410166112,
+      "Iterations": 266,
+      "Converged": true
+    },
+    {
+      "Srf": 1.46875,
+      "MaxDisplacement": 0.17190345549718403,
+      "Iterations": 772,
+      "Converged": true
+    },
+    {
+      "Srf": 1.4765625,
+      "MaxDisplacement": 0.18390505568936694,
+      "Iterations": 905,
+      "Converged": true
+    },
+    {
+      "Srf": 1.484375,
+      "MaxDisplacement": 0.19914856376883694,
+      "Iterations": 1000,
+      "Converged": false
+    },
+    {
+      "Srf": 1.5,
+      "MaxDisplacement": 0.24073976415281678,
+      "Iterations": 1000,
+      "Converged": false
+    }
+  ]
+}

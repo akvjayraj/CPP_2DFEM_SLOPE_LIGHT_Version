@@ -1,0 +1,8 @@
+# Method B — ground polyline to draw with Geometry Definition → Lines.
+# Click left to right (snap to borehole pins). Then Surface → Add to lock the closed soil region.
+# Reference elevation = 0. Soil-block top is Y = 25; these points are the ground.
+3,20
+8,20
+25,15
+40,10
+45,10

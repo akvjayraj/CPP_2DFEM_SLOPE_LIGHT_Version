@@ -1,0 +1,110 @@
+! <solver:p610_t3>
+! NAFEMS-style LE1-type distorted-CST patch test
+! <BEGIN:AnalysisOptions>
+! failure_criterion Elastic
+! material_type Isotropic
+! mesh_type T3
+! solver_executable p610_t3_elastic
+! <END:AnalysisOptions>
+!
+! Geometry (unit square with off-center interior node):
+!   1 = (0, 0)         <- corner
+!   2 = (1, 0)         <- corner
+!   3 = (1, 1)         <- corner
+!   4 = (0, 1)         <- corner
+!   5 = (0.4, 0.6)     <- distorted interior node
+!
+! Four CST elements share node 5 (CCW ordering for outward normal = right-hand):
+!   E1: 1-2-5  (bottom triangle)
+!   E2: 2-3-5  (right triangle)
+!   E3: 3-4-5  (top triangle)
+!   E4: 4-1-5  (left triangle)
+!
+! Loading: uniaxial sigma = [-100, 0, 0] kPa applied via consistent edge tractions
+!   on all four square boundaries. CCW edge ordering => outward normals:
+!     edge 1->2 (bottom):  n = ( 0, -1), T = sigma . n = ( 0, 0)
+!     edge 2->3 (right):   n = ( 1,  0), T = sigma . n = (-100, 0)
+!     edge 3->4 (top):     n = ( 0,  1), T = sigma . n = ( 0, 0)
+!     edge 4->1 (left):    n = (-1,  0), T = sigma . n = (100, 0)
+!   Equilibrium is exact for the constant stress field; every interior CST,
+!   regardless of shape distortion via node 5, must reproduce the same
+!   constant stress to machine precision (the textbook patch-test pass criterion).
+!
+! Closed-form (plane strain, nu = 0.25, tension-positive):
+!   sxx = -100, syy = 0, txy = 0, szz = nu*(sxx+syy) = -25
+!
+! BCs (rigid-body motion only):
+!   node 1: fix x and y
+!   node 2: fix y
+!   node 4: fix x
+! Pseudo-elastic via large cohesion / friction so plasticity never activates.
+! <BEGIN:AnalysisOptions>
+! failure_criterion MohrCoulomb
+! material_type Isotropic
+! mesh_type T3
+! solver_executable p610_t3_elastoplastic
+! expected_sxx_kPa -100
+! expected_syy_kPa 0
+! expected_txy_kPa 0
+! expected_szz_kPa -25
+! tolerance_kPa 1e-3
+! <END:AnalysisOptions>
+! Mesh size block:
+! nels nn np_types
+! nels = number of elements
+! nn = number of nodes
+! np_types = number of material/property types
+4  5  1
+! Material/property block:
+! phi   c     psi  gamma  E        nu    K0
+! One row per material/property type declared by np_types.
+! Values are consumed by the selected solver in solver-specific order.
+89  1.0e10  0  0  1000000  0.25  0
+! Nodal coordinate block:
+! One row per node in node-number order.
+! Each row is: x y
+0  0
+1  0
+1  1
+0  1
+0.4  0.6
+! Element connectivity block:
+! One row per element in element-number order.
+! The node count per row identifies the element type; first row appears to be T3 triangle.
+1  2  5
+2  3  5
+3  4  5
+4  1  5
+! Boundary condition block:
+! First line is nr = number of restrained nodes.
+! Each following row is: node_id fix_x fix_y
+! 0 = fixed/restrained, 1 = free.
+3
+1  0  0
+2  1  0
+4  0  1
+! Output/watch node block:
+! First line is nouts = number of nodes requested for output.
+! Following row(s) list the node IDs.
+5
+1  2  3  4  5
+! Solver control block:
+! tol limit incs layers
+! tol = convergence tolerance
+! limit = maximum iterations
+! incs = load increments
+! layers = solver path/layer selector
+0.0001  80  3  0
+! Traction loading block:
+! First line is number of traction groups.
+! Each group then contains:
+! mode row: mode and stress/traction parameters
+! edge count: number of loaded edges
+! edge rows: node IDs defining each loaded boundary edge
+1
+0  -100  0  0
+4
+1  2
+2  3
+3  4
+4  1

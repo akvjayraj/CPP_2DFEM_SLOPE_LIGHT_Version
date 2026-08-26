@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#333" stroke-width="1"/>
+    </pattern>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L6,4 L0,8 z" fill="#333"/>
+    </marker>
+    <marker id="arrL" markerWidth="8" markerHeight="8" refX="2" refY="4" orient="auto">
+      <path d="M8,0 L2,4 L8,8 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="30" text-anchor="middle" font-size="20" font-weight="bold">Heathrow Express Trial Tunnel  -  Three-Stage NATM Verification</text>
+  <text x="500" y="50" text-anchor="middle" font-size="13" fill="#555">Half-symmetric model, T3 plane strain, Mohr-Coulomb (London Clay drained-equivalent)</text>
+
+  <!-- Domain box -->
+  <rect x="100" y="50" width="450" height="630" fill="#fafbf2" stroke="#333" stroke-width="2"/>
+
+  <!-- Coarse mesh grid (visual reference) -->
+  <line x1="127" y1="50" x2="127" y2="680" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="154" y1="50" x2="154" y2="680" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="176.5" y1="50" x2="176.5" y2="680" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="217" y1="50" x2="217" y2="680" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="280" y1="50" x2="280" y2="680" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="388" y1="50" x2="388" y2="680" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="554" x2="550" y2="554" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="486.5" x2="550" y2="486.5" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="446" x2="550" y2="446" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="410" x2="550" y2="410" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="374" x2="550" y2="374" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="333.5" x2="550" y2="333.5" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="266" x2="550" y2="266" stroke="#dcd9c1" stroke-width="0.6"/>
+  <line x1="100" y1="176" x2="550" y2="176" stroke="#dcd9c1" stroke-width="0.6"/>
+
+  <!-- Tunnel half-disc with three excavation stages -->
+  <!-- Stage 1: TOP HEADING (upper quarter-disc) -->
+  <path d="M 100 333.5 A 76.5 76.5 0 0 1 176.5 410 L 100 410 Z" fill="#f08080" stroke="#7a1010" stroke-width="1.2"/>
+  <!-- Stage 2: BENCH (middle band of half-disc) -->
+  <path d="M 100 410 L 176.5 410 A 76.5 76.5 0 0 1 166.25 448.25 L 100 448.25 Z" fill="#ffd66e" stroke="#9a6a00" stroke-width="1.2"/>
+  <!-- Stage 3: INVERT (lower band of half-disc) -->
+  <path d="M 100 448.25 L 166.25 448.25 A 76.5 76.5 0 0 1 100 486.5 Z" fill="#a8d8a8" stroke="#2e6b2e" stroke-width="1.2"/>
+
+  <!-- Symmetry axis (vertical chain-dash at x=0) -->
+  <line x1="100" y1="50" x2="100" y2="680" stroke="#1d4e89" stroke-width="1.3" stroke-dasharray="12 3 2 3"/>
+  <text x="68" y="380" text-anchor="middle" font-size="11" fill="#1d4e89" font-style="italic">symmetry  (u<tspan baseline-shift="sub">x</tspan> = 0)</text>
+
+  <!-- Ground surface label (free) -->
+  <line x1="100" y1="50" x2="550" y2="50" stroke="#2e7d32" stroke-width="2"/>
+  <line x1="118" y1="50" x2="112" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="163" y1="50" x2="157" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="208" y1="50" x2="202" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="253" y1="50" x2="247" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="298" y1="50" x2="292" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="343" y1="50" x2="337" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="388" y1="50" x2="382" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="433" y1="50" x2="427" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="478" y1="50" x2="472" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <line x1="523" y1="50" x2="517" y2="42" stroke="#2e7d32" stroke-width="1"/>
+  <text x="108" y="36" font-size="12" fill="#1b5e20">free ground surface  (y = +20 m)</text>
+
+  <!-- Bottom (fully fixed - hatched) -->
+  <rect x="100" y="680" width="450" height="14" fill="url(#hatch)" stroke="#333" stroke-width="0.8"/>
+  <text x="108" y="710" font-size="12" fill="#333">fully fixed base  (u<tspan baseline-shift="sub">x</tspan> = u<tspan baseline-shift="sub">y</tspan> = 0,   y = -15 m)</text>
+
+  <!-- Right roller (u_x = 0, u_y free) -->
+  <line x1="550" y1="50" x2="550" y2="680" stroke="#333" stroke-width="1.5"/>
+  <circle cx="556" cy="120" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <circle cx="556" cy="190" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <circle cx="556" cy="260" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <circle cx="556" cy="330" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <circle cx="556" cy="400" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <circle cx="556" cy="470" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <circle cx="556" cy="540" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <circle cx="556" cy="610" r="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <text x="566" y="380" font-size="11" fill="#333">x = +25 m  (roller: u<tspan baseline-shift="sub">x</tspan> = 0)</text>
+
+  <!-- Output nodes -->
+  <circle cx="100" cy="50" r="5" fill="#0066cc" stroke="#fff" stroke-width="1.5"/>
+  <text x="114" y="42" font-size="11" font-weight="bold" fill="#003366">73</text>
+  <circle cx="176.5" cy="50" r="5" fill="#0066cc" stroke="#fff" stroke-width="1.5"/>
+  <text x="184.5" y="42" font-size="11" font-weight="bold" fill="#003366">76</text>
+  <circle cx="280" cy="50" r="5" fill="#0066cc" stroke="#fff" stroke-width="1.5"/>
+  <text x="288" y="42" font-size="11" font-weight="bold" fill="#003366">78</text>
+  <circle cx="550" cy="50" r="5" fill="#0066cc" stroke="#fff" stroke-width="1.5"/>
+  <text x="482" y="42" font-size="11" font-weight="bold" fill="#003366">80</text>
+  <circle cx="100" cy="333.5" r="5" fill="#0066cc" stroke="#fff" stroke-width="1.5"/>
+  <text x="94" y="337.5" font-size="11" font-weight="bold" fill="#003366">49</text>
+  <circle cx="176.5" cy="410" r="5" fill="#0066cc" stroke="#fff" stroke-width="1.5"/>
+  <text x="184.5" y="414" font-size="11" font-weight="bold" fill="#003366">36</text>
+
+  <!-- Geometric dimensions -->
+  <line x1="236.5" y1="50" x2="236.5" y2="410" stroke="#333" stroke-width="0.8" marker-start="url(#arrL)" marker-end="url(#arr)"/>
+  <text x="242.5" y="220" font-size="11">z<tspan baseline-shift="sub">0</tspan> = 20 m  (axis depth)</text>
+  <line x1="176.5" y1="50" x2="176.5" y2="410" stroke="#999" stroke-dasharray="3 3" stroke-width="0.6"/>
+  <line x1="100" y1="307.5" x2="176.5" y2="307.5" stroke="#333" stroke-width="0.8" marker-start="url(#arrL)" marker-end="url(#arr)"/>
+  <text x="108" y="303.5" font-size="11">a = 4.25 m</text>
+  <line x1="100" y1="740" x2="550" y2="740" stroke="#333" stroke-width="0.8" marker-start="url(#arrL)" marker-end="url(#arr)"/>
+  <text x="325" y="736" text-anchor="middle" font-size="11">model width = 25 m</text>
+
+  <!-- Legend / stage table -->
+  <rect x="640" y="80" width="330" height="260" fill="#fff" stroke="#bbb" stroke-width="1" rx="6"/>
+  <text x="655" y="104" font-size="14" font-weight="bold">Excavation sequence</text>
+  <rect x="655" y="118" width="16" height="14" fill="#f08080" stroke="#7a1010"/>
+  <text x="680" y="130" font-size="12" font-weight="bold">Stage 1  -  Top heading</text>
+  <text x="680" y="144" font-size="11" fill="#555">y &gt; 0  (10 T3 elements removed)</text>
+  <rect x="655" y="160" width="16" height="14" fill="#ffd66e" stroke="#9a6a00"/>
+  <text x="680" y="172" font-size="12" font-weight="bold">Stage 2  -  Bench</text>
+  <text x="680" y="186" font-size="11" fill="#555">-a/2 &#8804; y &#8804; 0  (6 T3 elements removed)</text>
+  <rect x="655" y="202" width="16" height="14" fill="#a8d8a8" stroke="#2e6b2e"/>
+  <text x="680" y="214" font-size="12" font-weight="bold">Stage 3  -  Invert</text>
+  <text x="680" y="228" font-size="11" fill="#555">y &lt; -a/2  (4 T3 elements removed)</text>
+  <line x1="655" y1="244" x2="955" y2="244" stroke="#bbb"/>
+  <text x="655" y="262" font-size="12" font-weight="bold">Soil  -  London Clay (drained MC)</text>
+  <text x="655" y="278" font-size="11">phi' = 22.5 deg   c' = 30 kPa   psi = 0 deg</text>
+  <text x="655" y="292" font-size="11">gamma = 19.5 kN/m^3   K<tspan baseline-shift="sub">0</tspan> = 1.0</text>
+  <text x="655" y="306" font-size="11">E = 60 MPa   nu = 0.30</text>
+  <text x="655" y="326" font-size="11" fill="#0066cc">&#9679;  output node  (label = id)</text>
+
+  <!-- Footer / reference -->
+  <text x="500" y="735" text-anchor="middle" font-size="10" fill="#666" font-style="italic">Reference: Deane &amp; Bassett (1995); Mair, Taylor &amp; Burland (1996); New &amp; Bowers (1994).</text>
+
+</svg>

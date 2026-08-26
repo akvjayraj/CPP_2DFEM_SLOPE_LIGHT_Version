@@ -1,0 +1,674 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.LoadConditionsRightPanelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:models="clr-namespace:GeotechSlopeApp.Models"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="LoadTypeOptions"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:LoadType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="LoadDirectionOptions"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:LoadDirection"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <converters:CanvasToAxisConverter x:Key="CanvasToAxisXConverter" x:Shared="False" Dimension="X"/>
+        <converters:CanvasToAxisConverter x:Key="CanvasToAxisYConverter" x:Shared="False" Dimension="Y"/>
+        <converters:BooleanToVisibilityConverter x:Key="BoolVis"/>
+        <converters:NullToVisibilityConverter    x:Key="NullVis"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition x:Name="ScopeBannerRow" Height="Auto"/>
+            <RowDefinition x:Name="FieldStressRow" Height="Auto"/>
+            <RowDefinition x:Name="SeismicLoadRow" Height="Auto"/>
+            <RowDefinition x:Name="LoadsGridRow" Height="*" MinHeight="80"/>
+            <RowDefinition x:Name="LoadDetailsRow" Height="Auto"/>
+            <RowDefinition x:Name="LoadActionsRow" Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="{Binding GeometryDefinition.GeometryCanvasCoordinates}"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,8"/>
+
+        <!-- Stage scope banner: makes it explicit which stage owns the loads currently shown. -->
+        <Border x:Name="ScopeBanner"
+                Grid.Row="1"
+                Background="#FFEFF6FF"
+                BorderBrush="#FFBFDBFE"
+                BorderThickness="1"
+                CornerRadius="3"
+                Padding="8,6"
+                Margin="0,0,0,6">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Active scope:" FontWeight="SemiBold" Foreground="#FF1E3A8A" Margin="0,0,6,0"/>
+                <TextBlock Text="{Binding ActiveStageDisplay}" Foreground="#FF1E3A8A"
+                           ToolTip="Loads added below are saved against this stage and are not visible in any other stage."/>
+            </StackPanel>
+        </Border>
+
+        <!-- ─── Field Stress Expander ──────────────────────────────────────── -->
+        <Expander x:Name="FieldStressExpander"
+                  Grid.Row="2"
+                  Header="Field Stress"
+                  IsExpanded="False"
+                  Margin="0,0,0,6"
+                  Background="#F8FAFC"
+                  BorderBrush="#CBD5E1"
+                  BorderThickness="1">
+            <Border Padding="10,6,10,10">
+                <StackPanel>
+                    <!-- Mode selector -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Mode:" VerticalAlignment="Center" FontWeight="SemiBold"
+                                   Foreground="#FF334155" Margin="0,0,10,0"/>
+                        <RadioButton Content="Gravity"
+                                     IsChecked="{Binding FieldStress.IsGravityModeSelected, Mode=TwoWay}"
+                                     GroupName="FSMode" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                        <RadioButton Content="Constant"
+                                     IsChecked="{Binding FieldStress.IsConstantModeSelected, Mode=TwoWay}"
+                                     GroupName="FSMode" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                        <RadioButton Content="Direct tensor"
+                                     IsChecked="{Binding FieldStress.IsDirectModeSelected, Mode=TwoWay}"
+                                     GroupName="FSMode" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                        <RadioButton Content="Traction"
+                                     IsChecked="{Binding FieldStress.IsTractionModeSelected, Mode=TwoWay}"
+                                     GroupName="FSMode" VerticalAlignment="Center"
+                                     ToolTip="Explicit .dat traction-loading block (n_traction_groups + per-group mode/stresses + edge node IDs). Values from a loaded .dat auto-fill here."/>
+                    </StackPanel>
+
+                    <!-- Gravity panel -->
+                    <StackPanel Visibility="{Binding FieldStress.IsGravityMode, Converter={StaticResource BoolVis}}"
+                                Margin="0,0,0,6">
+                        <TextBlock Text="Gravity field stress (K0 × γ × depth)"
+                                   FontSize="11" Foreground="#FF475569" Margin="0,0,0,4"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Kx (σh / σv):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.Kx, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Kz (σZ / σv):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.Kz, UpdateSourceTrigger=PropertyChanged}"/>
+                            <CheckBox  Grid.Row="2" Grid.ColumnSpan="2"
+                                       Content="Auto free surface (max mesh y)" Margin="0,4,0,2"
+                                       IsChecked="{Binding FieldStress.Global.AutoSurface, Mode=TwoWay}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="y surface (m):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"
+                                       Visibility="{Binding FieldStress.Global.AutoSurface, Converter={StaticResource BoolVis}, ConverterParameter=Inverse}"/>
+                            <TextBox   Grid.Row="3" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.YSurface, UpdateSourceTrigger=PropertyChanged}"
+                                       Visibility="{Binding FieldStress.Global.AutoSurface, Converter={StaticResource BoolVis}, ConverterParameter=Inverse}"/>
+                            <CheckBox  Grid.Row="4" Grid.ColumnSpan="2"
+                                       Content="Effective-stress ratio mode" Margin="0,2"
+                                       IsChecked="{Binding FieldStress.Global.UseEffectiveStressRatio, Mode=TwoWay}"
+                                       ToolTip="When checked, Kx/Kz are interpreted as effective-stress ratios relative to porewater pressure."/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Direct tensor panel -->
+                    <StackPanel Visibility="{Binding FieldStress.IsDirectMode, Converter={StaticResource BoolVis}}"
+                                Margin="0,0,0,6">
+                        <TextBlock Text="Direct traction tensor, mode=0 (tension positive, kPa)"
+                                   FontSize="11" Foreground="#FF475569" Margin="0,0,0,4"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="σxx (kPa):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.DirectSxx, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="σyy (kPa):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.DirectSyy, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="τxy (kPa):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="2" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.DirectTxy, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <TextBlock Text="The .dat builder writes a single mode=0 traction group on the auto-detected outer-boundary edges. Switch to ‘Traction’ to edit per-group/per-edge values explicitly."
+                                   FontSize="11" Foreground="#FF64748B"
+                                   TextWrapping="Wrap" Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <!-- Traction panel: explicit .dat n_traction_groups block (auto-populated on import) -->
+                    <StackPanel Visibility="{Binding FieldStress.IsTractionMode, Converter={StaticResource BoolVis}}"
+                                Margin="0,0,0,6">
+                        <TextBlock Text="Traction loading block (.dat n_traction_groups). Auto-filled from imported .dat; edits round-trip on Execute Script."
+                                   FontSize="11" Foreground="#FF475569" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="Traction groups: " FontWeight="SemiBold"
+                                       VerticalAlignment="Center" Foreground="#FF334155"/>
+                            <TextBlock Text="{Binding FieldStress.TractionGroupCount}"
+                                       VerticalAlignment="Center" Foreground="#FF334155"/>
+                            <Button Content="Add group" Margin="12,0,4,0" Padding="6,2"
+                                    Command="{Binding FieldStress.AddTractionGroupCommand}"
+                                    ToolTip="Append a new traction group seeded with the current Direct-tensor stresses."/>
+                        </StackPanel>
+                        <TextBlock Text="Per group: mode (0=direct sxx,syy,sxy / 1=far-field sigma_v,K0), the three stress components, and the list of loaded boundary edges (node IDs)."
+                                   FontSize="11" Foreground="#FF64748B"
+                                   TextWrapping="Wrap" Margin="0,0,0,6"/>
+
+                        <ItemsControl ItemsSource="{Binding FieldStress.TractionGroups}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#FFE2E8F0" BorderThickness="1"
+                                            CornerRadius="3" Padding="6" Margin="0,0,0,6"
+                                            Background="#FFF8FAFC">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                                <TextBlock Text="Group" FontWeight="SemiBold"
+                                                           Foreground="#FF334155" VerticalAlignment="Center"/>
+                                                <TextBlock Text=" — mode " Foreground="#FF475569"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBox Width="40" VerticalAlignment="Center"
+                                                         Text="{Binding Mode, UpdateSourceTrigger=PropertyChanged}"
+                                                         ToolTip="0 = direct (sxx,syy,sxy), 1 = far-field (sigma_v,K0)"/>
+                                                <Button Content="Remove group" Padding="6,2" Margin="12,0,0,0"
+                                                        Command="{Binding DataContext.FieldStress.RemoveTractionGroupCommand,
+                                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"/>
+                                            </StackPanel>
+                                            <Grid Margin="0,0,0,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="σxx:" VerticalAlignment="Center" Foreground="#FF475569"/>
+                                                <TextBox   Grid.Column="1" Margin="2,0,8,0"
+                                                           Text="{Binding Sxx, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <TextBlock Grid.Column="2" Text="σyy:" VerticalAlignment="Center" Foreground="#FF475569"/>
+                                                <TextBox   Grid.Column="3" Margin="2,0,8,0"
+                                                           Text="{Binding Syy, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <TextBlock Grid.Column="4" Text="τxy:" VerticalAlignment="Center" Foreground="#FF475569"/>
+                                                <TextBox   Grid.Column="5" Margin="2,0,0,0"
+                                                           Text="{Binding Txy, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </Grid>
+                                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                                <TextBlock Text="Edge count: " Foreground="#FF334155"/>
+                                                <TextBlock Text="{Binding Edges.Count}" Foreground="#FF334155"/>
+                                                <Button Content="Add edge" Padding="6,2" Margin="12,0,4,0"
+                                                        Command="{Binding DataContext.FieldStress.AddTractionEdgeCommand,
+                                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"/>
+                                            </StackPanel>
+                                            <DataGrid ItemsSource="{Binding Edges}"
+                                                      SelectedItem="{Binding DataContext.FieldStress.SelectedTractionEdge,
+                                                                             RelativeSource={RelativeSource AncestorType=UserControl},
+                                                                             Mode=TwoWay}"
+                                                      AutoGenerateColumns="False"
+                                                      CanUserAddRows="False"
+                                                      HeadersVisibility="Column"
+                                                      GridLinesVisibility="Horizontal"
+                                                      MaxHeight="180"
+                                                      Margin="0,2,0,0"
+                                                      ToolTip="Click a row to highlight its A→B (and optional mid-edge C) edge on the Load Conditions canvas.">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Edge"
+                                                                        Width="40"
+                                                                        IsReadOnly="True">
+                                                        <DataGridTextColumn.Binding>
+                                                            <Binding Path="(ItemsControl.AlternationIndex)" RelativeSource="{RelativeSource AncestorType=DataGridRow}"/>
+                                                        </DataGridTextColumn.Binding>
+                                                    </DataGridTextColumn>
+                                                    <DataGridTextColumn Header="Node A" Width="80"
+                                                                        Binding="{Binding NodeA, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <DataGridTextColumn Header="Node B" Width="80"
+                                                                        Binding="{Binding NodeB, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <DataGridTextColumn Header="Node C (T6/Q8 mid-edge, 0=none)" Width="*"
+                                                                        Binding="{Binding NodeC, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <DataGridTemplateColumn Header="" Width="80">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Content="Remove" Padding="4,1"
+                                                                        Command="{Binding DataContext.FieldStress.RemoveTractionEdgeCommand,
+                                                                                          RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                        CommandParameter="{Binding}"/>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="No traction groups loaded. Click ‘Add group’ to create one, or import a .dat that contains a traction-loading block."
+                                   FontStyle="Italic" Foreground="#FF94A3B8"
+                                   TextWrapping="Wrap" Margin="0,2,0,0"
+                                   Visibility="{Binding FieldStress.HasTractionGroups, Converter={StaticResource BoolVis}, ConverterParameter=Inverse}"/>
+                    </StackPanel>
+
+                    <!-- Constant panel -->
+                    <StackPanel Visibility="{Binding FieldStress.IsConstantMode, Converter={StaticResource BoolVis}}"
+                                Margin="0,0,0,6">
+                        <TextBlock Text="Constant stress tensor (tension positive, kPa)"
+                                   FontSize="11" Foreground="#FF475569" Margin="0,0,0,4"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="σ1 major (kPa):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.Sigma1, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="σ3 minor (kPa):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.Sigma3, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="σZ out-of-plane (kPa):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="2" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.SigmaZ, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="θ CCW from +x (°):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox   Grid.Row="3" Grid.Column="1" Margin="0,2"
+                                       Text="{Binding FieldStress.Global.AngleDeg, UpdateSourceTrigger=PropertyChanged}"
+                                       ToolTip="Angle of σ1 direction counter-clockwise from the +x axis, degrees."/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Advanced overrides row -->
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <Button Content="Advanced (per-material)…"
+                                Padding="8,3"
+                                Click="OnAdvancedOverridesClick"
+                                ToolTip="Assign different field-stress definitions to individual materials."/>
+                        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0"
+                                   FontSize="11" Foreground="#FF475569"
+                                   Text="{Binding FieldStress.OverrideCount, StringFormat={}{0} override(s)}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Expander>
+
+        <!-- ─── Seismic / Inertia Load ─── -->
+        <Expander x:Name="SeismicLoadExpander"
+                  Grid.Row="3"
+                  Header="Seismic / Inertia Load"
+                  IsExpanded="{Binding IsSeismicExpanderExpanded, Mode=TwoWay}"
+                  Margin="0,0,0,6"
+                  Background="#F8FAFC"
+                  BorderBrush="#CBD5E1"
+                  BorderThickness="1">
+            <Border Padding="10,6,10,10">
+                <StackPanel>
+                    <CheckBox Content="Enable seismic analysis"
+                              IsChecked="{Binding SeismicAnalysisEnabled, Mode=TwoWay}"
+                              Margin="0,0,0,8"
+                              ToolTip="Apply pseudo-static k_h/k_v to the solver via the Script Editor .dat (no Seismic / Dynamic stage row required)."/>
+                    <TextBlock Text="{Binding SeismicDisabledHint}"
+                               Foreground="#FF64748B"
+                               TextWrapping="Wrap"
+                               FontSize="11"
+                               Margin="0,0,0,6"
+                               Visibility="{Binding AreSeismicCoefficientsEditable, Converter={StaticResource BoolVis}, ConverterParameter=Inverse}"/>
+                    <TextBlock Text="Pseudo-static horizontal (k_h) and vertical (k_v) coefficients for the active seismic stage. Inertia acts in +x; vertical gravity is scaled by (1 − k_v)."
+                               Foreground="#FF475569"
+                               TextWrapping="Wrap"
+                               FontSize="11"
+                               Margin="0,0,0,8"
+                               Visibility="{Binding AreSeismicCoefficientsEditable, Converter={StaticResource BoolVis}}"/>
+                    <StackPanel Visibility="{Binding ShowSeismicStagePicker, Converter={StaticResource BoolVis}}"
+                                Margin="0,0,0,8">
+                        <TextBlock Text="Active footer stage is not seismic — select a seismic stage to edit:"
+                                   Foreground="#FF475569"
+                                   TextWrapping="Wrap"
+                                   FontSize="11"
+                                   Margin="0,0,0,4"/>
+                        <ComboBox ItemsSource="{Binding SeismicStageDefinitions}"
+                                  SelectedItem="{Binding SelectedSeismicStageForEdit, Mode=TwoWay}"
+                                  DisplayMemberPath="StageName"
+                                  MinWidth="200"/>
+                    </StackPanel>
+                    <Grid Visibility="{Binding SeismicEditTarget, Converter={StaticResource NullVis}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Stage:"
+                                   VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                   Text="{Binding SeismicEditTarget.StageName}"
+                                   FontWeight="SemiBold" Foreground="#FF1E3A8A"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="k_h (horizontal):"
+                                   VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"
+                                   ToolTip="Dimensionless horizontal pseudo-static coefficient (+x direction)."/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                 Text="{Binding SeismicEditTarget.PseudoStaticKh, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="k_v (vertical):"
+                                   VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"
+                                   ToolTip="Vertical coefficient; gravity vertical term uses (1 − k_v)."/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="0,2"
+                                 Text="{Binding SeismicEditTarget.PseudoStaticKv, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                    <Separator Margin="0,12,0,8"/>
+                    <CheckBox Content="Newmark sliding-block (post-process)"
+                              IsChecked="{Binding Newmark.IsEnabled, Mode=TwoWay}"
+                              Margin="0,0,0,6"
+                              ToolTip="Permanent-displacement estimate after SRF. Alternative to pseudo-static k_h — do not combine both on the same run."/>
+                    <StackPanel Visibility="{Binding Newmark.IsEnabled, Converter={StaticResource BoolVis}}">
+                        <TextBlock Text="k_y is estimated from the critical SRF as (SRF−1)/SRF unless you enter a yield acceleration. Empirical models run after the slope analysis; they do not change K."
+                                   Foreground="#FF475569" TextWrapping="Wrap" FontSize="11" Margin="0,0,0,8"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="170"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <CheckBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                      Content="Estimate k_y from SRF"
+                                      IsChecked="{Binding Newmark.EstimateKyFromSrf, Mode=TwoWay}"
+                                      Margin="0,0,0,4"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Yield acceleration k_y:"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                     Text="{Binding Newmark.YieldAcceleration, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="Used when Estimate k_y from SRF is off, or when SRF is not yet known."/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="PGA (g):"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Margin="0,2"
+                                     Text="{Binding Newmark.PgaG, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Magnitude M:"
+                                       VerticalAlignment="Center" Foreground="#FF475569" Margin="0,2"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Margin="0,2"
+                                     Text="{Binding Newmark.Magnitude, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        <TextBlock Text="Models" FontWeight="SemiBold" Margin="0,8,0,4"/>
+                        <CheckBox Content="Jibson (2007) eq. 6" IsChecked="{Binding Newmark.UseJibson, Mode=TwoWay}" Margin="0,0,0,2"/>
+                        <CheckBox Content="Jibson (2007) magnitude" IsChecked="{Binding Newmark.UseJibsonMagnitude, Mode=TwoWay}" Margin="0,0,0,2"/>
+                        <CheckBox Content="Jibson (2007) Arias" IsChecked="{Binding Newmark.UseJibsonArias, Mode=TwoWay}" Margin="0,0,0,2"/>
+                        <CheckBox Content="Ambraseys and Menzies (1988)" IsChecked="{Binding Newmark.UseAmbraseys, Mode=TwoWay}" Margin="0,0,0,2"/>
+                        <CheckBox Content="Makdisi and Seed (1978)" IsChecked="{Binding Newmark.UseMakdisiSeed, Mode=TwoWay}" Margin="0,0,0,2"/>
+                        <CheckBox Content="Bray and Travasarou (2007)" IsChecked="{Binding Newmark.UseBrayTravasarou, Mode=TwoWay}" Margin="0,0,0,2"/>
+                        <CheckBox Content="Integrate time history (.at2 / CSV)" IsChecked="{Binding Newmark.UseTimeHistory, Mode=TwoWay}" Margin="0,6,0,2"/>
+                        <TextBox Text="{Binding Newmark.TimeHistoryPath, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,2,0,0"
+                                 Visibility="{Binding Newmark.UseTimeHistory, Converter={StaticResource BoolVis}}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Expander>
+
+        <DataGrid x:Name="LoadsDataGrid"
+                  Grid.Row="4"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding FilteredLoads}"
+                  SelectedItem="{Binding SelectedLoad, Mode=TwoWay}"
+                  CanUserAddRows="False"
+                  HeadersVisibility="Column"
+                  Margin="0,0,0,8"
+                  BeginningEdit="OnLoadsDataGridBeginningEdit">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="On"
+                                        Binding="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="44">
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Header="Stage"
+                                    Binding="{Binding StageNumber, Mode=OneWay, TargetNullValue='-'}"
+                                    Width="50"
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name"
+                                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="120"/>
+                <DataGridComboBoxColumn Header="Type"
+                                        SelectedItemBinding="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ItemsSource="{Binding Source={StaticResource LoadTypeOptions}}"/>
+                <DataGridComboBoxColumn Header="Direction"
+                                        SelectedItemBinding="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ItemsSource="{Binding Source={StaticResource LoadDirectionOptions}}"
+                                        Width="80"/>
+                <DataGridTextColumn Header="Orientation"
+                                    Binding="{Binding OrientationSummary, Mode=OneWay}"
+                                    Width="90"
+                                    IsReadOnly="True"/>
+                <DataGridTextColumn Header="Start Mag."
+                                    Binding="{Binding Magnitude, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    Width="70"/>
+                <DataGridTextColumn Header="End Mag."
+                                    Binding="{Binding EndMagnitude, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    Width="70"/>
+                <DataGridTextColumn Header="Node"
+                                    Binding="{Binding AppliedToNodeId, Mode=OneWay}"
+                                    Width="60"/>
+                <DataGridTextColumn Header="Start X (axis)">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource CanvasToAxisXConverter}" StringFormat="F2" UpdateSourceTrigger="LostFocus">
+                            <Binding Path="StartX" Mode="TwoWay"/>
+                            <Binding Path="DataContext.GeometryDefinition.CanvasWidth" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisXMin" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisXMax" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Start Y (axis)">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource CanvasToAxisYConverter}" StringFormat="F2" UpdateSourceTrigger="LostFocus">
+                            <Binding Path="StartY" Mode="TwoWay"/>
+                            <Binding Path="DataContext.GeometryDefinition.CanvasHeight" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisYMin" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisYMax" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="End X (axis)">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource CanvasToAxisXConverter}" StringFormat="F2" UpdateSourceTrigger="LostFocus">
+                            <Binding Path="EndX" Mode="TwoWay"/>
+                            <Binding Path="DataContext.GeometryDefinition.CanvasWidth" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisXMin" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisXMax" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="End Y (axis)">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource CanvasToAxisYConverter}" StringFormat="F2" UpdateSourceTrigger="LostFocus">
+                            <Binding Path="EndY" Mode="TwoWay"/>
+                            <Binding Path="DataContext.GeometryDefinition.CanvasHeight" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisYMin" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                            <Binding Path="DataContext.GeometryDefinition.AxisYMax" RelativeSource="{RelativeSource AncestorType=DataGrid}"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- ─── Load Detail Panel (point + distributed) ─────────────────────── -->
+        <Border x:Name="LoadDetailPanel"
+                Grid.Row="5"
+                Margin="0,0,0,6"
+                Padding="10,8,10,10"
+                Background="#FFF5F3FF"
+                BorderBrush="#FF6D28D9"
+                BorderThickness="1"
+                CornerRadius="4"
+                Visibility="{Binding SelectedLoad.SupportsLoadDetailPanel, Converter={StaticResource BoolVis}, FallbackValue=Collapsed}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Load Name + Orientation -->
+                <StackPanel Grid.Column="0" Margin="0,0,14,0">
+                    <TextBlock Text="Load Name" FontWeight="SemiBold" FontSize="11"
+                               Foreground="#FF4C1D95" Margin="0,0,0,4"/>
+                    <TextBox Margin="0,0,0,10"
+                             Text="{Binding SelectedLoad.Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Orientation" FontWeight="SemiBold" FontSize="11"
+                               Foreground="#FF4C1D95" Margin="0,0,0,5"/>
+                    <RadioButton Content="Normal to boundary"
+                                 GroupName="DistLoadOrientationGrp"
+                                 IsChecked="{Binding SelectedLoad.IsNormalToBoundaryOrientation, Mode=TwoWay}"
+                                 Margin="0,2"/>
+                    <RadioButton Content="Vertical (+ve down)"
+                                 GroupName="DistLoadOrientationGrp"
+                                 IsChecked="{Binding SelectedLoad.IsVerticalDownOrientation, Mode=TwoWay}"
+                                 Margin="0,2"/>
+                    <RadioButton Content="Horizontal (+ve right)"
+                                 GroupName="DistLoadOrientationGrp"
+                                 IsChecked="{Binding SelectedLoad.IsHorizontalRightOrientation, Mode=TwoWay}"
+                                 Margin="0,2"/>
+                    <RadioButton Content="Angle from horizontal"
+                                 GroupName="DistLoadOrientationGrp"
+                                 IsChecked="{Binding SelectedLoad.IsAngleFromHorizontalOrientation, Mode=TwoWay}"
+                                 Margin="0,2"/>
+                    <RadioButton Content="Angle to boundary"
+                                 GroupName="DistLoadOrientationGrp"
+                                 IsChecked="{Binding SelectedLoad.IsAngleToBoundaryOrientation, Mode=TwoWay}"
+                                 Margin="0,2"/>
+
+                    <!-- Angle input — shown only for angle-based orientations -->
+                    <StackPanel Orientation="Horizontal"
+                                Margin="18,5,0,0"
+                                Visibility="{Binding SelectedLoad.IsAngleOrientation, Converter={StaticResource BoolVis}, FallbackValue=Collapsed}">
+                        <TextBlock Text="Angle:" VerticalAlignment="Center"
+                                   Foreground="#FF475569" Margin="0,0,6,0"/>
+                        <TextBox Width="58" VerticalAlignment="Center"
+                                 Text="{Binding SelectedLoad.AngleDeg, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="Angle in degrees (counter-clockwise from horizontal / from boundary normal)."/>
+                        <TextBlock Text="°" VerticalAlignment="Center"
+                                   Foreground="#FF475569" Margin="4,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Right: Magnitude + End Magnitude + Stage Load -->
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Magnitude" FontWeight="SemiBold" FontSize="11"
+                               Foreground="#FF4C1D95" Margin="0,0,0,4"/>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding SelectedLoad.Magnitude, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding SelectedLoad.MagnitudeUnit}" VerticalAlignment="Center"
+                                   Margin="5,0,0,0" Foreground="#FF475569" FontSize="11"/>
+                    </Grid>
+
+                    <!-- End Magnitude shown only for Triangular loads -->
+                    <StackPanel Visibility="{Binding SelectedLoad.IsTriangularLoad, Converter={StaticResource BoolVis}, FallbackValue=Collapsed}">
+                        <TextBlock Text="End Magnitude" FontWeight="SemiBold" FontSize="11"
+                                   Foreground="#FF4C1D95" Margin="0,0,0,4"/>
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding SelectedLoad.EndMagnitude, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SelectedLoad.MagnitudeUnit}" VerticalAlignment="Center"
+                                       Margin="5,0,0,0" Foreground="#FF475569" FontSize="11"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <Separator Margin="0,6,0,8" Background="#FFE2E8F0"/>
+
+                    <!-- Stage Load -->
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Content="Stage Load"
+                                  IsChecked="{Binding SelectedLoad.IsStageLoad, Mode=TwoWay}"
+                                  VerticalAlignment="Center"
+                                  ToolTip="Apply per-stage magnitude scaling factors to this load."/>
+                        <Button Content="Stage Factors…"
+                                Padding="8,3"
+                                Margin="10,0,0,0"
+                                Click="OnStageFactorsClick"
+                                IsEnabled="{Binding SelectedLoad.IsStageLoad}"
+                                ToolTip="Configure per-stage load scaling factors."/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel x:Name="LoadActionsPanel"
+                    Grid.Row="6"
+                    Orientation="Vertical"
+                    HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                <Button Content="Add Load" Width="100" Command="{Binding AddLoadCommand}" Margin="0,0,8,0"
+                        ToolTip="Add a new load tagged with the active stage shown above. The load will be invisible in other stages."/>
+                <Button Content="Remove Load" Width="120" Command="{Binding RemoveLoadCommand}" CommandParameter="{Binding SelectedLoad}"/>
+            </StackPanel>
+            <TextBlock Text="Add Load: adds a new row to the grid (default Point load). Select a row, then click the load canvas to set position. Point: one click — Start/End Mag. and Start/End coordinates stay identical (End columns mirror Start). Line: uniform intensity from Start Mag. (End Mag. is optional in grid). Triangular: two-click placement; intensity varies from Start Mag. to End Mag."
+                       TextWrapping="Wrap"
+                       Foreground="#FF475569"/>
+            <TextBlock Text="Stage column shows the construction stage that owns each load. Each load belongs to exactly one stage: it is saved with that stage and is invisible/inaccessible from any other footer tab. New loads are tagged with the active stage shown in the banner above."
+                       TextWrapping="Wrap"
+                       Foreground="#FF475569"
+                       Margin="0,6,0,0"
+                       FontSize="11"/>
+            <TextBlock Text="Direction Axial (1D): positive magnitude = force toward increasing node number (1→2→3…); negative = opposite."
+                       TextWrapping="Wrap"
+                       Foreground="#FF475569"
+                       Margin="0,6,0,0"
+                       FontSize="11"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
+

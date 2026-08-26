@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>p64 — visualize p64_cpp.res &amp; p64_cpp.json</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, Segoe UI, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; line-height: 1.45;
+    }
+    header {
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+    }
+    h1 { margin: 0; font-size: 1.15rem; font-weight: 600; }
+    .panel {
+      max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem 2rem;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;
+    }
+    .card h2 { margin: 0 0 0.75rem; font-size: 0.95rem; color: var(--accent); }
+    .hint { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.75rem; }
+    label.btn {
+      display: inline-block; padding: 0.4rem 0.9rem; background: #334155;
+      border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin-right: 0.5rem;
+    }
+    label.btn:hover { background: #475569; }
+    input[type="file"] { display: none; }
+    .row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+    select, button {
+      background: #334155; color: var(--text); border: 1px solid var(--border);
+      padding: 0.4rem 0.75rem; border-radius: 6px; font-size: 0.9rem; cursor: pointer;
+    }
+    select:focus, button:focus { outline: 2px solid var(--accent); }
+    canvas {
+      display: block; width: 100%; max-width: 1000px; height: auto;
+      background: #0c1222; border-radius: 8px; border: 1px solid var(--border);
+    }
+    .legend {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+      margin-top: 0.75rem; font-size: 0.85rem; color: var(--muted);
+    }
+    .bar {
+      width: 200px; height: 10px; border-radius: 4px;
+      background: linear-gradient(90deg, #1e3a5f, #0ea5e9, #fbbf24, #f97316, #b91c1c);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { padding: 0.35rem 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; }
+    .mono { font-family: ui-monospace, Consolas, monospace; font-size: 0.8rem; }
+    pre {
+      background: #0c1222; padding: 0.75rem; border-radius: 8px; overflow: auto;
+      max-height: 220px; font-size: 0.75rem; line-height: 1.4; color: #cbd5e1;
+    }
+    .ok { color: #4ade80; }
+    .err { color: #f87171; }
+    .staged-h3 { margin: 1rem 0 0.25rem; font-size: 0.95rem; color: #f0abfc; }
+    .staged-sub { margin: 0 0 0.5rem; font-size: 0.8rem; color: var(--muted); }
+    a.link { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>p64 slope stability — results viewer</h1>
+    <span class="mono" id="status">Loading…</span>
+  </header>
+  <div class="panel">
+    <p class="hint">
+      Loads <code>p64_cpp.json</code> from <strong>fem_cpp</strong> (Program 6.4, Q8 mesh, Mohr–Coulomb SRF trials):
+      node coordinates, 8-node <code>elements</code>, and one <strong>stages[]</strong> entry per converged
+      strength-reduction factor. Also loads <code>p64_cpp.res</code> for the SRF summary table.
+      PostScript plots <code>p64_cpp.msh</code>, <code>.dis</code>, <code>.vec</code> open in a PS viewer — not used here.
+      On <code>file://</code> use the pickers; over HTTP, <em>Try fetch</em> auto-loads both files from this folder.
+    </p>
+
+    <div class="card">
+      <h2>Load files</h2>
+      <div class="row">
+        <label class="btn">p64_cpp.json <input type="file" id="fJson" accept=".json,application/json" /></label>
+        <label class="btn">p64_cpp.res <input type="file" id="fRes" accept=".res,.txt" /></label>
+        <button type="button" id="tryFetch" title="Works when this folder is served over HTTP">Try fetch (same folder)</button>
+      </div>
+      <p class="hint" style="margin-bottom:0">
+        Run solver: <code class="mono">fem_cpp.exe p64_cpp</code> in this directory (after building Release <code>fem_cpp</code>).
+      </p>
+    </div>
+
+    <div class="card" id="jsonBlock" style="display:none">
+      <h2 id="plotCardTitle">Results plot (Q8 mesh)</h2>
+      <p class="hint" id="plotIntro" style="margin-top:0">
+        Choose an <strong>SRF trial</strong>, then <strong>Contour</strong>, <strong>Vector</strong>, or
+        <strong>Deformed mesh</strong> (exaggerated Q8 wireframe).
+      </p>
+      <div class="row" style="margin-bottom:0.75rem; flex-wrap:wrap">
+        <label>SRF trial
+          <select id="stageSelect" title="stages[] = converged displacement at each SRF"></select>
+        </label>
+        <label>Plot
+          <select id="plotType">
+            <option value="contour" selected>Contour</option>
+            <option value="vector">Vector</option>
+            <option value="deformed">Deformed mesh</option>
+          </select>
+        </label>
+        <span id="contourOpts">
+          <label>Field
+            <select id="field">
+              <option value="mag" selected>|u| (m)</option>
+              <option value="ux">u<sub>x</sub> (m)</option>
+              <option value="uy">u<sub>y</sub> (m)</option>
+            </select>
+          </label>
+        </span>
+        <span id="deformedOpts" style="display:none">
+          <label>Exaggeration
+            <input type="range" id="deformExag" min="1" max="200" step="5" value="50" />
+            <span class="mono" id="deformExagVal">50×</span>
+          </label>
+          <label><input type="checkbox" id="showUndeformed" checked /> Undeformed outline</label>
+        </span>
+        <span id="vectorOpts" style="display:none">
+          <label>Component
+            <select id="vecComponent">
+              <option value="both" selected>u<sub>x</sub> + u<sub>y</sub></option>
+              <option value="ux">u<sub>x</sub> only</option>
+              <option value="uy">u<sub>y</sub> only</option>
+            </select>
+          </label>
+          <label>Scale
+            <input type="range" id="vecScale" min="0.25" max="4" step="0.25" value="1" />
+            <span class="mono" id="vecScaleVal">1.0×</span>
+          </label>
+          <label>Stride
+            <select id="vecStride" title="Draw every Nth active node (1 = all)">
+              <option value="1">1 (all nodes)</option>
+              <option value="2" selected>2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="6">6</option>
+            </select>
+          </label>
+        </span>
+        <label><input type="checkbox" id="showMesh" checked /> Draw element edges</label>
+      </div>
+      <h3 class="staged-h3" id="plotTitle" style="margin-top:0"></h3>
+      <p class="staged-sub mono" id="plotSub"></p>
+      <div id="plotHost" style="max-width:1000px"></div>
+    </div>
+
+    <div class="card" id="resBlock" style="display:none">
+      <h2>p64_cpp.res — SRF summary</h2>
+      <p class="mono" id="resMeta"></p>
+      <div id="resTables"></div>
+    </div>
+
+    <div class="card" id="resRawBlock" style="display:none">
+      <h2>p64_cpp.res — raw</h2>
+      <pre id="resRaw" class="mono"></pre>
+    </div>
+
+    <div class="card" id="psBlock" style="display:none">
+      <h2>PostScript outputs</h2>
+      <p class="hint">Smith &amp; Griffiths <code>mesh</code> / <code>dismsh</code> / <code>vecmsh</code> files (open with Ghostscript, Evince, or print to PDF):</p>
+      <ul id="psLinks" class="mono"></ul>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const status = $('status');
+    const plotHost = $('plotHost');
+
+    const DEFAULT_JSON = 'p64_cpp.json';
+    const DEFAULT_RES = 'p64_cpp.res';
+    const PS_FILES = ['p64_cpp.msh', 'p64_cpp.dis', 'p64_cpp.vec'];
+
+    let data = null;
+    let resText = '';
+
+    function setStatus(msg, isErr) {
+      status.textContent = msg;
+      status.className = isErr ? 'mono err' : 'mono ok';
+    }
+
+    function lerpColor(t) {
+      t = Math.max(0, Math.min(1, t));
+      const stops = [
+        [0.15, 0.3, 0.45], [0, 0.65, 0.9], [1, 0.75, 0.2], [0.95, 0.35, 0.1], [0.55, 0.1, 0.1]
+      ];
+      const n = stops.length - 1;
+      const f = t * n;
+      const i = Math.min(n - 1, Math.floor(f));
+      const u = f - i;
+      const a = stops[i], b = stops[i + 1];
+      return 'rgb(' + Math.round((a[0] + (b[0] - a[0]) * u) * 255) + ',' +
+        Math.round((a[1] + (b[1] - a[1]) * u) * 255) + ',' +
+        Math.round((a[2] + (b[2] - a[2]) * u) * 255) + ')';
+    }
+
+    function valueForField(n, field) {
+      if (field === 'ux') return n.ux;
+      if (field === 'uy') return n.uy;
+      return Math.hypot(n.ux, n.uy);
+    }
+
+    function mergeStageNodes(stage, baseNodes) {
+      const byId = new Map();
+      baseNodes.forEach((n) => byId.set(n.id, { id: n.id, x: n.x, y: n.y, ux: 0, uy: 0 }));
+      if (stage && stage.nodes) {
+        stage.nodes.forEach((sn) => {
+          const b = byId.get(sn.id);
+          if (b) {
+            b.ux = +sn.ux || 0;
+            b.uy = +sn.uy || 0;
+            if (sn.x != null) b.x = +sn.x;
+            if (sn.y != null) b.y = +sn.y;
+          }
+        });
+      }
+      return Array.from(byId.values());
+    }
+
+    /** Q8 → four triangles (n1–n4 corners, n5–n8 midsides, Smith/emb_2d order). */
+    function q8Triangles(el) {
+      return [
+        [el.n1, el.n5, el.n2],
+        [el.n2, el.n6, el.n3],
+        [el.n3, el.n7, el.n4],
+        [el.n4, el.n8, el.n1]
+      ];
+    }
+
+    function q8NodeIds(el) {
+      return [el.n1, el.n2, el.n3, el.n4, el.n5, el.n6, el.n7, el.n8];
+    }
+
+    /** Q8 serendipity perimeter: corners n1–n4 with midsides n5–n8 on edges (emb_2d order). */
+    function q8PerimeterIds(el) {
+      return [el.n1, el.n5, el.n2, el.n6, el.n3, el.n7, el.n4, el.n8];
+    }
+
+    function activeNodeIds(elements) {
+      const ids = new Set();
+      elements.forEach((el) => {
+        if (el.active === 0) return;
+        q8NodeIds(el).forEach((nid) => ids.add(nid));
+      });
+      return ids;
+    }
+
+    function buildViewport(ctx, nodes, deformScale, nodeFilter) {
+      const w = ctx.canvas.width, h = ctx.canvas.height;
+      const byId = new Map();
+      nodes.forEach((n) => byId.set(n.id, n));
+
+      function pos(n) {
+        const dx = deformScale ? n.ux * deformScale : 0;
+        const dy = deformScale ? n.uy * deformScale : 0;
+        return { x: n.x + dx, y: n.y + dy };
+      }
+
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      function include(n, scale) {
+        const p = posAt(n, scale);
+        minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+        minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+      }
+      function posAt(n, scale) {
+        return { x: n.x + n.ux * scale, y: n.y + n.uy * scale };
+      }
+      nodes.forEach((n) => {
+        if (nodeFilter && !nodeFilter.has(n.id)) return;
+        if (deformScale > 0) { include(n, 0); include(n, deformScale); }
+        else include(n, 0);
+      });
+      const pad = 0.04 * Math.max(maxX - minX, maxY - minY, 1);
+      minX -= pad; maxX += pad; minY -= pad; maxY += pad;
+      const margin = 20;
+      function project(x, y) {
+        const sx = (x - minX) / (maxX - minX) * (w - 2 * margin) + margin;
+        const sy = h - margin - (y - minY) / (maxY - minY) * (h - 2 * margin);
+        return [sx, sy];
+      }
+      function pos(n) { return posAt(n, deformScale); }
+      return { w, h, byId, pos, posAt, project };
+    }
+
+    function drawAxes(ctx, vp) {
+      ctx.fillStyle = '#64748b';
+      ctx.font = '12px system-ui';
+      ctx.fillText('x →', vp.w - 36, vp.h - 8);
+      ctx.save();
+      ctx.translate(10, 24);
+      ctx.fillText('y ↑ (model)', 0, 0);
+      ctx.restore();
+    }
+
+    function strokeQ8Mesh(ctx, elements, vp, showMesh, posFn, style, usePerimeter) {
+      if (!showMesh) return;
+      posFn = posFn || function (n) { return vp.pos(n); };
+      style = style || { stroke: 'rgba(148,163,184,0.35)', width: 0.6, dash: null };
+      ctx.strokeStyle = style.stroke;
+      ctx.lineWidth = style.width;
+      ctx.setLineDash(style.dash || []);
+      elements.forEach((el) => {
+        if (el.active === 0) return;
+        const ids = (usePerimeter ? q8PerimeterIds(el) : [el.n1, el.n2, el.n3, el.n4]).concat([el.n1]);
+        ctx.beginPath();
+        for (let k = 0; k < ids.length; k++) {
+          const n = vp.byId.get(ids[k]);
+          if (!n) continue;
+          const p = posFn(n);
+          const [px, py] = vp.project(p.x, p.y);
+          if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+      });
+      ctx.setLineDash([]);
+    }
+
+    function drawDeformedMeshQ8(ctx, nodes, elements, showMesh, exaggeration, showUndeformed) {
+      const activeIds = activeNodeIds(elements);
+      const vp = buildViewport(ctx, nodes, exaggeration, activeIds);
+      ctx.fillStyle = '#0c1222';
+      ctx.fillRect(0, 0, vp.w, vp.h);
+      if (showMesh) {
+        if (showUndeformed) {
+          strokeQ8Mesh(ctx, elements, vp, true, function (n) { return vp.posAt(n, 0); },
+            { stroke: 'rgba(100,116,139,0.45)', width: 0.55, dash: [5, 4] }, false);
+        }
+        strokeQ8Mesh(ctx, elements, vp, true, function (n) { return vp.pos(n); },
+          { stroke: '#38bdf8', width: 1.1, dash: null }, true);
+      }
+      drawAxes(ctx, vp);
+      return 'Exaggeration ' + exaggeration + '× | active Q8 elements';
+    }
+
+    function drawArrow(ctx, x0, y0, x1, y1, color, lw) {
+      const dx = x1 - x0, dy = y1 - y0;
+      const len = Math.hypot(dx, dy);
+      if (len < 1) return;
+      const ux = dx / len, uy = dy / len;
+      const head = Math.min(10, len * 0.35);
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = lw;
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x1, y1);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x1 - ux * head - uy * head * 0.45, y1 - uy * head + ux * head * 0.45);
+      ctx.lineTo(x1 - ux * head + uy * head * 0.45, y1 - uy * head - ux * head * 0.45);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawMeshQ8(ctx, nodes, elements, field, showMesh, deformScale) {
+      const vp = buildViewport(ctx, nodes, deformScale);
+      let vMin = Infinity, vMax = -Infinity;
+      nodes.forEach((n) => {
+        const v = valueForField(n, field);
+        if (Number.isFinite(v)) { vMin = Math.min(vMin, v); vMax = Math.max(vMax, v); }
+      });
+      if (vMax - vMin < 1e-20) { vMax = vMin + 1; }
+      const rangeText = field + ' min=' + vMin.toExponential(4) + ' max=' + vMax.toExponential(4);
+
+      ctx.fillStyle = '#0c1222';
+      ctx.fillRect(0, 0, vp.w, vp.h);
+
+      elements.forEach((el) => {
+        if (el.active === 0) return;
+        const tris = q8Triangles(el);
+        tris.forEach((tri) => {
+          const a = vp.byId.get(tri[0]), b = vp.byId.get(tri[1]), c = vp.byId.get(tri[2]);
+          if (!a || !b || !c) return;
+          const va = valueForField(a, field);
+          const vb = valueForField(b, field);
+          const vc = valueForField(c, field);
+          const t = (va + vb + vc) / 3;
+          const norm = (t - vMin) / (vMax - vMin);
+          const pa = vp.pos(a), pb = vp.pos(b), pc = vp.pos(c);
+          const [p1x, p1y] = vp.project(pa.x, pa.y);
+          const [p2x, p2y] = vp.project(pb.x, pb.y);
+          const [p3x, p3y] = vp.project(pc.x, pc.y);
+          ctx.beginPath();
+          ctx.moveTo(p1x, p1y);
+          ctx.lineTo(p2x, p2y);
+          ctx.lineTo(p3x, p3y);
+          ctx.closePath();
+          ctx.fillStyle = lerpColor(norm);
+          ctx.fill();
+          if (showMesh) {
+            ctx.strokeStyle = 'rgba(12,18,34,0.4)';
+            ctx.lineWidth = 0.35;
+            ctx.stroke();
+          }
+        });
+      });
+
+      strokeQ8Mesh(ctx, elements, vp, showMesh, null, null, false);
+      drawAxes(ctx, vp);
+      return rangeText;
+    }
+
+    function vecComponents(n, comp) {
+      if (comp === 'ux') return { u: n.ux, v: 0 };
+      if (comp === 'uy') return { u: 0, v: n.uy };
+      return { u: n.ux, v: n.uy };
+    }
+
+    function drawVectorsQ8(ctx, nodes, elements, showMesh, vecComponent, vecScaleMul, stride) {
+      const vp = buildViewport(ctx, nodes, 0);
+      const activeIds = activeNodeIds(elements);
+      const activeNodes = nodes.filter((n) => activeIds.has(n.id)).sort((a, b) => a.id - b.id);
+
+      const mags = [];
+      activeNodes.forEach((n) => {
+        const { u, v } = vecComponents(n, vecComponent);
+        mags.push(Math.hypot(u, v));
+      });
+      mags.sort((a, b) => a - b);
+      let refMag = 0;
+      if (mags.length) {
+        const p95 = Math.max(0, Math.floor(mags.length * 0.95) - 1);
+        refMag = mags[p95] || mags[mags.length - 1];
+        if (refMag < 1e-12) refMag = mags[mags.length - 1];
+      }
+      if (refMag < 1e-12) return 'no displacement to plot';
+
+      const refLen = vp.w * 0.08 * vecScaleMul;
+      const arrowScale = refLen / refMag;
+      let drawn = 0;
+      const step = Math.max(1, stride | 0);
+
+      ctx.fillStyle = '#0c1222';
+      ctx.fillRect(0, 0, vp.w, vp.h);
+      strokeQ8Mesh(ctx, elements, vp, showMesh, null, null, false);
+
+      for (let i = 0; i < activeNodes.length; i += step) {
+        const n = activeNodes[i];
+        const { u, v } = vecComponents(n, vecComponent);
+        const mag = Math.hypot(u, v);
+        if (mag < 1e-12) continue;
+        const p = vp.pos(n);
+        const [x0, y0] = vp.project(p.x, p.y);
+        const dx = u * arrowScale;
+        const dy = -v * arrowScale;
+        const t = Math.min(1, mag / refMag);
+        const hue = 210 - t * 50;
+        drawArrow(ctx, x0, y0, x0 + dx, y0 + dy, 'hsl(' + hue + ',75%,62%)', 1.4);
+        drawn++;
+      }
+
+      drawAxes(ctx, vp);
+      const compLabel = vecComponent === 'both' ? 'u' : ('u' + (vecComponent === 'ux' ? 'x' : 'y'));
+      return compLabel + ' vectors: ' + drawn + ' arrows | ref |' + compLabel + '|=' +
+        refMag.toExponential(3) + ' m | scale=' + vecScaleMul.toFixed(2) + '×';
+    }
+
+    function plotMode() { return $('plotType').value; }
+
+    function updatePlotModeUi() {
+      const mode = plotMode();
+      const isVec = mode === 'vector';
+      const isDef = mode === 'deformed';
+      $('contourOpts').style.display = (isVec || isDef) ? 'none' : '';
+      $('vectorOpts').style.display = isVec ? '' : 'none';
+      $('deformedOpts').style.display = isDef ? '' : 'none';
+      $('plotCardTitle').textContent = isDef ? 'Deformed mesh (Q8)' :
+        (isVec ? 'Vector plot (displacement)' : 'Contour plot (Q8 mesh)');
+    }
+
+    function getCurrentStage() {
+      if (!data) return null;
+      const st = data.stages;
+      if (st && st.length) {
+        const i = +$('stageSelect').value;
+        if (i >= 0 && i < st.length) return st[i];
+        return st[st.length - 1];
+      }
+      return { index: 0, name: 'final', nodes: data.nodes };
+    }
+
+    function refreshStageList() {
+      const sel = $('stageSelect');
+      sel.innerHTML = '';
+      if (data && data.stages && data.stages.length) {
+        data.stages.forEach(function (st, i) {
+          const o = document.createElement('option');
+          o.value = String(i);
+          const lab = st.name || ('stage ' + (st.index != null ? st.index : i));
+          const sub = st.subtitle ? ' — ' + st.subtitle : '';
+          o.textContent = lab + sub;
+          sel.appendChild(o);
+        });
+        sel.value = String(Math.max(0, data.stages.length - 1));
+      } else {
+        const o = document.createElement('option');
+        o.value = '0';
+        o.textContent = 'Final (no stages in file)';
+        sel.appendChild(o);
+      }
+    }
+
+    function drawAll() {
+      if (!data || !data.nodes || !data.nodes.length) return;
+      const elements = data.elements;
+      if (!elements || !elements.length) { setStatus('JSON missing `elements`', true); return; }
+
+      const st = getCurrentStage();
+      if (!st) { setStatus('No stage', true); return; }
+      const nodes = mergeStageNodes(st, data.nodes);
+      const mode = plotMode();
+      const isVec = mode === 'vector';
+      const isDef = mode === 'deformed';
+      const title = (st.name || ('Stage ' + (st.index != null ? st.index : 0))) +
+        (isDef ? ' — deformed mesh' : (isVec ? ' — displacement vectors' : ' — displacement contour'));
+      $('plotTitle').textContent = title;
+      $('plotSub').textContent = (st.subtitle || '') +
+        (st.elements_solid != null ? ' · elements=' + st.elements_solid : '');
+
+      const showMesh = $('showMesh').checked;
+      plotHost.innerHTML = '';
+      const cv = document.createElement('canvas');
+      cv.width = 1000; cv.height = 700;
+      const ctx2 = cv.getContext('2d');
+      let range;
+      if (isVec) {
+        range = drawVectorsQ8(ctx2, nodes, elements, showMesh,
+          $('vecComponent').value, parseFloat($('vecScale').value) || 1,
+          parseInt($('vecStride').value, 10) || 2);
+      } else if (isDef) {
+        range = drawDeformedMeshQ8(ctx2, nodes, elements, showMesh,
+          parseFloat($('deformExag').value) || 50, $('showUndeformed').checked);
+      } else {
+        range = drawMeshQ8(ctx2, nodes, elements, $('field').value, showMesh, 0);
+      }
+      const leg = document.createElement('div');
+      leg.className = 'legend';
+      if (isDef) {
+        leg.innerHTML = '<span class="mono">' + range + '</span>';
+      } else if (isVec) {
+        leg.innerHTML = '<span class="mono">' + range + '</span>' +
+          ' <span style="color:#94a3b8">|</span> <span>short</span>' +
+          '<div class="bar" aria-hidden="true" style="background:linear-gradient(90deg,hsl(210,75%,62%),hsl(160,75%,62%))"></div>' +
+          '<span>long (vs 95th %ile)</span>';
+      } else {
+        leg.innerHTML = '<span>Low</span><div class="bar" aria-hidden="true"></div><span>High</span> <span class="mono">' + range + '</span>';
+      }
+      plotHost.appendChild(cv);
+      plotHost.appendChild(leg);
+    }
+
+    function parseP64Res(text) {
+      const lines = text.split(/\r?\n/);
+      const out = { eq: null, skyline: null, trials: [] };
+      const reEq = /There are\s*(\d+)\s+equations and the skyline storage is\s*(\d+)/i;
+      for (const line of lines) {
+        const t = line.trim();
+        const mEq = t.match(reEq);
+        if (mEq) {
+          out.eq = +mEq[1];
+          out.skyline = +mEq[2];
+          continue;
+        }
+        if (/^srf\s+max disp/i.test(t)) continue;
+        const parts = t.split(/\s+/).filter(Boolean);
+        if (parts.length >= 3) {
+          const srf = parseFloat(parts[0]);
+          const maxDisp = parseFloat(parts[1]);
+          const iters = parseInt(parts[2], 10);
+          if (Number.isFinite(srf) && Number.isFinite(maxDisp) && Number.isFinite(iters)) {
+            out.trials.push({ srf, maxDisp, iters });
+          }
+        }
+      }
+      return out;
+    }
+
+    function renderRes(text) {
+      if (!text || !text.trim()) {
+        $('resBlock').style.display = 'none';
+        $('resRawBlock').style.display = 'none';
+        return;
+      }
+      resText = text;
+      const parsed = parseP64Res(text);
+      const meta = [];
+      if (parsed.eq != null) meta.push('neq=' + parsed.eq + ', skyline=' + parsed.skyline);
+      meta.push('SRF trials: ' + parsed.trials.length);
+      $('resMeta').textContent = meta.join(' | ');
+
+      const host = $('resTables');
+      host.innerHTML = '';
+      if (parsed.trials.length) {
+        const t = document.createElement('table');
+        t.innerHTML = '<tr><th>SRF</th><th>max |u|</th><th>Iterations</th></tr>' +
+          parsed.trials.map((r) =>
+            '<tr><td>' + r.srf.toFixed(2) + '</td><td>' + r.maxDisp.toExponential(4) +
+            '</td><td>' + r.iters + '</td></tr>').join('');
+        host.appendChild(t);
+      }
+      $('resBlock').style.display = 'block';
+      $('resRaw').textContent = text.trim();
+      $('resRawBlock').style.display = 'block';
+    }
+
+    function showPsLinks() {
+      const ul = $('psLinks');
+      ul.innerHTML = '';
+      PS_FILES.forEach((name) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = name;
+        a.className = 'link';
+        a.textContent = name;
+        a.target = '_blank';
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+      $('psBlock').style.display = 'block';
+    }
+
+    function applyJson(j) {
+      if (!j || !j.nodes) { setStatus('Invalid JSON: expected { nodes, elements }', true); return; }
+      data = j;
+      $('jsonBlock').style.display = 'block';
+      const nSt = (j.n_stages != null) ? j.n_stages : ((j.stages && j.stages.length) || 0);
+      setStatus('OK: ' + (j.solver || 'p64') + ' | ' + nSt + ' SRF stage(s) | ' +
+        j.nodes.length + ' nodes | ' + (j.elements && j.elements.length) + ' Q8 elements', false);
+      refreshStageList();
+      drawAll();
+    }
+
+    async function tryFetch() {
+      try {
+        const r = await fetch(DEFAULT_JSON, { cache: 'no-store' });
+        if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+        applyJson(await r.json());
+      } catch (e) {
+        setStatus('fetch(' + DEFAULT_JSON + ') failed: ' + e.message +
+          ' — use file picker or: python -m http.server', true);
+      }
+      try {
+        const r2 = await fetch(DEFAULT_RES, { cache: 'no-store' });
+        if (r2.ok) renderRes(await r2.text());
+      } catch (e) { /* optional */ }
+      showPsLinks();
+    }
+
+    function onVecScaleInput() {
+      $('vecScaleVal').textContent = (parseFloat($('vecScale').value) || 1).toFixed(2) + '×';
+      drawAll();
+    }
+
+    $('plotType').onchange = function () { updatePlotModeUi(); drawAll(); };
+    $('field').onchange = drawAll;
+    $('showMesh').onchange = drawAll;
+    function onDeformExagInput() {
+      $('deformExagVal').textContent = (parseFloat($('deformExag').value) || 50) + '×';
+      drawAll();
+    }
+    $('deformExag').oninput = onDeformExagInput;
+    $('showUndeformed').onchange = drawAll;
+    $('stageSelect').onchange = drawAll;
+    $('vecComponent').onchange = drawAll;
+    $('vecStride').onchange = drawAll;
+    $('vecScale').oninput = onVecScaleInput;
+    $('tryFetch').onclick = tryFetch;
+    updatePlotModeUi();
+
+    $('fJson').onchange = function (e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = function () {
+        try { applyJson(JSON.parse(r.result)); } catch (err) { setStatus('JSON parse error: ' + err.message, true); }
+      };
+      r.readAsText(f);
+    };
+
+    $('fRes').onchange = function (e) {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = function () { renderRes(r.result); };
+      r.readAsText(f);
+    };
+
+    tryFetch();
+  })();
+  </script>
+</body>
+</html>

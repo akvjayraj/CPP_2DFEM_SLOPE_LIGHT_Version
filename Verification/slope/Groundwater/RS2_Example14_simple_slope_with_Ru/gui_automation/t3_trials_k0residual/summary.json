@@ -1,0 +1,38 @@
+[
+  {
+    "F": 0.85,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.0767,
+    "MaxDisp": 0.1193,
+    "Sec": 305.2,
+    "Note": " Mesh free-surface envelope: 282 boundary segments (Stage-0 K0 uses y_surf(x), not ymax). |  Gravity equilibration on full mesh (SLOPE64-style, no excavation) |  Ru geostatic: retaining Stage-0 K0; residual gravity = body - int(B^T*sigma0)"
+  },
+  {
+    "F": 0.95,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.0001,
+    "MaxDisp": 0.0994,
+    "Sec": 279.9,
+    "Note": " Mesh free-surface envelope: 282 boundary segments (Stage-0 K0 uses y_surf(x), not ymax). |  Gravity equilibration on full mesh (SLOPE64-style, no excavation) |  Ru geostatic: retaining Stage-0 K0; residual gravity = body - int(B^T*sigma0)"
+  },
+  {
+    "F": 1.0,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.0025,
+    "MaxDisp": 0.097,
+    "Sec": 270.1,
+    "Note": " Mesh free-surface envelope: 282 boundary segments (Stage-0 K0 uses y_surf(x), not ymax). |  Gravity equilibration on full mesh (SLOPE64-style, no excavation) |  Ru geostatic: retaining Stage-0 K0; residual gravity = body - int(B^T*sigma0)"
+  },
+  {
+    "F": 1.05,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.0069,
+    "MaxDisp": 0.1258,
+    "Sec": 289.0,
+    "Note": " Mesh free-surface envelope: 282 boundary segments (Stage-0 K0 uses y_surf(x), not ymax). |  Gravity equilibration on full mesh (SLOPE64-style, no excavation) |  Ru geostatic: retaining Stage-0 K0; residual gravity = body - int(B^T*sigma0)"
+  }
+]

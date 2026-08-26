@@ -1,0 +1,46 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.GroundwaterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs">
+    <UserControl.Resources>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <controls:SlopeCanvasView Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  DataContext="{Binding GeometryDefinition}"
+                                  DoubleClickFitsGeometry="True"
+                                  ZoomPanModeEnabled="{Binding DataContext.ZoomPanModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"/>
+
+        <GridSplitter Grid.Column="1"
+                      Width="8"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      ResizeBehavior="PreviousAndNext"
+                      ShowsPreview="True"
+                      Background="#FFE5E7EB"
+                      Visibility="{Binding DataContext.UseAnalysisWorkspace, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+
+        <Border Grid.Column="2"
+                Width="420"
+                Background="#FFF8FAFC"
+                BorderBrush="#FFE2E8F0"
+                BorderThickness="1,0,0,0"
+                Padding="12,8,12,8"
+                Visibility="{Binding DataContext.UseAnalysisWorkspace, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <tabs:GroundwaterDetailsView DataContext="{Binding}"/>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

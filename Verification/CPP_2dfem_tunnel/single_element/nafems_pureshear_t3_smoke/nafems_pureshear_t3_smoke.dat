@@ -1,0 +1,88 @@
+! <solver:p610_t3>
+! NAFEMS-style pure-shear patch test (T3, single element, 3-edge loading)
+!
+! Geometry (right triangle):
+!   1=(0,0), 2=(1,0), 3=(0,1)
+!   single T3 element with vertices 1-2-3 (CCW)
+!
+! Loading: mode-0 direct stress sigma = [0, 0, -100] kPa (pure shear, txy=-100).
+!   The hypotenuse alone cannot distinguish biaxial -100/-100 from pure-shear
+!   txy=-100 on this triangle (their tractions on the (1,1)/sqrt(2) normal are
+!   identical). All 3 boundary edges must be loaded with the consistent pure-
+!   shear traction:
+!     edge 1->2 (bottom, n = (0,-1)): T = sigma . n = ( 100, 0)
+!     edge 2->3 (hyp,    n = (1,1)/sqrt(2)): T = (-100, -100)/sqrt(2)
+!     edge 3->1 (left,   n = (-1,0)): T = sigma . n = (0, 100)
+!   This produces a constant pure-shear stress field exactly.
+!
+! Closed-form (plane strain, nu = 0.25, tension-positive):
+!   sxx = 0, syy = 0, txy = -100, szz = nu*(sxx+syy) = 0.
+!
+! BCs: fix node 1 fully and node 2 in y only (3 fixed DOFs total, 3 free DOFs:
+!   ux2, ux3, uy3). Node 3 must remain free in x so the triangle can shear; the
+!   biaxial-patch BC pattern (3 fix-x, free-y) would force ux3=0 and lock out
+!   the shear mode entirely.
+! Pseudo-elastic via large cohesion / friction so plasticity never activates.
+! <BEGIN:AnalysisOptions>
+! failure_criterion MohrCoulomb
+! material_type Isotropic
+! mesh_type T3
+! solver_executable p610_t3_elastoplastic
+! expected_sxx_kPa 0
+! expected_syy_kPa 0
+! expected_txy_kPa -100
+! expected_szz_kPa 0
+! tolerance_kPa 1e-3
+! <END:AnalysisOptions>
+! Mesh size block:
+! nels nn np_types
+! nels = number of elements
+! nn = number of nodes
+! np_types = number of material/property types
+1  3  1
+! Material/property block:
+! phi   c     psi  gamma  E        nu    K0
+! One row per material/property type declared by np_types.
+! Values are consumed by the selected solver in solver-specific order.
+89  1.0e10  0  0  1000000  0.25  0
+! Nodal coordinate block:
+! One row per node in node-number order.
+! Each row is: x y
+0  0
+1  0
+0  1
+! Element connectivity block:
+! One row per element in element-number order.
+! The node count per row identifies the element type; first row appears to be T3 triangle.
+1  2  3
+! Boundary condition block:
+! First line is nr = number of restrained nodes.
+! Each following row is: node_id fix_x fix_y
+! 0 = fixed/restrained, 1 = free.
+2
+1  0  0
+2  1  0
+! Output/watch node block:
+! First line is nouts = number of nodes requested for output.
+! Following row(s) list the node IDs.
+3
+1  2  3
+! Solver control block:
+! tol limit incs layers
+! tol = convergence tolerance
+! limit = maximum iterations
+! incs = load increments
+! layers = solver path/layer selector
+0.0001  80  3  0
+! Traction loading block:
+! First line is number of traction groups.
+! Each group then contains:
+! mode row: mode and stress/traction parameters
+! edge count: number of loaded edges
+! edge rows: node IDs defining each loaded boundary edge
+1
+0  0  0  -100
+3
+1  2
+2  3
+3  1

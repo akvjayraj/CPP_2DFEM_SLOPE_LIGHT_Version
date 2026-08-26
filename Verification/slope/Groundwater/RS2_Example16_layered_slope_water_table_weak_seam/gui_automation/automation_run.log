@@ -1,0 +1,9 @@
+Running RS2 Example 16 from c:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\RS2_Example16_layered_slope_water_table_weak_seam\rs2_example16_layered_slope_water_table_weak_seam.xfem
+Groundwater enabled with 4 phreatic surface point(s), gamma_w=9.81 kN/m3.
+Generating surface mesh...
+Mesh ready: 14725 elements, 8618 nodes (Γ£ô T3 (3-node) mesh: 1 surface(s), 8618 nodes, 14725 elements.  Min angle: 8.6┬░  Max AR: 7.29)
+Applied boundary conditions to 1437 exterior node(s).
+System.InvalidOperationException: Synced .dat is missing the Groundwater section.
+   at RS2Example16UiAutomation.Program.EnsureGroundwaterInDat(String datContent) in c:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\scripts\RS2Example16UiAutomation\Program.cs:line 194
+   at RS2Example16UiAutomation.Program.RunCase(Application app, MainWindow window, MainWindowViewModel vm, String projectPath, String outputDir) in c:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\scripts\RS2Example16UiAutomation\Program.cs:line 113
+   at RS2Example16UiAutomation.Program.Main() in c:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\scripts\RS2Example16UiAutomation\Program.cs:line 45

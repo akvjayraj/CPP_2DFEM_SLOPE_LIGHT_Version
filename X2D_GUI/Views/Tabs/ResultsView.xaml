@@ -1,0 +1,87 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.ResultsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="Factor of Safety:" FontSize="20" FontWeight="Bold"/>
+            <TextBlock Text="{Binding FactorOfSafetyDisplay}" FontSize="20" FontWeight="Bold" Foreground="#FF0F6A00" Margin="12,0,0,0"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1"
+                  Margin="0,12,0,8"
+                  ItemsSource="{Binding CircleMethodDataView}"
+                  AutoGenerateColumns="True"
+                  HeadersVisibility="Column"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="True">
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasCircleMethodMatrix}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
+        </DataGrid>
+
+        <TextBlock Grid.Row="2"
+                   Margin="0,12,0,0"
+                   Text="Run the analysis to populate slip-circle and method results."
+                   HorizontalAlignment="Center"
+                   Foreground="Gray">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasCircleMethodMatrix}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <DataGrid Grid.Row="3"
+                  Margin="0,12,0,8"
+                  ItemsSource="{Binding MethodComparisons}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  AutoGenerateColumns="False"
+                  HeadersVisibility="Column"
+                  IsReadOnly="True">
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasComparisonResults}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Method"
+                                    Binding="{Binding MethodDisplayName, Mode=OneWay}"/>
+                <DataGridTextColumn Header="Factor of Safety"
+                                    Binding="{Binding FactorOfSafety, StringFormat=F3}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Grid.Row="4" Margin="0,16,0,8" Text="Notes:" FontWeight="SemiBold"/>
+
+        <TextBox Grid.Row="5" Text="{Binding Notes}" AcceptsReturn="True" TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto" />
+    </Grid>
+</UserControl>

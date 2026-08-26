@@ -1,0 +1,5 @@
+JR-01 — Single Joint Under Normal Compression
+Reference: linear-elastic Goodman joint, δc = σn / kn
+kn = 100 MPa/m = 1.0e5 kPa/m
+Expected closures: 1 MPa → 0.010 m; 2 MPa → 0.020 m; 5 MPa → 0.050 m; 10 MPa → 0.100 m
+These are joint closures, not total top displacement (rock also compresses ~σH/E).

@@ -1,0 +1,89 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.AnalysisCenterHostView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:ws="clr-namespace:GeotechSlopeApp.Views.Workspace">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style x:Key="CenterTabRadio" TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}"
+                                BorderBrush="Transparent" BorderThickness="0,0,0,2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FF3B82F6"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#223B82F6"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#163B82F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel Background="Transparent">
+        <Border DockPanel.Dock="Top"
+                Background="{DynamicResource PanelBackgroundBrush}"
+                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" Margin="8,2">
+                <RadioButton Style="{StaticResource CenterTabRadio}"
+                             Content="2D View"
+                             GroupName="AnalysisCenterView"
+                             IsChecked="{Binding Workspace.IsCenterView2D, Mode=OneWay}"
+                             Command="{Binding Workspace.SelectCenterViewCommand}"
+                             CommandParameter="2D"/>
+                <RadioButton Style="{StaticResource CenterTabRadio}"
+                             Content="3D View"
+                             GroupName="AnalysisCenterView"
+                             IsChecked="{Binding Workspace.IsCenterView3D, Mode=OneWay}"
+                             Command="{Binding Workspace.SelectCenterViewCommand}"
+                             CommandParameter="3D"/>
+                <RadioButton Style="{StaticResource CenterTabRadio}"
+                             Content="Stage Manager"
+                             GroupName="AnalysisCenterView"
+                             IsChecked="{Binding Workspace.IsCenterViewStages, Mode=OneWay}"
+                             Command="{Binding Workspace.SelectCenterViewCommand}"
+                             CommandParameter="Stages"/>
+                <RadioButton Style="{StaticResource CenterTabRadio}"
+                             Content="Solver Monitor"
+                             GroupName="AnalysisCenterView"
+                             IsChecked="{Binding Workspace.IsCenterViewMonitor, Mode=OneWay}"
+                             Command="{Binding Workspace.SelectCenterViewCommand}"
+                             CommandParameter="Monitor"/>
+                <RadioButton Style="{StaticResource CenterTabRadio}"
+                             Content="Analysis Log"
+                             GroupName="AnalysisCenterView"
+                             IsChecked="{Binding Workspace.IsCenterViewLog, Mode=OneWay}"
+                             Command="{Binding Workspace.SelectCenterViewCommand}"
+                             CommandParameter="Log"/>
+            </StackPanel>
+        </Border>
+        <Grid Visibility="{Binding Workspace.IsCenterOverlayVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Background="{DynamicResource PanelBackgroundBrush}">
+            <ws:StageManagerView
+                Visibility="{Binding Workspace.IsCenterViewStages, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <ws:SolverMonitorView
+                Visibility="{Binding Workspace.IsCenterViewMonitor, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <ws:SolverMonitorView
+                Visibility="{Binding Workspace.IsCenterViewLog, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"
+                       Margin="24" TextAlignment="Center"
+                       Foreground="{DynamicResource SecondaryTextBrush}"
+                       Visibility="{Binding Workspace.IsCenterView3D, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       Text="3D View is not available in the current FEM engine."/>
+        </Grid>
+    </DockPanel>
+</UserControl>

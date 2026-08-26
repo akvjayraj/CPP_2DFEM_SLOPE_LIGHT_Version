@@ -1,0 +1,38 @@
+{
+  "project": "c:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Groundwater\\RS2_Part 2 Example35_submerged_slope_duncan_wright\\rs2_example35_submerged_slope_duncan_wright.xfem",
+  "literatureFoS": 1.6,
+  "estimatedFoS": 1.625,
+  "pondedEdgeCount": 128,
+  "gammaW": 62.4,
+  "meshNodes": 1092,
+  "meshElements": 1861,
+  "trials": [
+    {
+      "F": 1,
+      "GateConverged": true,
+      "Iterations": 33,
+      "MaxDisplacement": 2.579209565376647,
+      "MaxYieldRatio": 1.0000134944860772,
+      "ExitCode": 0,
+      "elapsedSec": 132.5660884
+    },
+    {
+      "F": 1.55,
+      "GateConverged": true,
+      "Iterations": 156,
+      "MaxDisplacement": 3.4208937339127377,
+      "MaxYieldRatio": 1.0000175934885862,
+      "ExitCode": 0,
+      "elapsedSec": 236.5368887
+    },
+    {
+      "F": 1.7,
+      "GateConverged": false,
+      "Iterations": 1000,
+      "MaxDisplacement": 3.961609677048646,
+      "MaxYieldRatio": 1.6893852161739573,
+      "ExitCode": 0,
+      "elapsedSec": 663.1309517
+    }
+  ]
+}

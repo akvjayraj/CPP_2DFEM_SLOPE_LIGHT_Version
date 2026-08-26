@@ -1,0 +1,193 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.BoundaryConditionsImportPopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+        <converters:AnalysisCategoryToBrushConverter x:Key="AnalysisCategoryToBrushConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="12">
+            <TextBlock Text="{Binding StatusMessage}" Foreground="Gray" Margin="0,0,0,12"/>
+
+            <!-- Outer Boundary Apply -->
+            <GroupBox Header="Apply BC to Outer Boundary" Margin="0,0,0,12">
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Boundary:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1"
+                              ItemsSource="{Binding AvailableOuterBoundaries}"
+                              SelectedItem="{Binding SelectedOuterBoundary}"
+                              Margin="0,0,8,0"
+                              ToolTip="Select a line segment (L1, L2, …). The corresponding geometry is highlighted on the Boundary Conditions canvas. Use Import Boundaries first.">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding BoundaryTag}" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                                    <TextBlock Text="{Binding NodeCount, StringFormat='({0} nodes)'}" Foreground="Gray"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Nodes:" VerticalAlignment="Center" Margin="8,0,4,0"/>
+                    <TextBox Grid.Row="0" Grid.Column="3"
+                             Text="{Binding NodesText, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,8,0"
+                             ToolTip="Node number to apply BC to (e.g. 5). Apply BC adds it to the DataGrid."/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="BC Type:" VerticalAlignment="Center" Margin="8,0,8,0"/>
+                    <ComboBox Grid.Row="0" Grid.Column="5"
+                              ItemsSource="{Binding AvailableBCTypes}"
+                              SelectedItem="{Binding SelectedBCTypeForBoundary}"
+                              IsEnabled="{Binding HasAvailableBcTypes}"
+                              Margin="0,0,8,0"
+                              ToolTip="Select boundary condition type to apply (requires the active analysis category ON)"/>
+                    <TextBox Grid.Row="0" Grid.Column="6"
+                             Text="{Binding BcValueForBoundary, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,8,0"
+                             ToolTip="BC value (displacement or force)"/>
+                    <Button Grid.Row="0" Grid.Column="7"
+                            Content="Apply BC"
+                            Command="{Binding ApplyBCToSelectedBoundaryCommand}"
+                            IsEnabled="{Binding HasAvailableBcTypes}"
+                            Padding="12,6"
+                            ToolTip="Apply selected BC to node(s) in Nodes box or to all nodes on selected boundary - adds/updates DataGrid"/>
+                    <!-- Connected nodes from Mesh popup, listed when boundary is selected -->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8"
+                               Margin="0,8,0,0"
+                               Text="{Binding ConnectedNodesDisplayText, StringFormat='Connected nodes: {0}'}"
+                               Visibility="{Binding ConnectedNodesDisplayText, Converter={StaticResource EmptyStringToVisibilityConverter}}"
+                               Foreground="Gray" FontSize="11"/>
+                </Grid>
+            </GroupBox>
+
+            <!-- Boundary Conditions DataGrid -->
+            <DataGrid ItemsSource="{Binding BoundaryConditions}"
+                      SelectedItem="{Binding SelectedBoundaryCondition}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserSortColumns="True"
+                      SelectionMode="Single"
+                      GridLinesVisibility="All"
+                      HeadersVisibility="Column"
+                      Margin="0,0,0,12"
+                      CellEditEnding="DataGrid_CellEditEnding">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="" Width="22" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <controls:BcSymbolGlyph Kind="{Binding SymbolKind}"
+                                                        Width="10" Height="10"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Margin="1"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Node ID" Width="80" SortMemberPath="NodeId">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NodeId}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox SelectedValue="{Binding NodeId, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding DataContext.AvailableNodeIds, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          IsEditable="False"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Boundary"
+                                        Binding="{Binding BoundaryName}"
+                                        SortMemberPath="BoundaryName"
+                                        Width="80"
+                                        IsReadOnly="True"/>
+                    <DataGridTemplateColumn Header="Analysis" Width="150" SortMemberPath="AnalysisCategory" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Padding="4,2"
+                                        Background="{Binding AnalysisCategory, Converter={StaticResource AnalysisCategoryToBrushConverter}}">
+                                    <TextBlock Text="{Binding AnalysisCategory}" VerticalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="BC Type" Width="180" SortMemberPath="BCType">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <controls:BcSymbolGlyph Kind="{Binding SymbolKind}"
+                                                            Width="12" Height="12"
+                                                            Margin="0,0,6,0"
+                                                            VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding BCType}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox SelectedItem="{Binding BCType, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding DataContext.AvailableBCTypes, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                          IsEditable="False"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="DOF" Width="100" SortMemberPath="DegreeOfFreedom">
+                        <DataGridTemplateColumn.Visibility>
+                            <Binding Path="DataContext.ShowDofColumn" RelativeSource="{RelativeSource AncestorType=DataGrid}">
+                                <Binding.Converter>
+                                    <BooleanToVisibilityConverter/>
+                                </Binding.Converter>
+                            </Binding>
+                        </DataGridTemplateColumn.Visibility>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DofDisplay}" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <ComboBox SelectedIndex="{Binding DegreeOfFreedom, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding DataContext.AvailableDOFs, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              IsEditable="False"
+                                              Visibility="{Binding UsesEditableDof, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    <TextBlock Text="{Binding DofDisplay}"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding UsesEditableDof, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Value"
+                                        Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                        SortMemberPath="Value"
+                                        Width="120"/>
+                    <DataGridTextColumn Header="Description"
+                                        Binding="{Binding Description}"
+                                        SortMemberPath="Description"
+                                        Width="*"
+                                        IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

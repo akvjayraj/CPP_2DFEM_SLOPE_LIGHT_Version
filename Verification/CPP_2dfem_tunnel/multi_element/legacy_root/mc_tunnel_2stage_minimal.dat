@@ -1,0 +1,113 @@
+! <solver:p610_t3>
+! Minimal 2-stage tunnel excavation (Mohr-Coulomb, T3 plane-strain).
+!
+!   Domain   : 4 m wide x 2 m tall, 15 nodes, 16 T3 elements.
+!   Symmetry : roller BCs on x=0 (left) and y=0 (bottom); top and right free.
+!   Tunnel   : 1 m x 2 m cavity hugging the left/bottom symmetry corner,
+!              opened in two stages from the top down.
+!
+!   Stage 1 (top heading): elements 11, 12  -> upper unit square at (1<=x<=2, 1<=y<=2)
+!   Stage 2 (bench):       elements  3,  4  -> lower unit square at (1<=x<=2, 0<=y<=1)
+!
+!   Mesh sketch (node numbering, y up, x right):
+!
+!     y=2:  11---12---13---14---15
+!           | \ |  \ |  \ |  \ |
+!     y=1:   6---7----8----9---10
+!           | \ |  \ |  \ |  \ |
+!     y=0:   1---2----3----4----5
+!          x=0  x=1  x=2  x=3  x=4
+!
+!   Each unit square is split into two T3s: lower-right (i, i+1, i+W+1)
+!   then upper-left (i, i+W+1, i+W), where W = 5 (nodes per row).
+!
+! <BEGIN:AnalysisOptions>
+! failure_criterion MohrCoulomb
+! material_type Isotropic
+! mesh_type T3
+! solver_executable p610_t3_mohr_coulomb
+! <END:AnalysisOptions>
+!
+! <BEGIN:Header>
+! nels  nn  np_types
+16  15  1
+! <END:Header>
+!
+! <BEGIN:Materials>
+! phi  c  psi  gamma  E  nu  K0   (one value per line, per material type)
+30
+10
+0
+20
+10000
+0.2
+0.5
+! <END:Materials>
+!
+! <BEGIN:Mesh>
+! x  y  (nodal coordinates, 1..nn)
+0  0
+1  0
+2  0
+3  0
+4  0
+0  1
+1  1
+2  1
+3  1
+4  1
+0  2
+1  2
+2  2
+3  2
+4  2
+! n1  n2  n3  (element connectivity, 1-based; 16 T3 elements)
+1   2   7
+1   7   6
+2   3   8
+2   8   7
+3   4   9
+3   9   8
+4   5   10
+4   10  9
+6   7   12
+6   12  11
+7   8   13
+7   13  12
+8   9   14
+8   14  13
+9   10  15
+9   15  14
+! <END:Mesh>
+!
+! <BEGIN:Bcs>
+! nr  (restrained node count; rows: node fix_x fix_y; 0 = restrained, 1 = free)
+7
+1   0  0
+2   1  0
+3   1  0
+4   1  0
+5   1  0
+6   0  1
+11  0  1
+! <END:Bcs>
+!
+! <BEGIN:OutputNodes>
+! nouts  (output node count, then node numbers)
+6
+2  3  7  8  12  13
+! <END:OutputNodes>
+!
+! <BEGIN:SolverControl>
+! tol  limit  incs  layers
+1.0e-5  250  5  2
+! <END:SolverControl>
+!
+! <BEGIN:Layers>
+! Excavation layer 1 -- top heading (2 elements)
+2
+11  12
+! Excavation layer 2 -- bench (2 elements)
+2
+3  4
+! <END:Layers>

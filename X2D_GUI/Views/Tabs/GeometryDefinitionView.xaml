@@ -1,0 +1,92 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.GeometryDefinitionView"
+             x:Name="GeometryDefinitionRoot"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:GeotechSlopeApp.Views.Controls"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters">
+    <UserControl.Resources>
+        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="Margin" Value="12"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding DataContext.UseAnalysisWorkspace, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                        <Setter Property="Margin" Value="0"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                BorderBrush="#FFCBD5E1"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="8"
+                Margin="0,0,12,0"
+                Background="#FFF8FAFC"
+                VerticalAlignment="Stretch"
+                Visibility="{Binding DataContext.UseAnalysisWorkspace, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+            <StackPanel Orientation="Vertical">
+                <Button Content="Points"
+                        Click="PointsToolButton_Click"
+                        MinWidth="100"
+                        Height="32"
+                        Margin="0,0,0,8"
+                        Padding="8,4"
+                        HorizontalContentAlignment="Center"
+                        ToolTip="Vertices and point input (opens panel)"/>
+                <Button Content="Lines"
+                        Click="LinesToolButton_Click"
+                        MinWidth="100"
+                        Height="32"
+                        Margin="0,0,0,8"
+                        Padding="8,4"
+                        HorizontalContentAlignment="Center"
+                        IsEnabled="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"
+                        ToolTip="Line segments: draw mode and grid (opens panel)"/>
+                <Button Content="Arc"
+                        Click="ArcToolButton_Click"
+                        MinWidth="100"
+                        Height="32"
+                        Margin="0,0,0,8"
+                        Padding="8,4"
+                        HorizontalContentAlignment="Center"
+                        IsEnabled="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"
+                        ToolTip="Arc through vertices (opens panel)"/>
+                <Button Content="Circle"
+                        Click="CircleToolButton_Click"
+                        MinWidth="100"
+                        Height="32"
+                        Margin="0,0,0,8"
+                        Padding="8,4"
+                        HorizontalContentAlignment="Center"
+                        IsEnabled="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"
+                        ToolTip="Geometry circle (opens panel)"/>
+                <Button Content="Surface"
+                        Click="SurfaceToolButton_Click"
+                        MinWidth="100"
+                        Height="32"
+                        Padding="8,4"
+                        HorizontalContentAlignment="Center"
+                        IsEnabled="{Binding IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"
+                        ToolTip="Surfaces and excavation operations (opens panel)"/>
+            </StackPanel>
+        </Border>
+
+        <controls:SlopeCanvasView x:Name="GeometryCanvasHost"
+                                  Grid.Column="1"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  IsGeometryEditable="True"
+                                  DataContext="{Binding}"
+                                  ZoomPanModeEnabled="{Binding DataContext.ZoomPanModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
+                                  ZoomAreaModeEnabled="{Binding DataContext.ZoomAreaModeEnabled, RelativeSource={RelativeSource AncestorType=Window}}"/>
+    </Grid>
+</UserControl>

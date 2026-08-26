@@ -1,0 +1,74 @@
+ Failure criterion from AnalysisOptions: MohrCoulomb
+ Material type from AnalysisOptions: Isotropic
+ Initial elements: 14725
+ Initial freedoms: 14760
+ Groundwater: method=hydrostatic  nosurf=4  gam_w=9.810000 kN/m3
+
+ Stage 0  (in-situ: hydrostatic pore pressure, Terzaghi effective stress in yield; geostatic σ at T3 centroids; full tensors in Verification\slope\Groundwater\RS2_Example16_layered_slope_water_table_weak_seam\gui_automation\t3\p610t3_script_run_srf_1.json  "stages"[0])
+  Freedoms: 14760   All elements solid. Removed: 0
+
+ Excavation number 1
+ Gravity equilibration on full mesh (SLOPE64-style, no excavation)
+ Freedoms: 14760
+ Elements remaining: 14725 (removed 0)
+ Inc 1 took 2 iterations (RMS relative change 0)
+ Inc 2 took 2 iterations (RMS relative change 0)
+ Inc 3 took 3 iterations (RMS relative change 0)
+ Inc 4 took 3 iterations (RMS relative change 1.15668e-06)
+ Inc 5 took 6 iterations (RMS relative change 2.00608e-05)
+ Inc 6 took 7 iterations (RMS relative change 3.88486e-05)
+ Inc 7 took 9 iterations (RMS relative change 3.17361e-05)
+ Inc 8 took 10 iterations (RMS relative change 4.18448e-05)
+ Inc 9 took 12 iterations (RMS relative change 4.18904e-05)
+ Inc 10 took 13 iterations (RMS relative change 4.82702e-05)
+ Inc 11 took 14 iterations (RMS relative change 4.05532e-05)
+ Inc 12 took 15 iterations (RMS relative change 3.70444e-05)
+ Inc 13 took 15 iterations (RMS relative change 4.74253e-05)
+ Inc 14 took 16 iterations (RMS relative change 4.86839e-05)
+ Inc 15 took 18 iterations (RMS relative change 4.20416e-05)
+ Inc 16 took 19 iterations (RMS relative change 4.39051e-05)
+ Inc 17 took 21 iterations (RMS relative change 4.22922e-05)
+ Inc 18 took 23 iterations (RMS relative change 4.48437e-05)
+ Inc 19 took 25 iterations (RMS relative change 4.69477e-05)
+ Inc 20 took 28 iterations (RMS relative change 4.32192e-05)
+ Inc 21 took 30 iterations (RMS relative change 4.80372e-05)
+ Inc 22 took 33 iterations (RMS relative change 4.68237e-05)
+ Inc 23 took 36 iterations (RMS relative change 4.65671e-05)
+ Inc 24 took 39 iterations (RMS relative change 4.55702e-05)
+ Inc 25 took 43 iterations (RMS relative change 4.92918e-05)
+ Inc 26 took 45 iterations (RMS relative change 4.63933e-05)
+ Inc 27 took 47 iterations (RMS relative change 4.99238e-05)
+ Inc 28 took 50 iterations (RMS relative change 4.94182e-05)
+ Inc 29 took 54 iterations (RMS relative change 4.89479e-05)
+ Inc 30 took 57 iterations (RMS relative change 4.61066e-05)
+ Inc 31 took 59 iterations (RMS relative change 4.66325e-05)
+ Inc 32 took 61 iterations (RMS relative change 4.74264e-05)
+ Inc 33 took 65 iterations (RMS relative change 4.98932e-05)
+ Inc 34 took 67 iterations (RMS relative change 4.84617e-05)
+ Inc 35 took 69 iterations (RMS relative change 4.95714e-05)
+ Inc 36 took 78 iterations (RMS relative change 4.99513e-05)
+ Inc 37 took 1000 iterations (RMS relative change 7.05145e-05)
+  Node    x-disp         y-disp
+  1  0  0
+  2  0  0
+  3  0  0
+  4  0  0
+  5  0  0
+  6  0  0
+  7  0  -0.00073726
+  8  0  -0.00145469
+  9  0  -0.00194014
+  10  0  -0.00230919
+  11  0  -0.00261107
+  12  0  -0.00289478
+  13  0  -0.00317321
+  14  0  -0.00342546
+  15  0  -0.00366113
+  16  0  -0.00389076
+  17  0  -0.0041187
+  18  0  -0.00434355
+  19  0  -0.00456212
+  20  0  -0.00477829
+  (Stage 1 — σ and u written to Verification\slope\Groundwater\RS2_Example16_layered_slope_water_table_weak_seam\gui_automation\t3\p610t3_script_run_srf_1.json  "stages"[1].)
+
+ Done.

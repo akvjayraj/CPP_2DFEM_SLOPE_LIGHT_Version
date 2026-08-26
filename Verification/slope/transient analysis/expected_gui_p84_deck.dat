@@ -1,0 +1,24 @@
+p84
+! Transient consolidation — plane/axisymmetric (S&G Program 8.4, Q4 structured grid)
+'plane' 'x'
+5 5 1
+! kx ky (consolidation / diffusivity) per material type
+1  1
+! x_coords then y_coords (top -> bottom)
+0  0.2  0.4  0.6  0.8  1
+0  -0.2  -0.4  -0.6  -0.8  -1
+! dtim nstep theta npri nres ntime
+0.01 150 0.5 10 31 100
+! initial nodal pressures
+0  0  0  0  0  0
+100  100  100  100  100  0
+100  100  100  100  100  0
+100  100  100  100  100  0
+100  100  100  100  100  0
+100  100  100  100  100  0
+! fixed freedoms
+11
+1 0   2 0   3 0   4 0   5 0   6 0
+12 0   18 0   24 0   30 0   36 0
+! contour intervals (read at ntime)
+10

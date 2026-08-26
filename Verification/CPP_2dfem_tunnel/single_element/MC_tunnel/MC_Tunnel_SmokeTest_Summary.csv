@@ -1,0 +1,5 @@
+"Case","MeshType","DatExists","JsonExists","ResExists","NodeCount","ExpectedNodes","ElementCount","StageCount","Sxx","Syy","Txy","Szz","ExpectedSxx","ExpectedSyy","ExpectedTxy","ExpectedSzz","PlaneStrainSzzOk","Verdict","Notes","Commit","GeneratedAt"
+"mc_tunnel_q4_smoke","Q4","True","True","True","4","4","1","2","0","0","0","0","-100","0","0","-25","True","REVIEW","ok","4a6b63d","2026-05-03 23:13:19 +05:30"
+"mc_tunnel_q8_smoke","Q8","True","True","True","8","8","1","2","-47.5520833333333","-2.44791666666666","6.56249999999999","-12.5",,,,,"True","PASS_WITH_INTERPRETATION","ok","4a6b63d","2026-05-03 23:13:19 +05:30"
+"mc_tunnel_t3_smoke","T3","True","True","True","3","3","1","2","-100","-100","0","-50","-100","-100","0","-50","True","PASS","ok","4a6b63d","2026-05-03 23:13:19 +05:30"
+"mc_tunnel_t6_smoke","T6","True","True","True","6","6","1","2","0","0","0","0","-100","-100","33.333333","-50","True","REVIEW","ok","4a6b63d","2026-05-03 23:13:19 +05:30"

@@ -1,0 +1,11 @@
+# Same logs as embankment-evidence-pack.csv (Collar Y − Depth).
+# Leave Reference elevation = 0 for Method A / B / C. Wizard: Depths (Collar Y − Depth).
+StationId,X,CollarY,Depth,UnitCode,Note,Label
+BH-C,8.0,20.0,6.0,FILL,Compacted fill,Crest
+BH-C,8.0,20.0,12.0,CLAY,Firm clay,Crest
+BH-C,8.0,20.0,20.0,SAND,Foundation sand,Crest
+BH-M,25.0,15.0,1.0,FILL,Thin fill on face,Mid-slope
+BH-M,25.0,15.0,7.0,CLAY,Firm clay,Mid-slope
+BH-M,25.0,15.0,15.0,SAND,Foundation sand,Mid-slope
+BH-T,40.0,10.0,2.0,CLAY,Clay at toe (no fill),Toe
+BH-T,40.0,10.0,10.0,SAND,Foundation sand,Toe

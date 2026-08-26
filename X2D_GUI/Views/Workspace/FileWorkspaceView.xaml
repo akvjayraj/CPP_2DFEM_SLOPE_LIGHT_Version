@@ -1,0 +1,470 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.FileWorkspaceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+
+        <Style x:Key="BackstageLink" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="Margin" Value="0,1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ExplorerSelectionBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="BackstageGlyph" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style x:Key="MetaLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="Margin" Value="0,3,8,3"/>
+        </Style>
+        <Style x:Key="MetaValue" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Margin" Value="0,3,0,3"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style x:Key="QuickAction" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ViewportPaperBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style TargetType="ContextMenu">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+        </Style>
+        <Style TargetType="MenuItem">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="*" MinWidth="240"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="*" MinWidth="240"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="280"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left file menu -->
+        <Border Grid.Column="0" BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="0,0,1,0" Padding="4,8,10,8">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding NewProjectCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE8A5;"/>
+                            <TextBlock Text="New Project" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl+N" Margin="12,0,0,0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding OpenProjectCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xED25;"/>
+                            <TextBlock Text="Open Project" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl+O" Margin="12,0,0,0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding SaveCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE74E;"/>
+                            <TextBlock Text="Save" VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl+S" Margin="12,0,0,0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding SaveAsCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE70F;"/>
+                            <TextBlock Text="Save As..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Click="OpenDropdown">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE8B5;"/>
+                            <TextBlock Text="Import" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Import Geometry..." Command="{Binding ImportGeometryFileCommand}"/>
+                                <MenuItem Header="Import Slope Image..." Command="{Binding ImportSlopeImageCommand}"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Click="OpenDropdown">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xEDE1;"/>
+                            <TextBlock Text="Export" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Export Geometry..." Command="{Binding ExportGeometryCommand}"/>
+                                <MenuItem Header="Export Results..." Command="{Binding ExportResultsCommand}"/>
+                                <MenuItem Header="Export Report..." Command="{Binding ExportReportCommand}"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding ProjectSettingsGeneralCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE946;"/>
+                            <TextBlock Text="Project Information..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Background="{DynamicResource ExplorerSelectionBrush}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE81C;"/>
+                            <TextBlock Text="Recent Projects" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding Workspace.ShowCapabilityCommand}" CommandParameter="VersionHistory">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE81C;"/>
+                            <TextBlock Text="Version History..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding Workspace.ShowCapabilityCommand}" CommandParameter="BackupRecovery">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE777;"/>
+                            <TextBlock Text="Backup &amp; Recovery..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding PrintCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE749;"/>
+                            <TextBlock Text="Print..." VerticalAlignment="Center"/>
+                            <TextBlock Text="Ctrl+P" Margin="12,0,0,0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Click="OpenDropdown">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE9D2;"/>
+                            <TextBlock Text="Report" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Export Report..." Command="{Binding ExportReportCommand}"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding PreferencesCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE713;"/>
+                            <TextBlock Text="Settings..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding LicenseInfoCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE72E;"/>
+                            <TextBlock Text="License Manager..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding CheckForUpdatesCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE777;"/>
+                            <TextBlock Text="Check for Updates..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding ViewHelpCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE897;"/>
+                            <TextBlock Text="Help" VerticalAlignment="Center"/>
+                            <TextBlock Text="F1" Margin="12,0,0,0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding AboutCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE946;"/>
+                            <TextBlock Text="About..." VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource BackstageLink}" Command="{Binding ExitApplicationCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE7E8;" Foreground="#FFF59E0B"/>
+                            <TextBlock Text="Exit" VerticalAlignment="Center"/>
+                            <TextBlock Text="Alt+F4" Margin="12,0,0,0" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Recent projects -->
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <DockPanel Margin="0,0,0,8">
+                    <TextBlock DockPanel.Dock="Left" Style="{StaticResource SectionTitle}" Text="RECENT PROJECTS" VerticalAlignment="Center"/>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource BackstageLink}" Padding="6,4" Command="{Binding Workspace.FileHome.ShowListCommand}" ToolTip="List">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8FD;" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                        </Button>
+                        <Button Style="{StaticResource BackstageLink}" Padding="6,4" Command="{Binding Workspace.FileHome.ShowGridCommand}" ToolTip="Grid">
+                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80A;" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+                <Border BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1" CornerRadius="3" Padding="6,2" Margin="0,0,0,8">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left" FontFamily="Segoe MDL2 Assets" Text="&#xE721;"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" Margin="2,0,6,0"/>
+                        <TextBox Text="{Binding Workspace.FileHome.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="Transparent" BorderThickness="0"
+                                 Foreground="{DynamicResource WindowForegroundBrush}"
+                                 CaretBrush="{DynamicResource WindowForegroundBrush}"
+                                 VerticalContentAlignment="Center"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="No recent projects."
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Visibility="{Binding Workspace.FileHome.HasRecent, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                    <ItemsControl ItemsSource="{Binding Workspace.FileHome.FilteredRecent}"
+                                  Visibility="{Binding Workspace.FileHome.IsListView, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource BackstageLink}"
+                                        Command="{Binding DataContext.OpenRecentProjectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding FilePath}"
+                                        ToolTip="{Binding FilePath}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="28"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8A5;" FontSize="16"
+                                                   Foreground="{DynamicResource WindowForegroundBrush}" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding ModifiedDisplay}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/>
+                                            <TextBlock Text="{Binding Folder}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Workspace.FileHome.FilteredRecent}"
+                                  Visibility="{Binding Workspace.FileHome.IsGridView, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource BackstageLink}" Width="180" Margin="0,0,8,8"
+                                        Command="{Binding DataContext.OpenRecentProjectCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding FilePath}"
+                                        ToolTip="{Binding FilePath}">
+                                    <StackPanel>
+                                        <Border Height="72" Background="{DynamicResource ViewportPaperBrush}"
+                                                BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1" Margin="0,0,0,6">
+                                            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE8A5;" FontSize="28"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding FileName}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding ModifiedDisplay}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="11"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+            <Button Grid.Row="2" Style="{StaticResource BackstageLink}" HorizontalAlignment="Left"
+                    Command="{Binding ClearRecentFilesCommand}" Content="Clear Recent List"/>
+        </Grid>
+
+        <!-- Preview + details of the open project -->
+        <Grid Grid.Column="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10" Margin="0,0,0,8">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Style="{StaticResource SectionTitle}" Text="PROJECT PREVIEW"/>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7C9;" FontSize="36"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Workspace.FileHome.PreviewHint}"
+                                   TextWrapping="Wrap" TextAlignment="Center" Margin="12,10"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <Button Style="{StaticResource QuickAction}" HorizontalAlignment="Center"
+                                Command="{Binding NavigateToGeometryCommand}" Content="Open Geometry"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+            <Border Grid.Row="1" BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource SectionTitle}" Text="PROJECT DETAILS"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Style="{StaticResource MetaLabel}" Text="Project Name"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectTitle}"/>
+                            <TextBlock Grid.Row="1" Style="{StaticResource MetaLabel}" Text="Dimension"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectDimension}"/>
+                            <TextBlock Grid.Row="2" Style="{StaticResource MetaLabel}" Text="Units"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectUnits}"/>
+                            <TextBlock Grid.Row="3" Style="{StaticResource MetaLabel}" Text="Analysis Type"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectAnalysisType}"/>
+                            <TextBlock Grid.Row="4" Style="{StaticResource MetaLabel}" Text="Current Stage"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.CurrentStageText}"/>
+                            <TextBlock Grid.Row="5" Style="{StaticResource MetaLabel}" Text="Status"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectStatus}"/>
+                            <TextBlock Grid.Row="6" Style="{StaticResource MetaLabel}" Text="Last Modified"/>
+                            <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.LastModifiedText}"/>
+                            <TextBlock Grid.Row="7" Style="{StaticResource MetaLabel}" Text="Path"/>
+                            <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectPath}"/>
+                        </Grid>
+                        <Grid Grid.Column="1" Margin="16,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Style="{StaticResource MetaLabel}" Text="Nodes"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.NodeCount}"/>
+                            <TextBlock Grid.Row="1" Style="{StaticResource MetaLabel}" Text="Elements"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ElementCount}"/>
+                            <TextBlock Grid.Row="2" Style="{StaticResource MetaLabel}" Text="Points"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.PointCount}"/>
+                            <TextBlock Grid.Row="3" Style="{StaticResource MetaLabel}" Text="Lines"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.LineCount}"/>
+                            <TextBlock Grid.Row="4" Style="{StaticResource MetaLabel}" Text="Surfaces"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.SurfaceCount}"/>
+                            <TextBlock Grid.Row="5" Style="{StaticResource MetaLabel}" Text="Materials"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.MaterialCount}"/>
+                            <TextBlock Grid.Row="6" Style="{StaticResource MetaLabel}" Text="Stages"/>
+                            <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.StageCount}"/>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Information + actions -->
+        <ScrollViewer Grid.Column="6" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10" Margin="0,0,0,8">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionTitle}" Text="PROJECT INFORMATION"/>
+                        <TextBlock Style="{StaticResource MetaLabel}" Text="Project Title"/>
+                        <TextBlock Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectTitle}"/>
+                        <TextBlock Style="{StaticResource MetaLabel}" Text="Author"/>
+                        <TextBlock Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectAuthor}"/>
+                        <TextBlock Style="{StaticResource MetaLabel}" Text="Created"/>
+                        <TextBlock Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectCreatedOn}"/>
+                        <TextBlock Style="{StaticResource MetaLabel}" Text="Units"/>
+                        <TextBlock Style="{StaticResource MetaValue}" Text="{Binding Workspace.FileHome.ProjectUnits}"/>
+                        <Button Style="{StaticResource QuickAction}" Margin="0,8,0,0"
+                                Command="{Binding ProjectSettingsGeneralCommand}" Content="Edit Information..."/>
+                    </StackPanel>
+                </Border>
+                <Border BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10" Margin="0,0,0,8">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionTitle}" Text="QUICK ACTIONS"/>
+                        <Button Style="{StaticResource QuickAction}" Command="{Binding Workspace.CheckModelCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE73E;" Foreground="#FF34D399"/>
+                                <TextBlock Text="Check Model" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource QuickAction}" Command="{Binding MeshVM.DiscretizeCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE80A;"/>
+                                <TextBlock Text="Generate Mesh" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource QuickAction}" Command="{Binding RunFEAnalysisMenuCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE768;"/>
+                                <TextBlock Text="Run Analysis" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource QuickAction}" Command="{Binding NavigateToResultsCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource BackstageGlyph}" Text="&#xE9D2;"/>
+                                <TextBlock Text="View Results" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+                <Border BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1" CornerRadius="3" Padding="10">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionTitle}" Text="RECOVERY FILES"/>
+                        <TextBlock Text="{Binding Workspace.FileHome.RecoveryHint}"
+                                   TextWrapping="Wrap" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,8"/>
+                        <Button Style="{StaticResource QuickAction}"
+                                Command="{Binding Workspace.ShowCapabilityCommand}"
+                                CommandParameter="BackupRecovery"
+                                Content="Open Recovery Manager..."/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

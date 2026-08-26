@@ -1,0 +1,269 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.GeometryPointsTableView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+        <Style x:Key="PointsTableActionButton" TargetType="Button">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="2">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PointsTableInput" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width" Value="56"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style x:Key="PanelCollapseButton" TargetType="Button">
+            <Setter Property="Width" Value="22"/>
+            <Setter Property="Height" Value="22"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PointsCellText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="PointsCellEdit" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ExplorerSelectionBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Padding" Value="4,2"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ExplorerSelectionBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel Visibility="{Binding IsPointsTableExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Border DockPanel.Dock="Top" Padding="8,5">
+            <DockPanel>
+                <Button DockPanel.Dock="Right"
+                        Style="{StaticResource PanelCollapseButton}"
+                        Command="{Binding TogglePointsTableCommand}"
+                        ToolTip="Hide the geometry table">
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                               FontSize="12"
+                               Text="{Binding PointsTableChevronGlyph}"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </Button>
+                <TextBlock Text="{Binding TableTitle}"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource WindowForegroundBrush}"/>
+            </DockPanel>
+        </Border>
+        <Grid>
+            <DockPanel Visibility="{Binding IsPointsTable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel DockPanel.Dock="Top"
+                            Orientation="Horizontal"
+                            Margin="8,0,8,6">
+                    <Button Content="New"
+                            Style="{StaticResource PointsTableActionButton}"
+                            ToolTip="Click the canvas to add a new point"
+                            Command="{Binding Geometry.StartNewPointModeCommand}"
+                            IsEnabled="{Binding Geometry.IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"/>
+                    <Button Content="Edit"
+                            Style="{StaticResource PointsTableActionButton}"
+                            ToolTip="Edit existing geometry vertices"
+                            Command="{Binding Geometry.StartGeometryVerticesEditCommand}"
+                            IsEnabled="{Binding Geometry.IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"/>
+                    <Button Content="Update"
+                            Style="{StaticResource PointsTableActionButton}"
+                            ToolTip="Add a point from the X and Y values"
+                            Command="{Binding Geometry.AddGeometryPointFromInputCommand}"
+                            IsEnabled="{Binding Geometry.IsTunnelCircleDrawingMode, Converter={StaticResource BooleanNegationConverter}}"/>
+                    <TextBlock Text="X:"
+                               VerticalAlignment="Center"
+                               Margin="4,0,4,0"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <TextBox Style="{StaticResource PointsTableInput}"
+                             Margin="0,0,8,0"
+                             Text="{Binding Geometry.GeometryXInput, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Y:"
+                               VerticalAlignment="Center"
+                               Margin="0,0,4,0"
+                               Foreground="{DynamicResource WindowForegroundBrush}"/>
+                    <TextBox Style="{StaticResource PointsTableInput}"
+                             Text="{Binding Geometry.GeometryYInput, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding Geometry.GeometryVertexRows}"
+                          SelectedItem="{Binding SelectedEntity, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          HeadersVisibility="Column"
+                          Background="{DynamicResource PanelBackgroundBrush}"
+                          Foreground="{DynamicResource WindowForegroundBrush}"
+                          RowBackground="{DynamicResource PanelBackgroundBrush}"
+                          AlternatingRowBackground="{DynamicResource PanelBackgroundBrush}"
+                          HorizontalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                          VerticalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                          BorderThickness="0"
+                          GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding StablePointId}" Width="50" IsReadOnly="True"
+                                            ElementStyle="{StaticResource PointsCellText}"/>
+                        <DataGridTextColumn Header="X (m)" Binding="{Binding AxisX, StringFormat={}{0:0.000}}" Width="90"
+                                            ElementStyle="{StaticResource PointsCellText}"
+                                            EditingElementStyle="{StaticResource PointsCellEdit}"/>
+                        <DataGridTextColumn Header="Y (m)" Binding="{Binding AxisY, StringFormat={}{0:0.000}}" Width="90"
+                                            ElementStyle="{StaticResource PointsCellText}"
+                                            EditingElementStyle="{StaticResource PointsCellEdit}"/>
+                        <DataGridTemplateColumn Header="Z (m)" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="0.000" Style="{StaticResource PointsCellText}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Type" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="Control Point" Style="{StaticResource PointsCellText}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Description" Binding="{Binding PointLabel}" Width="*"
+                                            ElementStyle="{StaticResource PointsCellText}"
+                                            EditingElementStyle="{StaticResource PointsCellEdit}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          Visibility="{Binding IsLinesTable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <tabs:GeometryLineSegmentsPanel DataContext="{Binding Geometry}"/>
+            </ScrollViewer>
+            <Grid Visibility="{Binding IsSurfacesTable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <tabs:GeometrySurfaceExcavationPanel DataContext="{Binding Geometry}"
+                                                     CompactWorkspaceMode="True"/>
+            </Grid>
+            <DataGrid ItemsSource="{Binding RegionRows}"
+                      SelectedItem="{Binding SelectedRegionRow, Mode=TwoWay}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      Background="{DynamicResource PanelBackgroundBrush}"
+                      Foreground="{DynamicResource WindowForegroundBrush}"
+                      RowBackground="{DynamicResource PanelBackgroundBrush}"
+                      AlternatingRowBackground="{DynamicResource PanelBackgroundBrush}"
+                      HorizontalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                      VerticalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                      BorderThickness="0"
+                      GridLinesVisibility="Horizontal"
+                      Visibility="{Binding IsRegionsTable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Region" Binding="{Binding RegionDisplay}" Width="80" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="140" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Tag" Binding="{Binding Tag}" Width="100" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Material" Binding="{Binding Material}" Width="140" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Area" Binding="{Binding Area}" Width="90" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Color" Binding="{Binding Color}" Width="*" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid ItemsSource="{Binding BlockRows}"
+                      SelectedItem="{Binding SelectedBlockRow, Mode=TwoWay}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      Background="{DynamicResource PanelBackgroundBrush}"
+                      Foreground="{DynamicResource WindowForegroundBrush}"
+                      RowBackground="{DynamicResource PanelBackgroundBrush}"
+                      AlternatingRowBackground="{DynamicResource PanelBackgroundBrush}"
+                      HorizontalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                      VerticalGridLinesBrush="{DynamicResource ChromeBorderBrush}"
+                      BorderThickness="0"
+                      GridLinesVisibility="Horizontal"
+                      Visibility="{Binding IsBlocksTable, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="140" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Vertices" Binding="{Binding Vertices}" Width="80" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Area" Binding="{Binding Area}" Width="90" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                    <DataGridTextColumn Header="Material" Binding="{Binding Material}" Width="*" IsReadOnly="True"
+                                        ElementStyle="{StaticResource PointsCellText}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </DockPanel>
+</UserControl>

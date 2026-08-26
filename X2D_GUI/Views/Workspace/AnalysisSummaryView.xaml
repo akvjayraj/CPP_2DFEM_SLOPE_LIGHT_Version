@@ -1,0 +1,48 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.AnalysisSummaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <converters:StringToBrushConverter x:Key="StatusBrushConverter"/>
+    </UserControl.Resources>
+    <Border BorderBrush="{DynamicResource ChromeBorderBrush}"
+            BorderThickness="0,1,0,0"
+            Padding="10,8">
+        <StackPanel>
+            <TextBlock Text="Analysis Summary" FontWeight="SemiBold" Margin="0,0,0,8"
+                       Foreground="{DynamicResource WindowForegroundBrush}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Analysis Type"
+                           Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           Text="{Binding Workspace.AnalysisTypeSummary}"
+                           TextWrapping="Wrap" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Current Stage"
+                           Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Text="{Binding Workspace.CurrentStageSummary}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="SRF (Last)"
+                           Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="2" Grid.Column="1"
+                           Text="{Binding Workspace.LastSrfSummary}" Margin="0,0,0,4"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Status"
+                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1"
+                           Text="{Binding Workspace.AnalysisStatusSummary}"
+                           Foreground="{Binding Workspace.AnalysisStatusBrush, Converter={StaticResource StatusBrushConverter}}"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,66 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.AnalysisDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}"/>
+    </UserControl.Resources>
+    <Grid Margin="8,6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.Column="0" Margin="0,0,6,6">
+            <TextBlock DockPanel.Dock="Top" Text="Analysis Settings Summary" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBox Text="{Binding Workspace.SettingsSummaryText, Mode=OneWay}"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto"
+                     FontFamily="Consolas"
+                     FontSize="11"/>
+        </DockPanel>
+
+        <DockPanel Grid.Row="0" Grid.Column="1" Margin="6,0,0,6">
+            <TextBlock DockPanel.Dock="Top" Text="Solver Status" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <Border Background="{DynamicResource ViewportPaperBrush}"
+                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                    BorderThickness="1"
+                    Padding="8">
+                <StackPanel>
+                    <TextBlock Text="{Binding Workspace.SolverTypeLabel, StringFormat=Solver Type: {0}}" Margin="0,0,0,3"/>
+                    <TextBlock Text="{Binding Workspace.SolutionSchemeLabel, StringFormat=Solution Scheme: {0}}" Margin="0,0,0,3"/>
+                    <TextBlock Text="{Binding Workspace.SolverToleranceLabel, StringFormat=Tolerance: {0}}" Margin="0,0,0,3"/>
+                    <TextBlock Text="{Binding Workspace.SolverIterationLabel, StringFormat=Iteration: {0}}" Margin="0,0,0,6"/>
+                    <Grid>
+                        <ProgressBar Height="16"
+                                     Minimum="0" Maximum="100"
+                                     Value="{Binding Workspace.SolverProgressPercent, Mode=OneWay}"
+                                     Foreground="#FF22C55E"
+                                     Background="{DynamicResource PanelBackgroundBrush}"/>
+                        <TextBlock Text="{Binding Workspace.SolverProgressLabel}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   FontSize="11"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </DockPanel>
+
+        <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <TextBlock DockPanel.Dock="Top" Text="Analysis Notes" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBox MinHeight="36"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     Text="{Binding Workspace.Settings.AnalysisNotes, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,62 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.ProjectSettingsGridAxesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="12" Background="#FFF8FAFC">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="X-Axis Minimum:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBox Width="120"
+                     Text="{Binding Project.AxisXMin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, StringFormat=F2}"/>
+            <TextBlock Text="{Binding LengthUnitLabel}" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="#FF475569"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="X-Axis Maximum:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBox Width="120"
+                     Text="{Binding Project.AxisXMax, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, StringFormat=F2}"/>
+            <TextBlock Text="{Binding LengthUnitLabel}" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="#FF475569"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Y-Axis Minimum:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBox Width="120"
+                     Text="{Binding Project.AxisYMin, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, StringFormat=F2}"/>
+            <TextBlock Text="{Binding LengthUnitLabel}" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="#FF475569"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Y-Axis Maximum:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBox Width="120"
+                     Text="{Binding Project.AxisYMax, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, StringFormat=F2}"/>
+            <TextBlock Text="{Binding LengthUnitLabel}" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="#FF475569"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Grid Spacing:" VerticalAlignment="Center" Margin="0,0,8,8"/>
+        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBox Width="120"
+                     Text="{Binding Project.GridSpacingMeters, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, StringFormat=F2}"/>
+            <TextBlock Text="{Binding LengthUnitLabel}" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="#FF475569"/>
+        </StackPanel>
+
+        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                Content="Apply"
+                Command="{Binding ApplyAxisToAllCanvasesCommand}"
+                Width="90"
+                HorizontalAlignment="Left"
+                Margin="0,12,0,0"
+                Padding="12,6"
+                ToolTip="Apply X/Y axis min and max to all canvases (Geometry, Mesh, Boundary Conditions, Load Conditions, Material Properties)."/>
+    </Grid>
+</UserControl>

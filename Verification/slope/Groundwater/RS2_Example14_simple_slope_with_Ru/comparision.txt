@@ -1,0 +1,29 @@
+RS2 Example 14 — Simple Slope with Pore Pressure Defined by Ru Value
+Source: RS2 Slope Stability Verification Part 1, §14
+(Slide2 verification problem #18; Spencer 1969 / Baker 1980)
+
+Geometry (m): (0,0)-(0,40)-(10,40)-(70,10)-(80,10)-(80,0)
+  Crest bench 10 m @ y=40; slope 2H:1V from (10,40) to (70,10); toe bench 10 m @ y=10
+Groundwater: Ru = 0.5 (hydrostatic not used)
+Material: c'=10.8 kPa, phi'=40 deg, gamma=18 kN/m3
+
+Literature factors of safety:
+  APP                       0.81 T6 medium;0.67 T3 medium
+  SSR (RS2)                 0.98
+  Spencer (Slide2)          1.01
+  Baker (1980) Spencer      1.02
+  Spencer (1969)            1.08
+
+App T3 SRF (1470 els, after Ru effective-K0 + gravity u-ramp):
+  Estimated FoS               0.775   (OK to F=0.75, FAIL from F=0.80)
+  vs literature SSR           -21%
+  Pre-fix baseline (total-K0 Ru) was ~0.55 — effective-K0 fix recovered ~0.22.
+  Remaining gap vs 0.98 is consistent with CST T3 gravity-from-zero (K' collapses
+  toward Ka); infinite-slope Ru check ≈0.89. See gui_automation/rs2_example14_ru_gui_run_summary.json.
+
+Notes (2026-07-27) — srf_insitu_mode k0 (v1):
+  AnalysisOptions `! srf_insitu_mode k0` keeps Stage-0 effective-K0 + Ru and applies
+  residual load (gravity − ∫Bᵀσ₀), not Program 6.4 wipe-from-zero. GUI default Auto →
+  k0 for Coupled GW / Ru. Ex14 T3 smoke: F=0.80 OK / F≥0.85 FAIL under k0 residual
+  (~0.825 vs prior gravity-from-zero ~0.775; still short of SSR 0.98 — further lift
+  may need K0/Jaky tuning or v2). Restart GUI to pick up rebuilt T3/T6 exes + FE UI.

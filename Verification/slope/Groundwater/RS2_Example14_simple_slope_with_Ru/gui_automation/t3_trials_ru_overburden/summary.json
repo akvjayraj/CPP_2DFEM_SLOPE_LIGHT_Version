@@ -1,0 +1,42 @@
+[
+  {
+    "F": 0.75,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.2884,
+    "MaxDisp": 0.042,
+    "Sec": 137.4
+  },
+  {
+    "F": 0.85,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.2393,
+    "MaxDisp": 0.0378,
+    "Sec": 108.7
+  },
+  {
+    "F": 0.95,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.3159,
+    "MaxDisp": 0.0443,
+    "Sec": 116.0
+  },
+  {
+    "F": 1.0,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.6512,
+    "MaxDisp": 0.0902,
+    "Sec": 176.0
+  },
+  {
+    "F": 1.05,
+    "Gate": false,
+    "Iters": 1000,
+    "MaxYield": 1.6342,
+    "MaxDisp": 0.0988,
+    "Sec": 179.5
+  }
+]

@@ -1,0 +1,132 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Compile Remove="SmokeTest\**" />
+    <None Remove="SmokeTest\**" />
+    <EmbeddedResource Remove="SmokeTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\scripts\slope_stability_T3_SRF\ex1_homogeneous_slope.dat">
+      <LogicalName>Slope64Ex1HomogeneousSlope.dat</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Mesh\p64_embankment_1bench_reference.png" />
+    <None Include="..\scripts\xfem_client\xfem.py" Link="xfem_client\xfem.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="netDxf" Version="2023.11.10" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
+    <PackageReference Include="QuestPDF" Version="2026.7.0" />
+  </ItemGroup>
+
+  <!-- Mesh generation lives under library/mesh; compile into Backend namespace for the WPF app -->
+  <ItemGroup>
+    <Compile Include="..\library\mesh\dotnet\BowyerWatsonTriangulator.cs" Link="Backend\BowyerWatsonTriangulator.cs" />
+    <Compile Include="..\library\mesh\dotnet\GeomRectTriangleMeshBuilder.cs" Link="Backend\GeomRectTriangleMeshBuilder.cs" />
+    <Compile Include="..\library\mesh\dotnet\GradedSurfaceQuadGenerator.cs" Link="Backend\GradedSurfaceQuadGenerator.cs" />
+    <Compile Include="..\library\mesh\dotnet\GradedSurfaceMeshGenerator.cs" Link="Backend\GradedSurfaceMeshGenerator.cs" />
+    <Compile Include="..\library\mesh\dotnet\MeshSizingField.cs" Link="Backend\MeshSizingField.cs" />
+    <Compile Include="..\library\mesh\dotnet\RegionMeshClassifier.cs" Link="Backend\RegionMeshClassifier.cs" />
+    <Compile Include="..\library\mesh\dotnet\HybridMeshResult.cs" Link="Backend\HybridMeshResult.cs" />
+    <Compile Include="..\library\mesh\dotnet\HybridMeshQuality.cs" Link="Backend\HybridMeshQuality.cs" />
+    <Compile Include="..\library\mesh\dotnet\TriangleToQuadRecombiner.cs" Link="Backend\TriangleToQuadRecombiner.cs" />
+    <Compile Include="..\library\mesh\dotnet\HybridMeshDriver.cs" Link="Backend\HybridMeshDriver.cs" />
+    <Compile Include="..\library\mesh\dotnet\Mesh2dNative.cs" Link="Backend\Mesh2dNative.cs" />
+    <Compile Include="..\library\mesh\dotnet\PolygonEarTriangulation.cs" Link="Backend\PolygonEarTriangulation.cs" />
+    <Compile Include="..\library\mesh\dotnet\SurfaceMeshHierarchy.cs" Link="Backend\SurfaceMeshHierarchy.cs" />
+    <Compile Include="..\library\mesh\dotnet\T6Upgrader.cs" Link="Backend\T6Upgrader.cs" />
+    <Compile Include="..\library\mesh\dotnet\Q8Upgrader.cs" Link="Backend\Q8Upgrader.cs" />
+    <Compile Include="..\library\mesh\dotnet\TunnelMeshGenerator.cs" Link="Backend\TunnelMeshGenerator.cs" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>GeotechSlopeApp</RootNamespace>
+    <AssemblyName>GeotechSlopeApp</AssemblyName>
+    <ApplicationIcon />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Help\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MeshBcImportSmokeTest" />
+    <InternalsVisibleTo Include="AttachedSlopeUiAutomation" />
+    <InternalsVisibleTo Include="GeotechSlopeApp.Tests.Core" />
+    <InternalsVisibleTo Include="GeotechSlopeApp.Tests.ViewModels" />
+    <InternalsVisibleTo Include="GeotechSlopeApp.Tests.Integration" />
+  </ItemGroup>
+
+  <!-- Locked-license toggle: build with `-p:LockedLicense=true` (typically combined with -c Release)
+       to compile in the startup credential gate + expiry check (see Backend/LicenseGate.cs). -->
+  <PropertyGroup Condition="'$(LockedLicense)' == 'true'">
+    <DefineConstants>$(DefineConstants);LOCKED_LICENSE</DefineConstants>
+    <AssemblyTitle>GeotechSlopeApp (Locked-License Build)</AssemblyTitle>
+  </PropertyGroup>
+
+  <!-- Copy FEM executables from C++ CMake build so Run p41 / FE Analysis (p51) work without setting path -->
+  <Target Name="CopyCppExecutables" AfterTargets="Build">
+    <PropertyGroup>
+      <CppBuildDir Condition="'$(CppBuildDir)' == ''">$(MSBuildThisFileDirectory)..\build\$(Configuration)</CppBuildDir>
+      <CppBuildDir Condition="!Exists('$(CppBuildDir)')">$(MSBuildThisFileDirectory)..\build\Debug</CppBuildDir>
+    </PropertyGroup>
+    <Copy SourceFiles="$(CppBuildDir)\p41.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p41.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p51.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p51.exe')" />
+    <!-- p610_t3 (elasto-plastic T3 excavation, Script Editor wizard) -->
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3.exe')" />
+    <!-- p610_t3_elastic (linear-elastic T3, far-field traction BCs; routes from Material Properties Elastic+Isotropic) -->
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_elastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_elastic.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_elastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_elastic.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_elastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_elastic.exe')" />
+    <!-- p610_t3_elastoplastic and criterion/material variants -->
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_elastoplastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_elastoplastic.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_elastoplastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_elastoplastic.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_elastoplastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_elastoplastic.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_mohr_coulomb.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_mohr_coulomb.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_mohr_coulomb.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_mohr_coulomb.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_mohr_coulomb.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_mohr_coulomb.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_hoek_brown.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_hoek_brown.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_hoek_brown.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_hoek_brown.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_hoek_brown.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_hoek_brown.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_drucker_prager.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_drucker_prager.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_drucker_prager.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_drucker_prager.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_drucker_prager.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_drucker_prager.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_generalized_hoek_brown.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_generalized_hoek_brown.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_generalized_hoek_brown.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_generalized_hoek_brown.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_generalized_hoek_brown.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_generalized_hoek_brown.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_plastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_plastic.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_plastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_plastic.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_plastic.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_plastic.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\p610_t3_nonlinear.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\p610_t3_nonlinear.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_nonlinear.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\p610_t3_nonlinear.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\p610_t3_nonlinear.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\p610_t3_nonlinear.exe')" />
+    <!-- Unified solver (VS CMake often places exe under build/Release or build/Debug) -->
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\fem_cpp.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\fem_cpp.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\fem_cpp.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\fem_cpp.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\fem_cpp.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\fem_cpp.exe')" />
+    <!-- Keep library/solver/Q4-Q8 SRF fallback in sync with the newest CMake build -->
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\fem_cpp.exe" DestinationFolder="$(MSBuildThisFileDirectory)..\library\solver\Q4-Q8 SRF" SkipUnchangedFiles="false" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\fem_cpp.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\fem_cpp.exe" DestinationFolder="$(MSBuildThisFileDirectory)..\library\solver\Q4-Q8 SRF" SkipUnchangedFiles="false" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\fem_cpp.exe')" />
+    <Copy SourceFiles="$(CppBuildDir)\fem_cpp.exe" DestinationFolder="$(MSBuildThisFileDirectory)..\library\solver\Q4-Q8 SRF" SkipUnchangedFiles="false" Condition="Exists('$(CppBuildDir)\fem_cpp.exe')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Release\mesh2d_native.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Release\mesh2d_native.dll')" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\build\Debug\mesh2d_native.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(MSBuildThisFileDirectory)..\build\Debug\mesh2d_native.dll')" />
+    <Copy SourceFiles="$(CppBuildDir)\mesh2d_native.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(CppBuildDir)\mesh2d_native.dll')" />
+  </Target>
+
+</Project>

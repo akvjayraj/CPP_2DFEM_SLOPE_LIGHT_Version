@@ -1,0 +1,5 @@
+"Folder","Case","MeshType","FailureCriterion","MaterialType","SolverExecutable","DatExists","JsonExists","ResExists","NodeCount","ElementCount","StageCount","Sxx","Syy","Txy","Szz","Verdict","Notes","Commit","GeneratedAt"
+"peck_mair_settlement","peck_mair_t3","T3","ElastoPlastic","Isotropic","p610_t3_elastoplastic","True","True","True","3","1","2","-50","-50","0","-25","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"peck_mair_settlement","peck_mair_t6","T6","ElastoPlastic","Isotropic","p610_t3_elastoplastic","True","True","True","6","1","2","-50","-50","16.6666666666666","-25","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"peck_mair_settlement","peck_mair_q4","Q4","ElastoPlastic","Isotropic","p610_t3_elastoplastic","True","True","True","4","1","2","-50","-2.66453525910038E-15","-2.03287907341032E-15","-12.5","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"peck_mair_settlement","peck_mair_q8","Q8","ElastoPlastic","Isotropic","p610_t3_elastoplastic","True","True","True","8","1","2","-23.7760416666667","-1.22395833333333","3.28125","-6.25","PASS_WITH_INTERPRETATION","ok","4a6b63d","2026-05-05 15:51:36 +05:30"

@@ -1,0 +1,117 @@
+{
+  "MeshType": "T3",
+  "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Groundwater\\RS2_Example16_layered_slope_water_table_weak_seam\\rs2_example16_layered_slope_water_table_weak_seam.xfem",
+  "Program": "slope_stability_T3_SRF",
+  "BrandedProgram": "slope_stability_T3_SRF",
+  "SolverCore": "CoreA",
+  "DeckFormat": "P610",
+  "ScriptSyncedFromMesh": true,
+  "GroundwaterEnabled": true,
+  "NonHorizontalLayerCutCount": 3,
+  "EstimatedFoS": 0.95,
+  "DeviationFromLiterature": -0.07000000000000006,
+  "DeviationPercent": -6.8627450980392215,
+  "StatusMessage": "Critical FoS ~ 0.950 (yield-gate bracket F in [0.9, 1], gate=25)",
+  "FosNote": "Re-bracketed with max_yield_ratio <= 25 (false-stable iters rejected).",
+  "ArtifactSummary": "Yield-gate rebracket from gui_automation/t3 trial JSON meta.",
+  "MeshRowCount": 14725,
+  "NodeCount": 8618,
+  "ElementCount": 14725,
+  "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Groundwater\\RS2_Example16_layered_slope_water_table_weak_seam\\gui_automation\\t3",
+  "TrialRows": [
+    {
+      "Srf": 0.017341529915832612,
+      "MaxDisplacement": 0.03440188528450386,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 0.7373540692024892
+    },
+    {
+      "Srf": 0.02601229487374892,
+      "MaxDisplacement": 0.06880371384895202,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 1.0000000000000002
+    },
+    {
+      "Srf": 0.03901844231062338,
+      "MaxDisplacement": 0.06880371389768747,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 1.0000000000000002
+    },
+    {
+      "Srf": 0.05852766346593507,
+      "MaxDisplacement": 0.06880371401411338,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 0.9999999999999998
+    },
+    {
+      "Srf": 0.0877914951989026,
+      "MaxDisplacement": 0.06880371426387238,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 0.9999999999999998
+    },
+    {
+      "Srf": 0.13168724279835392,
+      "MaxDisplacement": 0.0688037148306905,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 0.9999999999999998
+    },
+    {
+      "Srf": 0.19753086419753085,
+      "MaxDisplacement": 0.06880371604486828,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 1
+    },
+    {
+      "Srf": 0.2962962962962963,
+      "MaxDisplacement": 0.06880371846736386,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 1.0000000000000002
+    },
+    {
+      "Srf": 0.4444444444444444,
+      "MaxDisplacement": 0.03440194504686979,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 0.8715241884420004
+    },
+    {
+      "Srf": 0.6666666666666666,
+      "MaxDisplacement": 0.23373352655346827,
+      "Iterations": 1000,
+      "Converged": false,
+      "MaxYieldRatio": 90.88734505173475
+    },
+    {
+      "Srf": 0.9,
+      "MaxDisplacement": 0.2536031197730802,
+      "Iterations": 116,
+      "Converged": true,
+      "MaxYieldRatio": 8.19694554254471
+    },
+    {
+      "Srf": 1,
+      "MaxDisplacement": 0.27963430021788,
+      "Iterations": 134,
+      "Converged": false,
+      "MaxYieldRatio": 47.89753614899769
+    },
+    {
+      "Srf": 1.1,
+      "MaxDisplacement": 0.31153874814892507,
+      "Iterations": 171,
+      "Converged": false,
+      "MaxYieldRatio": 102.92414180406787
+    }
+  ],
+  "YieldGate": 25,
+  "BracketLo": 0.9,
+  "BracketHi": 1
+}

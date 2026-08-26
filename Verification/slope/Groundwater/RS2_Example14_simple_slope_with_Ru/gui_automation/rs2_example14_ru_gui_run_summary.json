@@ -1,0 +1,82 @@
+{
+  "GeneratedAt": "2026-07-20T01:44:09.6280468\u002B05:30",
+  "LiteratureFoS": 0.98,
+  "EstimatedFoS": 0.775,
+  "DeviationPercent": -20.918367346938773,
+  "NodeCount": 877,
+  "ElementCount": 1470,
+  "Trials": [
+    {
+      "F": 0.55,
+      "GateConverged": true,
+      "Iterations": 73,
+      "MaxDisplacement": 0.17430424971013028,
+      "MaxYieldRatio": 1.0001169099363643,
+      "AllIncrementsConverged": true,
+      "Seconds": 112.0913379
+    },
+    {
+      "F": 0.7,
+      "GateConverged": true,
+      "Iterations": 95,
+      "MaxDisplacement": 0.19172291754138307,
+      "MaxYieldRatio": 1.0000388453975975,
+      "AllIncrementsConverged": true,
+      "Seconds": 125.596362
+    },
+    {
+      "F": 0.75,
+      "GateConverged": true,
+      "Iterations": 143,
+      "MaxDisplacement": 0.20066882712272255,
+      "MaxYieldRatio": 1.0000589663406965,
+      "AllIncrementsConverged": true,
+      "Seconds": 136.3024379
+    },
+    {
+      "F": 0.8,
+      "GateConverged": false,
+      "Iterations": 1000,
+      "MaxDisplacement": 0.20696307483527165,
+      "MaxYieldRatio": 1.0165392893510845,
+      "AllIncrementsConverged": false,
+      "Seconds": 182.1144934
+    },
+    {
+      "F": 0.85,
+      "GateConverged": false,
+      "Iterations": 1000,
+      "MaxDisplacement": 0.19737982040184449,
+      "MaxYieldRatio": 1.0665785078778611,
+      "AllIncrementsConverged": false,
+      "Seconds": 167.0306507
+    },
+    {
+      "F": 0.9,
+      "GateConverged": false,
+      "Iterations": 1000,
+      "MaxDisplacement": 0.19699434465473953,
+      "MaxYieldRatio": 1.0998190137095831,
+      "AllIncrementsConverged": false,
+      "Seconds": 164.671026
+    },
+    {
+      "F": 0.95,
+      "GateConverged": false,
+      "Iterations": 1000,
+      "MaxDisplacement": 0.18778825626210788,
+      "MaxYieldRatio": 1.1509990119978908,
+      "AllIncrementsConverged": false,
+      "Seconds": 211.7575178
+    },
+    {
+      "F": 1,
+      "GateConverged": false,
+      "Iterations": 1000,
+      "MaxDisplacement": 0.17892545318856534,
+      "MaxYieldRatio": 1.2026205843768514,
+      "AllIncrementsConverged": false,
+      "Seconds": 185.2415505
+    }
+  ]
+}

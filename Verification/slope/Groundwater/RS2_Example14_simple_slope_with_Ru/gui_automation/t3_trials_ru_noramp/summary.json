@@ -1,0 +1,56 @@
+[
+  {
+    "F": 0.75,
+    "Gate": false,
+    "AllInc": false,
+    "Iters": 1000,
+    "MaxYield": 1.0000000000000024,
+    "MaxDisp": 0.1929399645821728,
+    "Sec": 297.6
+  },
+  {
+    "F": 0.8,
+    "Gate": false,
+    "AllInc": false,
+    "Iters": 1000,
+    "MaxYield": 1.0000000000000004,
+    "MaxDisp": 0.17082148040947281,
+    "Sec": 219.9
+  },
+  {
+    "F": 0.85,
+    "Gate": false,
+    "AllInc": false,
+    "Iters": 1000,
+    "MaxYield": 1.000000000000002,
+    "MaxDisp": 0.15501454067326048,
+    "Sec": 171.4
+  },
+  {
+    "F": 0.9,
+    "Gate": false,
+    "AllInc": false,
+    "Iters": 1000,
+    "MaxYield": 1.0000000000000038,
+    "MaxDisp": 0.14055482456348725,
+    "Sec": 153.0
+  },
+  {
+    "F": 0.95,
+    "Gate": false,
+    "AllInc": false,
+    "Iters": 1000,
+    "MaxYield": 1.0000000000017695,
+    "MaxDisp": 0.14603451457203548,
+    "Sec": 179.5
+  },
+  {
+    "F": 1.0,
+    "Gate": false,
+    "AllInc": false,
+    "Iters": 1000,
+    "MaxYield": 1.000000001642271,
+    "MaxDisp": 0.13633046956799186,
+    "Sec": 197.3
+  }
+]

@@ -1,0 +1,517 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Tabs.ResultsVisualizationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tabs="clr-namespace:GeotechSlopeApp.Views.Tabs"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             xmlns:oxy="http://oxyplot.org/wpf">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <converters:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+        <converters:MaxIncrementalDisplacementConverter x:Key="MaxIncrementalDisplacementConverter"/>
+    </UserControl.Resources>
+    <Grid Margin="12,2,12,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0"
+                    SelectedIndex="{Binding ResultsSubTabIndex, Mode=TwoWay}">
+            <TabControl.Resources>
+                <Style TargetType="TabPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DataContext.IsResultsWorkspace, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Height" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TabControl.Resources>
+            <!-- FE Analysis Results Tab -->
+            <TabItem Header="FE Analysis Results">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                        <TextBlock Text="Finite Element Analysis Results"
+                                   FontSize="20"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="{Binding FeStatusMessage}"
+                                   Margin="0,4,0,0"
+                                   Foreground="Gray"/>
+                    </StackPanel>
+                    
+                    <!-- Staged Excavation Analysis Controls -->
+                    <GroupBox Grid.Row="1" Header="Staged Excavation Analysis" 
+                              Margin="0,0,0,12"
+                              Visibility="{Binding HasStagedExcavationResults, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="Select Stage:" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,4"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" 
+                                      ItemsSource="{Binding AvailableStages}"
+                                      SelectedItem="{Binding SelectedStageInfo, Mode=TwoWay}"
+                                      Margin="8,4">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DisplayName}" FontWeight="Bold" Margin="0,0,8,0"/>
+                                            <TextBlock Text="{Binding Summary}" Foreground="Gray" FontSize="11"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                       Text="Stage Summary:"
+                                       FontWeight="SemiBold"
+                                       Margin="0,8,0,4"/>
+                            
+                            <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                          MaxHeight="150"
+                                          VerticalScrollBarVisibility="Auto"
+                                          HorizontalScrollBarVisibility="Auto">
+                                <TextBlock Text="{Binding StageSummary}"
+                                           TextWrapping="Wrap"
+                                           FontFamily="Consolas"
+                                           FontSize="11"
+                                           Margin="0,0,0,4"/>
+                            </ScrollViewer>
+                        </Grid>
+                    </GroupBox>
+                    
+                    <!-- Incremental Changes (shown when a stage is selected) -->
+                    <GroupBox Grid.Row="2" Header="Incremental Changes from Previous Stage" 
+                              Margin="0,0,0,12"
+                              Visibility="{Binding SelectedStageInfo, Converter={StaticResource NullToVisibilityConverter}}">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" 
+                                       TextWrapping="Wrap"
+                                       Margin="0,4">
+                                <Run Text="Max Incremental Displacement: "/>
+                                <Run Text="{Binding SelectedStageInfo.StageResult.IncrementalDisplacements, Converter={StaticResource MaxIncrementalDisplacementConverter}}" FontWeight="Bold"/>
+                            </TextBlock>
+                            
+                            <DataGrid Grid.Row="1"
+                                      ItemsSource="{Binding SelectedStageInfo.StageResult.IncrementalStresses}"
+                                      AutoGenerateColumns="False"
+                                      HeadersVisibility="Column"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      IsReadOnly="True"
+                                      MaxHeight="150"
+                                      Margin="0,8,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Element ID" Binding="{Binding ElementId}" Width="80"/>
+                                    <DataGridTextColumn Header="Δσₓₓ" Binding="{Binding StressXX, StringFormat=F2}" Width="100"/>
+                                    <DataGridTextColumn Header="Δσᵧᵧ" Binding="{Binding StressYY, StringFormat=F2}" Width="100"/>
+                                    <DataGridTextColumn Header="Δτₓᵧ" Binding="{Binding StressXY, StringFormat=F2}" Width="100"/>
+                                    <DataGridTextColumn Header="Δσ₁" Binding="{Binding PrincipalStressMax, StringFormat=F2}" Width="100"/>
+                                    <DataGridTextColumn Header="Δσ₂" Binding="{Binding PrincipalStressMin, StringFormat=F2}" Width="100"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </GroupBox>
+                    
+                    <!-- Pseudo-static seismic loads -->
+                    <GroupBox Grid.Row="3" Header="Pseudo-static Seismic Loads" Margin="0,0,0,12"
+                              Visibility="{Binding HasPseudoStaticResults, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel Margin="8">
+                            <TextBlock TextWrapping="Wrap" Margin="0,0,0,6">
+                                <Run Text="k_h = "/>
+                                <Run Text="{Binding PseudoStaticKh, Mode=OneWay, StringFormat=F4}" FontWeight="SemiBold"/>
+                                <Run Text="   k_v = "/>
+                                <Run Text="{Binding PseudoStaticKv, Mode=OneWay, StringFormat=F4}" FontWeight="SemiBold"/>
+                                <Run Text="   |F|_max = "/>
+                                <Run Text="{Binding PseudoStaticMaxForceMagnitude, Mode=OneWay, StringFormat=E3}" FontWeight="SemiBold"/>
+                            </TextBlock>
+                            <TextBlock Text="{Binding PseudoStaticConventionNote}"
+                                       Foreground="Gray" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                            <DataGrid ItemsSource="{Binding FePseudoStaticNodalForces}"
+                                      AutoGenerateColumns="False"
+                                      HeadersVisibility="Column"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      IsReadOnly="True"
+                                      MaxHeight="180">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Node ID" Binding="{Binding NodeId}" Width="70"/>
+                                    <DataGridTextColumn Header="X" Binding="{Binding X, StringFormat=F2}" Width="80"/>
+                                    <DataGridTextColumn Header="Y" Binding="{Binding Y, StringFormat=F2}" Width="80"/>
+                                    <DataGridTextColumn Header="Fx (ps)" Binding="{Binding Fx, StringFormat=E3}" Width="110"/>
+                                    <DataGridTextColumn Header="Fy (ps)" Binding="{Binding Fy, StringFormat=E3}" Width="110"/>
+                                    <DataGridTextColumn Header="|F|" Binding="{Binding Magnitude, StringFormat=E3}" Width="90"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </GroupBox>
+                    
+                    <!-- Nodal Displacements -->
+                    <GroupBox Grid.Row="4" Header="Nodal Displacements" Margin="0,0,0,12">
+                        <DataGrid ItemsSource="{Binding FeNodalDisplacements}"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  MaxHeight="200">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Node ID" Binding="{Binding NodeId}" Width="80"/>
+                                <DataGridTextColumn Header="X Coordinate" Binding="{Binding X, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="Y Coordinate" Binding="{Binding Y, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="Displacement X (u)" Binding="{Binding U, StringFormat=F6}" Width="120"/>
+                                <DataGridTextColumn Header="Displacement Y (v)" Binding="{Binding V, StringFormat=F6}" Width="120"/>
+                                <DataGridTextColumn Header="Magnitude" Binding="{Binding DisplacementMagnitude, StringFormat=F6}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                    
+                    <!-- Element Stresses -->
+                    <GroupBox Grid.Row="5" Header="Element Stresses">
+                        <DataGrid ItemsSource="{Binding FeElementStresses}"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Element ID" Binding="{Binding ElementId}" Width="80"/>
+                                <DataGridTextColumn Header="σₓₓ" Binding="{Binding StressXX, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="σᵧᵧ" Binding="{Binding StressYY, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="τₓᵧ" Binding="{Binding StressXY, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="σ₁ (Max)" Binding="{Binding PrincipalStressMax, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="σ₂ (Min)" Binding="{Binding PrincipalStressMin, StringFormat=F2}" Width="100"/>
+                                <DataGridTextColumn Header="Von Mises" Binding="{Binding VonMisesStress, StringFormat=F2}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            
+            <!-- FE Visualization Tab -->
+            <TabItem Header="Visualization">
+                <tabs:FEContourVisualizationView DataContext="{Binding}"/>
+            </TabItem>
+            
+            <!-- Force-Displacement Curve Tab -->
+            <TabItem Header="Force-Displacement">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Transient solver output settings (editable when Transient p84/p88 is selected) -->
+                    <GroupBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                              Header="Transient output"
+                              Margin="0,0,0,12"
+                              Visibility="{Binding ShowTransientOutputSettings, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Monitor node" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding TransientSettings.MonitorNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,16,0"
+                                     ToolTip="Node for time-history output (nres)."/>
+                            <TextBlock Grid.Column="2" Text="Contour step" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="3"
+                                     Text="{Binding TransientSettings.ContourStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,16,0"
+                                     ToolTip="Time-step index for contour/spatial dump (ntime)."/>
+                            <TextBlock Grid.Column="4" Text="Contour intervals" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="5"
+                                     Text="{Binding TransientSettings.ContourIntervals, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     VerticalAlignment="Center"
+                                     ToolTip="Contour intervals (nci)."/>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Transient consolidation time history -->
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                          Visibility="{Binding ShowTransientForceDisplacementPanel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                            <TextBlock Text="Transient consolidation — time history"
+                                       FontSize="16"
+                                       FontWeight="Bold"/>
+                            <TextBlock Text="Probe any node and parameter from the saved time frames. Contours stay on the Visualization tab."
+                                       Margin="0,4,0,0"
+                                       Foreground="Gray"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <GroupBox Grid.Row="1" Header="Probe settings" Margin="0,0,0,10">
+                            <Grid Margin="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="260"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Node ID:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding TransientPlotNodeId, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,16,0"
+                                         ToolTip="Node number to plot (1-based). Curve updates from saved frames — no re-run."/>
+                                <TextBlock Grid.Column="2" Text="Parameter:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ComboBox Grid.Column="3"
+                                          ItemsSource="{Binding AvailableTransientPlotQuantities}"
+                                          SelectedItem="{Binding SelectedTransientPlotQuantity, Mode=TwoWay}"
+                                          VerticalAlignment="Center"
+                                          ToolTip="Y-axis quantity for the time-history chart"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <Grid Grid.Row="2" Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Content="⏮" Width="34" Margin="0,0,4,0"
+                                        Command="{Binding JumpTransientToStartCommand}" ToolTip="Jump to t = 0"/>
+                                <Button Content="◀" Width="34" Margin="0,0,4,0"
+                                        Command="{Binding StepTransientBackwardCommand}" ToolTip="Previous time frame"/>
+                                <Button Content="▶" Width="40" Margin="0,0,4,0"
+                                        Command="{Binding PlayTransientCommand}" ToolTip="Play time animation"
+                                        Visibility="{Binding IsTransientPlaying, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"/>
+                                <Button Content="❚❚" Width="40" Margin="0,0,4,0"
+                                        Command="{Binding PauseTransientCommand}" ToolTip="Pause animation"
+                                        Visibility="{Binding IsTransientPlaying, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <Button Content="▶|" Width="34" Margin="0,0,4,0"
+                                        Command="{Binding StepTransientForwardCommand}" ToolTip="Next time frame"/>
+                                <Button Content="⏭" Width="34"
+                                        Command="{Binding JumpTransientToEndCommand}" ToolTip="Jump to final time"/>
+                            </StackPanel>
+                            <Slider Grid.Column="1"
+                                    Minimum="0"
+                                    Maximum="{Binding TransientTimeIndexMax}"
+                                    Value="{Binding TransientTimeIndex, Mode=TwoWay}"
+                                    IsSnapToTickEnabled="True"
+                                    TickFrequency="1"
+                                    VerticalAlignment="Center"
+                                    Margin="12,0"/>
+                            <TextBlock Grid.Column="2"
+                                       Text="{Binding CurrentTransientTimeLabel}"
+                                       VerticalAlignment="Center"
+                                       FontFamily="Consolas"
+                                       FontSize="12"
+                                       Foreground="#FF334155"/>
+                        </Grid>
+
+                        <Grid Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                       Text="{Binding TransientPlotStatus}"
+                                       Foreground="#FFB45309"
+                                       FontSize="11"
+                                       TextWrapping="Wrap"
+                                       Margin="0,0,0,6"
+                                       Visibility="{Binding TransientPlotStatus, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                            <Border Grid.Row="1"
+                                    BorderBrush="#FFCBD5E1"
+                                    BorderThickness="1"
+                                    Background="#FFF8FAFC"
+                                    Visibility="{Binding HasTransientTimeHistoryPlot, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <oxy:PlotView Model="{Binding TransientTimeHistoryPlotModel}"
+                                              Background="Transparent"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
+
+                    <!-- SRF slope stability (p64 multi-SRF) -->
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                Margin="0,0,0,12"
+                                Visibility="{Binding ShowSrfForceDisplacementPanel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="Strength Reduction — SRF vs Displacement"
+                                   FontSize="16"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ForceDisplacementStatus}"
+                                   Margin="0,4,0,0"
+                                   Foreground="Gray"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding EstimatedSrfFoSText}"
+                                   Margin="0,6,0,0"
+                                   FontWeight="SemiBold"
+                                   Visibility="{Binding EstimatedSrfFoS, Converter={StaticResource NullToVisibilityConverter}}"/>
+                        <TextBlock Text="{Binding SrfFoSNote}"
+                                   Margin="0,2,0,0"
+                                   Foreground="Gray"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding NewmarkSummaryText}"
+                                   Margin="0,8,0,0"
+                                   Foreground="#FF1E3A8A"
+                                   FontSize="12"
+                                   TextWrapping="Wrap"
+                                   Visibility="{Binding HasNewmarkResult, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </StackPanel>
+
+                    <!-- Elastic foundation controls -->
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                Margin="0,0,0,12"
+                                Visibility="{Binding ShowElasticForceDisplacementControls, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="Force on Elastic Foundation"
+                                   FontSize="16"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ForceDisplacementStatus}"
+                                   Margin="0,4,0,0"
+                                   Foreground="Gray"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <GroupBox Grid.Row="2" Grid.Column="0"
+                              Header="SRF trial summary"
+                              Margin="0,0,12,12"
+                              Visibility="{Binding ShowSrfForceDisplacementPanel, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <DataGrid ItemsSource="{Binding SrfTrialRows}"
+                                  AutoGenerateColumns="False"
+                                  ColumnWidth="Auto"
+                                  IsReadOnly="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  CanUserReorderColumns="False"
+                                  CanUserResizeColumns="True"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  Margin="4">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="SRF"
+                                                    Binding="{Binding Srf, StringFormat=F4}"
+                                                    MinWidth="64"/>
+                                <DataGridTextColumn Header="Max |u| at convergence"
+                                                    Binding="{Binding MaxDisplacement, StringFormat=E4}"
+                                                    MinWidth="120"/>
+                                <DataGridTextColumn Header="Iterations"
+                                                    Binding="{Binding Iterations}"
+                                                    MinWidth="72"/>
+                                <DataGridTextColumn Header="Status"
+                                                    Binding="{Binding Status}"
+                                                    MinWidth="96"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+
+                    <!-- SRF vs d_max plot, placed to the right of the SRF trial summary grid -->
+                    <oxy:PlotView Grid.Row="2" Grid.Column="1"
+                                  Model="{Binding SrfConvergencePlotModel}"
+                                  MinWidth="360"
+                                  Margin="0,0,0,12"
+                                  Visibility="{Binding ShowSrfForceDisplacementPanel, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                          Visibility="{Binding ShowElasticForceDisplacementControls, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Grid.Row="0"
+                                  Header="Node Selection"
+                                  Margin="0,0,0,12">
+                            <Grid Margin="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Node ID:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding ForceDisplacementNodeId, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,16,0"
+                                         ToolTip="User-defined node number where point load is applied."/>
+
+                                <TextBlock Grid.Column="2" Text="Max Force (kN):" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="3"
+                                         Text="{Binding ForceDisplacementMaxForceKN, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,16,0"
+                                         ToolTip="Optional. Leave 0 to use point load magnitude from Load Conditions."/>
+
+                                <TextBlock Grid.Column="4" Text="Steps:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="5"
+                                         Text="{Binding ForceDisplacementNumSteps, UpdateSourceTrigger=PropertyChanged}"
+                                         VerticalAlignment="Center"
+                                         Margin="0,0,16,0"
+                                         ToolTip="Number of load increments (e.g. 11 for 0, 10, 20, ..., 100 kN)"/>
+
+                                <Button Grid.Column="7"
+                                        Content="Generate Curve"
+                                        Command="{Binding GenerateForceDisplacementCurveCommand}"
+                                        Padding="12,6"
+                                        ToolTip="Run analysis at incremental loads and plot Force (kN) vs Vertical displacement (mm)"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <oxy:PlotView Grid.Row="1"
+                                      Model="{Binding ElasticForceDisplacementPlotModel}"
+                                      Margin="0,0,0,12"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

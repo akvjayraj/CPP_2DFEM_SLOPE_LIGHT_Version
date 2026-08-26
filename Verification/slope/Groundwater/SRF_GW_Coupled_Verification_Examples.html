@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SRF + Groundwater Coupled Verification Examples</title>
+<style>
+  @page { size: A4; margin: 16mm 14mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 10.5pt;
+    line-height: 1.35;
+    margin: 0;
+  }
+  h1 {
+    font-size: 18pt;
+    margin: 0 0 4pt;
+    color: #0b3d5c;
+    border-bottom: 2.5px solid #0b3d5c;
+    padding-bottom: 6pt;
+  }
+  .subtitle {
+    color: #444;
+    font-size: 10pt;
+    margin: 0 0 14pt;
+  }
+  h2 {
+    font-size: 12.5pt;
+    color: #0b3d5c;
+    margin: 16pt 0 6pt;
+    border-bottom: 1px solid #c5d4de;
+    padding-bottom: 3pt;
+  }
+  h3 {
+    font-size: 11pt;
+    color: #1e4d6b;
+    margin: 12pt 0 4pt;
+  }
+  p, li { margin: 3pt 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6pt 0 10pt;
+    font-size: 9.5pt;
+  }
+  th, td {
+    border: 1px solid #b8c7d1;
+    padding: 4pt 5pt;
+    vertical-align: top;
+    text-align: left;
+  }
+  th {
+    background: #0b3d5c;
+    color: #fff;
+    font-weight: 600;
+  }
+  tr:nth-child(even) td { background: #f3f7fa; }
+  .tag {
+    display: inline-block;
+    background: #e6f0f6;
+    color: #0b3d5c;
+    border: 1px solid #b8c7d1;
+    border-radius: 3px;
+    padding: 0 4pt;
+    font-size: 8.5pt;
+    font-weight: 600;
+  }
+  .note {
+    background: #f7fafc;
+    border-left: 3px solid #0b3d5c;
+    padding: 6pt 8pt;
+    margin: 8pt 0;
+    font-size: 9.5pt;
+  }
+  .footer {
+    margin-top: 18pt;
+    padding-top: 6pt;
+    border-top: 1px solid #c5d4de;
+    font-size: 8.5pt;
+    color: #666;
+  }
+  ul.compact { margin: 2pt 0 8pt 16pt; padding: 0; }
+  ul.compact li { margin: 1pt 0; }
+  .col2 { columns: 2; column-gap: 18pt; }
+</style>
+</head>
+<body>
+
+<h1>SRF + Groundwater Coupled Verification Examples</h1>
+<p class="subtitle">
+  CPP_2DFEM_SLOPE / X2D — Strength Reduction Factor (SRF/SSR) with groundwater coupling<br/>
+  Sources: RS2 Parts 1–4 and Slide2 Slope Stability Verification Manuals · Generated 26 Jul 2026
+</p>
+
+<div class="note">
+  This list covers verification problems that couple shear-strength reduction (FoS search) with
+  groundwater / pore-pressure effects (water table, Ru, pore-pressure grids, FE seepage,
+  piezometric lines, ponded / submerged water, and related cases).
+</div>
+
+<h2>1. Implemented in the app</h2>
+<p>Folder: <code>Verification/slope/Groundwater/</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th>Source</th>
+      <th>GW method</th>
+      <th>Lit. SSR FoS</th>
+      <th>App FoS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>12</strong></td>
+      <td>Simple slope with water table</td>
+      <td>RS2 Part 1 / Slide #16</td>
+      <td>Water table (hydrostatic)</td>
+      <td>1.09</td>
+      <td>~1.14–1.19</td>
+    </tr>
+    <tr>
+      <td><strong>14</strong></td>
+      <td>Simple slope with Ru</td>
+      <td>RS2 Part 1 / Slide #18</td>
+      <td>Ru = 0.5</td>
+      <td>0.98</td>
+      <td>~0.775 (T3 gap)</td>
+    </tr>
+    <tr>
+      <td><strong>16</strong></td>
+      <td>Layered slope, WT + weak seam</td>
+      <td>RS2 Part 1</td>
+      <td>Water table + weak seam</td>
+      <td>1.02</td>
+      <td>~0.95 wet</td>
+    </tr>
+    <tr>
+      <td><strong>27</strong></td>
+      <td>Homogeneous slope with Ru</td>
+      <td>RS2 Part 1 / Slide #36</td>
+      <td>Ru = 0.2</td>
+      <td>1.31</td>
+      <td>~1.38–1.42 (T6)</td>
+    </tr>
+    <tr>
+      <td><strong>35</strong></td>
+      <td>Submerged slope (Duncan &amp; Wright)</td>
+      <td>RS2 Part 2 / Slide #70</td>
+      <td>Submerged / ponded WT</td>
+      <td>~1.64 (ref 1.60)</td>
+      <td>~1.625</td>
+    </tr>
+    <tr>
+      <td><strong>36-1</strong></td>
+      <td>Seepage, homogeneous slope</td>
+      <td>RS2 Part 2 / Slide #71</td>
+      <td>FE seepage</td>
+      <td>1.12 (ref 1.138)</td>
+      <td>in folder</td>
+    </tr>
+    <tr>
+      <td><strong>36-2</strong></td>
+      <td>Seepage, piezometric approx.</td>
+      <td>RS2 Part 2</td>
+      <td>Piezometric line</td>
+      <td>same problem</td>
+      <td>sibling folder</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Also related (outside <code>Groundwater/</code>): <strong>Ex2_twolayerslope_groundwater</strong> — Smith &amp; Griffiths SLOPE64 Example 4 (FoS ≈ 1.27).</p>
+
+<h2>2. PDF catalog — SRF/SSR + GW candidates</h2>
+
+<h3>2.1 RS2 Part 1 — pore pressure / WT / Ru / FE GW</h3>
+<ul class="compact col2">
+  <li>5 — WT + weak seam</li>
+  <li>6 — load + WT</li>
+  <li>7 — digitized total-head grid</li>
+  <li>8 — pore-pressure grid</li>
+  <li>9 — PP grid + two limit sets</li>
+  <li><strong>12</strong> — simple slope + WT</li>
+  <li><strong>14</strong> — Ru</li>
+  <li><strong>16</strong> — layered + WT + weak seam</li>
+  <li>17 — three PP conditions</li>
+  <li>18 — three PP + weak seam</li>
+  <li>23 — underwater slope</li>
+  <li>25 — Syncrude dyke (multiple phreatic surfaces)</li>
+  <li><strong>27</strong> — Ru</li>
+  <li>28 — FE GW + stress</li>
+  <li>32 — tension crack + WT</li>
+</ul>
+
+<h3>2.2 RS2 Part 2 — seepage / submerged / ponded</h3>
+<ul class="compact col2">
+  <li><strong>35</strong> — submerged slope</li>
+  <li><strong>36</strong> — homogeneous seepage (FE + piezometric)</li>
+  <li>37 — seepage, layered foundation</li>
+  <li>40 — dam seepage, impermeable foundation</li>
+  <li>44 — embankment seepage</li>
+  <li>53 — multi-tiered wall + seepage</li>
+</ul>
+
+<h3>2.3 RS2 Part 3</h3>
+<ul class="compact">
+  <li><strong>67</strong> — earth dam: steady &amp; transient unsaturated seepage</li>
+</ul>
+
+<h3>2.4 RS2 Part 4 (Slide# mapping; GW-tagged)</h3>
+<ul class="compact col2">
+  <li>#9 — WT + load + weak layer</li>
+  <li>#10 — PP grid + ponded water</li>
+  <li>#16 — WT</li>
+  <li>#21 / #22 / #41 / #62 — Ru (± seismic)</li>
+  <li>#38 — excavated slope: FE seepage + matric suction</li>
+  <li>#42 / #64–#66 / #69 — dam/embankment WT ± ponded</li>
+  <li>#51 — WT + tension crack + seismic</li>
+  <li>#56 — WT + tension crack</li>
+  <li><strong>#70</strong> — submerged (= Ex35)</li>
+  <li><strong>#71</strong> — FE seepage (= Ex36)</li>
+  <li>#72 / #76 — embankment dam: FE seepage + ponded</li>
+  <li>#82 — embankment + WT</li>
+  <li>#102 — rapid drawdown</li>
+</ul>
+
+<h3>2.5 Slide2 Slope Stability Verification Manual</h3>
+<p>
+  Same groundwater physics under Slide problem numbers (examples:
+  <span class="tag">#16 ↔ Ex12</span>
+  <span class="tag">#18 ↔ Ex14</span>
+  <span class="tag">#70 ↔ Ex35</span>
+  <span class="tag">#71 ↔ Ex36</span>).
+</p>
+
+<h2>3. Recommended next shortlist</h2>
+<ol>
+  <li><strong>5 / 6</strong> — water table (± load)</li>
+  <li><strong>7 / 8</strong> — pore-pressure / total-head grids</li>
+  <li><strong>28</strong> — FE groundwater + stress</li>
+  <li><strong>67</strong> — transient unsaturated seepage</li>
+  <li><strong>#102</strong> — rapid drawdown</li>
+</ol>
+
+<div class="footer">
+  Document generated for CPP_2DFEM_SLOPE worktree.<br/>
+  Reference manuals:
+  <em>Slide_SlopeStabilityVerification.pdf</em>,
+  <em>RS2_SlopeStabilityVerification_Part1–4.pdf</em>
+</div>
+
+</body>
+</html>

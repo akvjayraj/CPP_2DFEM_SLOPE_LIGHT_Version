@@ -1,0 +1,28 @@
+Running RS2 Example 16 from c:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\RS2_Example16_layered_slope_water_table_weak_seam\rs2_example16_layered_slope_water_table_weak_seam.xfem
+Groundwater enabled with 4 phreatic surface point(s), gamma_w=9.81 kN/m3.
+Generating surface mesh...
+Mesh ready: 14725 elements, 8618 nodes (Γ£ô T3 (3-node) mesh: 1 surface(s), 8618 nodes, 14725 elements.  Min angle: 8.6┬░  Max AR: 7.29)
+Applied boundary conditions to 1437 exterior node(s).
+[T3] SRF auto-bracket: probing seed F=1
+[T3] SRF trial F=1: failed
+[T3] SRF auto-bracket: expanding downward, F=0.6667
+[T3] SRF trial F=0.6667: failed
+[T3] SRF auto-bracket: expanding downward, F=0.4444
+[T3] SRF auto-bracket: expanding downward, F=0.2963
+[T3] SRF trial F=0.2963: failed
+[T3] SRF auto-bracket: expanding downward, F=0.1975
+[T3] SRF trial F=0.1975: failed
+[T3] SRF auto-bracket: expanding downward, F=0.1317
+[T3] SRF trial F=0.1317: failed
+[T3] SRF auto-bracket: expanding downward, F=0.08779
+[T3] SRF trial F=0.08779: failed
+[T3] SRF auto-bracket: expanding downward, F=0.05853
+[T3] SRF trial F=0.05853: failed
+[T3] SRF auto-bracket: expanding downward, F=0.03902
+[T3] SRF trial F=0.03902: failed
+[T3] SRF auto-bracket: expanding downward, F=0.02601
+[T3] SRF auto-bracket: expanding downward, F=0.01734
+[T3] SRF trial F=0.01734: failed
+Wrote c:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\RS2_Example16_layered_slope_water_table_weak_seam\gui_automation\rs2_example16_gui_run_summary.json
+Wrote c:\Users\akv\.cursor\worktrees\CPP_2DFEM_SLOPE\Verification\slope\RS2_Example16_layered_slope_water_table_weak_seam\gui_automation\rs2_example16_gui_run_summary.md
+T3: FoS=n/a status=SRF bracket search failed: No convergence detected down to F=0.01734 after 10 expansion step(s) from seed 1. Decrease the seed, or check materials/geometry.

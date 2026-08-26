@@ -1,0 +1,26 @@
+! <solver:p610_t3>
+! Plastic Q4 smoke verification
+! <BEGIN:AnalysisOptions>
+! failure_criterion ElastoPlastic
+! material_type Plastic
+! mesh_type Q4
+! solver_executable p610_t3_plastic
+! <END:AnalysisOptions>
+1  4  1
+28  2500  5  0  800000  0.28  1
+0  0
+1  0
+1  1
+0  1
+1  2  3  4
+3
+1  0  0
+2  1  0
+4  0  1
+4
+1  2  3  4
+0.0001  80  3  0
+1
+0  -100  -100  0
+1
+2  3

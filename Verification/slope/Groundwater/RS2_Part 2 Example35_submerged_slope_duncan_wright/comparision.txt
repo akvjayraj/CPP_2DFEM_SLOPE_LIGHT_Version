@@ -1,0 +1,19 @@
+RS2 Part 2 Example 35 — Submerged Slope (Duncan & Wright Fig. 6.27 / Slide2 #70 Case 1)
+
+Literature / benchmarks
+  Referee FoS          1.60
+  RS2 SSR              ~1.64
+  Bishop / Spencer     1.60
+
+X2D T3 SRF (gui_automation, mesh ~1092 nodes / 1861 els, GlobalMeshSize=3.0)
+  Estimated FoS        1.625   (mid-bracket of F=1.55 OK / F=1.70 FAIL)
+  Trials               F=1.00 OK, F=1.55 OK, F=1.70 FAIL
+
+Notes
+  - Imperial project: γw = 62.4 pcf (UI previously mislabeled as kN/m³).
+  - Hydrostatic WT at y=75 ft (30 ft above crest) requires ponded-water face
+    pressures on free surfaces in addition to γsat body + Terzaghi u.
+  - UI: Project Settings → Static → Ponded free-water pressures (default ON);
+    Groundwater → Ponded free water (Phreatic / Total Head, depth-field display).
+  - Ex27 Ru converges without face loads because Ru has no free-water head
+    above ground.

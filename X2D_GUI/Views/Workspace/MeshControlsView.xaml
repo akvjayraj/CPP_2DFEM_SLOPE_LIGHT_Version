@@ -1,0 +1,160 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Workspace.MeshControlsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+             Background="{DynamicResource PanelBackgroundBrush}"
+             Foreground="{DynamicResource WindowForegroundBrush}"
+             TextElement.Foreground="{DynamicResource WindowForegroundBrush}">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource ViewportPaperBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Padding" Value="4,3"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4,0"
+                  Visibility="{Binding IsControlsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel Margin="8">
+            <TextBlock Text="MESH CONTROLS" FontWeight="SemiBold" FontSize="13" Margin="0,4,0,8"/>
+
+            <TextBlock Text="GENERATOR" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+            <RadioButton IsChecked="{Binding IsUnstructuredGenerator, Mode=OneWay}"
+                         Command="{Binding SelectUnstructuredCommand}"
+                         Margin="0,0,0,4">
+                <TextBlock Text="Unstructured" Foreground="{DynamicResource WindowForegroundBrush}"/>
+            </RadioButton>
+            <RadioButton IsChecked="{Binding IsStructuredGenerator, Mode=OneWay}"
+                         Command="{Binding SelectStructuredCommand}"
+                         Margin="0,0,0,4">
+                <TextBlock Text="Structured" Foreground="{DynamicResource WindowForegroundBrush}"/>
+            </RadioButton>
+            <RadioButton IsChecked="{Binding Is1DGenerator, Mode=OneWay}"
+                         Command="{Binding Select1DCommand}"
+                         Margin="0,0,0,10"
+                         Visibility="{Binding Mesh.Is1DProblem, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="1D" Foreground="{DynamicResource WindowForegroundBrush}"/>
+            </RadioButton>
+
+            <StackPanel Visibility="{Binding IsUnstructuredGenerator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="ELEMENT TYPE" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+                <ComboBox ItemsSource="{Binding Mesh.Rs2dMeshTypeOptions}"
+                          SelectedItem="{Binding Mesh.Rs2dMeshType, Mode=TwoWay}"
+                          Margin="0,0,0,6"/>
+                <ComboBox ItemsSource="{Binding Mesh.Rs2dElementTypeOptions}"
+                          SelectedItem="{Binding Mesh.Rs2dElementType, Mode=TwoWay}"
+                          Margin="0,0,0,10"/>
+
+                <TextBlock Text="MESH SIZE" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+                <TextBlock Text="Density" Margin="0,0,0,2"/>
+                <ComboBox ItemsSource="{Binding Mesh.GlobalDensityPresets}"
+                          SelectedItem="{Binding Mesh.GlobalDensityPreset, Mode=TwoWay}"
+                          Margin="0,0,0,6"/>
+                <TextBlock Text="Global element size" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.GlobalMeshSize, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <TextBlock Text="Near-boundary size" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.NearBoundaryMeshSize, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <TextBlock Text="Gradation factor" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.Rs2dGradationFactor, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <CheckBox IsChecked="{Binding Mesh.BoundaryGradationEnabled, Mode=TwoWay}"
+                          Margin="0,0,0,4">
+                    <TextBlock Text="Boundary gradation" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </CheckBox>
+                <TextBlock Text="Growth factor" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.BoundaryGrowthFactor, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+                <TextBlock Text="ADVANCED" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+                <CheckBox IsChecked="{Binding Mesh.RefineNearExcavation}" Margin="0,0,0,3">
+                    <TextBlock Text="Refine near excavation" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Mesh.RefineNearLoads}" Margin="0,0,0,3">
+                    <TextBlock Text="Refine near loads" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Mesh.RefineNearMaterialInterfaces}" Margin="0,0,0,3">
+                    <TextBlock Text="Refine near material interfaces" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </CheckBox>
+                <CheckBox IsChecked="{Binding Mesh.RefineNearStiffnessContrast}" Margin="0,0,0,10">
+                    <TextBlock Text="Refine near stiffness contrast" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </CheckBox>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding IsStructuredGenerator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="ELEMENT TYPE" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+                <ComboBox ItemsSource="{Binding Mesh.UserDefinedMeshVM.ElementTypeOptions}"
+                          SelectedItem="{Binding Mesh.UserDefinedMeshVM.ElementType, Mode=TwoWay}"
+                          Margin="0,0,0,10"/>
+                <TextBlock Text="MESH SIZE" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+                <ComboBox ItemsSource="{Binding Mesh.UserDefinedMeshVM.GlobalDensityPresets}"
+                          SelectedItem="{Binding Mesh.UserDefinedMeshVM.GlobalDensityPreset, Mode=TwoWay}"
+                          Margin="0,0,0,6"/>
+                <TextBlock Text="Global element size" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.UserDefinedMeshVM.GlobalMeshSize, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <CheckBox IsChecked="{Binding Mesh.UserDefinedMeshVM.BoundaryGradationEnabled, Mode=TwoWay}"
+                          Margin="0,0,0,4">
+                    <TextBlock Text="Refine toward boundaries" Foreground="{DynamicResource WindowForegroundBrush}"/>
+                </CheckBox>
+                <TextBlock Text="Near-boundary size" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.UserDefinedMeshVM.NearBoundaryMeshSize, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+                <TextBlock Text="Growth factor" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.UserDefinedMeshVM.BoundaryGrowthFactor, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding Is1DGenerator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="1D MESH" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+                <TextBlock Text="Length (from geometry)" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.OneDMeshLength, Mode=OneWay}" IsReadOnly="True" Margin="0,0,0,6"/>
+                <TextBlock Text="n (elements)" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Mesh.OneDMeshN, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+            </StackPanel>
+
+            <Button Content="Discretize"
+                    Command="{Binding DiscretizeActiveCommand}"
+                    Margin="0,0,0,6"
+                    Padding="8,6"/>
+            <Button Content="Generate Mesh"
+                    Command="{Binding GenerateCommand}"
+                    Margin="0,0,0,6"
+                    Padding="8,8"
+                    FontWeight="SemiBold"
+                    Background="#FF16A34A"
+                    Foreground="White"
+                    BorderThickness="0"/>
+            <TextBlock Text="{Binding Mesh.SurfaceMeshStatus}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,10"
+                       FontSize="11"
+                       Foreground="{DynamicResource WindowForegroundBrush}"/>
+
+            <TextBlock Text="DISPLAY" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,6"/>
+            <CheckBox IsChecked="{Binding Mesh.ShowMeshElements}" Margin="0,0,0,3">
+                <TextBlock Text="Show elements" Foreground="{DynamicResource WindowForegroundBrush}"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Mesh.ShowMeshNodes}" Margin="0,0,0,8">
+                <TextBlock Text="Show nodes" Foreground="{DynamicResource WindowForegroundBrush}"/>
+            </CheckBox>
+            <Button Content="{Binding Mesh.ExcavateElementsButtonLabel}"
+                    Command="{Binding Mesh.ToggleExcavateElementsModeCommand}"
+                    Margin="0,0,0,6"
+                    Padding="8,4"/>
+            <Button Content="Import boundary to Geometry"
+                    Command="{Binding Mesh.ImportBoundaryToGeometryCommand}"
+                    Padding="8,4"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

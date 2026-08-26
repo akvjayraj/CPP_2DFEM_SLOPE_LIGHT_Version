@@ -1,0 +1,31 @@
+<UserControl x:Class="GeotechSlopeApp.Views.Controls.FEOneDContourCanvasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border x:Name="ZoomPanBorder" Background="White" ClipToBounds="True"
+            PreviewMouseWheel="OneDContour_PreviewMouseWheel"
+            MouseLeftButtonDown="OneDContour_MouseLeftButtonDown"
+            MouseDown="OneDContour_MouseDown"
+            MouseMove="OneDContour_MouseMove"
+            MouseLeftButtonUp="OneDContour_MouseLeftButtonUp"
+            MouseUp="OneDContour_MouseUp"
+            MouseLeave="OneDContour_MouseLeave">
+        <Grid>
+            <Canvas x:Name="OneDContourCanvas">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform x:Name="ZoomScaleTransform" ScaleX="1" ScaleY="1"/>
+                        <TranslateTransform x:Name="ZoomTranslateTransform" X="0" Y="0"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+            </Canvas>
+            <Canvas IsHitTestVisible="False">
+                <Rectangle x:Name="ZoomRect"
+                           Visibility="Collapsed"
+                           Stroke="#FF0EA5E9"
+                           StrokeThickness="1.5"
+                           StrokeDashArray="3 3"
+                           Fill="#4010B981"/>
+            </Canvas>
+        </Grid>
+    </Border>
+</UserControl>

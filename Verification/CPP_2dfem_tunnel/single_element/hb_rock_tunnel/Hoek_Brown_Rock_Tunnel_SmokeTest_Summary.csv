@@ -1,0 +1,8 @@
+"Folder","Case","MeshType","FailureCriterion","MaterialType","SolverExecutable","DatExists","JsonExists","ResExists","NodeCount","ElementCount","StageCount","Sxx","Syy","Txy","Szz","Verdict","Notes","Commit","GeneratedAt"
+"hb_rock_tunnel","hb_rock_tunnel_t3","T3","HoekBrown","Isotropic","p610_t3_hoek_brown","True","True","True","3","1","2","-100","-100","0","-50","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"hb_rock_tunnel","hb_rock_tunnel_t6","T6","HoekBrown","Isotropic","p610_t3_hoek_brown","True","True","True","6","1","2","-100","-100","33.3333333333333","-50","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"hb_rock_tunnel","hb_rock_tunnel_q4","Q4","HoekBrown","Isotropic","p610_t3_hoek_brown","True","True","True","4","1","2","-100","-5.32907051820075E-15","-4.06575814682064E-15","-25","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"hb_rock_tunnel","hb_rock_tunnel_q8","Q8","HoekBrown","Isotropic","p610_t3_hoek_brown","True","True","True","8","1","2","-47.5520833333334","-2.44791666666667","6.5625","-12.5","PASS_WITH_INTERPRETATION","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"hb_rock_tunnel","hb_rock_tunnel_GSI30_t3","T3","HoekBrown","Isotropic","p610_t3_hoek_brown","True","True","True","3","1","2","-100","-100","0","-50","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"hb_rock_tunnel","hb_rock_tunnel_GSI50_t3","T3","HoekBrown","Isotropic","p610_t3_hoek_brown","True","True","True","3","1","2","-100","-100","0","-50","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"
+"hb_rock_tunnel","hb_rock_tunnel_GSI70_t3","T3","HoekBrown","Isotropic","p610_t3_hoek_brown","True","True","True","3","1","2","-100","-100","0","-50","PASS","ok","4a6b63d","2026-05-05 15:51:36 +05:30"

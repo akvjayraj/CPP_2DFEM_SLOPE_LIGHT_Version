@@ -1,0 +1,30 @@
+{
+  "GeneratedAt": "2026-07-19T00:00:00+05:30",
+  "YieldGate": 25.0,
+  "GravityFloorIncs": 100,
+  "Source": "Existing gui_automation/t3 dry trial JSON meta (pre-rebuild runs used gravity floor 50)",
+  "Trials": [
+    {
+      "F": 0.5,
+      "GroundwaterEnabled": false,
+      "Converged": true,
+      "MaxYieldRatio": 1.0261947705025136,
+      "MaxItersUsed": 12,
+      "MaxDisp": 0.22936532728317424,
+      "AllIncrementsConverged": true,
+      "File": "p610t3_script_run_srf_0_5_dry.json"
+    },
+    {
+      "F": 1.0,
+      "GroundwaterEnabled": false,
+      "Converged": false,
+      "MaxYieldRatio": 1.0,
+      "MaxItersUsed": 1000,
+      "MaxDisp": 0.06900315825952714,
+      "AllIncrementsConverged": false,
+      "File": "p610t3_script_run_srf_1_dry.json"
+    }
+  ],
+  "DryF1Converges": false,
+  "Recommendation": "Use T6 mesh for dry F>=1 and closer wet FoS to literature 1.02; wet yield-gate FoS≈0.95 already within ~7%."
+}

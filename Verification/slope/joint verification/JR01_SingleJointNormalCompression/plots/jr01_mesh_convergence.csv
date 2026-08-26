@@ -1,0 +1,4 @@
+mesh,n_interfaces,closure_analytical_m,closure_num_m,error_pct
+coarse,4,0.100,0.100,0.00
+medium,8,0.100,0.100,0.00
+fine,16,0.100,0.100,0.00

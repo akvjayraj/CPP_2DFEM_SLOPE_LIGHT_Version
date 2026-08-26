@@ -1,0 +1,648 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.AddMaterialDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:GeotechSlopeApp.Converters"
+        Title="Add Material"
+        Width="700" Height="620"
+        MinWidth="620" MinHeight="540"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        ShowInTaskbar="False"
+        Background="{DynamicResource PanelBackgroundBrush}"
+        Foreground="{DynamicResource WindowForegroundBrush}">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter          x:Key="BoolVis"/>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvBoolVis"/>
+        <converters:FailureCriterionConverter  x:Key="FCConv"/>
+        <converters:MaterialTypeConverter      x:Key="MTConv"/>
+        <converters:NullToVisibilityConverter  x:Key="NullVis"/>
+        <converters:NumericTextConverter       x:Key="NumericText"/>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+        </Style>
+        <Style TargetType="Separator">
+            <Setter Property="Background" Value="{DynamicResource ChromeBorderBrush}"/>
+        </Style>
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="{DynamicResource ViewportPaperBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TabPanel x:Name="HeaderPanel" Grid.Row="0" IsItemsHost="True"
+                                      Background="{DynamicResource PanelBackgroundBrush}"/>
+                            <Border Grid.Row="1"
+                                    Background="{DynamicResource ViewportPaperBrush}"
+                                    BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                    BorderThickness="1,0,1,1">
+                                <ContentPresenter ContentSource="SelectedContent"
+                                                  Margin="{TemplateBinding Padding}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource PanelBackgroundBrush}"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                                BorderThickness="1,1,1,0"
+                                Padding="{TemplateBinding Padding}"
+                                Margin="0,0,2,0">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ViewportPaperBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ExplorerSelectionBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SectionLabel" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Margin"     Value="0,0,0,6"/>
+        </Style>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Width"           Value="180"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground"      Value="{DynamicResource SecondaryTextBrush}"/>
+        </Style>
+        <Style x:Key="FieldBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width"   Value="200"/>
+            <Setter Property="Height"  Value="26"/>
+            <Setter Property="Padding" Value="4,2"/>
+        </Style>
+        <Style x:Key="FieldCombo" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Width"   Value="200"/>
+            <Setter Property="Height"  Value="26"/>
+        </Style>
+        <Style x:Key="Row" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Margin"      Value="0,0,0,10"/>
+        </Style>
+        <Style x:Key="AutoLabel" TargetType="TextBlock">
+            <Setter Property="Foreground"      Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="FontStyle"       Value="Italic"/>
+            <Setter Property="FontSize"        Value="11"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin"          Value="10,0,0,0"/>
+        </Style>
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Width"   Value="90"/>
+            <Setter Property="Height"  Value="30"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource ViewportPaperBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ChromeBorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.45"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="PrimaryActionButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>   <!-- header strip -->
+            <RowDefinition Height="*"/>      <!-- tab content  -->
+            <RowDefinition Height="Auto"/>   <!-- button bar   -->
+        </Grid.RowDefinitions>
+
+        <!-- ══ HEADER STRIP ══════════════════════════════════════════════════ -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource ViewportPaperBrush}"
+                BorderBrush="{DynamicResource ChromeBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="12,10"
+                Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Name + Failure Criterion + Material Type -->
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Style="{StaticResource FieldLabel}" Text="Material Name:"/>
+                        <TextBox Style="{StaticResource FieldBox}" Width="220"
+                                 Text="{Binding Material.Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="{Binding NameError}"
+                                   Foreground="Red" FontSize="11"
+                                   VerticalAlignment="Center" Margin="8,0,0,0"
+                                   Visibility="{Binding NameError, Converter={StaticResource NullVis}}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <TextBlock Style="{StaticResource FieldLabel}" Text="Failure Criterion:"/>
+                        <ComboBox Style="{StaticResource FieldCombo}" Width="180"
+                                  ItemsSource="{Binding FailureCriterionOptions}"
+                                  SelectedItem="{Binding Material.FailureCriterion, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource FCConv}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Style="{StaticResource FieldLabel}" Text="Material Type:" Margin="16,0,0,0"/>
+                        <ComboBox Style="{StaticResource FieldCombo}" Width="180"
+                                  ItemsSource="{Binding MaterialTypeOptions}"
+                                  SelectedItem="{Binding Material.MaterialType, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource MTConv}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Colour swatch + palette -->
+                <StackPanel Grid.Column="1" Orientation="Vertical"
+                            Margin="16,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="Colour" FontSize="11"
+                               Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,4"
+                               HorizontalAlignment="Center"/>
+                    <Border Width="42" Height="42"
+                            BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="1"
+                            CornerRadius="3"
+                            Background="{Binding Material.ColourBrush}"
+                            ToolTip="Click a swatch below to change"/>
+                    <ListBox x:Name="ColourListBox"
+                             ItemsSource="{Binding ColourPalette}"
+                             Margin="0,6,0,0"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="8"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="1"/>
+                                <Setter Property="Margin"  Value="1"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource WindowForegroundBrush}"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="16" Height="16"
+                                        CornerRadius="2"
+                                        ToolTip="{Binding}"
+                                        BorderThickness="1"
+                                        BorderBrush="{DynamicResource ChromeBorderBrush}">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{Binding}"/>
+                                    </Border.Background>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ══ TABS ══════════════════════════════════════════════════════════ -->
+        <TabControl Grid.Row="1" Margin="0,0,0,12">
+
+            <!-- ── General ──────────────────────────────────────────────── -->
+            <TabItem Header="General">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,10">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Identification"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Material ID:"/>
+                            <TextBox Style="{StaticResource FieldBox}" IsReadOnly="True"
+                                     Text="{Binding Material.Id, Mode=OneWay}"
+                                     ToolTip="Auto-assigned when saved"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Description / Notes:"/>
+                            <TextBox Width="380" Height="64"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     VerticalScrollBarVisibility="Auto"
+                                     Text="{Binding Material.Description, UpdateSourceTrigger=PropertyChanged}"/>
+                        </StackPanel>
+                        <Separator Margin="0,8,0,12"/>
+
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Constitutive Model Summary"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Failure Criterion:"/>
+                            <TextBlock VerticalAlignment="Center" FontWeight="SemiBold"
+                                       Text="{Binding Material.FailureCriterion, Converter={StaticResource FCConv}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Material Type:"/>
+                            <TextBlock VerticalAlignment="Center" FontWeight="SemiBold"
+                                       Text="{Binding Material.MaterialType, Converter={StaticResource MTConv}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ── Stiffness ─────────────────────────────────────────────── -->
+            <TabItem Header="Stiffness">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,10">
+                    <StackPanel>
+
+                        <!-- Same Material Type options as Layer Inputs (MaterialPropertiesView) -->
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Material type"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Type:"/>
+                            <ComboBox Style="{StaticResource FieldCombo}"
+                                      ItemsSource="{Binding MaterialTypeOptions}"
+                                      SelectedItem="{Binding Material.MaterialType, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource MTConv}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <Separator Margin="0,4,0,12"/>
+
+                        <!-- Unit Weight (always visible) -->
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Unit Weight"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Unit Weight γ (kN/m³):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.UnitWeight, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Use Saturated γ_sat:"/>
+                            <CheckBox VerticalAlignment="Center"
+                                      IsChecked="{Binding Material.IsSaturatedEnabled, Mode=TwoWay}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}"
+                                    IsEnabled="{Binding Material.IsSaturatedEnabled}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Sat. Unit Weight (kN/m³):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.SaturatedUnitWeight, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <Separator Margin="0,4,0,12"/>
+
+                        <!-- Isotropic stiffness -->
+                        <StackPanel Visibility="{Binding IsIsotropic, Converter={StaticResource BoolVis}}">
+                            <TextBlock Style="{StaticResource SectionLabel}" Text="Isotropic Elasticity"/>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Young's Modulus E (kPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.YoungsModulus, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Poisson's Ratio ν:"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.PoissonsRatio, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Shear Modulus G:"/>
+                                <TextBlock Style="{StaticResource AutoLabel}"
+                                           Text="{Binding ShearModulusInfo}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Bulk Modulus K:"/>
+                                <TextBlock Style="{StaticResource AutoLabel}"
+                                           Text="{Binding BulkModulusInfo}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Transversely Isotropic stiffness -->
+                        <StackPanel Visibility="{Binding IsTransverseIsotropic, Converter={StaticResource BoolVis}}">
+                            <TextBlock Style="{StaticResource SectionLabel}" Text="Cross-Anisotropic Elasticity (E_h, E_v)"/>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="E_h  horizontal (kPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.YoungsModulusH, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="E_v  vertical (kPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.YoungsModulusV, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="ν_hh  (in-plane):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.PoissonsRatioHH, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="ν_vh  (vert–horiz):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.PoissonsRatioVH, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="G_vh  shear (kPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.ShearModulusVH, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ── Strength ──────────────────────────────────────────────── -->
+            <TabItem Header="Strength">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,10">
+                    <StackPanel>
+
+                        <!-- No strength params for Elastic -->
+                        <TextBlock Text="No strength parameters for Elastic material."
+                                   Foreground="{DynamicResource SecondaryTextBrush}" FontStyle="Italic"
+                                   Visibility="{Binding IsElastic, Converter={StaticResource BoolVis}}"/>
+
+                        <!-- Mohr-Coulomb / Elasto-Plastic -->
+                        <StackPanel Visibility="{Binding IsMCOrEP, Converter={StaticResource BoolVis}}">
+                            <TextBlock Style="{StaticResource SectionLabel}"
+                                       Text="Mohr-Coulomb Strength Parameters"/>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Cohesion c (kPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.Cohesion, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="≥ 0"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Friction Angle φ (°):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.FrictionAngle, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="0 – 90°"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Dilation Angle ψ (°):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.DilationAngle, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="0 ≤ ψ ≤ φ"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="Tensile Cutoff σ_t (kPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.TensileCutoff, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Hoek-Brown -->
+                        <StackPanel Visibility="{Binding IsHoekBrown, Converter={StaticResource BoolVis}}">
+                            <TextBlock Style="{StaticResource SectionLabel}"
+                                       Text="Hoek-Brown Rock Mass Parameters"/>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="σ_ci  UCS (MPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.Ucs, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="Intact rock uniaxial strength"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="m_i  (intact rock const.):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.HoekBrownMi, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="Typical: 4–33"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="GSI  (0–100):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.Gsi, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="Geological Strength Index"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="D  Disturbance (0–1):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.Disturbance, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="0 = undisturbed, 1 = blasted"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="MR  Modulus Ratio:"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.ModulusRatio, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                                <TextBlock Style="{StaticResource AutoLabel}" Text="E_i = MR × σ_ci"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Drucker-Prager -->
+                        <StackPanel Visibility="{Binding IsDruckerPrager, Converter={StaticResource BoolVis}}">
+                            <TextBlock Style="{StaticResource SectionLabel}"
+                                       Text="Drucker-Prager Parameters"/>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="α_DP  (pressure coeff.):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.DpAlpha, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource Row}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="k_DP  (yield radius, kPa):"/>
+                                <TextBox Style="{StaticResource FieldBox}"
+                                         Text="{Binding Material.DpK, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ── Hydraulic ─────────────────────────────────────────────── -->
+            <TabItem Header="Hydraulic">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,10">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Permeability"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="k_x  horiz. permeab. (m/s):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.PermeabilityX, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="k_y  vert. permeab. (m/s):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.PermeabilityY, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <Separator Margin="0,4,0,12"/>
+
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Storage / Compressibility"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Porosity n  (0–1):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.Porosity, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Initial Void Ratio e_0:"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.InitialVoidRatio, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Specific Storage S_s (1/m):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.SpecificStorage, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ── Thermal / Dynamic ─────────────────────────────────────── -->
+            <TabItem Header="Thermal / Dynamic">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,10">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Thermal Properties"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="λ_x  conductivity (W/m·K):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.ThermalConductivityX, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="λ_y  conductivity (W/m·K):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.ThermalConductivityY, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="C_p  Heat Capacity (J/kg·K):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.HeatCapacity, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="α  Thermal Expansion (1/°C):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.ThermalExpansion, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <Separator Margin="0,4,0,12"/>
+
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Dynamic Properties"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Density ρ (kg/m³):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.Density, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="Damping Ratio ξ:"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.DampingRatio, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                            <TextBlock Style="{StaticResource AutoLabel}" Text="Rayleigh / modal damping"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Probabilistic">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12,10">
+                    <StackPanel>
+                        <CheckBox Content="Enable probabilistic variation"
+                                  IsChecked="{Binding Material.EnableProbabilisticVariation}"
+                                  Margin="0,0,0,8"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="c–φ correlation:"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.CohesionPhiCorrelation, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Cohesion c" Margin="0,8,0,4"/>
+                        <CheckBox Content="Use as random variable (normal)" IsChecked="{Binding Material.CohesionStats.UseAsRv}"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="COV (%):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.CohesionStats.CovPercent, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Friction angle φ" Margin="0,8,0,4"/>
+                        <CheckBox Content="Use as random variable" IsChecked="{Binding Material.FrictionAngleStats.UseAsRv}"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="COV (%):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.FrictionAngleStats.CovPercent, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                        <TextBlock Style="{StaticResource SectionLabel}" Text="Unit weight γ" Margin="0,8,0,4"/>
+                        <CheckBox Content="Use as random variable" IsChecked="{Binding Material.UnitWeightStats.UseAsRv}"/>
+                        <StackPanel Style="{StaticResource Row}">
+                            <TextBlock Style="{StaticResource FieldLabel}" Text="COV (%):"/>
+                            <TextBox Style="{StaticResource FieldBox}"
+                                     Text="{Binding Material.UnitWeightStats.CovPercent, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericText}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+        </TabControl>
+
+        <!-- ══ BUTTON BAR ════════════════════════════════════════════════════ -->
+        <Border Grid.Row="2"
+                BorderBrush="{DynamicResource ChromeBorderBrush}" BorderThickness="0,1,0,0"
+                Padding="0,12,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- status / hint -->
+                <TextBlock Grid.Column="0"
+                           Text="{Binding NameError}"
+                           Foreground="Red" FontSize="11"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="ResetButton"
+                            Content="Reset Defaults"
+                            Style="{StaticResource ActionButton}"
+                            Width="110"
+                            Margin="0,0,8,0"
+                            Click="ResetButton_Click"
+                            ToolTip="Restore all fields to default values"/>
+                    <Button x:Name="OkButton"
+                            Content="OK"
+                            Style="{StaticResource PrimaryActionButton}"
+                            IsDefault="True"
+                            Click="OkButton_Click"
+                            IsEnabled="{Binding IsValid}"/>
+                    <Button x:Name="CancelButton"
+                            Content="Cancel"
+                            Style="{StaticResource ActionButton}"
+                            IsCancel="True"
+                            Margin="8,0,0,0"
+                            Click="CancelButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

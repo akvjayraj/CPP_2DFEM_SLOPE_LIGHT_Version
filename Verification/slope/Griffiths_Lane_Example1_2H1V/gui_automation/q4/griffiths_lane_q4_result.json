@@ -1,0 +1,68 @@
+{
+  "MeshType": "Q4",
+  "ProjectPath": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\griffiths_lane_example1_2h1v_Q4.xfem",
+  "Program": "slope_stability_Q8_SRF",
+  "BrandedProgram": "slope_stability_Q4_SRF",
+  "SolverCore": "CoreB",
+  "DeckFormat": "P64Explicit",
+  "ScriptSyncedFromMesh": true,
+  "EstimatedFoS": 1.481088029450745,
+  "DeviationFromLiterature": 0.081088029450745,
+  "DeviationPercent": 5.792002103624644,
+  "StatusMessage": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "FosNote": "Critical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "ArtifactSummary": "\r\nSRF trials (from .res):\r\n  SRF      max|u|      iters\r\n   1.00  3.3828E-002     14\r\n   1.50  5.5169E-002   1000\r\n   1.25  3.9663E-002     20\r\n   1.38  4.2695E-002     88\r\n   1.44  4.4763E-002    228\r\n   1.47  4.8425E-002    368\r\n   1.48  5.1386E-002   1000\r\n   1.48  4.9797E-002    395\r\n\r\nOutput files:\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.res (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.json (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.msh (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.dis (not found)\r\n  C:\\Users\\akv\\AppData\\Local\\Temp\\GeotechSlopeApp_slope_stability_Q8_SRF_script\\fe_script_run.vec (not found)\r\n\n\nCritical FoS \u2248 1.481 (auto-detected bracket in 2 expansion \u002B 6 bisection trial(s), F \u2208 [1.477, 1.484])",
+  "MeshRowCount": 220,
+  "NodeCount": 253,
+  "ArtifactDirectory": "C:\\Users\\akv\\.cursor\\worktrees\\CPP_2DFEM_SLOPE\\Verification\\slope\\Griffiths_Lane_Example1_2H1V\\gui_automation\\q4",
+  "TrialRows": [
+    {
+      "Srf": 1,
+      "MaxDisplacement": 0.033828,
+      "Iterations": 14,
+      "Converged": true
+    },
+    {
+      "Srf": 1.25,
+      "MaxDisplacement": 0.03966311093439834,
+      "Iterations": 20,
+      "Converged": true
+    },
+    {
+      "Srf": 1.375,
+      "MaxDisplacement": 0.04269536515145626,
+      "Iterations": 88,
+      "Converged": true
+    },
+    {
+      "Srf": 1.4375,
+      "MaxDisplacement": 0.044763,
+      "Iterations": 228,
+      "Converged": true
+    },
+    {
+      "Srf": 1.46875,
+      "MaxDisplacement": 0.048425241199652205,
+      "Iterations": 368,
+      "Converged": true
+    },
+    {
+      "Srf": 1.4765625,
+      "MaxDisplacement": 0.049797,
+      "Iterations": 395,
+      "Converged": true
+    },
+    {
+      "Srf": 1.484375,
+      "MaxDisplacement": 0.05138623132167486,
+      "Iterations": 1000,
+      "Converged": false
+    },
+    {
+      "Srf": 1.5,
+      "MaxDisplacement": 0.05516908446074511,
+      "Iterations": 1000,
+      "Converged": false
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+<Window x:Class="GeotechSlopeApp.Views.Dialogs.SlopeImageImportWizardDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding WindowTitle}"
+        Width="980" Height="640"
+        MinWidth="860" MinHeight="560"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip"
+        ShowInTaskbar="False">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolVis"/>
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#FF475569"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+        </Style>
+        <Style x:Key="SmallBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Width" Value="72"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Padding" Value="3,1"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Background="#FFF8FAFC" LastChildFill="True">
+        <Border DockPanel.Dock="Top" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="0,0,0,1" Padding="14,10">
+            <DockPanel>
+                <StackPanel>
+                    <TextBlock Text="{Binding FileName}" FontWeight="Bold" FontSize="14" Foreground="#FF1D4ED8"/>
+                    <TextBlock Text="{Binding ImageSizeText}" Foreground="#FF64748B" Margin="0,2,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="Opacity" Style="{StaticResource FieldLabel}"/>
+                    <Slider Width="140" Minimum="5" Maximum="100"
+                            Value="{Binding OpacityPercent, Mode=TwoWay}"
+                            VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBlock Text="{Binding OpacityPercent, StringFormat={}{0:0}%}" Width="40" VerticalAlignment="Center"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="0,1,0,0" Padding="14,10">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button Content="Cancel" Width="100" Height="30" Margin="6,0,0,0" IsCancel="True"/>
+                    <Button x:Name="ImportButton" Content="{Binding ConfirmButtonText}" Width="100" Height="30" Margin="6,0,0,0"
+                            IsDefault="True" IsEnabled="{Binding CanImport}"
+                            Background="#FF1D4ED8" Foreground="White"
+                            Click="ImportButton_Click"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="{Binding StatusText}" Foreground="#FF334155" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding ValidationSummary}" Foreground="#FFB45309" TextWrapping="Wrap"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid Margin="14,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="White" BorderBrush="#FFE2E8F0" BorderThickness="1" Padding="12" CornerRadius="4">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="Image file" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <Button Content="Browse…"
+                                Command="{Binding BrowseCommand}"
+                                HorizontalAlignment="Left" MinWidth="120" Height="28" Margin="0,0,0,10"
+                                ToolTip="Pick or replace a PNG, JPG, BMP, or TIFF"/>
+                        <CheckBox Content="Show underlay"
+                                  IsChecked="{Binding ShowUnderlay, Mode=TwoWay}"
+                                  Margin="0,0,0,8"/>
+                        <Button Content="Clear underlay"
+                                Command="{Binding ClearUnderlayCommand}"
+                                Visibility="{Binding IsEditingExisting, Converter={StaticResource BoolVis}}"
+                                HorizontalAlignment="Left" MinWidth="120" Height="28" Margin="0,0,0,16"
+                                ToolTip="Remove the slope image and close (geometry is unchanged)"/>
+
+                        <TextBlock Text="Calibration mode" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <RadioButton Content="Two points (scale + rotation)"
+                                     IsChecked="{Binding IsTwoPointMode, Mode=TwoWay}" Margin="0,0,0,6"/>
+                        <RadioButton Content="Axis-aligned world bounds"
+                                     IsChecked="{Binding IsBoundsMode, Mode=TwoWay}" Margin="0,0,0,12"/>
+
+                        <StackPanel Visibility="{Binding IsTwoPointMode, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Point 1 (image)" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Point1ImageText}" Margin="0,2,0,6" Foreground="#FF64748B"/>
+                            <WrapPanel Margin="0,0,0,10">
+                                <TextBlock Text="World X" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding Point1WorldXText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="Y" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding Point1WorldYText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </WrapPanel>
+
+                            <TextBlock Text="Point 2 (image)" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Point2ImageText}" Margin="0,2,0,6" Foreground="#FF64748B"/>
+                            <WrapPanel Margin="0,0,0,10">
+                                <TextBlock Text="World X" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding Point2WorldXText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="Y" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding Point2WorldYText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </WrapPanel>
+
+                            <Button Content="Reset click points" Width="140" HorizontalAlignment="Left"
+                                    Command="{Binding ResetCalibrationClicksCommand}" Margin="0,0,0,8"/>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding IsBoundsMode, Converter={StaticResource BoolVis}}">
+                            <TextBlock Text="Lower-left (world)" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                            <WrapPanel Margin="0,0,0,10">
+                                <TextBlock Text="X" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding BoundsMinXText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="Y" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding BoundsMinYText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </WrapPanel>
+                            <TextBlock Text="Upper-right (world)" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                            <WrapPanel>
+                                <TextBlock Text="X" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding BoundsMaxXText, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="Y" Style="{StaticResource FieldLabel}"/>
+                                <TextBox Style="{StaticResource SmallBox}" Text="{Binding BoundsMaxYText, UpdateSourceTrigger=PropertyChanged}"/>
+                            </WrapPanel>
+                        </StackPanel>
+
+                        <TextBlock Margin="0,16,0,0" TextWrapping="Wrap" Foreground="#FF64748B" FontSize="12"
+                                   Text="After Import or Apply, digitize on the Geometry canvas with Points / Lines / Arc / Surface tools. The image is a visual guide only."/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <Border Grid.Column="2" Background="#FF0F172A" BorderBrush="#FFE2E8F0" BorderThickness="1" CornerRadius="4" ClipToBounds="True">
+                <Grid>
+                    <Image x:Name="PreviewImage"
+                           Source="{Binding Bitmap}"
+                           Stretch="Uniform"
+                           RenderOptions.BitmapScalingMode="HighQuality"
+                           MouseLeftButtonDown="PreviewImage_MouseLeftButtonDown"/>
+                    <Canvas x:Name="MarkerLayer" IsHitTestVisible="False"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
